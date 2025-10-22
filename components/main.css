@@ -1,61 +1,79 @@
+/* Reseteo universal de estilos para todos los elementos */
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0; /* Elimina el margen exterior por defecto */
+    padding: 0; /* Elimina el relleno interior por defecto */
+    box-sizing: border-box; /* Hace que el padding y el borde no afecten el tamaño total del elemento */
 }
 
+/* Definición de variables globales de CSS */
 :root{
-    --width: 100%;
-    --height-header: calc(100% - 70%);
-    --decoration-text: none;
-    --color-text: black;
+    --width-main: 100%; /* Ancho principal al 100% */
+    --height-header: calc(100% - 70%); /* Altura del encabezado calculada */
+    --decoration-text: none; /* Sin decoración de texto por defecto */
+    --color-text: black; /* Color de texto negro por defecto */
+    --color-background-botones: #FFBF00; /* Color de fondo para botones */
+    --text-width: 16px; /* Tamaño de fuente por defecto */
 }
 
+/* Estilos para el cuerpo de la página */
 body{
-    background-image: url('../assets/image/upscalemedia-transformed.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
+    background-image: url('../assets/image/upscalemedia-transformed.jpeg'); /* Imagen de fondo */
+    background-size: cover; /* La imagen de fondo cubre todo el contenedor */
+    background-position: center; /* La imagen de fondo está centrada */
+    background-repeat: no-repeat; /* La imagen de fondo no se repite */
+    height: 100vh; /* Altura del cuerpo al 100% de la altura de la ventana */
 }
 
-
+/* Estilos para el encabezado */
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: var(--height-header);
+    display: flex; /* Usa flexbox para el layout */
+    align-items: center; /* Centra los items verticalmente */
+    justify-content: center; /* Centra los items horizontalmente */
+    height: var(--height-header); /* Altura del encabezado definida por la variable */
 }
 
-
+/* Estilos para el logo del encabezado */
 .header_logo {
-    width: 100px;
+    width: 100px; /* Ancho del logo */
 }
 
+/* Estilos para la sección principal */
 .main {
-    display: flex;
-    width: var(--width);
-    flex-direction: column;
-    align-items: center;
-    gap: 90px;
+    display: flex; /* Usa flexbox para el layout */
+    width: var(--width-main); /* Ancho de la sección principal definido por la variable */
+    flex-direction: column; /* Los items se apilan verticalmente */
+    align-items: center; /* Centra los items horizontalmente */
 }
 
-
+/* Estilos para el título principal */
 .main_title {
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 300;  /* 400 es el peso "regular" o normal */
-    font-style: normal;
-    
+    font-family: "Inter", sans-serif; /* Fuente del título */
+    font-optical-sizing: auto; /* Ajuste óptico de tamaño de fuente automático */
+    font-weight: 400;  /* Peso de la fuente */
+    font-style: normal; /* Estilo de fuente normal */
 }
 
+/* Estilos para los botones */
 .button {
-    text-decoration: var(--decoration-text);
-    color: var(--color-text);
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 300;  /* 400 es el peso "regular" o normal */
-    font-style: normal;
-
+    text-decoration: var(--decoration-text); /* Sin decoración de texto */
+    color: var(--color-text); /* Color de texto definido por la variable */
+    font-family: "Inter", sans-serif; /* Fuente del botón */
+    font-optical-sizing: auto; /* Ajuste óptico de tamaño de fuente automático */
+    font-weight: 300;  /* Peso de la fuente */
+    font-style: normal; /* Estilo de fuente normal */
+    border: 0px solid black; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: var(--color-background-botones); /* Color de fondo del botón definido por la variable */
+    font-size: var(--text-width); /* Tamaño de fuente del botón definido por la variable */
+    padding: 7px; /* Relleno interior del botón */
 }
 
+/* Estilos para el botón de login */
+.main_login {
+    margin-top: 154px; /* Margen superior */
+}
+
+/* Estilos para el botón de registro */
+.main_regist {
+    margin-top: 55px; /* Margen superior */
+}
