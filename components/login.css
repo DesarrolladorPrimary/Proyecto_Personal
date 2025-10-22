@@ -1,0 +1,83 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    /* Colores */
+    --background-color-body:  #98A59B;
+    --color-text: black;
+    --color-background-botones: #FFBF00;
+
+    /* Tipografía */
+    --font-family-main: "Inter", sans-serif;
+    --font-weight-regular: 400;
+    --font-weight-light: 300;
+    --text-width: 16px;
+
+    /* Espaciado */
+    --spacing-large: 50px;
+    --spacing-medium: 40px;
+    --spacing-small: 20px;
+
+    /* Inputs */
+    --input-height: 46px;
+    --input-width: 300px;
+
+    /* Otros */
+    --decoration-text: none;
+}
+
+.body_class {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color-body);
+}
+
+
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+.header_title{
+    font-family: var(--font-family-main);
+    font-optical-sizing: auto;
+    font-weight: var(--font-weight-regular);
+    font-style: normal;
+
+    margin-top: var(--spacing-large);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-small);
+
+    margin: var(--spacing-medium);
+}
+
+.form_input {
+    height: var(--input-height);
+    width: 100%; 
+    padding-left: 45px; 
+    border: none;
+    border-radius: 5px;
+}
+
+.input-container {
+    position: relative;
+    width: var(--input-width); 
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px; 
+    transform: translateY(-50%);
+    width: 20px; 
+    height: auto;
+    opacity: 0.5; 
+}

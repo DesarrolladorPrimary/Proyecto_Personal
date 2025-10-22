@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="components/login.css">
+</head>
+<body class="body_class">
+    <header class="header">
+        <h1 class="header_title">Inicio</h1>
+    </header>
+    <main class="main">
+        <form action="/submit-login" method="POST" class="form">
+
+            <div class="input-container">
+                <img src="assets/icons/email.png" class="input-icon" alt="Icono">
+                <input type="text" id="username" name="username" required class="form_input" placeholder="Correo">
+            </div>
+
+
+            <div class="input-container">
+                <img src="assets/icons/padlock.png" class="input-icon" alt="Icono de contraseña">
+                <input type="password" id="password" name="password" required class="form_input" placeholder="Contraseña">
+            </div>
+
+            
+            <button type="submit"><a href="">Iniciar</a></button>
+        </form>
+
+    </main>
+    <footer></footer>
+</body>
+</html>
