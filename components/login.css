@@ -33,7 +33,7 @@
 }
 
 /* Estilos para el cuerpo (body) de la página. */
-.body_class {
+body {
     font-family: Arial, sans-serif; /* Define la fuente de respaldo si la principal no carga */
     background-color: var(--background-color-body); /* Aplica el color de fondo definido en las variables */
     min-height: 100vh; /* Asegura que el body ocupe como mínimo toda la altura de la pantalla */
@@ -48,7 +48,7 @@
 }
 
 /* Estilos para el título dentro del encabezado. */
-.header_title{
+.header__title{
     font-family: var(--font-family-main); /* Aplica la fuente principal */
     font-optical-sizing: auto; /* Permite que el navegador ajuste la apariencia de la fuente */
     font-weight: var(--font-weight-regular); /* Aplica el grosor de fuente regular */
@@ -67,7 +67,7 @@
 }
 
 /* Estilos para los campos de texto (input). */
-.form_input {
+.form__input {
     height: var(--input-height); /* Aplica la altura definida en las variables */
     width: 100%; /* El input ocupa el 100% del ancho de su contenedor */
     padding-left: 45px; /* Añade un relleno a la izquierda para dar espacio al icono */
@@ -76,13 +76,13 @@
 }
 
 /* Contenedor para cada input y su icono. */
-.input-container {
+.form__input-container {
     position: relative; /* Permite posicionar elementos hijos (el icono) de forma absoluta dentro de este contenedor */
     width: var(--input-width); /* Aplica el ancho definido en las variables */
 }
 
 /* Estilos para el icono dentro del campo de texto. */
-.input-icon {
+.form__input-icon {
     position: absolute; /* Posiciona el icono de forma absoluta respecto al .input-container */
     top: 50%; /* Lo coloca a la mitad de la altura del contenedor */
     left: 15px; /* Lo desplaza 15px desde la izquierda */
@@ -93,7 +93,7 @@
 }
 
 /* Estilos para el texto de '¿Olvidó la contraseña?'. */
-.form_contrasena {
+.form__contrasena {
     transform: translateX(-70px); /* Desplaza el texto 70px hacia la izquierda */
     font-size: 13px; /* Reduce el tamaño de la fuente */
 }
@@ -135,4 +135,8 @@
 .footer {
     text-align: center; /* Centra el texto dentro del footer */
     padding: 20px; /* Añade un relleno de 20px para darle más espacio */
+}
+
+.footer__text {
+    font-family: var(--font-family-main);
 }

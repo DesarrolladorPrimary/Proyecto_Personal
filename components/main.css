@@ -33,7 +33,7 @@ body{
 }
 
 /* Estilos para el logo del encabezado */
-.header_logo {
+.header__logo {
     width: 100px; /* Ancho del logo */
 }
 
@@ -46,7 +46,7 @@ body{
 }
 
 /* Estilos para el título principal */
-.main_title {
+.main__title {
     font-family: "Inter", sans-serif; /* Fuente del título */
     font-optical-sizing: auto; /* Ajuste óptico de tamaño de fuente automático */
     font-weight: 400;  /* Peso de la fuente */
@@ -69,11 +69,11 @@ body{
 }
 
 /* Estilos para el botón de login */
-.main_login {
+.main__login {
     margin-top: 154px; /* Margen superior */
 }
 
 /* Estilos para el botón de registro */
-.main_regist {
+.main__regist {
     margin-top: 55px; /* Margen superior */
 }
