@@ -38,7 +38,7 @@ body {
     display: flex; /* Lo convierte en un contenedor flexible */
     justify-content: center; /* Centra su contenido horizontalmente */
     height: 100vh;    /* Ocupa toda la altura de la pantalla */
-    transform: translateY(100px); /* Desplaza el contenedor 100px hacia abajo */
+    align-items: center;
 }
 
 /* Contenedor del formulario de recuperación. */
@@ -48,11 +48,11 @@ body {
     align-items: center; /* Centra los elementos horizontalmente */
     justify-content: center; /* Centra los elementos verticalmente */
     gap: 30px; /* Añade un espacio de 30px entre cada elemento hijo */
-
     border-radius: 12px; /* Redondea las esquinas del contenedor */
     background-color: var(--color-background-container); /* Aplica el color de fondo definido en las variables */
     width: 286px; /* Ancho del contenedor */
-    height: 311px; /* Altura del contenedor */
+    height: 311px;
+    transform: translateY(-150px);
 }
 
 /* Título de la sección. */

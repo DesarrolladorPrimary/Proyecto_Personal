@@ -30,7 +30,6 @@ body {
     background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
     background-position: center; /* Centra la imagen de fondo */
     background-repeat: no-repeat; /* Evita que la imagen de fondo se repita */
-    height: 100vh; /* Asegura que el body ocupe toda la altura de la pantalla */
 }
 
 /* Contenedor principal de la sección de recuperación de contraseña. */
@@ -38,7 +37,7 @@ body {
     display: flex; /* Lo convierte en un contenedor flexible */
     justify-content: center; /* Centra su contenido horizontalmente */
     height: 100vh;    /* Ocupa toda la altura de la pantalla */
-    transform: translateY(100px); /* Desplaza el contenedor 100px hacia abajo */
+    align-items: center;
 }
 
 /* Contenedor del formulario de recuperación. */
@@ -53,6 +52,8 @@ body {
     background-color: var(--color-background-container); /* Aplica el color de fondo definido en las variables */
     width: 286px; /* Ancho del contenedor */
     height: 311px; /* Altura del contenedor */
+
+    transform: translateY(-150px);
 }
 
 /* Título de la sección. */
