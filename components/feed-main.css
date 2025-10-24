@@ -1,76 +1,97 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box
+/* Estilos generales para la página de feed */
+
+* {
+    margin: 0; /* Elimina el margen por defecto de todos los elementos */
+    padding: 0; /* Elimina el padding por defecto de todos los elementos */
+    box-sizing: border-box; /* Hace que el padding y el borde no afecten el ancho y alto total de los elementos */
 }
 
-
-:root{
-    --heigth-feed: 100vh;
-    --height-header: calc(var(--height-header) - 70vh) 
+/* Variables CSS globales */
+:root {
+    --heigth-feed: 100vh; /* Define la altura de la sección de feed */
+    --background-color-body-feed: #3C3636; /* Define el color de fondo para el body de la página de feed */
+    --color-background-container: #655D5D; /* Define el color de fondo para contenedores */
+    --color-text: black; /* Define el color de texto principal */
+    --background-color-nav-subline: #615151; /* Define el color de fondo para la sublínea de navegación */
+    --font-family-main: "Inter", sans-serif; /* Define la fuente principal */
+    --font-weight-light: 300; /* Define el grosor de fuente ligero */
+    --color-text-light: white; /* Define el color de texto claro */
 }
-
 
 body {
-    background-color: #3C3636;
+    background-color: var(--background-color-body-feed); /* Establece el color de fondo del cuerpo de la página */
 }
 
-
-
+/* Estilos para la cabecera */
 .header {
-    height: var(--height-header);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    display: flex; /* Usa flexbox para alinear los elementos hijos */
+    justify-content: space-between; /* Distribuye el espacio entre los elementos hijos */
+    margin-left: 30px; /* Añade un margen a la izquierda */
+    margin-right: 30px; /* Añade un margen a la derecha */
+    margin-top: 30px; /* Añade un margen en la parte superior */
+    align-items: center; /* Centra verticalmente los elementos hijos */
 }
 
-
+/* Estilos para la navegación de la cabecera */
 .header__nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 41px;
-    width: 52px;
-    border-radius: 8px;
-    background-color: #655D5D;
+    display: flex; /* Usa flexbox para alinear los elementos hijos */
+    justify-content: center; /* Centra horizontalmente los elementos hijos */
+    align-items: center; /* Centra verticalmente los elementos hijos */
+    height: 41px; /* Establece la altura del elemento */
+    width: 52px; /* Establece el ancho del elemento */
+    border-radius: 8px; /* Redondea las esquinas del elemento */
+    background-color: var(--color-background-container); /* Establece el color de fondo del elemento */
 }
 
+/* Línea dentro de la navegación */
 .header__nav-line {
-    display: flex;
-    justify-content: end;
-    border: black 1px solid;
-    border-radius: 3px;
-    background-color: transparent;
-    width: 30px;
-    height: 17px;
+    display: flex; /* Usa flexbox para alinear los elementos hijos */
+    justify-content: end; /* Alinea los elementos hijos al final del contenedor */
+    border: var(--color-text) 1px solid; /* Añade un borde con el color de texto principal */
+    border-radius: 3px; /* Redondea las esquinas del elemento */
+    background-color: transparent; /* Hace que el fondo sea transparente */
+    width: 30px; /* Establece el ancho del elemento */
+    height: 17px; /* Establece la altura del elemento */
 }
 
-
+/* Sublínea dentro de la navegación */
 .header__nav-subline {
-    width: 8px;
-    height: 15px;
-    border-radius: 2px;
-    background-color: #615151;
+    width: 8px; /* Establece el ancho del elemento */
+    height: 15px; /* Establece la altura del elemento */
+    border-radius: 2px; /* Redondea las esquinas del elemento */
+    background-color: var(--background-color-nav-subline); /* Establece el color de fondo del elemento */
 }
 
-
+/* Logo en la cabecera */
 .header__logo {
-    width: 34px;
+    width: 34px; /* Establece el ancho del logo */
 }
 
+/* Estilos para la sección de feed */
+.feed {
+    height: var(--heigth-feed); /* Usa la variable para establecer la altura */
+}
 
+/* Contenido del feed */
 .feed__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: var(--heigth-feed)
+    transform: translateY(110px); /* Mueve el elemento 110px hacia abajo */
+    display: flex; /* Usa flexbox para alinear los elementos hijos */
+    flex-direction: column; /* Apila los elementos hijos verticalmente */
+    align-items: center; /* Centra horizontalmente los elementos hijos */
+    justify-content: center; /* Centra verticalmente los elementos hijos */
 }
 
+/* Texto del feed */
+.feed__text {
+    font-family: var(--font-family-main); /* Establece la fuente del texto */
+    font-optical-sizing: auto; /* Permite que el navegador ajuste el tamaño óptico de la fuente */
+    font-weight: var(--font-weight-light); /* Establece el grosor de la fuente */
+    font-style: normal; /* Establece el estilo de la fuente a normal */
+    color: var(--color-text-light); /* Establece el color del texto */
+    font-size: 13px; /* Establece el tamaño de la fuente */
+}
+
+/* Imagen del feed */
 .feed__image {
-    width: 256px;
+    width: 256px; /* Establece el ancho de la imagen */
 }
-
-
-
-
