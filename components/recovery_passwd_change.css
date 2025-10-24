@@ -1,0 +1,154 @@
+/* Selector universal: elimina el margen y el relleno por defecto de todos los elementos */
+/* y ajusta el modelo de caja para que el padding y el borde no afecten el tamaño final. */
+*{
+    padding: 0; /* Elimina el relleno interior */
+    margin: 0; /* Elimina el margen exterior */
+    box-sizing: border-box; /* El padding y el borde se incluyen en el ancho y alto del elemento */
+}
+
+/* Define variables CSS (custom properties) para ser reutilizadas en todo el documento. */
+:root{
+    /* Define los colores principales de la paleta. */
+    --color-background-botones: #D9D9D9;
+    --text-width: 9px;
+    --decoration-text: none;
+    --color-text : black;
+
+    /* Define las dimensiones para los campos de entrada (inputs). */
+    --input-height: 33px;
+    --input-width: 223px;
+
+    /* Define otros colores y fuentes. */
+    --color-text-light: white;
+    --color-background-container: #655D5D;
+    --font-size-title: 16px;
+    --button-padding: 7px;
+    --container-width: 306px;
+    --container-height: 470px;
+    --container-margin-top: 80px;
+    --container-border-radius: 12px;
+    --title-margin-top: 30px;
+    --description-gap: 10px;
+    --form-group-gap: 30px;
+    --input-border-radius: 5px;
+    --input-padding-left: 10px;
+    --button-border-radius: 36px;
+    --button-width: 178px;
+    --button-height: 44px;
+}
+
+/* Estilos para el cuerpo (body) de la página. */
+body {
+    background-image: url('../assets/image/upscalemedia-transformed.jpeg'); /* Establece la imagen de fondo */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+    background-repeat: no-repeat; /* Evita que la imagen de fondo se repita */
+    height: 100vh; /* Asegura que el body ocupe toda la altura de la pantalla */
+}
+
+/* Contenedor principal de la sección de recuperación de contraseña. */
+.recovery-password {
+    display: flex; /* Lo convierte en un contenedor flexible */
+    justify-content: center; /* Centra su contenido horizontalmente */
+    height: 100vh;    /* Ocupa toda la altura de la pantalla */
+}
+
+/* Contenedor del formulario de recuperación. */
+.recovery-password__container{
+    display: flex; /* Lo convierte en un contenedor flexible */
+    flex-direction: column; /* Apila los elementos hijos en una columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    gap: 40px; /* Añade un espacio de 30px entre cada elemento hijo */
+
+
+    margin-top: var(--container-margin-top);
+    border-radius: var(--container-border-radius); /* Redondea las esquinas del contenedor */
+    background-color: var(--color-background-container); /* Aplica el color de fondo definido en las variables */
+    width: var(--container-width); /* Ancho del contenedor */
+    height: var(--container-height); /* Altura del contenedor */
+    gap: 30px; /* Añade un espacio de 30px entre cada elemento hijo */
+}
+/* Título de la sección. */
+.recovery-password__title{
+    font-family: "Poppins", sans-serif; /* Define la fuente */
+    font-weight: 500; /* Grosor de la fuente */
+    font-style: 200; /* Estilo de la fuente */
+
+    margin-top: var(--title-margin-top);
+    color: var(--color-text-light); /* Aplica el color de texto claro de las variables */
+    font-size: var(--font-size-title); /* Aplica el tamaño de fuente para títulos */
+}
+
+/* Descripción o texto de ayuda. */
+.recovery-password__description{
+    display: flex; /* Lo convierte en un contenedor flexible */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+    gap: var(--description-gap); /* Espacio entre elementos (si hay más de uno) */
+    font-family: "Inter", sans-serif; /* Define la fuente */
+    font-weight: 300; /* Grosor de fuente ligero */
+    font-style: normal; /* Estilo de fuente normal */
+    color: var(--color-text-light); /* Aplica el color de texto claro */
+    text-align: center; /* Centra el texto */
+}
+
+/* Grupo de elementos del formulario. */
+.recovery-password__form-group {
+    display: flex; /* Lo convierte en un contenedor flexible */
+    flex-direction: column; /* Apila los elementos en columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    gap: var(--form-group-gap); /* Espacio entre los elementos */
+}
+
+/* Campo de entrada de texto. */
+.recovery-password__input {
+    height: var(--input-height); /* Aplica la altura definida en las variables */
+    width: var(--input-width); /* Aplica el ancho definido en las variables */
+    border: none; /* Elimina el borde */
+    border-radius: var(--input-border-radius); /* Redondea las esquinas */
+    padding-left: var(--input-padding-left); /* Añade relleno a la izquierda */
+}
+
+/* Botón de envío del formulario. */
+.recovery-password__button {
+    text-decoration: var(--decoration-text); /* Sin decoración de texto */
+    font-family: "Inter", sans-serif; /* Define la fuente */
+    font-optical-sizing: auto; /* Ajuste automático de la fuente */
+    font-weight: 300;  /* Grosor de fuente ligero */
+    font-style: normal; /* Estilo de fuente normal */
+    border: 0px solid black; /* Sin borde */
+    border-radius: var(--button-border-radius); /* Bordes redondeados */
+    background-color: var(--color-background-botones); /* Aplica el color de fondo de las variables */
+    font-size: var(--text-width); /* Aplica el tamaño de fuente de las variables */
+    padding: var(--button-padding); /* Añade un pequeño relleno interior */
+    width: var(--button-width); /* Ancho del botón */
+    height: var(--button-height); /* Altura del botón */
+    transform: translateY(43px);
+
+
+}
+
+/* Enlace de la sección. */
+.recovery-password__link{
+    font-family: "Inter", sans-serif; /* Define la fuente */
+    font-optical-sizing: auto; /* Ajuste automático de la fuente */
+    font-weight: 400;  /* Grosor de fuente normal */
+    font-style: normal; /* Estilo de fuente normal */
+    text-decoration: none;
+    color: var(--color-text); /* Aplica el color de texto de las variables */
+
+}
+
+/* Estilos para los requisitos del formulario de recuperación de contraseña. */
+.recovery-password__form-requirement {
+    font-family: "Inter", sans-serif; /* Define la fuente */
+    font-weight: 200;  /* Grosor de fuente ligero */
+    font-style: normal; /* Estilo de fuente normal */
+    color: var(--color-text-light); /* Aplica el color de texto claro */
+    font-size: 11px;
+    margin-top: 13px ;
+}
+
+.recovery-password__input--confirm {
+    transform: translateY(40px);
+}
