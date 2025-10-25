@@ -10,15 +10,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Encabezado de la página -->
     <header class="header">
         <div class="header__nav">
             <div class="header__nav-line">
-                <div class="header__nav-subline"></div>
+                <a href="#sidebar" class="header__nav-link header__nav-link--action"></a>
             </div>
         </div>
         <img src="assets/icons/image.png" class="header__logo" alt="logo_user">
         
     </header>
+
+    <!-- Menú lateral -->
+    <aside class="aside" id="sidebar">
+        <a href="#" class="aside__close">X</a>
+        <a href="#" class="aside__link"><img class="aside__icon aside__icon--mind" src="assets/icons/mind.png" alt="mind_icon"></a>
+        <a href="#" class="aside__link"><img class="aside__icon aside__icon--paper" src="assets/icons/papel.png" alt="papel_icon"></a>
+        <a href="#" class="aside__link"><img class="aside__icon aside__icon--libros" src="assets/icons/libros.png" alt="libros_icon"></a>
+        <a href="#" class="aside__link"><img class="aside__icon aside__icon--setting" src="assets/icons/setting.png" alt="setting"></a>
+    </aside>
+
+    <!-- Contenido principal -->
     <main class="feed">
         <div class="feed__content">
             <img class="feed__image" src="assets/image/image-removebg-preview.png" alt="">

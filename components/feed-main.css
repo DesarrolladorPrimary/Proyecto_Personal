@@ -6,8 +6,9 @@
     box-sizing: border-box; /* Hace que el padding y el borde no afecten el ancho y alto total de los elementos */
 }
 
-/* Variables CSS globales */
+/* Variables CSS globales (Custom Properties) */
 :root {
+    /* Propiedades para el header y main(feed) */
     --heigth-feed: 100vh; /* Define la altura de la sección de feed */
     --background-color-body-feed: #3C3636; /* Define el color de fondo para el body de la página de feed */
     --color-background-container: #655D5D; /* Define el color de fondo para contenedores */
@@ -16,10 +17,20 @@
     --font-family-main: "Inter", sans-serif; /* Define la fuente principal */
     --font-weight-light: 300; /* Define el grosor de fuente ligero */
     --color-text-light: white; /* Define el color de texto claro */
+
+    /* Propiedades para el Aside (menú lateral) */
+    --aside-width: 107px; /* Ancho del menú lateral */
+    --aside-height: 439px; /* Altura del menú lateral */
+    --aside-position-top: 150px; /* Distancia desde la parte superior */
+    --aside-border-radius: 8px; /* Radio de los bordes del menú lateral */
 }
 
 body {
+    display: grid;
     background-color: var(--background-color-body-feed); /* Establece el color de fondo del cuerpo de la página */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 200px);
+    position: relative; 
 }
 
 /* Estilos para la cabecera */
@@ -28,8 +39,10 @@ body {
     justify-content: space-between; /* Distribuye el espacio entre los elementos hijos */
     margin-left: 30px; /* Añade un margen a la izquierda */
     margin-right: 30px; /* Añade un margen a la derecha */
-    margin-top: 30px; /* Añade un margen en la parte superior */
+    margin-top: 30px;
     align-items: center; /* Centra verticalmente los elementos hijos */
+    grid-column: 1/4;
+    align-self: flex-start;
 }
 
 /* Estilos para la navegación de la cabecera */
@@ -54,8 +67,8 @@ body {
     height: 17px; /* Establece la altura del elemento */
 }
 
-/* Sublínea dentro de la navegación */
-.header__nav-subline {
+/* Sublínea dentro de la navegación (el botón clickeable) */
+.header__nav-link {
     width: 8px; /* Establece el ancho del elemento */
     height: 15px; /* Establece la altura del elemento */
     border-radius: 2px; /* Redondea las esquinas del elemento */
@@ -67,18 +80,73 @@ body {
     width: 34px; /* Establece el ancho del logo */
 }
 
-/* Estilos para la sección de feed */
+
+/* Contenedor principal del menú lateral */
+.aside {
+    display: none; /* Por defecto, el menú está oculto */
+    position: absolute; /* Se saca del flujo normal para superponerse */
+    grid-template-rows: repeat(4, 1fr); /* Crea 4 filas de igual tamaño */
+    background-color: var(--color-background-container); /* Color de fondo reutilizado */
+    width: var(--aside-width); /* Ancho definido por una variable */
+    height: var(--aside-height); /* Altura definida por una variable */
+    top: var(--aside-position-top); /* Posición desde arriba definida por una variable */
+    border-radius: var(--aside-border-radius); /* Bordes redondeados definidos por una variable */
+}
+
+/* Estilo para el botón de cerrar del menú lateral (temporal) */
+.aside__close {
+    position: absolute; /* Lo posiciona de forma absoluta dentro del aside */
+    text-decoration: none; /* Quita el subrayado */
+    color: var(--color-text); /* Usa el color de texto principal */
+    z-index: 10; /* Se asegura que esté visible sobre otros elementos */
+}
+
+
+/* Alineación para todos los iconos dentro de las celdas del grid del aside */
+.aside__link {
+    justify-self: center; /* Centra el icono horizontalmente en su celda */
+    align-self: center; /* Centra el icono verticalmente en su celda */
+}
+
+/* Modificadores de tamaño para cada icono específico */
+.aside__icon--mind {
+    width: 56px;
+}
+
+.aside__icon--paper {
+    width: 74px;
+}
+
+.aside__icon--libros {
+    width: 91px;
+    height: 52px;
+}
+
+.aside__icon--setting {
+    width: 31px;
+}
+
+
+
+/* Muestra el menú lateral cuando es el objetivo de la URL (ej: #sidebar) */
+.aside:target {
+    display: grid; /* Cambia el display a grid para que sea visible */
+}
+
+
+/* --- Estilos para la sección de feed --- */
 .feed {
-    height: var(--heigth-feed); /* Usa la variable para establecer la altura */
+    display: grid;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    align-self: self-start;
 }
 
 /* Contenido del feed */
 .feed__content {
-    transform: translateY(110px); /* Mueve el elemento 110px hacia abajo */
     display: flex; /* Usa flexbox para alinear los elementos hijos */
     flex-direction: column; /* Apila los elementos hijos verticalmente */
     align-items: center; /* Centra horizontalmente los elementos hijos */
-    justify-content: center; /* Centra verticalmente los elementos hijos */
 }
 
 /* Texto del feed */
