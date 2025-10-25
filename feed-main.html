@@ -17,7 +17,7 @@
                 <a href="#sidebar" class="header__nav-link header__nav-link--action"></a>
             </div>
         </div>
-        <img src="assets/icons/image.png" class="header__logo" alt="logo_user">
+       <a href="#user" class="header__logo"> <img src="assets/icons/image.png" class="header__logo" alt="logo_user"></a>
         
     </header>
 
@@ -37,5 +37,42 @@
             <p class="feed__text">Que comenzaremos hoy?</p>
         </div>
     </main>
+
+
+
+    <!-- BLOQUE: menu-user-->
+<div class="menu-user menu-user--hidden" id="user">
+    
+    <a href="#" class="menu-user__close">X</a>
+
+    <!-- ELEMENTO: menu-user__avatar -->
+    <img class="menu-user__avatar" src="assets/icons/image.png" alt="Avatar del usuario">
+
+    <div class="menu-user__separador"></div>
+
+    <!-- ELEMENTOS: Párrafos de información -->
+    <p class="menu-user__text">Usuario: </p>
+    <p class="menu-user__text">Numero: </p>
+    <p class="menu-user__text">Correo: </p>
+
+
+    <!-- ELEMENTO: Un grupo de opciones o información -->
+    <div class="menu-user__group">
+       <p class="menu-user__group-title">Modelos:</p>
+       
+       <!-- ELEMENTO: Un item específico dentro del grupo -->
+       <div class="menu-user__Model">
+            <p class="menu-user__Model-text">Modelo-AI</p> 
+            <img class="menu-user__setting-icon" src="assets/icons/icono_model.png" alt="Icono de ajuste">
+        </div> 
+    </div>
+
+    <!-- ELEMENTO: Botón de acción principal -->
+    <button class="menu-user__button">
+        <a class="menu-user__link" href="login.html">Cerrar Sesión</a>
+    </button>
+
+</div>
+
 </body>
 </html>
