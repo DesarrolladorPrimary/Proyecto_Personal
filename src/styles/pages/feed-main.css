@@ -36,10 +36,18 @@
     /* Distancia desde la parte superior */
     --aside-border-radius: 8px;
     /* Radio de los bordes del menú lateral */
+    --aside-panel-width: 249px;
+    /* Ancho de los paneles secundarios */
+    --aside-panel-height: 56px;
+    /* Alto de los paneles secundarios */
+    --aside-panel-left: 80px;
+    /* Posición en X compartida por los paneles secundarios */
 
     /* Propiedades para el menu del usuario (menu-user) */
     --color-text-buton: #D74747;
     /* Define el color del texto para los botones */
+    --menu-row-height: 30px;
+    /* Alto para filas e items del menú */
 
     /* --- Colores --- */
     --color-separator: #ccc;
@@ -65,9 +73,13 @@
     --spacing-medium: 15px;
     --spacing-large: 30px;
     --spacing-xlarge: 40px;
+    --size-icon-tiny: 8px;
+    /* Tamaño para iconos pequeños y toggles */
 
     /* --- Z-index (Capas) --- */
     --z-index: 1;
+    --line-width-thin: 1px;
+    /* Grosor para líneas o bordes delgados */
 }
 
 body {
@@ -123,7 +135,7 @@ body {
     /* Usa flexbox para alinear los elementos hijos */
     justify-content: end;
     /* Alinea los elementos hijos al final del contenedor */
-    border: var(--color-text) 1px solid;
+    border: var(--color-text) var(--line-width-thin) solid;
     /* Añade un borde con el color de texto principal */
     border-radius: var(--border-radius-small);
     /* Redondea las esquinas del elemento */
@@ -137,7 +149,7 @@ body {
 
 /* Sublínea dentro de la navegación (el botón clickeable) */
 .header__nav-link {
-    width: 8px;
+    width: var(--size-icon-tiny);
     /* Establece el ancho del elemento */
     height: 15px;
     /* Establece la altura del elemento */
@@ -225,6 +237,57 @@ body {
     display: grid;
     /* Cambia el display a grid para que sea visible */
 }
+
+
+/* Panel base: aplica estilos comunes para todas las celdas descriptivas del aside */
+.aside__panel {
+    display: flex;
+    visibility: visible;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border-radius: 4px;
+    background-color: var(--color-background-container);
+    border: var(--line-width-thin) solid transparent;
+    width: var(--aside-panel-width);
+    height: var(--aside-panel-height);
+}
+
+
+/* Enlaces dentro de los paneles del aside */
+.aside__panel-link {
+    text-decoration: none;
+    color: var(--color-text-light);
+}
+
+/* Posición del panel asociado a Poly/AI */
+.aside__panel--poly {
+    top: 25px;
+    left: var(--aside-panel-left);
+    
+}
+
+/* Posición del panel de la sección creativa */
+.aside__panel--creative {
+    top: 134px;
+    left: var(--aside-panel-left);
+}
+
+/* Posición del panel de biblioteca */
+.aside__panel--library {
+    top:244px;
+    left: var(--aside-panel-left);
+}
+
+/* Posición del panel de configuraciones */
+.aside__panel--settings {
+    top: 350px;
+    left: var(--aside-panel-left);
+}
+
+
+
+
 
 
 
@@ -336,7 +399,7 @@ body {
 
 /* Avatar dentro del menú de usuario */
 .menu-user__avatar {
-    margin-top: 5px;
+    margin-top: var(--spacing-xsmall);
     /*
     width: 60px;
     /* Ancho del avatar */
@@ -350,7 +413,7 @@ body {
 .menu-user__separador {
     width: 247px;
     /* Ancho de la línea */
-    height: 1px;
+    height: var(--line-width-thin);
     /* Grosor de la línea */
     background-color: var(--color-separator);
     /* Color de la línea */
@@ -398,7 +461,7 @@ body {
     /* Alinea los elementos al inicio */
     margin-left: var(--spacing-xlarge);
     /* Margen izquierdo para todo el grupo */
-    height: 30px;
+    height: var(--menu-row-height);
     /* Altura del grupo */
 }
 
@@ -416,7 +479,7 @@ body {
     /* Espacio entre icono y texto del modelo */
     width: 110px;
     /* Ancho del botón */
-    height: 30px;
+    height: var(--menu-row-height);
     /* Altura del botón */
     background-color: var(--background-color-nav-subline);
     /* Color de fondo */
@@ -436,7 +499,7 @@ body {
 
 /* Icono de configuración (engranaje) dentro del botón de modelo */
 .menu-user__setting-icon {
-    width: 8px;
+    width: var(--size-icon-tiny);
     /* Ancho del icono */
     height: 10px;
     /* Altura del icono */
@@ -463,4 +526,19 @@ body {
     /* Quita el subrayado del enlace */
     color: var(--color-text-buton);
     /* Usa el color rojo definido en las variables */
+}
+
+
+
+@media (min-width: 1024px) {
+
+    .aside__panel {
+        visibility: hidden;
+    }
+
+    .aside__panel:hover,
+    .aside__link--navi:hover + .aside__panel{
+        visibility: visible;
+
+    }
 }
