@@ -1,0 +1,133 @@
+/* Estilos específicos de la página de cambio de contraseña */
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --color-background-botones: #D9D9D9;
+    --text-width: 9px;
+    --decoration-text: none;
+    --color-text : black;
+    --input-height: 33px;
+    --input-width: 223px;
+    --color-text-light: white;
+    --color-background-container: #655D5D;
+    --font-size-title: 16px;
+    --button-padding: 7px;
+    --container-width: 306px;
+    --container-height: 470px;
+    --container-margin-top: 80px;
+    --container-border-radius: 12px;
+    --title-margin-top: 30px;
+    --description-gap: 10px;
+    --form-group-gap: 30px;
+    --input-border-radius: 5px;
+    --input-padding-left: 10px;
+    --button-border-radius: 36px;
+    --button-width: 178px;
+    --button-height: 44px;
+}
+
+body {
+    background-image: url('../../../assets/image/upscalemedia-transformed.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+.recovery-password {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+.recovery-password__container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    margin-top: var(--container-margin-top);
+    border-radius: var(--container-border-radius);
+    background-color: var(--color-background-container);
+    width: var(--container-width);
+    height: var(--container-height);
+    gap: 30px;
+}
+
+.recovery-password__title{
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: 200;
+    margin-top: var(--title-margin-top);
+    color: var(--color-text-light);
+    font-size: var(--font-size-title);
+}
+
+.recovery-password__description{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--description-gap);
+    font-family: "Inter", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    color: var(--color-text-light);
+    text-align: center;
+}
+
+.recovery-password__form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--form-group-gap);
+}
+
+.recovery-password__input {
+    height: var(--input-height);
+    width: var(--input-width);
+    border: none;
+    border-radius: var(--input-border-radius);
+    padding-left: var(--input-padding-left);
+}
+
+.recovery-password__button {
+    text-decoration: var(--decoration-text);
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    border: 0px solid black;
+    border-radius: var(--button-border-radius);
+    background-color: var(--color-background-botones);
+    font-size: var(--text-width);
+    padding: var(--button-padding);
+    width: var(--button-width);
+    height: var(--button-height);
+    transform: translateY(43px);
+}
+
+.recovery-password__link{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.recovery-password__form-requirement {
+    font-family: "Inter", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    color: var(--color-text-light);
+    font-size: 11px;
+    margin-top: 13px ;
+}
+
+.recovery-password__input--confirm {
+    transform: translateY(40px);
+}

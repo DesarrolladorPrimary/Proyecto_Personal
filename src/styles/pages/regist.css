@@ -1,0 +1,91 @@
+/* Estilos específicos de la página de registro */
+
+:root{
+    --background-color-body:  #E1DED5;
+    --spacing-large: 50px;
+    --spacing-medium: 40px;
+    --spacing-small: 20px;
+    --input-height: 46px;
+    --input-width: 300px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header__title{
+    font-family: var(--font-family-main);
+    font-optical-sizing: auto;
+    font-weight: var(--font-weight-regular);
+    font-style: normal;
+    margin-top: var(--spacing-large);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-small);
+    margin: var(--spacing-medium);
+}
+
+.form__input {
+    height: var(--input-height);
+    width: 100%;
+    padding-left: 45px;
+    border: none;
+    border-radius: 5px;
+}
+
+.form__input-container {
+    position: relative;
+    width: var(--input-width);
+}
+
+.form__input-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: auto;
+    opacity: 0.5;
+}
+
+.form_contrasena {
+    transform: translateX(-70px);
+    font-size: 13px;
+}
+
+.recover-link {
+    text-decoration: none;
+    color: #1379CD;
+}
+
+.button {
+    border-radius: 9px;
+    transform: translateY(100px);
+}
+
+.button-link {
+     text-decoration: none;
+     color: var(--color-text);
+}
+
+.main {
+    flex: 1;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+}
+
+.footer__text {
+    font-family: var(--font-family-main);
+}

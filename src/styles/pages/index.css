@@ -1,0 +1,33 @@
+/* Estilos específicos de la página de inicio */
+
+:root{
+    --width-main: 100%;
+    --height-header: calc(100% - 70%);
+}
+
+body{
+    background-image: url('../../../assets/image/upscalemedia-transformed.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+.header__logo {
+    width: 100px;
+}
+
+.main__title {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.main__login {
+    margin-top: 154px;
+}
+
+.main__regist {
+    margin-top: 55px;
+}

@@ -1,0 +1,106 @@
+/* Estilos específicos de la página de recuperación de contraseña (ingresar correo) */
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --color-background-botones: #D9D9D9;
+    --text-width: 9px;
+    --decoration-text: none;
+    --color-text : black;
+    --input-height: 33px;
+    --input-width: 223px;
+    --color-text-light: white;
+    --color-background-container: #655D5D;
+    --font-size-title: 16px;
+}
+
+body {
+    background-image: url('../../../assets/image/upscalemedia-transformed.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+.recovery-password {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+}
+
+.recovery-password__container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    border-radius: 12px;
+    background-color: var(--color-background-container);
+    width: 286px;
+    height: 311px;
+    transform: translateY(-150px);
+}
+
+.recovery-password__title{
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: 200;
+    color: var(--color-text-light);
+    font-size: var(--font-size-title);
+}
+
+.recovery-password__description{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: "Inter", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    color: var(--color-text-light);
+    text-align: center;
+}
+
+.recovery-password__form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.recovery-password__input {
+    height: var(--input-height);
+    width: var(--input-width);
+    border: none;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.recovery-password__button {
+    text-decoration: var(--decoration-text);
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    border: 0px solid black;
+    border-radius: 9px;
+    background-color: var(--color-background-botones);
+    font-size: var(--text-width);
+    padding: 7px;
+    width: 89px;
+    height: 24px;
+}
+
+.recovery-password__link{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    color: var(--color-text);
+}
