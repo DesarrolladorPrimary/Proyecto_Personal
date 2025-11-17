@@ -146,6 +146,174 @@ body {
 }
 
 
+
+.poly-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    font-family: var(--font-family-main);
+    z-index: 10;
+}
+
+.poly-modal:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.poly-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.poly-modal__dialog {
+    position: relative;
+    width: 320px;
+    padding: 30px 28px 24px;
+    background-color: #5d4c4c;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+}
+
+.poly-modal__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    text-decoration: none;
+}
+
+.poly-modal__close::before,
+.poly-modal__close::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 2px;
+    height: 18px;
+    background-color: var(--color-text-light);
+    left: 8px;
+}
+
+.poly-modal__close::before {
+    transform: rotate(45deg);
+}
+
+.poly-modal__close::after {
+    transform: rotate(-45deg);
+}
+
+.poly-modal__header {
+    text-align: center;
+}
+
+.poly-modal__title {
+    font-size: 18px;
+    color: var(--color-text-light);
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.poly-modal__separator {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 auto 20px;
+}
+
+.poly-modal__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.poly-modal__group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-light);
+    font-size: 14px;
+}
+
+.poly-modal__group--choices {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.poly-modal__icon {
+    font-size: 18px;
+}
+
+.poly-modal__label {
+    flex: 1;
+    font-weight: 400;
+}
+
+.poly-modal__chip {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.15);
+    color: var(--color-text-light);
+    border-radius: 8px;
+    padding: 4px 14px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.poly-modal__choices {
+    display: flex;
+    gap: 16px;
+    margin-left: 26px;
+}
+
+.poly-modal__choice {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--color-text-light);
+    font-size: 13px;
+}
+
+.poly-modal__choice-input {
+    accent-color: #ffffff;
+}
+
+.poly-modal__actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 6px;
+}
+
+.poly-modal__button {
+    flex: 1;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 0;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.poly-modal__button--primary {
+    background-color: #8a7f7f;
+    color: var(--color-text-light);
+}
+
+.poly-modal__button--reset {
+    background-color: #3a7c4d;
+    color: var(--color-text-light);
+}
+
+
 .poly-aside {
     visibility: hidden;
     background-color: var(--color-background-container);

@@ -36,7 +36,7 @@
     /* Distancia desde la parte superior */
     --aside-border-radius: 8px;
     /* Radio de los bordes del menú lateral */
-    --aside-panel-width: 249px;
+    --aside-panel-width: 230px;
     /* Ancho de los paneles secundarios */
     --aside-panel-height: 56px;
     /* Alto de los paneles secundarios */
@@ -90,7 +90,8 @@ body {
     grid-template-columns: repeat(3, 1fr);
     /* Crea 3 columnas de fracción igual */
     grid-template-rows: repeat(3, 200px);
-    /* Crea 3 filas de 200px de alto cada una */
+    
+    min-height: 100vh;/* Crea 3 filas de 200px de alto cada una */
     position: relative;
     /* Establece un contexto de posicionamiento para elementos hijos absolutos */
 }
@@ -145,6 +146,7 @@ body {
     /* Establece el ancho del elemento */
     height: 17px;
     /* Establece la altura del elemento */
+    padding: 2px;
 }
 
 /* Sublínea dentro de la navegación (el botón clickeable) */

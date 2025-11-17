@@ -48,6 +48,63 @@
         </form>
     </main>
 
+
+    <section class="poly-modal" id="modalAI" aria-hidden="true">
+        <div class="poly-modal__overlay" aria-hidden="true"></div>
+        <div class="poly-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="poly-modal-title">
+            <a href="#" class="poly-modal__close" aria-label="Cerrar"></a>
+            <header class="poly-modal__header">
+                <h1 class="poly-modal__title" id="poly-modal-title">Par&aacute;metros de Poly-AI</h1>
+                <div class="poly-modal__separator"></div>
+            </header>
+
+            <form class="poly-modal__form">
+                <div class="poly-modal__group poly-modal__group--single">
+                    <span class="poly-modal__icon" aria-hidden="true">&#9997;&#65039;</span>
+                    <span class="poly-modal__label">Estilo de escritura:</span>
+                    <button class="poly-modal__chip" type="button">Narrativo</button>
+                </div>
+
+                <div class="poly-modal__group poly-modal__group--choices">
+                    <span class="poly-modal__icon" aria-hidden="true">&#10024;</span>
+                    <span class="poly-modal__label">Nivel de creatividad:</span>
+                    <div class="poly-modal__choices">
+                        <label class="poly-modal__choice">
+                            <input class="poly-modal__choice-input" type="checkbox" name="creativity-low" value="low">
+                            <span class="poly-modal__choice-text">Bajo</span>
+                        </label>
+                        <label class="poly-modal__choice">
+                            <input class="poly-modal__choice-input" type="checkbox" name="creativity-medium"
+                                value="medium" checked>
+                            <span class="poly-modal__choice-text">Medio</span>
+                        </label>
+                        <label class="poly-modal__choice">
+                            <input class="poly-modal__choice-input" type="checkbox" name="creativity-high" value="high">
+                            <span class="poly-modal__choice-text">Alto</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="poly-modal__group poly-modal__group--single">
+                    <span class="poly-modal__icon" aria-hidden="true">&#128337;</span>
+                    <span class="poly-modal__label">Longitud de respuesta:</span>
+                    <button class="poly-modal__chip" type="button">Corta</button>
+                </div>
+
+                <div class="poly-modal__group poly-modal__group--single">
+                    <span class="poly-modal__icon" aria-hidden="true">&#128172;</span>
+                    <span class="poly-modal__label">Tono emocional:</span>
+                    <button class="poly-modal__chip" type="button">Neutral</button>
+                </div>
+
+                <div class="poly-modal__actions">
+                    <button class="poly-modal__button poly-modal__button--primary" type="submit">Guardar</button>
+                    <button class="poly-modal__button poly-modal__button--reset" type="button">Restablecer</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
     <aside class="poly-aside" id="sidebar">
         <div class="poly-aside__header">
             <p class="poly-aside__title">Chats</p>
