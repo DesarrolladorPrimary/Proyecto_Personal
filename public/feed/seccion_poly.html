@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seccion Poly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../../src/styles/pages/feed/seccion_poly.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__nav">
+            <div class="header__nav-line">
+                <a href="#sidebar" class="header__nav-link header__nav-link--action"></a>
+            </div>
+        </div>
+
+        <img class="header__imageBook" src="../../assets/icons/book.svg" alt="libro de exportacion">
+        <a href="#user" class="header__logo">
+            <img src="../../assets/icons/image.png" class="header__logo" alt="logo_user">
+        </a>
+    </header>
+
+    <main class="poly">
+        <div class="poly__container">
+            <img class="poly__img" src="../../assets/image/brain_pencil.png" alt="Ilustracion de un cerebro y un lapiz">
+            <p class="poly__text">Que hare hoy?</p>
+        </div>
+
+        <form class="poly-input">
+            <button class="poly-input__action poly-input__action--attach" type="button">
+                <img class="poly-input__icon poly-input__icon--file" src="../../assets/icons/paperclip.svg"
+                    alt="Adjuntar archivo">
+            </button>
+            <input class="poly-input__field" type="text" placeholder="Escribe tu mensaje.">
+            <button class="poly-input__action poly-input__action--intruction" type="button">
+                <a href="#modalAI" class="poly-input__action-link">
+                    <img class="poly-input__icon poly-input__icon--idea" src="../../assets/icons/light-bulb-brain.png"
+                        alt="Sugerencias">
+                </a>
+            </button>
+        </form>
+    </main>
+
+    <aside class="poly-aside" id="sidebar">
+        <div class="poly-aside__header">
+            <p class="poly-aside__title">Chats</p>
+            <button class="poly-aside__button">Nuevo Chat</button>
+        </div>
+
+        <div class="poly-aside__separator"></div>
+
+        <div class="poly-aside__chat">
+            <p class="poly-aside__chat-title">Libro</p>
+            <a class="poly-aside__chat-opciones poly-aside__chat-opciones--button">⋮</a>
+
+            <div class="poly-aside__options">
+                <button class="poly-aside__option poly-aside__option--rename" type="button">
+                    <span class="poly-aside__option-label">Renombrar</span>
+                    <img src="../../assets/icons/reescribir.png" alt="" class="poly-aside__option-icon">
+                </button>
+
+                <button class="poly-aside__option poly-aside__option--delete" type="button">
+                    <span class="poly-aside__option-label">Eliminar</span>
+                    <img src="../../assets/icons/delete.png" alt="" class="poly-aside__option-icon">
+                </button>
+            </div>
+
+
+        </div>
+
+        <a href="#" class="poly-aside__close"></a>
+    </aside>
+
+    <footer class="footer">
+        <a class="footer__line" href="feed-main.html"></a>
+    </footer>
+
+</body>
+
+</html>
