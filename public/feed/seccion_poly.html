@@ -21,7 +21,9 @@
             </div>
         </div>
 
-        <img class="header__imageBook" src="../../assets/icons/book.svg" alt="libro de exportacion">
+        <a href="#canvasAI" class="header__imageBook-link">
+            <img class="header__imageBook" src="../../assets/icons/book.svg" alt="libro de exportacion">
+        </a>
         <a href="#user" class="header__logo">
             <img src="../../assets/icons/image.png" class="header__logo" alt="logo_user">
         </a>
@@ -110,6 +112,35 @@
         </div>
     </section>
 
+
+    <section class="canvas" id="canvasAI" aria-hidden="true">
+    <div class="canvas__overlay" aria-hidden="true"></div>
+    <article class="canvas__panel" role="dialog" aria-modal="true" aria-labelledby="canvas-title">
+        <a href="#" class="canvas__close" aria-label="Cerrar canvas"></a>
+        <header class="canvas__header">
+            <p class="canvas__subtitle">Sección CanvasAI</p>
+            <div class="canvas__title-row">
+                <h2 class="canvas__title" id="canvas-title" contenteditable="true">Título</h2>
+                <span class="canvas__counter">0 palabras</span>
+            </div>
+            <div class="canvas__divider"></div>
+        </header>
+        <section class="canvas__body" contenteditable="true">
+            <p>Resultado de la IA</p>
+        </section>
+        <footer class="canvas__footer">
+            <button class="canvas__action" type="button" aria-label="Guardar canvas">
+                <img src="../../assets/icons/addLibro.png" class="canvas__action-icon" alt="">
+            </button>
+            <a class="canvas__action-convert" href="#convertBook">
+                <span class="canvas__action-label">📘 Convertir a libro</span>
+            </a>
+            <div class="canvas__footer-line"></div>
+        </footer>
+    </article>
+</section>
+
+
     <aside class="poly-aside" id="sidebar">
         <div class="poly-aside__header">
             <p class="poly-aside__title">Chats</p>
@@ -144,21 +175,7 @@
         <a class="footer__line" href="feed-main.html"></a>
     </footer>
 
-    <script>
-        const polyInputField = document.querySelector('.poly-input__field');
-        if (polyInputField) {
-            const MAX_HEIGHT = 120;
-            const autoResize = (element) => {
-                element.style.height = 'auto';
-                const nextHeight = Math.min(element.scrollHeight, MAX_HEIGHT);
-                element.style.height = `${nextHeight}px`;
-                element.style.overflowY = element.scrollHeight > MAX_HEIGHT ? 'auto' : 'hidden';
-            };
-
-            polyInputField.addEventListener('input', () => autoResize(polyInputField));
-            autoResize(polyInputField);
-        }
-    </script>
+    
 </body>
 
 </html>
