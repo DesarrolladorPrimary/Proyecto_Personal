@@ -1,23 +1,5 @@
 /* Estilos específicos de la página de recuperación de contraseña (ingresar correo) */
 
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-:root{
-    --color-background-botones: #D9D9D9;
-    --text-width: 9px;
-    --decoration-text: none;
-    --color-text : black;
-    --input-height: 33px;
-    --input-width: 223px;
-    --color-text-light: white;
-    --color-background-container: #655D5D;
-    --font-size-title: 16px;
-}
-
 body {
     background-image: url('../../../../assets/image/upscalemedia-transformed.jpeg');
     background-size: cover;
@@ -51,7 +33,7 @@ body {
     font-weight: 500;
     font-style: 200;
     color: var(--color-text-light);
-    font-size: var(--font-size-title);
+    font-size: var(--recovery-font-size-title);
 }
 
 .recovery-password__description{
@@ -74,8 +56,8 @@ body {
 }
 
 .recovery-password__input {
-    height: var(--input-height);
-    width: var(--input-width);
+    height: var(--recovery-input-height);
+    width: var(--recovery-input-width);
     border: none;
     border-radius: 5px;
     padding-left: 10px;
@@ -89,8 +71,8 @@ body {
     font-style: normal;
     border: 0px solid black;
     border-radius: 9px;
-    background-color: var(--color-background-botones);
-    font-size: var(--text-width);
+    background-color: var(--recovery-button-bg);
+    font-size: var(--recovery-text-size);
     padding: 7px;
     width: 89px;
     height: 24px;

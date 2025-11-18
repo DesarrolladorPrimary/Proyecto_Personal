@@ -1,94 +1,10 @@
-/* Estilos generales para la página de feed */
-
-* {
-    margin: 0;
-    /* Elimina el margen por defecto de todos los elementos */
-    padding: 0;
-    /* Elimina el padding por defecto de todos los elementos */
-    box-sizing: border-box;
-    /* Hace que el padding y el borde no afecten el ancho y alto total de los elementos */
-}
-
-/* Variables CSS globales (Custom Properties) */
-:root {
-    /* Propiedades para el header y main(feed) */
-    --background-color-body-feed: #3C3636;
-    /* Define el color de fondo para el body de la página de feed */
-    --color-background-container: #655D5D;
-    /* Define el color de fondo para contenedores */
-    --color-text: black;
-    /* Define el color de texto principal */
-    --background-color-nav-subline: #615151;
-    /* Define el color de fondo para la sublínea de navegación */
-    --font-family-main: "Inter", sans-serif;
-    /* Define la fuente principal */
-    --font-weight-light: 300;
-    /* Define el grosor de fuente ligero */
-    --color-text-light: white;
-    /* Define el color de texto claro */
-
-    /* Propiedades para el Aside (menú lateral) */
-    --aside-width: 107px;
-    /* Ancho del menú lateral */
-    --aside-height: 439px;
-    /* Altura del menú lateral */
-    --aside-position-top: 150px;
-    /* Distancia desde la parte superior */
-    --aside-border-radius: 8px;
-    /* Radio de los bordes del menú lateral */
-    --aside-panel-width: 230px;
-    /* Ancho de los paneles secundarios */
-    --aside-panel-height: 56px;
-    /* Alto de los paneles secundarios */
-    --aside-panel-left: 80px;
-    /* Posición en X compartida por los paneles secundarios */
-
-    /* Propiedades para el menu del usuario (menu-user) */
-    --color-text-buton: #D74747;
-    /* Define el color del texto para los botones */
-    --menu-row-height: 30px;
-    /* Alto para filas e items del menú */
-
-    /* --- Colores --- */
-    --color-separator: #ccc;
-    /* Para líneas y bordes divisorios */
-
-    /* --- Tipografía --- */
-    --font-size-body: 13px;
-    /* Tamaño de fuente principal para texto */
-    --font-weight-thin: 100;
-    /* Grosor de fuente extra ligero */
-
-    /* --- Bordes --- */
-    --border-radius-small: 3px;
-    /* Para elementos pequeños */
-    --border-radius-medium: 7px;
-    /* Para contenedores medianos como el menú de usuario */
-    --border-radius-pill: 36px;
-    /* Para botones con forma de píldora */
-
-    /* --- Espaciado --- */
-    --spacing-xsmall: 5px;
-    --spacing-small: 10px;
-    --spacing-medium: 15px;
-    --spacing-large: 30px;
-    --spacing-xlarge: 40px;
-    --size-icon-tiny: 8px;
-    /* Tamaño para iconos pequeños y toggles */
-
-    /* --- Z-index (Capas) --- */
-    --z-index: 1;
-    --line-width-thin: 1px;
-    /* Grosor para líneas o bordes delgados */
-}
-
 body {
     display: grid;
     /* Habilita CSS Grid para el layout principal */
     background-color: var(--background-color-body-feed);
-    /* Establece el color de fondo del cuerpo de la página */
+    /* Establece el color de fondo del cuerpo de la pÃ¡gina */
     grid-template-columns: repeat(3, 1fr);
-    /* Crea 3 columnas de fracción igual */
+    /* Crea 3 columnas de fracciÃ³n igual */
     grid-template-rows: repeat(3, 200px);
     
     min-height: 100vh;/* Crea 3 filas de 200px de alto cada una */
@@ -103,16 +19,16 @@ body {
     justify-content: space-between;
     /* Distribuye el espacio entre los elementos hijos */
     margin: var(--spacing-large);
-    /* Añade un margen general */
+    /* AÃ±ade un margen general */
     align-items: center;
     /* Centra verticalmente los elementos hijos */
     grid-column: 1/4;
     /* Hace que la cabecera ocupe desde la columna 1 hasta la 4 */
     align-self: flex-start;
-    /* Alinea la cabecera al inicio de su área de grid */
+    /* Alinea la cabecera al inicio de su Ã¡rea de grid */
 }
 
-/* Estilos para la navegación de la cabecera */
+/* Estilos para la navegaciÃ³n de la cabecera */
 .header__nav {
     display: flex;
     /* Usa flexbox para alinear los elementos hijos */
@@ -130,14 +46,14 @@ body {
     /* Establece el color de fondo del elemento */
 }
 
-/* Línea dentro de la navegación */
+/* LÃ­nea dentro de la navegaciÃ³n */
 .header__nav-line {
     display: flex;
     /* Usa flexbox para alinear los elementos hijos */
     justify-content: end;
     /* Alinea los elementos hijos al final del contenedor */
     border: var(--color-text) var(--line-width-thin) solid;
-    /* Añade un borde con el color de texto principal */
+    /* AÃ±ade un borde con el color de texto principal */
     border-radius: var(--border-radius-small);
     /* Redondea las esquinas del elemento */
     background-color: transparent;
@@ -149,7 +65,7 @@ body {
     padding: 2px;
 }
 
-/* Sublínea dentro de la navegación (el botón clickeable) */
+/* SublÃ­nea dentro de la navegaciÃ³n (el botÃ³n clickeable) */
 .header__nav-link {
     width: var(--size-icon-tiny);
     /* Establece el ancho del elemento */
@@ -168,14 +84,14 @@ body {
 }
 
 
-/* Contenedor principal del menú lateral */
+/* Contenedor principal del menÃº lateral */
 .aside {
     display: none;
-    /* Por defecto, el menú está oculto */
+    /* Por defecto, el menÃº estÃ¡ oculto */
     position: absolute;
     /* Se saca del flujo normal para superponerse */
     grid-template-rows: repeat(4, 1fr);
-    /* Crea 4 filas de igual tamaño */
+    /* Crea 4 filas de igual tamaÃ±o */
     background-color: var(--color-background-container);
     /* Color de fondo reutilizado */
     width: var(--aside-width);
@@ -183,12 +99,12 @@ body {
     height: var(--aside-height);
     /* Altura definida por una variable */
     top: var(--aside-position-top);
-    /* Posición desde arriba definida por una variable */
+    /* PosiciÃ³n desde arriba definida por una variable */
     border-radius: var(--aside-border-radius);
     /* Bordes redondeados definidos por una variable */
 }
 
-/* Estilo para el botón de cerrar del menú lateral (temporal) */
+/* Estilo para el botÃ³n de cerrar del menÃº lateral (temporal) */
 .aside__close {
     position: absolute;
     /* Lo posiciona de forma absoluta dentro del aside */
@@ -197,11 +113,11 @@ body {
     color: var(--color-text);
     /* Usa el color de texto principal */
     z-index: var(--z-index);
-    /* Se asegura que esté visible sobre otros elementos */
+    /* Se asegura que estÃ© visible sobre otros elementos */
 }
 
 
-/* Alineación para todos los iconos dentro de las celdas del grid del aside */
+/* AlineaciÃ³n para todos los iconos dentro de las celdas del grid del aside */
 .aside__link {
     justify-self: center;
     /* Centra el icono horizontalmente en su celda */
@@ -209,7 +125,7 @@ body {
     /* Centra el icono verticalmente en su celda */
 }
 
-/* Modificadores de tamaño para cada icono específico del menú lateral */
+/* Modificadores de tamaÃ±o para cada icono especÃ­fico del menÃº lateral */
 .aside__icon--mind {
     width: 56px;
     /* Ancho para el icono 'mind' */
@@ -234,7 +150,7 @@ body {
 
 
 
-/* Muestra el menú lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
+/* Muestra el menÃº lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
 .aside:target {
     display: grid;
     /* Cambia el display a grid para que sea visible */
@@ -262,26 +178,26 @@ body {
     color: var(--color-text-light);
 }
 
-/* Posición del panel asociado a Poly/AI */
+/* PosiciÃ³n del panel asociado a Poly/AI */
 .aside__panel--poly {
     top: 25px;
     left: var(--aside-panel-left);
     
 }
 
-/* Posición del panel de la sección creativa */
+/* PosiciÃ³n del panel de la secciÃ³n creativa */
 .aside__panel--creative {
     top: 134px;
     left: var(--aside-panel-left);
 }
 
-/* Posición del panel de biblioteca */
+/* PosiciÃ³n del panel de biblioteca */
 .aside__panel--library {
     top:244px;
     left: var(--aside-panel-left);
 }
 
-/* Posición del panel de configuraciones */
+/* PosiciÃ³n del panel de configuraciones */
 .aside__panel--settings {
     top: 350px;
     left: var(--aside-panel-left);
@@ -293,7 +209,7 @@ body {
 
 
 
-/* --- Estilos para la sección de feed --- */
+/* --- Estilos para la secciÃ³n de feed --- */
 .feed {
     display: grid;
     /* Habilita grid para el layout del feed */
@@ -302,7 +218,7 @@ body {
     grid-row: 2/3;
     /* El feed ocupa la segunda fila del grid principal */
     align-self: self-start;
-    /* Se alinea al inicio de su área de grid */
+    /* Se alinea al inicio de su Ã¡rea de grid */
 }
 
 /* Contenido del feed */
@@ -320,7 +236,7 @@ body {
     font-family: var(--font-family-main);
     /* Establece la fuente del texto */
     font-optical-sizing: auto;
-    /* Permite que el navegador ajuste el tamaño óptico de la fuente */
+    /* Permite que el navegador ajuste el tamaÃ±o Ã³ptico de la fuente */
     font-weight: var(--font-weight-light);
     /* Establece el grosor de la fuente */
     font-style: normal;
@@ -328,7 +244,7 @@ body {
     color: var(--color-text-light);
     /* Establece el color del texto */
     font-size: var(--font-size-body);
-    /* Establece el tamaño de la fuente */
+    /* Establece el tamaÃ±o de la fuente */
 }
 
 /* Imagen del feed */
@@ -338,9 +254,9 @@ body {
 }
 
 
-/* --- Estilos para el menú de usuario --- */
+/* --- Estilos para el menÃº de usuario --- */
 
-/* Botón para cerrar el menú de usuario */
+/* BotÃ³n para cerrar el menÃº de usuario */
 .menu-user__close {
     position: absolute;
     /* Posicionamiento absoluto respecto al contenedor 'menu-user' */
@@ -349,7 +265,7 @@ body {
     color: var(--color-text);
     /* Color del icono de cierre */
     z-index: var(--z-index);
-    /* Se asegura que esté por encima de otros elementos del menú */
+    /* Se asegura que estÃ© por encima de otros elementos del menÃº */
     margin: var(--spacing-medium);
     /* Espaciado interior */
     right: 0;
@@ -357,18 +273,21 @@ body {
 }
 
 
-/* Contenedor principal del menú de usuario */
+/* Contenedor principal del menÃº de usuario */
 .menu-user {
     visibility: hidden;
-    /* Por defecto, el menú no es visible */
+    /* Por defecto, el menÃº no es visible */
     display: grid;
     /* Usa CSS Grid para su layout interno */
     position: absolute;
-    /* Se superpone al contenido normal de la página */
+    /* Se superpone al contenido normal de la pÃ¡gina */
     z-index: var(--z-index);
     /* Se apila por encima del contenido base */
-    align-self: end;
-    /* Se alinea al final de su contenedor grid padre */
+   
+    grid-column: 2/2;
+    
+    grid-row: 2/2;
+
     justify-self: center;
     /* Se centra horizontalmente en su contenedor grid padre */
     border-radius: var(--border-radius-medium);
@@ -376,16 +295,16 @@ body {
     background-color: var(--color-background-container);
     /* Color de fondo */
     width: 285px;
-    /* Ancho del menú */
+    /* Ancho del menÃº */
     height: 450px;
-    /* Altura del menú */
+    /* Altura del menÃº */
 
-    /* Define las filas del grid interno del menú */
+    /* Define las filas del grid interno del menÃº */
     grid-template-rows:
         100px
-        /* Fila 1 (Para el ícono de avatar) */
+        /* Fila 1 (Para el Ã­cono de avatar) */
         30px
-        /* Fila 2 (Para la línea separadora) */
+        /* Fila 2 (Para la lÃ­nea separadora) */
         40px
         /* Fila 3 (Usuario) */
         40px
@@ -395,11 +314,11 @@ body {
         40px
         /* Fila 6 (Modelos) */
         170px;
-    /* Fila 7 (Botón de cierre de sesión) */
+    /* Fila 7 (BotÃ³n de cierre de sesiÃ³n) */
 }
 
 
-/* Avatar dentro del menú de usuario */
+/* Avatar dentro del menÃº de usuario */
 .menu-user__avatar {
     margin-top: var(--spacing-xsmall);
     /*
@@ -411,21 +330,21 @@ body {
     /* Centrado vertical en su fila */
 }
 
-/* Línea separadora horizontal */
+/* LÃ­nea separadora horizontal */
 .menu-user__separador {
     width: 247px;
-    /* Ancho de la línea */
+    /* Ancho de la lÃ­nea */
     height: var(--line-width-thin);
-    /* Grosor de la línea */
+    /* Grosor de la lÃ­nea */
     background-color: var(--color-separator);
-    /* Color de la línea */
+    /* Color de la lÃ­nea */
     justify-self: center;
     /* Centrado horizontal */
     align-self: center;
     /* Centrado vertical */
 }
 
-/* Estilo de texto genérico para los elementos del menú */
+/* Estilo de texto genÃ©rico para los elementos del menÃº */
 .menu-user__text {
     justify-self: start;
     /* Alineado a la izquierda de su celda */
@@ -436,7 +355,7 @@ body {
     font-family: var(--font-family-main);
     /* Fuente principal */
     font-optical-sizing: auto;
-    /* Ajuste óptico de la fuente */
+    /* Ajuste Ã³ptico de la fuente */
     font-weight: var(--font-weight-light);
     /* Grosor de fuente ligero */
     font-style: normal;
@@ -444,13 +363,13 @@ body {
     color: var(--color-text-light);
     /* Color de texto claro (blanco) */
     font-size: var(--font-size-body);
-    /* Tamaño de la fuente */
+    /* TamaÃ±o de la fuente */
 }
 
-/* Muestra el menú de usuario cuando es el objetivo de la URL */
+/* Muestra el menÃº de usuario cuando es el objetivo de la URL */
 .menu-user--hidden:target {
     visibility: visible;
-    /* Hace que el menú sea visible */
+    /* Hace que el menÃº sea visible */
 }
 
 /* Contenedor para agrupar un icono y un texto */
@@ -467,22 +386,22 @@ body {
     /* Altura del grupo */
 }
 
-/* Título dentro de un grupo (ej. "Modelos:") */
+/* TÃ­tulo dentro de un grupo (ej. "Modelos:") */
 .menu-user__group-title {
     color: var(--color-text-light);
     /* Color del texto */
 }
 
-/* Estilo para el botón de "Modelo" */
+/* Estilo para el botÃ³n de "Modelo" */
 .menu-user__Model {
     display: flex;
     /* Usa flexbox */
     gap: var(--spacing-xsmall);
     /* Espacio entre icono y texto del modelo */
     width: 110px;
-    /* Ancho del botón */
+    /* Ancho del botÃ³n */
     height: var(--menu-row-height);
-    /* Altura del botón */
+    /* Altura del botÃ³n */
     background-color: var(--background-color-nav-subline);
     /* Color de fondo */
     justify-content: center;
@@ -496,10 +415,10 @@ body {
     font-weight: var(--font-weight-thin);
     /* Grosor de la fuente */
     transform: translateY(-6px);
-    /* Mueve el botón 6px hacia arriba */
+    /* Mueve el botÃ³n 6px hacia arriba */
 }
 
-/* Icono de configuración (engranaje) dentro del botón de modelo */
+/* Icono de configuraciÃ³n (engranaje) dentro del botÃ³n de modelo */
 .menu-user__setting-icon {
     width: var(--size-icon-tiny);
     /* Ancho del icono */
@@ -508,12 +427,12 @@ body {
 }
 
 
-/* Botón de cerrar sesión */
+/* BotÃ³n de cerrar sesiÃ³n */
 .menu-user__button {
     width: 178px;
-    /* Ancho del botón */
+    /* Ancho del botÃ³n */
     height: 44px;
-    /* Altura del botón */
+    /* Altura del botÃ³n */
     border-radius: var(--border-radius-pill);
     /* Bordes muy redondeados para hacerlo ovalado */
     justify-self: center;
@@ -522,7 +441,7 @@ body {
     /* Centrado vertical en su celda */
 }
 
-/* Enlace dentro del botón de cerrar sesión */
+/* Enlace dentro del botÃ³n de cerrar sesiÃ³n */
 .menu-user__link {
     text-decoration: none;
     /* Quita el subrayado del enlace */

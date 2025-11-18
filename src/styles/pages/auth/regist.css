@@ -1,17 +1,8 @@
 /* Estilos específicos de la página de registro */
 
-:root{
-    --background-color-body:  #E1DED5;
-    --spacing-large: 50px;
-    --spacing-medium: 40px;
-    --spacing-small: 20px;
-    --input-height: 46px;
-    --input-width: 300px;
-}
-
 body {
     font-family: Arial, sans-serif;
-    background-color: var(--background-color-body);
+    background-color: var(--auth-register-background);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -22,7 +13,7 @@ body {
     font-optical-sizing: auto;
     font-weight: var(--font-weight-regular);
     font-style: normal;
-    margin-top: var(--spacing-large);
+    margin-top: var(--auth-spacing-large);
 }
 
 .form {
@@ -30,12 +21,12 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-small);
-    margin: var(--spacing-medium);
+    gap: var(--auth-spacing-small);
+    margin: var(--auth-spacing-medium);
 }
 
 .form__input {
-    height: var(--input-height);
+    height: var(--auth-input-height);
     width: 100%;
     padding-left: 45px;
     border: none;
@@ -44,7 +35,7 @@ body {
 
 .form__input-container {
     position: relative;
-    width: var(--input-width);
+    width: var(--auth-input-width);
 }
 
 .form__input-icon {

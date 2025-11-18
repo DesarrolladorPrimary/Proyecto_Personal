@@ -1,0 +1,97 @@
+/* Estilos globales y variables compartidas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --background-color-body-feed: #3C3636;
+    --color-background-container: #655D5D;
+    --color-text: black;
+    --background-color-nav-subline: #615151;
+    --font-family-main: "Inter", sans-serif;
+    --font-weight-regular: 400;
+    --font-weight-light: 300;
+    --font-weight-thin: 100;
+    --color-text-light: white;
+    --aside-border-radius: 8px;
+    --border-radius-small: 3px;
+    --border-radius-medium: 7px;
+    --border-radius-pill: 36px;
+    --spacing-large: 30px;
+    --spacing-medium: 15px;
+    --spacing-small: 10px;
+    --spacing-xsmall: 5px;
+    --spacing-xlarge: 40px;
+    --line-width-thin: 1px;
+    --size-icon-tiny: 8px;
+    --font-size-body: 13px;
+    --color-text-buton: #D74747;
+    --color-background-botones: #FFBF00;
+    --text-width: 16px;
+    --decoration-text: none;
+    --z-index: 1;
+
+    /* Feed - aside metrics */
+    --aside-width: 107px;
+    --aside-height: 439px;
+    --aside-position-top: 150px;
+    --aside-panel-width: 230px;
+    --aside-panel-height: 56px;
+    --aside-panel-left: 80px;
+    --menu-row-height: 30px;
+    --color-separator: #ccc;
+
+    /* Home page layout */
+    --width-main: 100%;
+    --height-header: calc(100% - 70%);
+
+    /* Auth login/register */
+    --auth-login-background: #98A59B;
+    --auth-register-background: #E1DED5;
+    --auth-spacing-large: 50px;
+    --auth-spacing-medium: 40px;
+    --auth-spacing-small: 20px;
+    --auth-input-height: 46px;
+    --auth-input-width: 300px;
+
+    /* Recovery pages */
+    --recovery-button-bg: #D9D9D9;
+    --recovery-text-size: 9px;
+    --recovery-input-height: 33px;
+    --recovery-input-width: 223px;
+    --recovery-font-size-title: 16px;
+    --recovery-container-width: 306px;
+    --recovery-container-height: 470px;
+    --recovery-container-margin-top: 80px;
+    --recovery-container-radius: 12px;
+    --recovery-title-margin-top: 30px;
+    --recovery-description-gap: 10px;
+    --recovery-form-gap: 30px;
+    --recovery-input-radius: 5px;
+    --recovery-input-padding-left: 10px;
+    --recovery-button-radius: 36px;
+    --recovery-button-width: 178px;
+    --recovery-button-height: 44px;
+    --recovery-button-padding: 7px;
+}
+
+body {
+    min-height: 100vh;
+    font-family: var(--font-family-main);
+}
+
+.button {
+    text-decoration: var(--decoration-text);
+    color: var(--color-text);
+    font-family: var(--font-family-main);
+    font-optical-sizing: auto;
+    font-weight: var(--font-weight-light);
+    font-style: normal;
+    border: 0 solid black;
+    border-radius: 5px;
+    background-color: var(--color-background-botones);
+    font-size: var(--text-width);
+    padding: 7px;
+}

@@ -1,10 +1,5 @@
 /* Estilos específicos de la página de inicio */
 
-:root{
-    --width-main: 100%;
-    --height-header: calc(100% - 70%);
-}
-
 body{
     background-image: url('../../../../assets/image/upscalemedia-transformed.jpeg');
     background-size: cover;

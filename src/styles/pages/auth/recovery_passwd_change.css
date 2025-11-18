@@ -1,36 +1,5 @@
 /* Estilos específicos de la página de cambio de contraseña */
 
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-:root{
-    --color-background-botones: #D9D9D9;
-    --text-width: 9px;
-    --decoration-text: none;
-    --color-text : black;
-    --input-height: 33px;
-    --input-width: 223px;
-    --color-text-light: white;
-    --color-background-container: #655D5D;
-    --font-size-title: 16px;
-    --button-padding: 7px;
-    --container-width: 306px;
-    --container-height: 470px;
-    --container-margin-top: 80px;
-    --container-border-radius: 12px;
-    --title-margin-top: 30px;
-    --description-gap: 10px;
-    --form-group-gap: 30px;
-    --input-border-radius: 5px;
-    --input-padding-left: 10px;
-    --button-border-radius: 36px;
-    --button-width: 178px;
-    --button-height: 44px;
-}
-
 body {
     background-image: url('../../../../assets/image/upscalemedia-transformed.jpeg');
     background-size: cover;
@@ -50,11 +19,11 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 40px;
-    margin-top: var(--container-margin-top);
-    border-radius: var(--container-border-radius);
+    margin-top: var(--recovery-container-margin-top);
+    border-radius: var(--recovery-container-radius);
     background-color: var(--color-background-container);
-    width: var(--container-width);
-    height: var(--container-height);
+    width: var(--recovery-container-width);
+    height: var(--recovery-container-height);
     gap: 30px;
 }
 
@@ -62,16 +31,16 @@ body {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     font-style: 200;
-    margin-top: var(--title-margin-top);
+    margin-top: var(--recovery-title-margin-top);
     color: var(--color-text-light);
-    font-size: var(--font-size-title);
+    font-size: var(--recovery-font-size-title);
 }
 
 .recovery-password__description{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--description-gap);
+    gap: var(--recovery-description-gap);
     font-family: "Inter", sans-serif;
     font-weight: 300;
     font-style: normal;
@@ -83,15 +52,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--form-group-gap);
+    gap: var(--recovery-form-gap);
 }
 
 .recovery-password__input {
-    height: var(--input-height);
-    width: var(--input-width);
+    height: var(--recovery-input-height);
+    width: var(--recovery-input-width);
     border: none;
-    border-radius: var(--input-border-radius);
-    padding-left: var(--input-padding-left);
+    border-radius: var(--recovery-input-radius);
+    padding-left: var(--recovery-input-padding-left);
 }
 
 .recovery-password__button {
@@ -101,12 +70,12 @@ body {
     font-weight: 300;
     font-style: normal;
     border: 0px solid black;
-    border-radius: var(--button-border-radius);
-    background-color: var(--color-background-botones);
-    font-size: var(--text-width);
-    padding: var(--button-padding);
-    width: var(--button-width);
-    height: var(--button-height);
+    border-radius: var(--recovery-button-radius);
+    background-color: var(--recovery-button-bg);
+    font-size: var(--recovery-text-size);
+    padding: var(--recovery-button-padding);
+    width: var(--recovery-button-width);
+    height: var(--recovery-button-height);
     transform: translateY(43px);
 }
 
