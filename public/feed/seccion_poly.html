@@ -38,12 +38,17 @@
                 <img class="poly-input__icon poly-input__icon--file" src="../../assets/icons/paperclip.svg"
                     alt="Adjuntar archivo">
             </button>
-            <input class="poly-input__field" type="text" placeholder="Escribe tu mensaje.">
+            <textarea class="poly-input__field" rows="1" placeholder="Escribe tu mensaje..."></textarea>
             <button class="poly-input__action poly-input__action--intruction" type="button">
                 <a href="#modalAI" class="poly-input__action-link">
                     <img class="poly-input__icon poly-input__icon--idea" src="../../assets/icons/light-bulb-brain.png"
                         alt="Sugerencias">
                 </a>
+            </button>
+            <button class="poly-input__action poly-input__action--send" type="submit" aria-label="Enviar mensaje">
+                <svg class="poly-input__icon poly-input__icon--send" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z" />
+                </svg>
             </button>
         </form>
     </main>
@@ -139,6 +144,21 @@
         <a class="footer__line" href="feed-main.html"></a>
     </footer>
 
+    <script>
+        const polyInputField = document.querySelector('.poly-input__field');
+        if (polyInputField) {
+            const MAX_HEIGHT = 120;
+            const autoResize = (element) => {
+                element.style.height = 'auto';
+                const nextHeight = Math.min(element.scrollHeight, MAX_HEIGHT);
+                element.style.height = `${nextHeight}px`;
+                element.style.overflowY = element.scrollHeight > MAX_HEIGHT ? 'auto' : 'hidden';
+            };
+
+            polyInputField.addEventListener('input', () => autoResize(polyInputField));
+            autoResize(polyInputField);
+        }
+    </script>
 </body>
 
 </html>

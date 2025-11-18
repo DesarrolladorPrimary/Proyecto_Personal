@@ -120,10 +120,12 @@ body {
 
 .poly-input {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    width: 318px;
-    height: 37px;
+    gap: 10px;
+    width: 100%;
+    max-width: 360px;
+    padding: 8px 14px;
     border-radius: 16px;
     background-color: var(--color-background-container);
     margin-top: auto;
@@ -131,6 +133,15 @@ body {
 }
 
 .poly-input__field {
+    flex: 1;
+    min-height: 26px;
+    max-height: 120px;
+    resize: none;
+    overflow: hidden;
+    padding: 6px 0;
+    color: var(--color-text-light);
+    font-family: var(--font-family-main);
+    font-size: var(--font-size-body);
     background-color: transparent;
     border: none;
 }
@@ -139,10 +150,36 @@ body {
     background-color: transparent;
     border: none;
     width: 20px;
+    cursor: pointer;
 }
 
 .poly-input__icon {
     width: 20px;
+}
+
+
+.poly-input__field:focus {
+    outline: none;
+}
+
+.poly-input__action--send {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.poly-input__action--send:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.poly-input__icon--send {
+    width: 15px;
+    fill: var(--color-text-light);
 }
 
 
@@ -480,6 +517,7 @@ body {
 
 @media (min-width: 1024px) {
     body {
+        grid-template-columns: 1.4fr 0.8fr 1.4fr;
         grid-template-rows: repeat(3, 200px);
     }
 
@@ -487,6 +525,19 @@ body {
         left: 450px;
     }
 
+
+    .poly {
+        grid-column: 1/ 4;
+        justify-self: center;
+        width: 100%;
+        max-width: 620px;
+    }
+
+
+
+    .poly-input {
+        max-width: 520px;
+    }
 
     .poly-aside__options {
         visibility: hidden;
@@ -499,6 +550,10 @@ body {
     .poly-aside__chat:focus-within .poly-aside__options {
         visibility: visible;
         opacity: 1;
+    }
+
+    .footer__line {
+        margin-bottom: 15px;
     }
 
 
