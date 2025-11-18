@@ -489,16 +489,16 @@ body {
 .canvas__action-convert {
     position: relative;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-radius: 12px;
-    text-decoration: none;
-    background-color: var(--background-color-nav-subline);
-    color: var(--color-text-light);
-    font-size: 14px;
     width: 234px;
     height: 44px;
-    bottom: 80px;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 12px;
+    background-color: var(--background-color-nav-subline);
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-size: 14px;
+    bottom: 69px;
     left: 15px;
 }
 
@@ -507,6 +507,177 @@ body {
     height: 2px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 2px;
+}
+
+.book-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    font-family: var(--font-family-main);
+    z-index: 12;
+}
+
+.book-modal:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.book-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.book-modal__panel {
+    position: relative;
+    width: min(360px, 90vw);
+    background-color: #4b4141;
+    border-radius: 18px;
+    padding: 28px;
+    color: var(--color-text-light);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.book-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 18px;
+    height: 18px;
+}
+
+.book-modal__close::before,
+.book-modal__close::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 2px;
+    height: 18px;
+    background-color: var(--color-text-light);
+    left: 8px;
+}
+
+.book-modal__close::before {
+    transform: rotate(45deg);
+}
+
+.book-modal__close::after {
+    transform: rotate(-45deg);
+}
+
+.book-modal__header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.book-modal__title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.book-modal__divider {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.book-modal__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.book-modal__label {
+    font-size: 14px;
+}
+
+.book-modal__input {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--color-text-light);
+    font-size: 14px;
+}
+
+.book-modal__input:focus {
+    outline: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.book-modal__submit {
+    border: none;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.25);
+    color: var(--color-text-light);
+    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.book-modal__submit-icon {
+    width: 16px;
+}
+
+.book-success {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    font-family: var(--font-family-main);
+    z-index: 20;
+}
+
+.book-success:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.book-success__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.book-success__panel {
+    position: relative;
+    background-color: #4b4141;
+    padding: 20px 24px;
+    border-radius: 16px;
+    color: var(--color-text-light);
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+}
+
+.book-success__message {
+    font-size: 15px;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.book-success__close {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-size: 13px;
 }
 
 .poly-aside {
@@ -735,7 +906,8 @@ body {
     }
 
 
-    .canvas__action:hover + .canvas__action-convert, .canvas__action-convert:hover {
+    .canvas__action:hover+.canvas__action-convert,
+    .canvas__action-convert:hover {
         visibility: visible;
     }
 

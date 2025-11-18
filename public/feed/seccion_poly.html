@@ -132,11 +132,39 @@
             <button class="canvas__action" type="button" aria-label="Guardar canvas">
                 <img src="../../assets/icons/addLibro.png" class="canvas__action-icon" alt="">
             </button>
-            <a class="canvas__action-convert" href="#convertBook">
+            <a class="canvas__action-convert" href="#bookModal">
                 <span class="canvas__action-label">📘 Convertir a libro</span>
             </a>
             <div class="canvas__footer-line"></div>
         </footer>
+    </article>
+</section>
+
+<section class="book-modal" id="bookModal" aria-hidden="true">
+    <div class="book-modal__overlay" aria-hidden="true"></div>
+    <article class="book-modal__panel" role="dialog" aria-modal="true" aria-labelledby="book-modal-title">
+        <a href="#canvasAI" class="book-modal__close" aria-label="Cerrar conversión a libro"></a>
+        <header class="book-modal__header">
+            <h2 class="book-modal__title" id="book-modal-title">📘 Convertir historia a libro</h2>
+            <div class="book-modal__divider"></div>
+        </header>
+        <form class="book-modal__form">
+            <label class="book-modal__label" for="book-title">Título del libro:</label>
+            <input class="book-modal__input" id="book-title" type="text" value="Mi historia con Poly-AI">
+            <a class="book-modal__submit" href="#bookSuccess">
+                <img src="../../assets/icons/addCanvas.png" alt="" class="book-modal__submit-icon">
+                🔄 Generar documento
+            </a>
+        </form>
+    </article>
+</section>
+
+<section class="book-success" id="bookSuccess" aria-hidden="true">
+    <div class="book-success__overlay" aria-hidden="true"></div>
+    <article class="book-success__panel" role="dialog" aria-modal="true" aria-labelledby="book-success-message">
+        <p class="book-success__message" id="book-success-message">✅ Libro generado con éxito.<br>Guardado en tu
+            Biblioteca.</p>
+        <a href="#canvasAI" class="book-success__close" aria-label="Cerrar mensaje de éxito">Entendido</a>
     </article>
 </section>
 
