@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../src/styles/components/base.css">
+    <link rel="stylesheet" href="../../src/styles/pages/feed/canvas_creative.css">
+    <title>Canvas Creative</title>
+</head>
+<body>
+    <header class="canvas-header">
+        <div class="canvas-header__nav">
+            <div class="canvas-header__nav-line">
+                <a href="#sidebar" class="canvas-header__nav-link canvas-header__nav-link--action"></a>
+            </div>
+        </div>
+        
+        <a href="#user" class="canvas-header__logo">
+            <img src="../../assets/icons/image.png" alt="Perfil de usuario">
+        </a>
+    </header>
+
+
+
+    <main class="canvas-layout">
+      <section class="canvas-main">
+        <header class="canvas-main__header">
+            <h1 class="canvas-main__title" contenteditable="true">Título</h1>
+            <span class="canvas-main__counter">0 Palabras</span>
+        </header>
+        <div class="canvas-main__divider"></div>
+        <section class="canvas-main__body" contenteditable="true">
+            <p>Inspírate aquí…</p>
+        </section>
+        <footer class="canvas-main__footer">
+            <a class="canvas-main__action" href="#bookModal">📘 Convertir a libro</a>
+            <button class="canvas-main__quill" type="button"><img class="canvas-main__quill--img" src="../../assets/icons/pluma.png" alt=""></button>
+        </footer>
+        <div class="canvas-main__divider canvas-main__divider--bottom"></div>
+      </section>
+    </main>
+
+    <aside class="canvas-sidebar" id="sidebar">
+        <div class="canvas-sidebar__header">
+            <p class="canvas-sidebar__title">Lienzos</p>
+            <button class="canvas-sidebar__button">Nuevo lienzo</button>
+        </div>
+
+        <div class="canvas-sidebar__separator"></div>
+
+        <div class="canvas-sidebar__item">
+            <p class="canvas-sidebar__item-title">Sueño lunar</p>
+            <a class="canvas-sidebar__item-options canvas-sidebar__item-options--button">⋮</a>
+
+            <div class="canvas-sidebar__options">
+                <button class="canvas-sidebar__option canvas-sidebar__option--rename" type="button">
+                    <span class="canvas-sidebar__option-label">Renombrar</span>
+                    <img src="../../assets/icons/reescribir.png" alt="" class="canvas-sidebar__option-icon">
+                </button>
+
+                <button class="canvas-sidebar__option canvas-sidebar__option--delete" type="button">
+                    <span class="canvas-sidebar__option-label">Eliminar</span>
+                    <img src="../../assets/icons/delete.png" alt="" class="canvas-sidebar__option-icon">
+                </button>
+            </div>
+        </div>
+        <a href="#" class="canvas-sidebar__close"></a>
+    </aside>
+
+    <footer class="canvas-footer">
+        <a class="canvas-footer__line" href="feed-main.html"></a>
+    </footer>
+</body>
+</html>
