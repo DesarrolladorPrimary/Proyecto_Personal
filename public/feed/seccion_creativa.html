@@ -1,11 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sección Creativa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../../src/styles/components/base.css">
+    <link rel="stylesheet" href="../../src/styles/pages/feed/seccion_creativa.css">
+
 </head>
 <body>
-    
+    <header class="creative-header">
+        <div class="creative-header__nav">
+            <div class="creative-header__nav-line">
+                <a href="#sidebar" class="creative-header__nav-link creative-header__nav-link--action"></a>
+            </div>
+        </div>
+        
+        <a href="#user" class="creative-header__logo">
+            <img src="../../assets/icons/image.png" alt="Perfil de usuario">
+        </a>
+    </header>
+
+    <main class="creative-main">
+        <div class="creative-main__container">
+            <img class="creative-main__img" src="../../assets/image/pergamino_creative.png" alt="Inspiración creativa">
+            <p class="creative-main__text">¿Qué haras hoy?</p>
+        </div>
+
+        <form class="creative-input">
+           <a href="canvas_creative.html" class="creative-input__link">Nuevo lienzo</a>
+        </form>
+    </main>
+
+   
+
+    <aside class="creative-aside" id="sidebar">
+        <div class="creative-aside__header">
+            <p class="creative-aside__title">Relatos</p>
+            <button class="creative-aside__button">Nuevo lienzo</button>
+        </div>
+
+        <div class="creative-aside__separator"></div>
+
+        <div class="creative-aside__chat">
+            <p class="creative-aside__chat-title">Sueño lunar</p>
+            <a class="creative-aside__chat-options creative-aside__chat-options--button">⋮</a>
+
+            <div class="creative-aside__options">
+                <button class="creative-aside__option creative-aside__option--rename" type="button">
+                    <span class="creative-aside__option-label">Renombrar</span>
+                    <img src="../../assets/icons/reescribir.png" alt="" class="creative-aside__option-icon">
+                </button>
+
+                <button class="creative-aside__option creative-aside__option--delete" type="button">
+                    <span class="creative-aside__option-label">Eliminar</span>
+                    <img src="../../assets/icons/delete.png" alt="" class="creative-aside__option-icon">
+                </button>
+            </div>
+        </div>
+        <a href="#" class="creative-aside__close"></a>
+
+    </aside>
+
+    <footer class="creative-footer">
+        <a class="creative-footer__line" href="feed-main.html"></a>
+    </footer>
 </body>
 </html>
+
