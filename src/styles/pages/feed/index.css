@@ -1,6 +1,9 @@
 /* Estilos específicos de la página de inicio */
 
 body{
+    display: grid;
+    grid-template-columns: 1fr;
+
     background-image: url('../../../../assets/image/upscalemedia-transformed.jpeg');
     background-size: cover;
     background-position: center;
@@ -25,4 +28,22 @@ body{
 
 .main__regist {
     margin-top: 55px;
+}
+
+
+
+@media (min-width: 1024px) {
+    .main__title {
+        font-size: 48px;
+    }
+
+    .main__login {
+        margin-top: 200px;
+    }
+
+    .main__regist {
+        margin-top: 100px;
+    }
+
+
 }

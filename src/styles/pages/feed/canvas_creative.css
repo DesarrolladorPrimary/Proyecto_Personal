@@ -59,7 +59,7 @@ body {
     grid-row: 2/3;
 }
 
-.canvas-layout:nth-last-child{
+.canvas-layout:nth-last-child {
     display: flex;
     justify-content: center;
 
@@ -74,7 +74,7 @@ body {
     color: var(--color-text-light);
     max-width: 359px;
     height: 720px;
-    
+
 }
 
 .canvas-main__header {
@@ -90,7 +90,7 @@ body {
     text-align: center;
 }
 
-.canvas-main__title:focus{
+.canvas-main__title:focus {
     outline: none;
 }
 
@@ -111,7 +111,7 @@ body {
     min-height: 200px;
 }
 
-.canvas-main__body:focus{
+.canvas-main__body:focus {
     outline: none;
 }
 
@@ -131,7 +131,7 @@ body {
     flex-direction: column;
     gap: 10px;
     width: 68px;
-    height: 410,43px;
+    height: 410, 43px;
     border-radius: 10px;
     border: 1px solid var(--color-text);
 }
@@ -144,7 +144,7 @@ body {
 }
 
 
-#herramientas:target{
+#herramientas:target {
     visibility: visible;
 }
 
@@ -339,17 +339,8 @@ body {
     color: var(--color-text-light);
     justify-content: center;
     align-items: center;
-    left: 270px;
-    bottom: 1px;
-}
-
-.canvas-main__quill-link {
-    display: inline-flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
+    bottom: 269px;
+    left: 310px;
 }
 
 
@@ -492,7 +483,7 @@ body {
 
 
 .canvas-footer__line {
-    border: 1px solid;
+    border: 2px solid;
     color: var(--color-text-light);
     width: 223px;
     height: 0px;
@@ -510,22 +501,39 @@ body {
     body {
         grid-template-columns: 1fr minmax(420px, 520px) 1fr;
         grid-template-rows: 120px minmax(0, 1fr) 80px;
-        column-gap: 48px;
-        row-gap: 24px;
-        padding: 40px 72px 32px;
+        overflow: hidden;
+
     }
 
     .canvas-layout {
-        grid-column: 2/3;
+        grid-column: 1/4;
         grid-row: 2/3;
         display: flex;
         justify-content: center;
     }
 
+
+
     .canvas-main {
-        width: 100%;
-        max-width: 520px;
+        width: 520px;
         height: auto;
-        min-height: 720px;
+    }
+
+    .canvas-main__header {
+        display: flex;
+        align-items: normal;
+        justify-content: normal;
+
+    }
+
+    .canvas-main__counter {
+        font-size: 12px;
+        position: normal;
+        right: auto;
+    }
+
+
+    .canvas-footer__line {
+        margin-bottom: 0;
     }
 }

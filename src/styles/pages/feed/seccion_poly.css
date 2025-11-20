@@ -104,8 +104,8 @@ body {
     padding: 8px 14px;
     border-radius: 16px;
     background-color: var(--color-background-container);
-    margin-top: auto;
-    margin-bottom: var(--spacing-large);
+    margin: 0 auto;
+    margin-bottom: 50px;
 }
 
 .poly-input__field {
@@ -827,22 +827,34 @@ body {
         grid-template-rows: repeat(3, 200px);
     }
 
-    .header__imageBook {
-        left: 450px;
+    .header {
+        align-items: flex-end;
     }
 
+    .header__imageBook {
+        left: 600px;
+    }
+
+    .header__nav {
+        margin-left: 10px;
+    }   
+
+    .header__logo {
+        margin-right: 10px;
+    }
 
     .poly {
         grid-column: 1/ 4;
+        grid-row: 2/5;
         justify-self: center;
+        justify-content: center;
         width: 100%;
-        max-width: 620px;
     }
 
 
-
     .poly-input {
-        max-width: 520px;
+        max-width: 800px;
+        margin-top: 200px;
     }
 
     .poly-aside__options {

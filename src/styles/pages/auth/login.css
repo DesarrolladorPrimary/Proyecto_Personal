@@ -33,6 +33,12 @@ body {
     border-radius: 5px;
 }
 
+
+.form__input:focus{
+    outline: none;
+    border: 1px solid var(--auth-input-focus-border);
+}
+
 .form__input-container {
     position: relative;
     width: var(--auth-input-width);
@@ -80,3 +86,6 @@ body {
 .footer__text {
     font-family: var(--font-family-main);
 }
+
+
+
