@@ -59,7 +59,7 @@ body {
     grid-row: 2/3;
 }
 
-.canvas-layout:nth-last-child{
+.canvas-layout:nth-last-child {
     display: flex;
     justify-content: center;
 
@@ -74,7 +74,7 @@ body {
     color: var(--color-text-light);
     max-width: 359px;
     height: 720px;
-    
+    position: relative;
 }
 
 .canvas-main__header {
@@ -90,7 +90,7 @@ body {
     text-align: center;
 }
 
-.canvas-main__title:focus{
+.canvas-main__title:focus {
     outline: none;
 }
 
@@ -111,7 +111,7 @@ body {
     min-height: 200px;
 }
 
-.canvas-main__body:focus{
+.canvas-main__body:focus {
     outline: none;
 }
 
@@ -131,7 +131,7 @@ body {
     flex-direction: column;
     gap: 10px;
     width: 68px;
-    height: 410,43px;
+    height: 410, 43px;
     border-radius: 10px;
     border: 1px solid var(--color-text);
 }
@@ -144,7 +144,7 @@ body {
 }
 
 
-#herramientas:target{
+#herramientas:target {
     visibility: visible;
 }
 
@@ -527,5 +527,15 @@ body {
         max-width: 520px;
         height: auto;
         min-height: 720px;
+    }
+
+    .canvas-main__markers {
+        left: auto;
+        right: 25px;
+    }
+
+    .canvas-main__quill {
+        left: auto;
+        right: 29px;
     }
 }
