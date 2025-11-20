@@ -231,7 +231,7 @@ body {
 }
 
 .creative-footer__line {
-    border: 1px solid;
+    border: 2px solid;
     color: var(--color-text-light);
     width: 223px;
     height: 0px;
