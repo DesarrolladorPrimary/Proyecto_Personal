@@ -548,6 +548,13 @@ body {
         left: 200px;
     }
 
+    .canvas-main__markers{
+        left: 846px;
+        bottom: 80px;
+        padding: 5px;
+    }
+
+
     .canvas-footer__line {
         margin-bottom: 0;
     }

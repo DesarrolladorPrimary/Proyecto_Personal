@@ -874,6 +874,10 @@ body {
         margin-bottom: 15px;
     }
 
+    .footer-nav__line {
+        margin-bottom: 15px;
+    }
+
     .canvas__panel {
         width: min(640px, 70vw);
         height: 85vh;

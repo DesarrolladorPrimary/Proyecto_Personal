@@ -241,3 +241,10 @@ body {
 .creative-footer__line:active {
     color: #5e5b5b;
 }
+
+
+@media (min-width: 1024px) {
+    .footer-nav__line {
+        margin-bottom: 15px;
+    }
+}

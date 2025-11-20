@@ -1,208 +1,343 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Seccion Poly</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="../../../src/styles/components/base.css">
-    <link rel="stylesheet" href="../../../src/styles/pages/feed/poly/seccion_poly.css">
-</head>
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link rel="stylesheet" href="../../../src/styles/components/layout.css" />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/pages/feed/poly/seccion_poly.css"
+    />
+  </head>
 
-<body>
+  <body>
     <header class="header">
-        <div class="header__nav">
-            <div class="header__nav-line">
-                <a href="#sidebar" class="header__nav-link header__nav-link--action"></a>
-            </div>
+      <div class="header__nav">
+        <div class="header__nav-line">
+          <a
+            href="#sidebar"
+            class="header__nav-link header__nav-link--action"
+          ></a>
         </div>
+      </div>
 
-        <a href="#canvasAI" class="header__imageBook-link">
-            <img class="header__imageBook" src="../../../assets/icons/book.svg" alt="libro de exportacion">
-        </a>
-        <a href="#user" class="header__logo">
-            <img src="../../../assets/icons/image.png" class="header__logo" alt="logo_user">
-        </a>
+      <a href="#canvasAI" class="header__imageBook-link">
+        <img
+          class="header__imageBook"
+          src="../../../assets/icons/book.svg"
+          alt="libro de exportacion"
+        />
+      </a>
+      <a href="#user" class="header__logo">
+        <img
+          src="../../../assets/icons/image.png"
+          class="header__logo"
+          alt="logo_user"
+        />
+      </a>
     </header>
 
     <main class="poly">
-        <div class="poly__container">
-            <img class="poly__img" src="../../../assets/image/brain_pencil.png" alt="Ilustracion de un cerebro y un lapiz">
-            <p class="poly__text">Que hare hoy?</p>
-        </div>
+      <div class="poly__container">
+        <img
+          class="poly__img"
+          src="../../../assets/image/brain_pencil.png"
+          alt="Ilustracion de un cerebro y un lapiz"
+        />
+        <p class="poly__text">Que hare hoy?</p>
+      </div>
 
-        <form class="poly-input">
-            <button class="poly-input__action poly-input__action--attach" type="button">
-                <img class="poly-input__icon poly-input__icon--file" src="../../../assets/icons/paperclip.svg"
-                    alt="Adjuntar archivo">
-            </button>
-            <textarea class="poly-input__field" rows="1" placeholder="Escribe tu mensaje..."></textarea>
-            <button class="poly-input__action poly-input__action--intruction" type="button">
-                <a href="#modalAI" class="poly-input__action-link">
-                    <img class="poly-input__icon poly-input__icon--idea" src="../../../assets/icons/light-bulb-brain.png"
-                        alt="Sugerencias">
-                </a>
-            </button>
-            <button class="poly-input__action poly-input__action--send" type="submit" aria-label="Enviar mensaje">
-                <svg class="poly-input__icon poly-input__icon--send" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z" />
-                </svg>
-            </button>
-        </form>
+      <form class="poly-input">
+        <button
+          class="poly-input__action poly-input__action--attach"
+          type="button"
+        >
+          <img
+            class="poly-input__icon poly-input__icon--file"
+            src="../../../assets/icons/paperclip.svg"
+            alt="Adjuntar archivo"
+          />
+        </button>
+        <textarea
+          class="poly-input__field"
+          rows="1"
+          placeholder="Escribe tu mensaje..."
+        ></textarea>
+        <button
+          class="poly-input__action poly-input__action--intruction"
+          type="button"
+        >
+          <a href="#modalAI" class="poly-input__action-link">
+            <img
+              class="poly-input__icon poly-input__icon--idea"
+              src="../../../assets/icons/light-bulb-brain.png"
+              alt="Sugerencias"
+            />
+          </a>
+        </button>
+        <button
+          class="poly-input__action poly-input__action--send"
+          type="submit"
+          aria-label="Enviar mensaje"
+        >
+          <svg
+            class="poly-input__icon poly-input__icon--send"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z" />
+          </svg>
+        </button>
+      </form>
     </main>
 
-
     <section class="poly-modal" id="modalAI" aria-hidden="true">
-        <div class="poly-modal__overlay" aria-hidden="true"></div>
-        <div class="poly-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="poly-modal-title">
-            <a href="#" class="poly-modal__close" aria-label="Cerrar"></a>
-            <header class="poly-modal__header">
-                <h1 class="poly-modal__title" id="poly-modal-title">Par&aacute;metros de Poly-AI</h1>
-                <div class="poly-modal__separator"></div>
-            </header>
+      <div class="poly-modal__overlay" aria-hidden="true"></div>
+      <div
+        class="poly-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="poly-modal-title"
+      >
+        <a href="#" class="poly-modal__close" aria-label="Cerrar"></a>
+        <header class="poly-modal__header">
+          <h1 class="poly-modal__title" id="poly-modal-title">
+            Par&aacute;metros de Poly-AI
+          </h1>
+          <div class="poly-modal__separator"></div>
+        </header>
 
-            <form class="poly-modal__form">
-                <div class="poly-modal__group poly-modal__group--single">
-                    <span class="poly-modal__icon" aria-hidden="true">&#9997;&#65039;</span>
-                    <span class="poly-modal__label">Estilo de escritura:</span>
-                    <button class="poly-modal__chip" type="button">Narrativo</button>
-                </div>
+        <form class="poly-modal__form">
+          <div class="poly-modal__group poly-modal__group--single">
+            <span class="poly-modal__icon" aria-hidden="true"
+              >&#9997;&#65039;</span
+            >
+            <span class="poly-modal__label">Estilo de escritura:</span>
+            <button class="poly-modal__chip" type="button">Narrativo</button>
+          </div>
 
-                <div class="poly-modal__group poly-modal__group--choices">
-                    <span class="poly-modal__icon" aria-hidden="true">&#10024;</span>
-                    <span class="poly-modal__label">Nivel de creatividad:</span>
-                    <div class="poly-modal__choices">
-                        <label class="poly-modal__choice">
-                            <input class="poly-modal__choice-input" type="checkbox" name="creativity-low" value="low">
-                            <span class="poly-modal__choice-text">Bajo</span>
-                        </label>
-                        <label class="poly-modal__choice">
-                            <input class="poly-modal__choice-input" type="checkbox" name="creativity-medium"
-                                value="medium" checked>
-                            <span class="poly-modal__choice-text">Medio</span>
-                        </label>
-                        <label class="poly-modal__choice">
-                            <input class="poly-modal__choice-input" type="checkbox" name="creativity-high" value="high">
-                            <span class="poly-modal__choice-text">Alto</span>
-                        </label>
-                    </div>
-                </div>
+          <div class="poly-modal__group poly-modal__group--choices">
+            <span class="poly-modal__icon" aria-hidden="true">&#10024;</span>
+            <span class="poly-modal__label">Nivel de creatividad:</span>
+            <div class="poly-modal__choices">
+              <label class="poly-modal__choice">
+                <input
+                  class="poly-modal__choice-input"
+                  type="checkbox"
+                  name="creativity-low"
+                  value="low"
+                />
+                <span class="poly-modal__choice-text">Bajo</span>
+              </label>
+              <label class="poly-modal__choice">
+                <input
+                  class="poly-modal__choice-input"
+                  type="checkbox"
+                  name="creativity-medium"
+                  value="medium"
+                  checked
+                />
+                <span class="poly-modal__choice-text">Medio</span>
+              </label>
+              <label class="poly-modal__choice">
+                <input
+                  class="poly-modal__choice-input"
+                  type="checkbox"
+                  name="creativity-high"
+                  value="high"
+                />
+                <span class="poly-modal__choice-text">Alto</span>
+              </label>
+            </div>
+          </div>
 
-                <div class="poly-modal__group poly-modal__group--single">
-                    <span class="poly-modal__icon" aria-hidden="true">&#128337;</span>
-                    <span class="poly-modal__label">Longitud de respuesta:</span>
-                    <button class="poly-modal__chip" type="button">Corta</button>
-                </div>
+          <div class="poly-modal__group poly-modal__group--single">
+            <span class="poly-modal__icon" aria-hidden="true">&#128337;</span>
+            <span class="poly-modal__label">Longitud de respuesta:</span>
+            <button class="poly-modal__chip" type="button">Corta</button>
+          </div>
 
-                <div class="poly-modal__group poly-modal__group--single">
-                    <span class="poly-modal__icon" aria-hidden="true">&#128172;</span>
-                    <span class="poly-modal__label">Tono emocional:</span>
-                    <button class="poly-modal__chip" type="button">Neutral</button>
-                </div>
+          <div class="poly-modal__group poly-modal__group--single">
+            <span class="poly-modal__icon" aria-hidden="true">&#128172;</span>
+            <span class="poly-modal__label">Tono emocional:</span>
+            <button class="poly-modal__chip" type="button">Neutral</button>
+          </div>
 
-                <div class="poly-modal__actions">
-                    <button class="poly-modal__button poly-modal__button--primary" type="submit">Guardar</button>
-                    <button class="poly-modal__button poly-modal__button--reset" type="button">Restablecer</button>
-                </div>
-            </form>
-        </div>
+          <div class="poly-modal__actions">
+            <button
+              class="poly-modal__button poly-modal__button--primary"
+              type="submit"
+            >
+              Guardar
+            </button>
+            <button
+              class="poly-modal__button poly-modal__button--reset"
+              type="button"
+            >
+              Restablecer
+            </button>
+          </div>
+        </form>
+      </div>
     </section>
 
-
     <section class="canvas" id="canvasAI" aria-hidden="true">
-    <div class="canvas__overlay" aria-hidden="true"></div>
-    <article class="canvas__panel" role="dialog" aria-modal="true" aria-labelledby="canvas-title">
+      <div class="canvas__overlay" aria-hidden="true"></div>
+      <article
+        class="canvas__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="canvas-title"
+      >
         <a href="#" class="canvas__close" aria-label="Cerrar canvas"></a>
         <header class="canvas__header">
-            <p class="canvas__subtitle">Sección CanvasAI</p>
-            <div class="canvas__title-row">
-                <h2 class="canvas__title" id="canvas-title" contenteditable="true">Título</h2>
-                <span class="canvas__counter">0 palabras</span>
-            </div>
-            <div class="canvas__divider"></div>
+          <p class="canvas__subtitle">Sección CanvasAI</p>
+          <div class="canvas__title-row">
+            <h2 class="canvas__title" id="canvas-title" contenteditable="true">
+              Título
+            </h2>
+            <span class="canvas__counter">0 palabras</span>
+          </div>
+          <div class="canvas__divider"></div>
         </header>
         <section class="canvas__body" contenteditable="true">
-            <p>Resultado de la IA</p>
+          <p>Resultado de la IA</p>
         </section>
         <footer class="canvas__footer">
-            <button class="canvas__action" type="button" aria-label="Guardar canvas">
-                <img src="../../../assets/icons/addLibro.png" class="canvas__action-icon" alt="">
-            </button>
-            <a class="canvas__action-convert" href="#bookModal">
-                <span class="canvas__action-label">📘 Convertir a libro</span>
-            </a>
-            <div class="canvas__footer-line"></div>
+          <button
+            class="canvas__action"
+            type="button"
+            aria-label="Guardar canvas"
+          >
+            <img
+              src="../../../assets/icons/addLibro.png"
+              class="canvas__action-icon"
+              alt=""
+            />
+          </button>
+          <a class="canvas__action-convert" href="#bookModal">
+            <span class="canvas__action-label">📘 Convertir a libro</span>
+          </a>
+          <div class="canvas__footer-line"></div>
         </footer>
-    </article>
-</section>
+      </article>
+    </section>
 
-<section class="book-modal" id="bookModal" aria-hidden="true">
-    <div class="book-modal__overlay" aria-hidden="true"></div>
-    <article class="book-modal__panel" role="dialog" aria-modal="true" aria-labelledby="book-modal-title">
-        <a href="#canvasAI" class="book-modal__close" aria-label="Cerrar conversión a libro"></a>
+    <section class="book-modal" id="bookModal" aria-hidden="true">
+      <div class="book-modal__overlay" aria-hidden="true"></div>
+      <article
+        class="book-modal__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="book-modal-title"
+      >
+        <a
+          href="#canvasAI"
+          class="book-modal__close"
+          aria-label="Cerrar conversión a libro"
+        ></a>
         <header class="book-modal__header">
-            <h2 class="book-modal__title" id="book-modal-title">📘 Convertir historia a libro</h2>
-            <div class="book-modal__divider"></div>
+          <h2 class="book-modal__title" id="book-modal-title">
+            📘 Convertir historia a libro
+          </h2>
+          <div class="book-modal__divider"></div>
         </header>
         <form class="book-modal__form">
-            <label class="book-modal__label" for="book-title">Título del libro:</label>
-            <input class="book-modal__input" id="book-title" type="text" value="Mi historia con Poly-AI">
-            <a class="book-modal__submit" href="#bookSuccess">
-                <img src="../../../assets/icons/addLibro.png" alt="" class="book-modal__submit-icon">
-                🔄 Generar documento
-            </a>
+          <label class="book-modal__label" for="book-title"
+            >Título del libro:</label
+          >
+          <input
+            class="book-modal__input"
+            id="book-title"
+            type="text"
+            value="Mi historia con Poly-AI"
+          />
+          <a class="book-modal__submit" href="#bookSuccess">
+            <img
+              src="../../../assets/icons/addLibro.png"
+              alt=""
+              class="book-modal__submit-icon"
+            />
+            🔄 Generar documento
+          </a>
         </form>
-    </article>
-</section>
+      </article>
+    </section>
 
-<section class="book-success" id="bookSuccess" aria-hidden="true">
-    <div class="book-success__overlay" aria-hidden="true"></div>
-    <article class="book-success__panel" role="dialog" aria-modal="true" aria-labelledby="book-success-message">
-        <p class="book-success__message" id="book-success-message">✅ Libro generado con éxito.<br>Guardado en tu
-            Biblioteca.</p>
-        <a href="#canvasAI" class="book-success__close" aria-label="Cerrar mensaje de éxito">Entendido</a>
-    </article>
-</section>
-
+    <section class="book-success" id="bookSuccess" aria-hidden="true">
+      <div class="book-success__overlay" aria-hidden="true"></div>
+      <article
+        class="book-success__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="book-success-message"
+      >
+        <p class="book-success__message" id="book-success-message">
+          ✅ Libro generado con éxito.<br />Guardado en tu Biblioteca.
+        </p>
+        <a
+          href="#canvasAI"
+          class="book-success__close"
+          aria-label="Cerrar mensaje de éxito"
+          >Entendido</a
+        >
+      </article>
+    </section>
 
     <aside class="poly-aside" id="sidebar">
-        <div class="poly-aside__header">
-            <p class="poly-aside__title">Chats</p>
-            <button class="poly-aside__button">Nuevo Chat</button>
+      <div class="poly-aside__header">
+        <p class="poly-aside__title">Chats</p>
+        <button class="poly-aside__button">Nuevo Chat</button>
+      </div>
+
+      <div class="poly-aside__separator"></div>
+
+      <div class="poly-aside__chat">
+        <p class="poly-aside__chat-title">Libro</p>
+        <a class="poly-aside__chat-opciones poly-aside__chat-opciones--button"
+          >⋮</a
+        >
+
+        <div class="poly-aside__options">
+          <button
+            class="poly-aside__option poly-aside__option--rename"
+            type="button"
+          >
+            <span class="poly-aside__option-label">Renombrar</span>
+            <img
+              src="../../../assets/icons/reescribir.png"
+              alt=""
+              class="poly-aside__option-icon"
+            />
+          </button>
+
+          <button
+            class="poly-aside__option poly-aside__option--delete"
+            type="button"
+          >
+            <span class="poly-aside__option-label">Eliminar</span>
+            <img
+              src="../../../assets/icons/delete.png"
+              alt=""
+              class="poly-aside__option-icon"
+            />
+          </button>
         </div>
+      </div>
 
-        <div class="poly-aside__separator"></div>
-
-        <div class="poly-aside__chat">
-            <p class="poly-aside__chat-title">Libro</p>
-            <a class="poly-aside__chat-opciones poly-aside__chat-opciones--button">⋮</a>
-
-            <div class="poly-aside__options">
-                <button class="poly-aside__option poly-aside__option--rename" type="button">
-                    <span class="poly-aside__option-label">Renombrar</span>
-                    <img src="../../../assets/icons/reescribir.png" alt="" class="poly-aside__option-icon">
-                </button>
-
-                <button class="poly-aside__option poly-aside__option--delete" type="button">
-                    <span class="poly-aside__option-label">Eliminar</span>
-                    <img src="../../../assets/icons/delete.png" alt="" class="poly-aside__option-icon">
-                </button>
-            </div>
-        </div>
-
-        <a href="#" class="poly-aside__close"></a>
+      <a href="#" class="poly-aside__close"></a>
     </aside>
 
-    <footer class="footer">
-        <a class="footer__line" href="../feed-main.html"></a>
+    <footer class="footer-nav">
+      <a class="footer-nav__line" href="../feed-main.html"></a>
     </footer>
-
-    
-</body>
-
+  </body>
 </html>
