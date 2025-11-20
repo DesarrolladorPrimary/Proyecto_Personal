@@ -10,8 +10,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../../src/styles/components/base.css">
-    <link rel="stylesheet" href="../../src/styles/pages/feed/seccion_poly.css">
+    <link rel="stylesheet" href="../../../src/styles/components/base.css">
+    <link rel="stylesheet" href="../../../src/styles/pages/feed/poly/seccion_poly.css">
 </head>
 
 <body>
@@ -23,28 +23,28 @@
         </div>
 
         <a href="#canvasAI" class="header__imageBook-link">
-            <img class="header__imageBook" src="../../assets/icons/book.svg" alt="libro de exportacion">
+            <img class="header__imageBook" src="../../../assets/icons/book.svg" alt="libro de exportacion">
         </a>
         <a href="#user" class="header__logo">
-            <img src="../../assets/icons/image.png" class="header__logo" alt="logo_user">
+            <img src="../../../assets/icons/image.png" class="header__logo" alt="logo_user">
         </a>
     </header>
 
     <main class="poly">
         <div class="poly__container">
-            <img class="poly__img" src="../../assets/image/brain_pencil.png" alt="Ilustracion de un cerebro y un lapiz">
+            <img class="poly__img" src="../../../assets/image/brain_pencil.png" alt="Ilustracion de un cerebro y un lapiz">
             <p class="poly__text">Que hare hoy?</p>
         </div>
 
         <form class="poly-input">
             <button class="poly-input__action poly-input__action--attach" type="button">
-                <img class="poly-input__icon poly-input__icon--file" src="../../assets/icons/paperclip.svg"
+                <img class="poly-input__icon poly-input__icon--file" src="../../../assets/icons/paperclip.svg"
                     alt="Adjuntar archivo">
             </button>
             <textarea class="poly-input__field" rows="1" placeholder="Escribe tu mensaje..."></textarea>
             <button class="poly-input__action poly-input__action--intruction" type="button">
                 <a href="#modalAI" class="poly-input__action-link">
-                    <img class="poly-input__icon poly-input__icon--idea" src="../../assets/icons/light-bulb-brain.png"
+                    <img class="poly-input__icon poly-input__icon--idea" src="../../../assets/icons/light-bulb-brain.png"
                         alt="Sugerencias">
                 </a>
             </button>
@@ -131,7 +131,7 @@
         </section>
         <footer class="canvas__footer">
             <button class="canvas__action" type="button" aria-label="Guardar canvas">
-                <img src="../../assets/icons/addLibro.png" class="canvas__action-icon" alt="">
+                <img src="../../../assets/icons/addLibro.png" class="canvas__action-icon" alt="">
             </button>
             <a class="canvas__action-convert" href="#bookModal">
                 <span class="canvas__action-label">📘 Convertir a libro</span>
@@ -153,7 +153,7 @@
             <label class="book-modal__label" for="book-title">Título del libro:</label>
             <input class="book-modal__input" id="book-title" type="text" value="Mi historia con Poly-AI">
             <a class="book-modal__submit" href="#bookSuccess">
-                <img src="../../assets/icons/addLibro.png" alt="" class="book-modal__submit-icon">
+                <img src="../../../assets/icons/addLibro.png" alt="" class="book-modal__submit-icon">
                 🔄 Generar documento
             </a>
         </form>
@@ -185,12 +185,12 @@
             <div class="poly-aside__options">
                 <button class="poly-aside__option poly-aside__option--rename" type="button">
                     <span class="poly-aside__option-label">Renombrar</span>
-                    <img src="../../assets/icons/reescribir.png" alt="" class="poly-aside__option-icon">
+                    <img src="../../../assets/icons/reescribir.png" alt="" class="poly-aside__option-icon">
                 </button>
 
                 <button class="poly-aside__option poly-aside__option--delete" type="button">
                     <span class="poly-aside__option-label">Eliminar</span>
-                    <img src="../../assets/icons/delete.png" alt="" class="poly-aside__option-icon">
+                    <img src="../../../assets/icons/delete.png" alt="" class="poly-aside__option-icon">
                 </button>
             </div>
         </div>
@@ -199,7 +199,7 @@
     </aside>
 
     <footer class="footer">
-        <a class="footer__line" href="feed-main.html"></a>
+        <a class="footer__line" href="../feed-main.html"></a>
     </footer>
 
     
