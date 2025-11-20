@@ -22,7 +22,7 @@
 
 
 
-    <main class="canvas-layout">
+    <main class="canvas-layout" id="canvasLayout">
       <section class="canvas-main">
         <header class="canvas-main__header">
             <h1 class="canvas-main__title" contenteditable="true">Título</h1>
@@ -33,12 +33,58 @@
             <p>Inspírate aquí…</p>
         </section>
         <footer class="canvas-main__footer">
-            <a class="canvas-main__action" href="#bookModal">📘 Convertir a libro</a>
-            <button class="canvas-main__quill" type="button"><img class="canvas-main__quill--img" src="../../assets/icons/pluma.png" alt=""></button>
+            <div class="canvas-main__markers" id="herramientas">
+            <button type="button" class="canvas-main__marker">↶/↷</button>
+            <button type="button" class="canvas-main__marker">H1/H2</button>
+            <button type="button" class="canvas-main__marker">B</button>
+            <button type="button" class="canvas-main__marker">I</button>
+            <button type="button" class="canvas-main__marker">U</button>
+            <button type="button" class="canvas-main__marker">•/1</button>
+            <button type="button" class="canvas-main__marker">❝</button>
+            <button type="button" class="canvas-main__marker">↔︎</button>
+            <button type="button" class="canvas-main__marker">—</button>
+            <button type="button" class="canvas-main__marker">🖼️</button>
+            <button type="button" class="canvas-main__marker">🔎</button>
+            <button type="button" class="canvas-main__marker">...</button>
+            <button type="button" class="canvas-main__marker ">●</button>
+            </div>
+            <a class="canvas-main__action" href="#canvasBookModal">📘 Convertir a libro</a>
+            <button class="canvas-main__quill" type="button">
+                <a href="#herramientas" class="canvas-main__quill-link" aria-label="Abrir opciones de pluma">
+                    <img class="canvas-main__quill--img" src="../../assets/icons/pluma.png" alt="">
+                </a>
+            </button>
         </footer>
         <div class="canvas-main__divider canvas-main__divider--bottom"></div>
       </section>
     </main>
+
+    <section class="canvas-book-modal" id="canvasBookModal" aria-hidden="true">
+        <div class="canvas-book-modal__overlay" aria-hidden="true"></div>
+        <article class="canvas-book-modal__panel" role="dialog" aria-modal="true" aria-labelledby="canvas-book-modal-title">
+            <a href="#canvasLayout" class="canvas-book-modal__close" aria-label="Cerrar conversi�n a libro"></a>
+            <header class="canvas-book-modal__header">
+                <h2 class="canvas-book-modal__title" id="canvas-book-modal-title">📘 Convertir historia a libro</h2>
+                <div class="canvas-book-modal__divider"></div>
+            </header>
+            <form class="canvas-book-modal__form">
+                <label class="canvas-book-modal__label" for="canvas-book-title">Titulo del libro:</label>
+                <input class="canvas-book-modal__input" id="canvas-book-title" type="text" value="Mi historia creativa">
+                <a class="canvas-book-modal__submit" href="#canvasBookSuccess">
+                    <img src="../../assets/icons/addLibro.png" alt="" class="canvas-book-modal__submit-icon">
+                    🔄 Generar documento
+                </a>
+            </form>
+        </article>
+    </section>
+
+    <section class="canvas-book-success" id="canvasBookSuccess" aria-hidden="true">
+        <div class="canvas-book-success__overlay" aria-hidden="true"></div>
+        <article class="canvas-book-success__panel" role="dialog" aria-modal="true" aria-labelledby="canvas-book-success-message">
+            <p class="canvas-book-success__message" id="canvas-book-success-message">📘 Libro generado con exito.<br>Guardado en tu Biblioteca.</p>
+            <a href="#canvasLayout" class="canvas-book-success__close" aria-label="Cerrar mensaje de �xito">Entendido</a>
+        </article>
+    </section>
 
     <aside class="canvas-sidebar" id="sidebar">
         <div class="canvas-sidebar__header">
