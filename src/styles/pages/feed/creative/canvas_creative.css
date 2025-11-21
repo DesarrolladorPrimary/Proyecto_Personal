@@ -1,11 +1,11 @@
 body {
     display: grid;
     background-color: var(--background-color-body-feed);
-    min-height: 100vh;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto 1fr auto;
+    height: 100vh;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 75px;
     gap: 16px;
-    padding: 24px 16px 16px;
+    justify-content: center;
 }
 
 .canvas-header {
@@ -55,8 +55,10 @@ body {
 
 
 .canvas-layout {
-    grid-column: 1/-1;
-    grid-row: 2/3;
+    display: flex;
+    justify-content: center;
+    grid-column: 1/4;
+    grid-row: 2/4;
 }
 
 .canvas-layout:nth-last-child {
@@ -73,14 +75,14 @@ body {
     padding: 28px;
     color: var(--color-text-light);
     max-width: 359px;
-    height: 720px;
+    height: 80vh;
 
 }
 
 .canvas-main__header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .canvas-main__title {
@@ -95,31 +97,59 @@ body {
 }
 
 .canvas-main__counter {
-    align-items: center;
+    left: 400px;
     margin-top: auto;
+
+}
+
+.canvas-main__quill {
+    position: absolute;
+    display: flex;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid var(--color-text);
+    background: transparent;
+    color: var(--color-text-light);
+    justify-content: center;
+    align-items: center;
+    bottom: 100px;
+    left: 280px;
 }
 
 
+.canvas-main__quill--img {
+    width: 65px;
+    height: 65px;
+
+}
+
 .canvas-main__body {
     background-color: transparent;
-    height: 400px;
+    height: 100vh;
+    border: none;
+    color: var(--color-text-light);
+}
+
+.canvas-main__body:focus {
+    outline: none;
 }
 
 .canvas-main__divider {
     border: 1px solid var(--color-text-light);
-    width: 650px;
+    width: 272px;
 }
 
 .canvas-main__markers {
     visibility: hidden;
     position: absolute;
-    bottom: 0px;
-    left: 266px;
+    bottom: 100px;
+    left: 275px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 68px;
-    height: 410, 43px;
+    height: 360px;
     border-radius: 10px;
     border: 1px solid var(--color-text);
 }
@@ -160,6 +190,8 @@ body {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
+    height: 600px;
+    width: 360px;
 }
 
 .canvas-book-modal:target {
@@ -276,6 +308,9 @@ body {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
+    height: 600px;
+    width: 360px;
+
 }
 
 .canvas-book-success:target {
@@ -316,27 +351,7 @@ body {
     font-size: 14px;
 }
 
-.canvas-main__quill {
-    position: absolute;
-    display: flex;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 1px solid var(--color-text);
-    background: transparent;
-    color: var(--color-text-light);
-    justify-content: center;
-    align-items: center;
-    bottom: 269px;
-    left: 310px;
-}
 
-
-.canvas-main__quill--img {
-    width: 65px;
-    height: 65px;
-
-}
 
 .canvas-sidebar {
     visibility: hidden;
@@ -353,6 +368,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
+
 }
 
 .canvas-sidebar__title {
@@ -475,87 +491,90 @@ body {
     color: var(--color-text-light);
     width: 223px;
     height: 0px;
-    margin-bottom: 20px;
+    /* margin-bottom: 10px; */
 }
 
 
 .canvas-footer__line:active {
     color: #5e5b5b;
+    justify-content: center;
+
+
 }
+    @media (min-width: 1024px) {
+        body {
+            grid-template-columns: 1fr minmax(420px, 520px) 1fr;
+            grid-template-rows: 50px minmax(0, 1fr) 80px;
+
+        }
+
+        .canvas-layout {
+            grid-column: 1/4;
+            grid-row: 2/3;
+            display: flex;
+            justify-content: center;
+        }
 
 
+        .canvas-main {
+            width: 100vh;
+            height: auto;
+            max-width: none;
+        }
 
-@media (min-width: 1024px) {
-    body {
-        grid-template-columns: 1fr minmax(420px, 520px) 1fr;
-        grid-template-rows: 50px minmax(0, 1fr) 80px;
-        /* overflow: hidden; */
 
+        .canvas-main__body {
+            border: none;
+            color: var(--color-text-light);
+            font-family: inherit;
+            resize: none;
+            padding: 0;
+        }
+
+        .canvas-main__body:focus {
+            outline: none;
+        }
+
+        .canvas-main__body::-webkit-scrollbar {
+            display: none;
+
+        }
+
+        .canvas-main__header {
+            display: flex;
+            align-items: normal;
+            justify-content: normal;
+
+        }
+
+        .canvas-main__counter {
+            font-size: 12px;
+            position: absolute;
+            right: 250px;
+        }
+
+        .canvas-main__divider {
+            width: 627px;
+        }
+
+        .canvas-main__quill {
+            left: 850px;
+            bottom: 50px;
+        }
+
+        .canvas-main__action {
+            bottom: 0;
+            left: 200px;
+        }
+
+        .canvas-main__markers {
+            left: 846px;
+            bottom: 80px;
+            padding: 5px;
+        }
+
+
+        .canvas-footer__line {
+            margin-bottom: 0;
+        }
     }
-
-    .canvas-layout {
-        grid-column: 1/4;
-        grid-row: 2/3;
-        display: flex;
-        justify-content: center;
-    }
-
-
-    .canvas-main {
-        width: 100vh;
-        height: auto;
-        max-width: none;
-    }
-
-
-    .canvas-main__body {
-        border: none;
-        color: var(--color-text-light);
-        font-family: inherit;
-        resize: none;
-        padding: 0;
-    }
-
-    .canvas-main__body:focus {
-        outline: none;
-    }
-
-    .canvas-main__body::-webkit-scrollbar {
-        display: none;
-
-    }
-
-    .canvas-main__header {
-        display: flex;
-        align-items: normal;
-        justify-content: normal;
-
-    }
-
-    .canvas-main__counter {
-        font-size: 12px;
-        position: absolute;
-        right: 250px;
-    }
-
-    .canvas-main__quill {
-        left: 850px;
-        bottom: 50px;
-    }
-
-    .canvas-main__action {
-        bottom: 0;
-        left: 200px;
-    }
-
-    .canvas-main__markers{
-        left: 846px;
-        bottom: 80px;
-        padding: 5px;
-    }
-
-
-    .canvas-footer__line {
-        margin-bottom: 0;
-    }
-}
