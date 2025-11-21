@@ -491,7 +491,7 @@ body {
     color: var(--color-text-light);
     width: 223px;
     height: 0px;
-    /* margin-bottom: 10px; */
+    margin-bottom: 10px;
 }
 
 
@@ -504,7 +504,7 @@ body {
     @media (min-width: 1024px) {
         body {
             grid-template-columns: 1fr minmax(420px, 520px) 1fr;
-            grid-template-rows: 50px minmax(0, 1fr) 80px;
+            grid-template-rows: 50px minmax(0, 1fr) 10px;
 
         }
 
@@ -529,6 +529,7 @@ body {
             font-family: inherit;
             resize: none;
             padding: 0;
+            height: 100vh;
         }
 
         .canvas-main__body:focus {
@@ -559,7 +560,7 @@ body {
 
         .canvas-main__quill {
             left: 850px;
-            bottom: 50px;
+            bottom: 90px;
         }
 
         .canvas-main__action {
@@ -569,12 +570,12 @@ body {
 
         .canvas-main__markers {
             left: 846px;
-            bottom: 80px;
+            bottom: 90px;
             padding: 5px;
         }
 
 
         .canvas-footer__line {
-            margin-bottom: 0;
+            margin-bottom: 10px;
         }
     }
