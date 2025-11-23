@@ -1,96 +1,137 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Feed Principal</title>
-    <link rel="stylesheet" href="../../src/styles/components/base.css">
-    <link rel="stylesheet" href="../../src/styles/pages/feed/feed-main.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="../../src/styles/components/base.css" />
+    <link rel="stylesheet" href="../../src/styles/pages/feed/feed-main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <!-- Encabezado de la página -->
     <header class="header">
-        <div class="header__nav">
-            <div class="header__nav-line">
-                <a href="#sidebar" class="header__nav-link header__nav-link--action"></a>
-            </div>
+      <div class="header__nav">
+        <div class="header__nav-line">
+          <a
+            href="#sidebar"
+            class="header__nav-link header__nav-link--action"
+          ></a>
         </div>
-       <a href="#user" class="header__logo"> <img src="../../assets/icons/image.png" class="header__logo" alt="logo_user"></a>
-        
+      </div>
+      <a href="#user" class="header__logo">
+        <img
+          src="../../assets/icons/image.png"
+          class="header__logo"
+          alt="logo_user"
+      /></a>
     </header>
 
     <!-- Menú lateral -->
     <aside class="aside" id="sidebar">
-        <a href="#" class="aside__close">X</a>
+      <a href="#" class="aside__close">X</a>
 
-        <a href="#" class="aside__link aside__link--navi"><img class="aside__icon aside__icon--mind" src="../../assets/icons/mind.png" alt="mind_icon"></a>
-        <div class="aside__panel aside__panel--poly" id="polyAI">
-            <a href="poly/seccion_poly.html" class="aside__panel-link">Seccion Artificial/Poly</a>
-        </div>
+      <a href="#" class="aside__link aside__link--navi"
+        ><img
+          class="aside__icon aside__icon--mind"
+          src="../../assets/icons/mind.png"
+          alt="mind_icon"
+      /></a>
+      <div class="aside__panel aside__panel--poly" id="polyAI">
+        <a href="poly/seccion_poly.html" class="aside__panel-link"
+          >Seccion Artificial/Poly</a
+        >
+      </div>
 
-        <a href="#" class="aside__link aside__link--navi"><img class="aside__icon aside__icon--paper" src="../../assets/icons/papel.png" alt="papel_icon"></a>
-        <div class="aside__panel aside__panel--creative">
-            <a href="creative/seccion_creativa.html" class="aside__panel-link">Seccion Creativa</a>
-        </div>
-        
-        <a href="#" class="aside__link aside__link--navi"><img class="aside__icon aside__icon--libros" src="../../assets/icons/libros.png" alt="libros_icon"></a>
-        <div class="aside__panel aside__panel--library">
-            <a href="biblioteca/biblioteca.html" class="aside__panel-link">Biblioteca</a>
-        </div>
-        
-        <a href="#" class="aside__link"><img class="aside__icon aside__icon--setting" src="../../assets/icons/setting.png" alt="setting"></a>
-        <div class="aside__panel aside__panel--settings">
-            <a href="#" class="aside__panel-link">Configuraciones</a>
-        </div>
-        
+      <a href="#" class="aside__link aside__link--navi"
+        ><img
+          class="aside__icon aside__icon--paper"
+          src="../../assets/icons/papel.png"
+          alt="papel_icon"
+      /></a>
+      <div class="aside__panel aside__panel--creative">
+        <a href="creative/seccion_creativa.html" class="aside__panel-link"
+          >Seccion Creativa</a
+        >
+      </div>
+
+      <a href="#" class="aside__link aside__link--navi"
+        ><img
+          class="aside__icon aside__icon--libros"
+          src="../../assets/icons/libros.png"
+          alt="libros_icon"
+      /></a>
+      <div class="aside__panel aside__panel--library">
+        <a href="biblioteca/library.html" class="aside__panel-link"
+          >Biblioteca</a
+        >
+      </div>
+
+      <a href="#" class="aside__link"
+        ><img
+          class="aside__icon aside__icon--setting"
+          src="../../assets/icons/setting.png"
+          alt="setting"
+      /></a>
+      <div class="aside__panel aside__panel--settings">
+        <a href="#" class="aside__panel-link">Configuraciones</a>
+      </div>
     </aside>
 
     <!-- Contenido principal -->
     <main class="feed">
-        <div class="feed__content">
-            <img class="feed__image" src="../../assets/image/image-removebg-preview.png" alt="Ilustracion del feed principal">
-            <p class="feed__text">Que comenzaremos hoy?</p>
-        </div>
+      <div class="feed__content">
+        <img
+          class="feed__image"
+          src="../../assets/image/image-removebg-preview.png"
+          alt="Ilustracion del feed principal"
+        />
+        <p class="feed__text">Que comenzaremos hoy?</p>
+      </div>
     </main>
 
-
-
     <!-- BLOQUE: menu-user-->
-<div class="menu-user menu-user--hidden" id="user">
-    
-    <a href="#" class="menu-user__close">X</a>
+    <div class="menu-user menu-user--hidden" id="user">
+      <a href="#" class="menu-user__close">X</a>
 
-    <!-- ELEMENTO: menu-user__avatar -->
-    <img class="menu-user__avatar" src="../../assets/icons/image.png" alt="Avatar del usuario">
+      <!-- ELEMENTO: menu-user__avatar -->
+      <img
+        class="menu-user__avatar"
+        src="../../assets/icons/image.png"
+        alt="Avatar del usuario"
+      />
 
-    <div class="menu-user__separador"></div>
+      <div class="menu-user__separador"></div>
 
-    <!-- ELEMENTOS: Párrafos de información -->
-    <p class="menu-user__text">Usuario: </p>
-    <p class="menu-user__text">Numero: </p>
-    <p class="menu-user__text">Correo: </p>
+      <!-- ELEMENTOS: Párrafos de información -->
+      <p class="menu-user__text">Usuario:</p>
+      <p class="menu-user__text">Numero:</p>
+      <p class="menu-user__text">Correo:</p>
 
+      <!-- ELEMENTO: Un grupo de opciones o información -->
+      <div class="menu-user__group">
+        <p class="menu-user__group-title">Modelos:</p>
 
-    <!-- ELEMENTO: Un grupo de opciones o información -->
-    <div class="menu-user__group">
-       <p class="menu-user__group-title">Modelos:</p>
-       
-       <!-- ELEMENTO: Un item específico dentro del grupo -->
-       <div class="menu-user__Model">
-            <p class="menu-user__Model-text">Modelo-AI</p> 
-            <img class="menu-user__setting-icon" src="../../assets/icons/icono_model.png" alt="Icono de ajuste">
-        </div> 
-    </div>
+        <!-- ELEMENTO: Un item específico dentro del grupo -->
+        <div class="menu-user__Model">
+          <p class="menu-user__Model-text">Modelo-AI</p>
+          <img
+            class="menu-user__setting-icon"
+            src="../../assets/icons/icono_model.png"
+            alt="Icono de ajuste"
+          />
+        </div>
+      </div>
 
-    <!-- ELEMENTO: Botón de acción principal -->
-    <button class="menu-user__button">
+      <!-- ELEMENTO: Botón de acción principal -->
+      <button class="menu-user__button">
         <a class="menu-user__link" href="../auth/login.html">Cerrar Sesión</a>
-    </button>
-
-</div>
-
-</body>
+      </button>
+    </div>
+  </body>
 </html>

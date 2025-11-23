@@ -29,7 +29,14 @@
     --font-size-body: 13px;
     --color-text-buton: #D74747;
     --color-background-botones: #FFBF00;
+    --color-accent-gold: #FFD700;
     --text-width: 16px;
+    --border-width-medium: 15px;
+    --border-radius-tiny: 2px;
+    --book-card-width: 30px;
+    --book-card-height: 110px;
+    --book-decoration-spacing: 10px;
+    --book-decoration-line-height: 2px;
     --decoration-text: none;
     --z-index: 1;
 
