@@ -1,0 +1,186 @@
+body {
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px 1fr auto;
+    background-color: var(--background-color-body-feed);
+}
+
+
+.library-header {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.library-header__arrow {
+    width: 22px;
+    height: 22px;
+}
+
+.library-header__input {
+    margin-top: 20px;
+    background-color: transparent;
+    border: none;
+    color: var(--color-text-light);
+    text-align: 16px;
+    padding: 5px;
+    font-family: var(--font-family-main);
+}
+
+.library-header__input:focus {
+    outline: none;
+}
+
+
+.library-main {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1/2;
+    grid-row: 2/4;
+}
+
+.shelf {
+    display: flex;
+    gap: 5px;
+    height: 240px;
+    border-left: var(--border-width-medium) var(--color-background-container) solid;
+    border-right: var(--border-width-medium) var(--color-background-container) solid;
+    align-items: flex-end;
+}
+
+.book-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--book-card-height);
+    width: var(--book-card-width);
+    background-color: #BB8D3D;
+    text-orientation: upright;
+    writing-mode: vertical-lr;
+    border-radius: var(--border-radius-tiny);
+}
+
+.shelf:not(:last-child) {
+    border-bottom: var(--border-width-medium) var(--color-background-container) solid;
+}
+
+/* Línea superior */
+.book-card::before {
+    content: '';
+    position: absolute;
+    top: var(--book-decoration-spacing);
+    left: var(--book-decoration-line-height);
+    right: var(--book-decoration-line-height);
+    height: var(--book-decoration-line-height);
+    background-color: var(--color-accent-gold);
+}
+
+/* Línea inferior */
+.book-card::after {
+    content: '';
+    position: absolute;
+    bottom: var(--book-decoration-spacing);
+    left: var(--book-decoration-line-height);
+    right: var(--book-decoration-line-height);
+    height: var(--book-decoration-line-height);
+    background-color: var(--color-accent-gold);
+}
+
+.book-card__title {
+    font-size: 13px;
+    text-align: center;
+    font-family: var(--font-family-main);
+    color: white;
+}
+
+/* Footer */
+.library-footer {
+    position: relative;
+    grid-column: 1/2;
+    grid-row: 3/4;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 20px;
+    background-color: var(--background-color-body-feed);
+}
+
+.library-footer__buttons {
+    position: absolute;
+    bottom: 90px;
+    left: 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: var(--z-index);
+}
+
+.library-footer__button {
+    background-color: #E8E8E8;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 30px;
+    font-family: var(--font-family-main);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.library-footer__icon-container {
+    width: 50px;
+    height: 50px;
+    background-color: #E8E8E8;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.library-footer__icon-container:hover {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.library-footer__icon {
+    width: 24px;
+    height: 24px;
+    filter: invert(20%);
+}
+
+/* Media query para desktop */
+@media (min-width: 1024px) {
+    .library-footer__buttons {
+        visibility: hidden;
+        left: 81vw;
+        bottom: 90px;
+    }
+
+    .library-footer__icon-container:hover~.library-footer__buttons {
+        visibility: visible;
+    }
+
+    .library-footer__button:hover {
+        visibility: visible;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .library-footer__button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+}
