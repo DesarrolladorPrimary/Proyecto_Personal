@@ -31,7 +31,7 @@
         placeholder="Nombre de la estanteria"
         maxlength="20"
       />
-      <a href="#" class="library-header__link">
+      <a href="#exportModal" class="library-header__link">
         <img
           class="library-header__arrow"
           src="../../../assets/icons/box-arrow-down.svg"
@@ -75,5 +75,53 @@
         </a>
       </div>
     </footer>
+
+    <!-- Modal de Exportación -->
+    <div class="modal" id="exportModal">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <a href="#" class="modal__close">&times;</a>
+
+        <h2 class="modal__title">
+          <span class="modal__icon">📁</span> Exportar
+        </h2>
+
+        <form class="modal__form">
+          <div class="modal__field">
+            <label class="modal__label">Categoría:</label>
+            <select class="modal__select">
+              <option>Libros</option>
+              <option>Documentos</option>
+              <option>Artículos</option>
+            </select>
+          </div>
+
+          <div class="modal__field">
+            <label class="modal__label">Título:</label>
+            <select class="modal__select">
+              <option>Libro</option>
+              <option>Documento 1</option>
+              <option>Documento 2</option>
+            </select>
+          </div>
+
+          <div class="modal__field">
+            <label class="modal__label">Formato de salida:</label>
+            <div class="modal__radio-group">
+              <label class="modal__radio">
+                <input type="radio" name="format" value="pdf" checked />
+                <span>PDF (.pdf)</span>
+              </label>
+              <label class="modal__radio">
+                <input type="radio" name="format" value="word" />
+                <span>Word (.docx)</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="button" class="modal__button">Descargar</button>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
