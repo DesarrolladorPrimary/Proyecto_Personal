@@ -42,7 +42,7 @@
 
     <main class="library-main">
       <section class="shelf">
-        <a href="#" class="book-card__link">
+        <a href="#bookModal" class="book-card__link">
           <div class="book-card">
             <p class="book-card__title">libro</p>
           </div>
@@ -121,6 +121,23 @@
 
           <button type="button" class="modal__button">Descargar</button>
         </form>
+      </div>
+    </div>
+
+    <!-- Modal de Opciones del Libro -->
+    <div class="book-modal" id="bookModal">
+      <div class="book-modal__overlay"></div>
+      <div class="book-modal__content">
+        <a href="#" class="book-modal__close">&times;</a>
+
+        <h2 class="book-modal__shelf-name">Nombre Libro</h2>
+
+        <div class="book-modal__actions">
+          <button class="book-modal__button">Editar</button>
+          <button class="book-modal__button book-modal__button--delete">
+            Borrar
+          </button>
+        </div>
       </div>
     </div>
   </body>
