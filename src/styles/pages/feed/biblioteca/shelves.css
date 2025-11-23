@@ -1,0 +1,71 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 1fr;
+    background-color: var(--background-color-body-feed);
+}
+
+.shelves-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 95px;
+}
+
+.shelves-header__title {
+    font-size: 16px;
+    font-family: var(--font-family-main);
+    color: var(--color-text-light);
+    font-weight: 400;
+}
+
+.shelves-header__arrow {
+    margin-left: 20px;
+    width: 22px;
+    height: 22px;
+}
+
+/* Main */
+.shelves-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Enlace de la tarjeta */
+.shelf-card__link {
+    text-decoration: none;
+    display: block;
+}
+
+/* Tarjetas de estanterías con gradiente radial */
+.shelf-card {
+    background: radial-gradient(circle, var(--color-background-container) 0%, #999999 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.shelf-card__name {
+    font-family: var(--font-family-main);
+    font-size: 13px;
+    color: var(--color-text-light);
+    font-weight: 400;
+    text-align: center;
+}
+
+/* Media query para desktop */
+@media (min-width: 1024px) {
+    .shelf-card:hover {
+        background: radial-gradient(circle, rgba(176, 176, 176, 0.6) 0%, rgba(176, 176, 176, 0.4) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}

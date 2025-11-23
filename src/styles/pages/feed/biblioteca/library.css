@@ -70,6 +70,12 @@ body {
     border-bottom: var(--border-width-medium) var(--color-background-container) solid;
 }
 
+/* Enlace de la tarjeta del libro */
+.book-card__link {
+    text-decoration: none;
+    display: block;
+}
+
 /* Línea superior */
 .book-card::before {
     content: '';
