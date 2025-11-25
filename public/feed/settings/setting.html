@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/pages/feed/settings/setting.css"
+    />
+    <title>Configuraciones</title>
+  </head>
+  <body>
+    <header class="settings-header">
+      <div class="settings-header__top">
+        <a href="../feed-main.html" class="settings-header__back">
+          <img
+            src="../../../assets/icons/arrow-90deg-left.svg"
+            alt="Volver"
+            class="settings-header__arrow"
+          />
+        </a>
+        <h1 class="settings-header__title">Configuraciones</h1>
+      </div>
+
+      <div class="settings-separator"></div>
+
+      <nav class="settings-nav">
+        <a href="#perfil" class="settings-nav__link">
+          <img
+            src="../../../assets/icons/person-rolodex.svg"
+            alt="Perfil"
+            class="settings-nav__icon"
+          />
+        </a>
+        <a href="#ajustes" class="settings-nav__link">
+          <img
+            src="../../../assets/icons/sliders.svg"
+            alt="Ajustes"
+            class="settings-nav__icon"
+          />
+        </a>
+        <a href="#suscripciones" class="settings-nav__link">
+          <img
+            src="../../../assets/icons/suscipciones.png"
+            alt="Suscripciones"
+            class="settings-nav__icon"
+          />
+        </a>
+      </nav>
+    </header>
+
+    <main class="settings-main">
+      <section class="settings-section">
+        <h2 class="settings-section__title">Usuario</h2>
+
+        <div class="settings-option">
+          <span class="settings-option__label">Plan:</span>
+          <span class="settings-option__value">Gratuito (Básico)</span>
+        </div>
+
+        <div class="settings-option">
+          <span class="settings-option__label">Perfil</span>
+          <span class="settings-option__value">Keyner Arismendy</span>
+        </div>
+
+        <div class="settings-option">
+          <span class="settings-option__label">Contraseña</span>
+          <span class="settings-option__value">Cambiar Contraseña</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="settings-footer">
+      <button class="settings-footer__delete-btn">Eliminar Cuenta</button>
+    </footer>
+  </body>
+</html>
