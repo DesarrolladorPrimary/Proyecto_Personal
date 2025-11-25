@@ -161,7 +161,7 @@ body {
 .settings-accordion__trigger {
     display: flex;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     gap: 31px;
     height: 63px;
     padding: 0;
@@ -176,6 +176,8 @@ body {
     transition: max-height 0.4s ease;
     background-color: var(--background-color-nav-subline);
     padding: 0 20px;
+    margin-bottom: 20px;
+    margin-left: 13px;
 }
 
 .settings-accordion__checkbox:checked~.settings-accordion__content {
