@@ -1,0 +1,33 @@
+/* Opciones de Configuraciones */
+.settings-option {
+    background-color: var(--color-background-container);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    width: 371px;
+    height: 63px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 31px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-option__label {
+    font-family: var(--font-family-poppins);
+    font-size: 20px;
+    color: var(--color-text-light);
+    font-weight: 500;
+    margin-left: 30px;
+}
+
+.settings-option__value {
+    font-family: var(--font-family-main);
+    font-size: 14px;
+    color: #D0D0D0;
+    font-weight: 400;
+    border: 1px solid var(--background-color-nav-subline);
+    border-radius: 3px;
+    padding: 9px;
+    background-color: var(--background-color-nav-subline);
+}

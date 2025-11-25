@@ -8,84 +8,6 @@ body {
     margin: 0;
 }
 
-/* Header */
-.settings-header {
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px 0;
-    text-align: center;
-}
-
-.settings-header__top {
-    display: flex;
-    margin-bottom: 20px;
-    justify-content: center;
-    gap: 50px;
-}
-
-.settings-header__back {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    margin-left: -60px;
-}
-
-.settings-header__arrow {
-    width: 19px;
-    height: 19px;
-}
-
-.settings-header__title {
-    font-family: var(--font-family-main);
-    font-size: 30px;
-    color: var(--color-text-light);
-    font-weight: 400;
-    text-shadow: 1px 4px 4px rgba(0, 0, 0, 0.5);
-    margin-top: 15px;
-}
-
-/* Separador */
-.settings-separator {
-    width: 100%;
-    height: 1px;
-    background-color: var(--color-text-light);
-    margin-bottom: 30px;
-}
-
-/* Navegación de iconos */
-.settings-nav {
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.settings-nav::after {
-    content: "";
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    border-bottom: 1px solid var(--color-text);
-}
-
-.settings-nav__link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.settings-nav__icon {
-    width: 73px;
-    height: 57px;
-    margin-bottom: 5px;
-}
-
 /* Main */
 .settings-main {
     display: flex;
@@ -105,40 +27,6 @@ body {
     font-weight: 400;
     text-align: center;
     margin-bottom: 25px;
-}
-
-/* Opciones */
-.settings-option {
-    background-color: var(--color-background-container);
-    border-radius: 4px;
-    margin-bottom: 15px;
-    width: 371px;
-    height: 63px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 31px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.settings-option__label {
-    font-family: var(--font-family-poppins);
-    font-size: 20px;
-    color: var(--color-text-light);
-    font-weight: 500;
-    margin-left: 30px;
-}
-
-.settings-option__value {
-    font-family: var(--font-family-main);
-    font-size: 14px;
-    color: #D0D0D0;
-    font-weight: 400;
-    border: 1px solid var(--background-color-nav-subline);
-    border-radius: 3px;
-    padding: 9px;
-    background-color: var(--background-color-nav-subline);
 }
 
 /* Acordeón */
@@ -167,6 +55,7 @@ body {
     padding: 0;
     cursor: pointer;
     transition: all 0.3s ease;
+
 }
 
 .settings-accordion__content {
@@ -249,11 +138,6 @@ body {
 @media (min-width: 1024px) {
     .settings-main {
         align-items: center;
-    }
-
-    .settings-nav__link:hover {
-        background-color: rgba(232, 232, 232, 0.1);
-        transform: translateY(-2px);
     }
 
     .settings-footer__delete-btn:hover {
