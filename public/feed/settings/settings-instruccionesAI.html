@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/pages/feed/settings/settings-instruccionesAI.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/components/settings-header.css"
+    />
+    <title>Instrucciones AI</title>
+  </head>
+  <body>
+    <header class="settings-header">
+      <div class="settings-header__top">
+        <a href="../feed-main.html" class="settings-header__back">
+          <img
+            src="../../../assets/icons/arrow-90deg-left.svg"
+            alt="Volver"
+            class="settings-header__arrow"
+          />
+        </a>
+        <h1 class="settings-header__title">Instrucciones</h1>
+      </div>
+      <div class="settings-separator"></div>
+    </header>
+
+    <main class="ai-instructions">
+      <p class="ai-instructions__description">
+        Escribe aquí las reglas, tono o información que "Poly" debe recordar
+        siempre en todos los chats
+      </p>
+      <textarea
+        class="ai-instructions__input"
+        placeholder='Respóndeme siempre en español.
+Usa un tono amigable y profesional.
+Mi nombre de autor es " ".
+Nunca uses la palabra "entonces"'
+      ></textarea>
+    </main>
+
+    <footer class="ai-instructions__footer">
+      <input
+        type="checkbox"
+        id="save-trigger"
+        class="ai-instructions__save-trigger"
+      />
+      <span class="ai-instructions__success-msg">Guardado con éxito</span>
+      <label for="save-trigger" class="ai-instructions__btn">Guardar</label>
+    </footer>
+  </body>
+</html>
