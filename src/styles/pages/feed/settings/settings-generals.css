@@ -1,0 +1,152 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh;
+    width: 411px;
+    background-color: var(--background-color-body-feed);
+    padding: 0;
+    margin: 0;
+}
+
+.settings-header {
+    grid-column: 1/1;
+    grid-row: 1/2;
+}
+
+
+.settings-main {
+    display: flex;
+    justify-content: center;
+    grid-row: 2/3;
+    grid-column: 1/1;
+}
+
+.settings-option__value{
+    text-align: center;
+    width: 100px;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.settings-option {
+    gap: 50px;
+}
+
+.settings-option__value {
+    text-decoration: none;
+}
+
+.settings-section__title {
+    color: var(--color-text-light);
+}
+
+
+.settings-footer {
+    grid-column: 1/1;
+    grid-row: 3/4;
+}
+
+/* Dropdown Styles */
+.settings-dropdown {
+    position: relative;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    width: 371px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+}
+
+.settings-dropdown__checkbox {
+    display: none;
+}
+
+.settings-dropdown__trigger {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+    height: 63px;
+    width: 100%;
+    cursor: pointer;
+    background-color: var(--color-background-container);
+    /* Fondo sólido */
+    border-radius: 4px;
+    position: relative;
+    z-index: 2;
+}
+
+.settings-dropdown__content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    gap: 10px;
+    padding: 0 20px;
+    border-radius: 0 0 4px 4px;
+    opacity: 0;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+.settings-dropdown__checkbox:checked~.settings-dropdown__content {
+    max-height: 200px;
+    padding-bottom: 20px;
+    opacity: 1;
+}
+
+.settings-dropdown__btn {
+    width: 100px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    font-family: var(--font-family-main);
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.settings-dropdown__btn:active {
+    transform: scale(0.98);
+}
+
+.settings-dropdown__btn--dark {
+    background-color: #584e4e;
+    color: #D0D0D0;
+}
+
+.settings-dropdown__btn--light {
+    background-color: white;
+    color: black;
+}
+
+.settings-dropdown__btn--system {
+    background-color: black;
+    color: white;
+}
+
+.settings-option__link {
+    font-family: var(--font-family-main);
+    font-size: 14px;
+    color: #D0D0D0;
+    text-decoration: none;
+    font-weight: 400;
+    border: 1px solid var(--background-color-nav-subline);
+    border-radius: 3px;
+    padding: 9px;
+    background-color: var(--background-color-nav-subline);
+}

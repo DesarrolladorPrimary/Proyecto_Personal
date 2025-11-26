@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/components/settings-header.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/components/settings-option.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/components/settings-footer.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/pages/feed/settings/settings-generals.css"
+    />
+    <title>Configuraciones de Usuario</title>
+  </head>
+  <body>
+    <header class="settings-header">
+      <div class="settings-header__top">
+        <a href="../feed-main.html" class="settings-header__back">
+          <img
+            src="../../../assets/icons/arrow-90deg-left.svg"
+            alt="Volver"
+            class="settings-header__arrow"
+          />
+        </a>
+        <h1 class="settings-header__title">Configuraciones</h1>
+      </div>
+
+      <div class="settings-separator"></div>
+
+      <nav class="settings-nav">
+        <a href="settings-user.html" class="settings-nav__link">
+          <img
+            src="../../../assets/icons/user-settings.png"
+            alt="Perfil"
+            class="settings-nav__icon"
+          />
+        </a>
+        <a href="#" class="settings-nav__link">
+          <img
+            src="../../../assets/icons/settings-module.png"
+            alt="Ajustes"
+            class="settings-nav__icon"
+          />
+        </a>
+        <a href="settings-suscript.html" class="settings-nav__link">
+          <img
+            src="../../../assets/icons/suscrip-settings.png"
+            alt="Suscripciones"
+            class="settings-nav__icon"
+          />
+        </a>
+      </nav>
+    </header>
+
+    <main class="settings-main">
+      <section class="settings-section">
+        <h2 class="settings-section__title">Generales</h2>
+
+        <div class="settings-dropdown">
+          <input
+            type="checkbox"
+            id="theme-dropdown"
+            class="settings-dropdown__checkbox"
+          />
+          <label for="theme-dropdown" class="settings-dropdown__trigger">
+            <span class="settings-option__label">Tema:</span>
+            <span class="settings-option__value">Oscuro</span>
+          </label>
+          <div class="settings-dropdown__content">
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+              Oscuro
+            </button>
+            <button class="settings-dropdown__btn settings-dropdown__btn--light">
+              Blanco
+            </button>
+            <button class="settings-dropdown__btn settings-dropdown__btn--system">
+              Sistema
+            </button>
+          </div>
+        </div>
+
+        <div class="settings-option">
+          <span class="settings-option__label">Notificacion</span>
+          <input type="range" />
+        </div>
+
+        <div class="settings-dropdown">
+          <input
+            type="checkbox"
+            id="lang-dropdown"
+            class="settings-dropdown__checkbox"
+          />
+          <label for="lang-dropdown" class="settings-dropdown__trigger">
+            <span class="settings-option__label">Idioma</span>
+            <span class="settings-option__value">Español ></span>
+          </label>
+          <div class="settings-dropdown__content">
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+              Español
+            </button>
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+              Inglés
+            </button>
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+              Alemán
+            </button>
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+              Japonés
+            </button>
+          </div>
+        </div>
+
+        <div class="settings-option">
+          <span class="settings-option__label">Instrucciones</span>
+          <a href="settings-instruccionesAI.html" class="settings-option__link">AI (poly)</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="settings-footer">
+      <div class="settings-footer__container">
+        <button class="settings-footer__delete-btn">Eliminar Cuenta</button>
+      </div>
+    </footer>
+  </body>
+</html>

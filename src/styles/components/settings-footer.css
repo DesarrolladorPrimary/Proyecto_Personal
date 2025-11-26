@@ -1,0 +1,31 @@
+/* Footer */
+.settings-footer {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+
+.settings-footer__container {
+    display: flex;
+    background-color: var(--background-color-nav-subline);
+    width: 371px;
+    height: 63px;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-footer__delete-btn {
+    background-color: #FF0000;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-family: var(--font-family-main);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+    width: 124.62px;
+    height: 34px;
+}
