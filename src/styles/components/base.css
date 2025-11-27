@@ -85,10 +85,7 @@
     --recovery-button-padding: 7px;
 }
 
-body {
-    min-height: 100vh;
-    font-family: var(--font-family-main);
-}
+
 
 .button {
     text-decoration: var(--decoration-text);

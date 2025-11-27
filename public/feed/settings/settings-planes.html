@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../../src/styles/components/base.css">
+  <link rel="stylesheet" href="../../../src/styles/layout.css">
+  <link rel="stylesheet" href="../../../src/styles/components/settings-header.css">
+  <link rel="stylesheet" href="../../../src/styles/pages/feed/settings/settings-planes.css">
+
+  <title>Planes</title>
+</head>
+
+<body>
+  <header class="settings-header">
+    <div class="settings-header__top">
+      <a href="../feed-main.html" class="settings-header__back">
+        <img src="../../../assets/icons/arrow-90deg-left.svg" alt="Volver" class="settings-header__arrow" />
+      </a>
+      <h1 class="settings-header__title">Configuraciones</h1>
+    </div>
+
+    <div class="settings-separator"></div>
+
+    <nav class="settings-nav">
+      <a href="settings-user.html" class="settings-nav__link">
+        <img src="../../../assets/icons/user-settings.png" alt="Perfil" class="settings-nav__icon" />
+      </a>
+      <a href="settings-generals.html" class="settings-nav__link">
+        <img src="../../../assets/icons/settings-module.png" alt="Ajustes" class="settings-nav__icon" />
+      </a>
+      <a href="#" class="settings-nav__link">
+        <img src="../../../assets/icons/suscrip-settings.png" alt="Suscripciones" class="settings-nav__icon" />
+      </a>
+    </nav>
+  </header>
+
+  <main class="plans">
+    <div class="plans-header">
+      <h1 class="plans__title">Planes de Suscripción</h1>
+      <p class="plans__subtitle">Elige el plan que mejor se adapte a tus necesidades</p>
+    </div>
+
+    <div class="plans__container">
+      <!-- Plan Gratuito -->
+      <div class="plan-card plan-card--free">
+        <h2 class="plan-card__title">Plan Gratuito</h2>
+        <p class="plan-card__price">$0<span class="plan-card__period">/mes</span></p>
+        <ul class="plan-card__features">
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✅ Acceso básico a la biblioteca<p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✅ Crear y guardar relatos</p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✅ Chat con Poly limitado (respuestas cortas)</p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">⚙  Espacio: 500 MB</p>
+          </li>
+        </ul>
+        <button class="plan-card__button plan-card__button--current">Activo</button>
+      </div>
+
+      <!-- Plan Premium -->
+      <div class="plan-card plan-card--premium">
+        <h2 class="plan-card__title">Plan Premium</h2>
+        <p class="plan-card__price">$9.99<span class="plan-card__period">/mes</span></p>
+        <ul class="plan-card__features">
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✨ Acceso a IA avanzada (Poly completa)</p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✨ Más herramientas de redacción</p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✨ Respuestas extendidas y coherentes</p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✨ Espacio ilimitado</p>
+          </li>
+        </ul>
+        <button class="plan-card__button plan-card__button--upgrade">💎 Comprar Premium</button>
+      </div>
+    </div>
+  </main>
+
+</body>
+
+</html>

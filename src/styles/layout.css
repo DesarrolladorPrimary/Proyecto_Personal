@@ -1,5 +1,13 @@
 /* Estilos de layout genéricos */
 
+@import url("components/base.css");
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-family-main);
+  background-color: var(--background-color-body-feed);
+}
+
 .header {
     display: flex;
     align-items: center;
