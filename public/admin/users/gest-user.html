@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../../src/styles/components/layout.css" />
+    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link rel="stylesheet" href="../../../src/styles/layout.css" />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/pages/admin/gest-user.css"
+    />
+    <title>Gestion de Usuarios</title>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="header__title">Usuarios Registrados</h1>
+      <form class="header__search-form" action="">
+        <input
+          class="header__search-input"
+          type="text"
+          name=""
+          id="#img"
+          placeholder="por nombre o correo"
+        />
+        <img
+          class="header__search-icon"
+          id="img"
+          src="../../../assets/icons/lupa.png"
+          alt=""
+        />
+      </form>
+      <div class="header__separator"></div>
+    </header>
+
+    <main class="main">
+      <div class="user-card">
+        <div class="user-card__separator"></div>
+
+        <div class="user-card__content">
+          <div class="user-card__row">
+            <img
+              src="../../../assets/icons/user.png"
+              class="user-card__icon"
+              alt="User"
+            />
+            <span class="user-card__text">Keyner Arismendy</span>
+          </div>
+
+          <div class="user-card__row">
+            <img
+              src="../../../assets/icons/email.png"
+              class="user-card__icon"
+              alt="Email"
+            />
+            <span class="user-card__text">keyner@correo.com</span>
+          </div>
+
+          <div class="user-card__row">
+            <span class="user-card__icon">📅</span>
+            <span class="user-card__text">Registrado: 12/09/2025</span>
+          </div>
+
+          <div class="user-card__row">
+            <span class="user-card__icon">💼</span>
+            <span class="user-card__text">Plan: Gratuito</span>
+          </div>
+
+          <div class="user-card__row">
+            <div class="user-card__status-dot"></div>
+            <span class="user-card__text">Estado: Activo</span>
+          </div>
+        </div>
+
+        <div class="user-card__actions">
+          <button class="user-card__button user-card__button--suspend">
+            <span>⚠️ Suspender</span>
+          </button>
+          <button class="user-card__button user-card__button--delete">
+            <span>❌ Eliminar</span>
+          </button>
+        </div>
+
+        <div class="user-card__separator"></div>
+      </div>
+    </main>
+
+    <footer class="footer-nav">
+      <div class="footer-nav__line"></div>
+    </footer>
+  </body>
+</html>
