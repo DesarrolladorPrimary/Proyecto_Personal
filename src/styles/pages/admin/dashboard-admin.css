@@ -1,0 +1,467 @@
+body {
+    display: grid;
+    /* Habilita CSS Grid para el layout principal */
+    background-color: var(--background-color-body-feed);
+    /* Establece el color de fondo del cuerpo de la página */
+    grid-template-columns: repeat(3, 1fr);
+    /* Crea 3 columnas de fracción igual */
+    grid-template-rows: repeat(3, 200px);
+
+    min-height: 100vh;
+    /* Crea 3 filas de 200px de alto cada una */
+    position: relative;
+    /* Establece un contexto de posicionamiento para elementos hijos absolutos */
+}
+
+/* Estilos para la cabecera */
+.header {
+    display: flex;
+    /* Usa flexbox para alinear los elementos hijos */
+    justify-content: space-between;
+    /* Distribuye el espacio entre los elementos hijos */
+    margin: var(--spacing-large);
+    /* Añade un margen general */
+    align-items: center;
+    /* Centra verticalmente los elementos hijos */
+    grid-column: 1/4;
+    /* Hace que la cabecera ocupe desde la columna 1 hasta la 4 */
+    align-self: flex-start;
+    /* Alinea la cabecera al inicio de su área de grid */
+}
+
+/* Estilos para la navegación de la cabecera */
+.header__nav {
+    display: flex;
+    /* Usa flexbox para alinear los elementos hijos */
+    justify-content: center;
+    /* Centra horizontalmente los elementos hijos */
+    align-items: center;
+    /* Centra verticalmente los elementos hijos */
+    height: 41px;
+    /* Establece la altura del elemento */
+    width: 52px;
+    /* Establece el ancho del elemento */
+    border-radius: var(--aside-border-radius);
+    /* Redondea las esquinas del elemento */
+    background-color: var(--color-background-container);
+    /* Establece el color de fondo del elemento */
+}
+
+/* Línea dentro de la navegación */
+.header__nav-line {
+    display: flex;
+    /* Usa flexbox para alinear los elementos hijos */
+    justify-content: end;
+    /* Alinea los elementos hijos al final del contenedor */
+    border: var(--color-text) var(--line-width-thin) solid;
+    /* Añade un borde con el color de texto principal */
+    border-radius: var(--border-radius-small);
+    /* Redondea las esquinas del elemento */
+    background-color: transparent;
+    /* Hace que el fondo sea transparente */
+    width: 30px;
+    /* Establece el ancho del elemento */
+    height: 17px;
+    /* Establece la altura del elemento */
+    padding: 2px;
+}
+
+/* Sublínea dentro de la navegación (el botón clickeable) */
+.header__nav-link {
+    width: var(--size-icon-tiny);
+    /* Establece el ancho del elemento */
+    height: 15px;
+    /* Establece la altura del elemento */
+    border-radius: 2px;
+    /* Redondea las esquinas del elemento */
+    background-color: var(--background-color-nav-subline);
+    /* Establece el color de fondo del elemento */
+}
+
+/* Logo en la cabecera */
+.header__logo {
+    width: 34px;
+    /* Establece el ancho del logo */
+}
+
+
+/* Contenedor principal del menú lateral */
+.aside {
+    display: none;
+    /* Por defecto, el menú está oculto */
+    position: absolute;
+    /* Se saca del flujo normal para superponerse */
+    grid-template-rows: repeat(4, 1fr);
+    /* Crea 4 filas de igual tamaño */
+    background-color: var(--color-background-container);
+    /* Color de fondo reutilizado */
+    width: var(--aside-width);
+    /* Ancho definido por una variable */
+    height: var(--aside-height);
+    /* Altura definida por una variable */
+    top: var(--aside-position-top);
+    /* Posición desde arriba definida por una variable */
+    border-radius: var(--aside-border-radius);
+    /* Bordes redondeados definidos por una variable */
+}
+
+/* Estilo para el botón de cerrar del menú lateral (temporal) */
+.aside__close {
+    position: absolute;
+    /* Lo posiciona de forma absoluta dentro del aside */
+    text-decoration: none;
+    /* Quita el subrayado */
+    color: var(--color-text);
+    /* Usa el color de texto principal */
+    z-index: var(--z-index);
+    /* Se asegura que esté visible sobre otros elementos */
+}
+
+
+/* Alineación para todos los iconos dentro de las celdas del grid del aside */
+.aside__link {
+    justify-self: center;
+    /* Centra el icono horizontalmente en su celda */
+    align-self: center;
+    /* Centra el icono verticalmente en su celda */
+}
+
+/* Modificadores de tamaño para cada icono específico del menú lateral */
+.aside__icon--users {
+    width: 56px;
+    /* Ancho para el icono 'users' */
+}
+
+.aside__icon--content {
+    width: 74px;
+    /* Ancho para el icono 'content' */
+}
+
+.aside__icon--library {
+    width: 91px;
+    /* Ancho para el icono 'library' */
+    height: 52px;
+    /* Altura para el icono 'library' */
+}
+
+.aside__icon--reports {
+    width: 31px;
+    /* Ancho para el icono 'reports' */
+}
+
+
+
+/* Muestra el menú lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
+.aside:target {
+    display: grid;
+    /* Cambia el display a grid para que sea visible */
+}
+
+
+/* Panel base: aplica estilos comunes para todas las celdas descriptivas del aside */
+.aside__panel {
+    display: flex;
+    visibility: visible;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border-radius: 4px;
+    background-color: var(--color-background-container);
+    border: var(--line-width-thin) solid transparent;
+    width: var(--aside-panel-width);
+    height: var(--aside-panel-height);
+}
+
+
+/* Enlaces dentro de los paneles del aside */
+.aside__panel-link {
+    text-decoration: none;
+    color: var(--color-text-light);
+}
+
+/* Posición del panel asociado a Usuarios */
+.aside__panel--users {
+    top: 25px;
+    left: var(--aside-panel-left);
+
+}
+
+/* Posición del panel de gestión de contenido */
+.aside__panel--content {
+    top: 134px;
+    left: var(--aside-panel-left);
+}
+
+/* Posición del panel de bibliotecas */
+.aside__panel--library {
+    top: 244px;
+    left: var(--aside-panel-left);
+}
+
+/* Posición del panel de reportes */
+.aside__panel--reports {
+    top: 350px;
+    left: var(--aside-panel-left);
+}
+
+
+
+
+
+
+
+/* --- Estilos para la sección de feed --- */
+.feed {
+    display: grid;
+    /* Habilita grid para el layout del feed */
+    grid-column: 2/3;
+    /* El feed ocupa la segunda columna del grid principal */
+    grid-row: 2/3;
+    /* El feed ocupa la segunda fila del grid principal */
+    align-self: self-start;
+    /* Se alinea al inicio de su área de grid */
+}
+
+/* Contenido del feed */
+.feed__content {
+    display: flex;
+    /* Usa flexbox para alinear los elementos hijos */
+    flex-direction: column;
+    /* Apila los elementos hijos verticalmente */
+    align-items: center;
+    /* Centra horizontalmente los elementos hijos */
+}
+
+/* Texto del feed */
+.feed__text {
+    font-family: var(--font-family-main);
+    /* Establece la fuente del texto */
+    font-optical-sizing: auto;
+    /* Permite que el navegador ajuste el tamaño óptico de la fuente */
+    font-weight: var(--font-weight-light);
+    /* Establece el grosor de la fuente */
+    font-style: normal;
+    /* Establece el estilo de la fuente a normal */
+    color: var(--color-text-light);
+    /* Establece el color del texto */
+    font-size: var(--font-size-body);
+    /* Establece el tamaño de la fuente */
+}
+
+/* Imagen del feed */
+.feed__image {
+    width: 256px;
+    /* Establece el ancho de la imagen */
+}
+
+
+/* --- Estilos para el menú de usuario --- */
+
+/* Botón para cerrar el menú de usuario */
+.menu-user__close {
+    position: absolute;
+    /* Posicionamiento absoluto respecto al contenedor 'menu-user' */
+    text-decoration: none;
+    /* Quita el subrayado del enlace */
+    color: var(--color-text);
+    /* Color del icono de cierre */
+    z-index: var(--z-index);
+    /* Se asegura que esté por encima de otros elementos del menú */
+    margin: var(--spacing-medium);
+    /* Espaciado interior */
+    right: 0;
+    /* Lo posiciona a la derecha del contenedor */
+}
+
+
+/* Contenedor principal del menú de usuario */
+.menu-user {
+    visibility: hidden;
+    /* Por defecto, el menú no es visible */
+    display: grid;
+    /* Usa CSS Grid para su layout interno */
+    position: absolute;
+    /* Se superpone al contenido normal de la página */
+    z-index: var(--z-index);
+    /* Se apila por encima del contenido base */
+
+    grid-column: 2/2;
+
+    grid-row: 2/2;
+
+    justify-self: center;
+    /* Se centra horizontalmente en su contenedor grid padre */
+    border-radius: var(--border-radius-medium);
+    /* Bordes redondeados */
+    background-color: var(--color-background-container);
+    /* Color de fondo */
+    width: 285px;
+    /* Ancho del menú */
+    height: 450px;
+    /* Altura del menú */
+
+    /* Define las filas del grid interno del menú */
+    grid-template-rows:
+        100px
+        /* Fila 1 (Para el ícono de avatar) */
+        30px
+        /* Fila 2 (Para la línea separadora) */
+        40px
+        /* Fila 3 (Administrador) */
+        40px
+        /* Fila 4 (ID) */
+        40px
+        /* Fila 5 (Correo) */
+        40px
+        /* Fila 6 (Permisos) */
+        170px;
+    /* Fila 7 (Botón de cierre de sesión) */
+}
+
+
+/* Avatar dentro del menú de usuario */
+.menu-user__avatar {
+    margin-top: var(--spacing-xsmall);
+    /*
+    width: 60px;
+    /* Ancho del avatar */
+    justify-self: center;
+    /* Centrado horizontal en su fila */
+    align-self: center;
+    /* Centrado vertical en su fila */
+}
+
+/* Línea separadora horizontal */
+.menu-user__separador {
+    width: 247px;
+    /* Ancho de la línea */
+    height: var(--line-width-thin);
+    /* Grosor de la línea */
+    background-color: var(--color-separator);
+    /* Color de la línea */
+    justify-self: center;
+    /* Centrado horizontal */
+    align-self: center;
+    /* Centrado vertical */
+}
+
+/* Estilo de texto genérico para los elementos del menú */
+.menu-user__text {
+    justify-self: start;
+    /* Alineado a la izquierda de su celda */
+    align-self: center;
+    /* Centrado verticalmente */
+    margin-left: var(--spacing-xlarge);
+    /* Margen izquierdo para no pegarse al borde */
+    font-family: var(--font-family-main);
+    /* Fuente principal */
+    font-optical-sizing: auto;
+    /* Ajuste óptico de la fuente */
+    font-weight: var(--font-weight-light);
+    /* Grosor de fuente ligero */
+    font-style: normal;
+    /* Estilo de fuente normal */
+    color: var(--color-text-light);
+    /* Color de texto claro (blanco) */
+    font-size: var(--font-size-body);
+    /* Tamaño de la fuente */
+}
+
+/* Muestra el menú de usuario cuando es el objetivo de la URL */
+.menu-user--hidden:target {
+    visibility: visible;
+    /* Hace que el menú sea visible */
+}
+
+/* Contenedor para agrupar un icono y un texto */
+.menu-user__group {
+    display: flex;
+    /* Usa flexbox para alinear icono y texto */
+    gap: var(--spacing-small);
+    /* Espacio entre el icono y el texto */
+    justify-content: start;
+    /* Alinea los elementos al inicio */
+    margin-left: var(--spacing-xlarge);
+    /* Margen izquierdo para todo el grupo */
+    height: var(--menu-row-height);
+    /* Altura del grupo */
+}
+
+/* Título dentro de un grupo (ej. "Permisos:") */
+.menu-user__group-title {
+    color: var(--color-text-light);
+    /* Color del texto */
+}
+
+/* Estilo para el botón de "Modelo" */
+.menu-user__Model {
+    display: flex;
+    /* Usa flexbox */
+    gap: var(--spacing-xsmall);
+    /* Espacio entre icono y texto del modelo */
+    width: 110px;
+    /* Ancho del botón */
+    height: var(--menu-row-height);
+    /* Altura del botón */
+    background-color: var(--background-color-nav-subline);
+    /* Color de fondo */
+    justify-content: center;
+    /* Centra el contenido horizontalmente */
+    align-items: center;
+    /* Centra el contenido verticalmente */
+    border-radius: var(--border-radius-small);
+    /* Bordes redondeados */
+    color: var(--color-text-light);
+    /* Color del texto */
+    font-weight: var(--font-weight-thin);
+    /* Grosor de la fuente */
+    transform: translateY(-6px);
+    /* Mueve el botón 6px hacia arriba */
+}
+
+/* Icono de configuración (engranaje) dentro del botón de modelo */
+.menu-user__setting-icon {
+    width: var(--size-icon-tiny);
+    /* Ancho del icono */
+    height: 10px;
+    /* Altura del icono */
+}
+
+
+/* Botón de cerrar sesión */
+.menu-user__button {
+    width: 178px;
+    /* Ancho del botón */
+    height: 44px;
+    /* Altura del botón */
+    border-radius: var(--border-radius-pill);
+    /* Bordes muy redondeados para hacerlo ovalado */
+    justify-self: center;
+    /* Centrado horizontal en su celda */
+    align-self: center;
+    /* Centrado vertical en su celda */
+}
+
+/* Enlace dentro del botón de cerrar sesión */
+.menu-user__link {
+    text-decoration: none;
+    /* Quita el subrayado del enlace */
+    color: var(--color-text-buton);
+    /* Usa el color rojo definido en las variables */
+}
+
+
+
+@media (min-width: 1024px) {
+
+    .aside__panel {
+        visibility: hidden;
+    }
+
+    .aside__panel:hover,
+    .aside__link--navi:hover+.aside__panel {
+        visibility: visible;
+
+    }
+
+}
