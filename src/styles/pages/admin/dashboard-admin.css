@@ -118,6 +118,10 @@ body {
 }
 
 
+.aside__icon {
+    object-fit: contain;
+}
+
 /* Alineación para todos los iconos dentro de las celdas del grid del aside */
 .aside__link {
     justify-self: center;
