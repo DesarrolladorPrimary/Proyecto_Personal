@@ -273,7 +273,7 @@ body {
     color: var(--color-text-light);
     border-radius: 8px;
     padding: 4px 14px;
-    font-size: 13px;
+    font-size: var(--font-size-small);
     cursor: pointer;
 }
 
@@ -289,7 +289,7 @@ body {
     gap: 6px;
     cursor: pointer;
     color: var(--color-text-light);
-    font-size: 13px;
+    font-size: var(--font-size-small);
 }
 
 .poly-modal__choice-input {
@@ -653,7 +653,7 @@ body {
     background-color: rgba(255, 255, 255, 0.15);
     color: var(--color-text-light);
     text-decoration: none;
-    font-size: 13px;
+    font-size: var(--font-size-small);
 }
 
 .poly-aside {
@@ -676,7 +676,7 @@ body {
 .poly-aside__title {
     font-weight: bold;
     color: var(--color-text-light);
-    font-size: 13px;
+    font-size: var(--font-size-small);
 }
 
 .poly-aside__button {
@@ -716,7 +716,7 @@ body {
     color: var(--color-text-light);
     font-weight: 300;
     margin-left: 10px;
-    font-size: 13px;
+    font-size: var(--font-size-small);
 }
 
 .poly-aside__chat-opciones {
@@ -767,7 +767,7 @@ body {
     margin-left: 5px;
     background-color: transparent;
     border: none;
-    font-size: 13px;
+    font-size: var(--font-size-small);
     font-family: "Inter", sans-serif;
     font-weight: 300;
     /* light */
@@ -837,7 +837,7 @@ body {
 
     .header__nav {
         margin-left: 10px;
-    }   
+    }
 
     .header__logo {
         margin-right: 10px;

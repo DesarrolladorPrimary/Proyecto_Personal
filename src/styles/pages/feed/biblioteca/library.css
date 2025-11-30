@@ -99,7 +99,7 @@ body {
 }
 
 .book-card__title {
-    font-size: 13px;
+font-size: var(--font-size-small);
     text-align: center;
     font-family: var(--font-family-main);
     color: white;

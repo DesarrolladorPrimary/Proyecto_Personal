@@ -76,7 +76,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 197px;    
+    width: 197px;
     height: 37px;
     border-radius: 7px;
     background-color: var(--color-background-container);
@@ -85,10 +85,10 @@ body {
 }
 
 
-.creative-input__link{
+.creative-input__link {
     text-decoration: none;
     color: var(--color-text-light);
-    font-size: 13px;
+    font-size: var(--font-size-small);
 }
 
 
@@ -113,7 +113,7 @@ body {
 .creative-aside__title {
     font-weight: bold;
     color: var(--color-text-light);
-    font-size: 13px;
+    font-size: var(--font-size-small);
 }
 
 .creative-aside__button {
@@ -153,7 +153,7 @@ body {
     color: var(--color-text-light);
     font-weight: 300;
     margin-left: 10px;
-    font-size: 13px;
+    font-size: var(--font-size-small);
 }
 
 .creative-aside__chat-options {
@@ -197,7 +197,7 @@ body {
     margin-left: 5px;
     background-color: transparent;
     border: none;
-    font-size: 13px;
+    font-size: var(--font-size-small);
     font-family: "Inter", sans-serif;
     font-weight: 300;
     font-style: italic;

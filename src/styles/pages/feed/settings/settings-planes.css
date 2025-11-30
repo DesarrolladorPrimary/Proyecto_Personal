@@ -9,11 +9,11 @@ body {
 .plans {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr ;
+  grid-template-rows: auto 1fr;
   color: var(--color-text-light);
 }
 
-.plans-header{
+.plans-header {
   grid-column: 1/2;
   grid-row: 1/2;
   display: flex;
@@ -30,8 +30,8 @@ body {
 }
 
 .plans__subtitle {
-   font-size: 14px;
-   font-weight: lighter;
+  font-size: 14px;
+  font-weight: lighter;
 }
 
 
@@ -59,7 +59,7 @@ body {
 
 }
 
-.plan-card__title{
+.plan-card__title {
   font-size: 19px;
   font-weight: lighter;
   font-family: var(--font-family-poppins);
@@ -78,7 +78,7 @@ body {
 
 
 .plan-card__feature-text {
-  font-size: 13px;
+  font-size: var(--font-size-small);
   font-weight: lighter;
   font-family: var(--font-family-poppins);
 }
@@ -99,5 +99,3 @@ body {
 .plan-card__button--upgrade {
   width: 181px;
 }
-
-

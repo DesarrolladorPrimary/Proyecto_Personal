@@ -21,7 +21,7 @@
     border: none;
     border-radius: 3px;
     font-family: var(--font-family-main);
-    font-size: 13px;
+    font-size: var(--font-size-small);
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;

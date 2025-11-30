@@ -55,7 +55,7 @@ body {
 
 .shelf-card__name {
     font-family: var(--font-family-main);
-    font-size: 13px;
+    font-size: var(--font-size-small);
     color: var(--color-text-light);
     font-weight: 400;
     text-align: center;

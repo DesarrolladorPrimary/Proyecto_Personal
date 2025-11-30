@@ -9,13 +9,19 @@ body {
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100vw;
+  overflow: hidden;
+  padding: 0 var(--spacing-large);
 }
 
 .main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100vw;
+  overflow: hidden;
+  padding: 0 var(--spacing-large);
 }

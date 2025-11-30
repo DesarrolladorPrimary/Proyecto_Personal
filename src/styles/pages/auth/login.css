@@ -1,3 +1,4 @@
+
 /* Estilos específicos de la página de login */
 
 body {
@@ -8,7 +9,7 @@ body {
     flex-direction: column;
 }
 
-.header__title{
+.header__title {
     font-family: var(--font-family-main);
     font-optical-sizing: auto;
     font-weight: var(--font-weight-regular);
@@ -34,7 +35,7 @@ body {
 }
 
 
-.form__input:focus{
+.form__input:focus {
     outline: none;
     border: 1px solid var(--auth-input-focus-border);
 }
@@ -56,7 +57,7 @@ body {
 
 .form__contrasena {
     transform: translateX(-70px);
-    font-size: 13px;
+    font-size: var(--font-size-small);
 }
 
 .recover-link {
@@ -70,8 +71,8 @@ body {
 }
 
 .button-link {
-     text-decoration: none;
-     color: var(--color-text);
+    text-decoration: none;
+    color: var(--color-text);
 }
 
 .main {
@@ -86,6 +87,3 @@ body {
 .footer__text {
     font-family: var(--font-family-main);
 }
-
-
-
