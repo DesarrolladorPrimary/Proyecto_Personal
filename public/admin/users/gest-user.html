@@ -73,12 +73,12 @@
         </div>
 
         <div class="user-card__actions">
-          <button class="user-card__button user-card__button--suspend">
+          <label for="modal-confirm-suspend" class="user-card__button user-card__button--suspend">
             <span>⚠️ Suspender</span>
-          </button>
-          <button class="user-card__button user-card__button--delete">
+          </label>
+          <label for="modal-confirm-delete" class="user-card__button user-card__button--delete">
             <span>❌ Eliminar</span>
-          </button>
+          </label>
         </div>
 
         <div class="user-card__separator"></div>
@@ -86,7 +86,56 @@
     </main>
 
     <footer class="footer-nav">
-      <div class="footer-nav__line"></div>
+      <a href="../dashboard-admin.html" class="footer-nav__line"></a>
     </footer>
-  </body>
+
+    <!-- Estados de los Modales -->
+    <input type="radio" name="modal-state" id="modal-close" class="modal-state" checked />
+    <input type="radio" name="modal-state" id="modal-confirm-delete" class="modal-state" />
+    <input type="radio" name="modal-state" id="modal-confirm-suspend" class="modal-state" />
+    <input type="radio" name="modal-state" id="modal-success-delete" class="modal-state" />
+    <input type="radio" name="modal-state" id="modal-success-suspend" class="modal-state" />
+
+    <!-- Modal de Advertencia (Eliminar) -->
+    <div class="modal modal--confirm-delete">
+      <div class="modal__content">
+        <h2 class="modal__title">Advertencia</h2>
+        <p class="modal__message">¿Desea en verdad eliminar el usuario?</p>
+        <div class="modal__actions">
+          <label for="modal-success-delete" class="modal__button">Si</label>
+          <label for="modal-close" class="modal__button">No</label>
+        </div>
+      </div>
+      <label for="modal-close" class="modal__overlay"></label>
+    </div>
+
+    <!-- Modal de Advertencia (Suspender) -->
+    <div class="modal modal--confirm-suspend">
+      <div class="modal__content">
+        <h2 class="modal__title">Advertencia</h2>
+        <p class="modal__message">¿Desea en verdad suspender el usuario?</p>
+        <div class="modal__actions">
+          <label for="modal-success-suspend" class="modal__button">Si</label>
+          <label for="modal-close" class="modal__button">No</label>
+        </div>
+      </div>
+      <label for="modal-close" class="modal__overlay"></label>
+    </div>
+
+    <!-- Modal de Éxito (Eliminar) -->
+    <div class="modal modal--success-delete">
+      <div class="modal__content modal__content--success">
+        <p class="modal__message">El usuario fue eliminado con exito</p>
+      </div>
+      <!-- Cierra automáticamente al hacer click o se puede dejar fijo -->
+      <label for="modal-close" class="modal__overlay"></label>
+    </div>
+
+    <!-- Modal de Éxito (Suspender) -->
+    <div class="modal modal--success-suspend">
+      <div class="modal__content modal__content--success">
+        <p class="modal__message">El usuario fue suspendido</p>
+      </div>
+      <label for="modal-close" class="modal__overlay"></label>
+    </div>
 </html>
