@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link rel="stylesheet" href="../../../src/styles/components/layout.css" />
+    <link rel="stylesheet" href="../../../src/styles/layout.css" />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/pages/admin/gest-plans.css"
+    />
+    <title>Gestión de Planes</title>
+  </head>
+  <body>
+    <header class="plans-header">
+      <h1 class="plans-header__title">Planes Actuales</h1>
+      <div class="plans-header__separator"></div>
+      <div class="plans-header__history">
+        <p class="plans-header__history-title">Historial de pagos</p>
+        <a href="" class="plans-header__history-link">
+          <span class="plans-header__history-icon">🔍</span>
+          <span class="plans-header__history-text">ver</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="plan-card plan-card--basic">
+        <h2 class="plan-card__title">
+          <span class="plan-card__title-icon">📚</span>
+          Plan Gratuito
+        </h2>
+        <ul class="plan-card__features">
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">
+              ✅ Acceso básico a la biblioteca
+            </p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✅ Crear y guardar relatos</p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">
+              ✅ Chat con Poly limitado (modelo low)
+            </p>
+          </li>
+        </ul>
+        <p class="plan-card__storage">⚙️ Espacio: 500 MB</p>
+        <p class="plan-card__status">Estado: Activo</p>
+      </div>
+      <div class="plan-card plan-card--premium">
+        <h2 class="plan-card__title">
+          <span class="plan-card__title-icon">💎</span>
+          Plan Premium
+        </h2>
+        <ul class="plan-card__features">
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">
+              ✨ Acceso a IA avanzada (Poly completa)
+            </p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">
+              ✨ Más herramientas de redacción
+            </p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">
+              ✨ Respuestas extendidas y coherentes
+            </p>
+          </li>
+          <li class="plan-card__feature">
+            <p class="plan-card__feature-text">✨ Espacio ilimitado</p>
+          </li>
+        </ul>
+        <p class="plan-card__status">Estado: Activo</p>
+      </div>
+    </main>
+
+    <footer class="footer-nav">
+      <a href="" class="footer-nav__line"></a>
+    </footer>
+  </body>
+</html>
