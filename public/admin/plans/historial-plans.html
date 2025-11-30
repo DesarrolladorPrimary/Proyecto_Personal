@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link rel="stylesheet" href="../../../src/styles/components/layout.css" />
+    <link rel="stylesheet" href="../../../src/styles/layout.css" />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/pages/admin/historial-plans.css"
+    />
+    <title>Historial de Pagos</title>
+  </head>
+  <body>
+    <header class="history-header">
+      <a href="gest-plans.html" class="history-header__back">
+        <img
+          src="../../../assets/icons/arrow-90deg-left.svg"
+          alt="Volver"
+          class="history-header__back-icon"
+        />
+      </a>
+      <h1 class="history-header__title">Historial Pagos</h1>
+      <div class="history-header__separator"></div>
+    </header>
+
+    <main class="history-content">
+      <div class="payment-table">
+        <div class="payment-table__header">
+          <div class="payment-table__column">ID Transacción</div>
+          <div class="payment-table__column">Usuario</div>
+          <div class="payment-table__column">Fecha</div>
+          <div class="payment-table__column">Estado</div>
+        </div>
+
+        <div class="payment-table__body">
+          <div class="payment-row">
+            <div class="payment-row__cell">A12345</div>
+            <div class="payment-row__cell">juan@example.com</div>
+            <div class="payment-row__cell">10/04/2024</div>
+            <div class="payment-row__cell">
+              <span class="payment-status payment-status--success">Éxito</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </body>
+</html>
