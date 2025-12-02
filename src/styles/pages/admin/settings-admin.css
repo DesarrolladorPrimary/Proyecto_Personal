@@ -1,0 +1,133 @@
+/* ============================================
+   LAYOUT GENERAL
+   ============================================ */
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh;
+    background-color: var(--background-color-body-feed);
+    padding: 0;
+    margin: 0;
+}
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+.settings-main {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================
+   SECCIÓN DE CONTENIDO
+   ============================================ */
+.settings-section {
+    padding: 20px 20px;
+    margin-bottom: 40px;
+}
+
+.settings-section__title {
+    font-family: var(--font-family-poppins);
+    font-size: 20px;
+    color: var(--color-text-light);
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* ============================================
+   ACORDEÓN
+   ============================================ */
+.settings-accordion {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--color-background-container);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    width: 371px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.settings-accordion__checkbox {
+    display: none;
+}
+
+.settings-accordion__trigger {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 31px;
+    height: 63px;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-accordion__content {
+    max-height: 0;
+    overflow: hidden;
+    width: 345px;
+    transition: max-height 0.4s ease;
+    background-color: var(--background-color-nav-subline);
+    padding: 0 20px;
+    margin-bottom: 20px;
+    margin-left: var(--font-size-small);
+}
+
+/* Estado expandido del acordeón */
+.settings-accordion__checkbox:checked~.settings-accordion__content {
+    max-height: 500px;
+    padding: 20px;
+}
+
+.settings-accordion__checkbox:checked~.settings-accordion__trigger .settings-option__value {
+    display: none;
+}
+
+/* Campos dentro del acordeón */
+.settings-accordion__field {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 5px;
+}
+
+.settings-accordion__field:last-child {
+    margin-bottom: 0;
+}
+
+.settings-accordion__label {
+    font-family: var(--font-family-main);
+    font-size: 14px;
+    color: var(--color-text-light);
+    font-weight: 400;
+}
+
+.settings-accordion__value {
+    font-family: var(--font-family-main);
+    font-size: 16px;
+    color: #D0D0D0;
+    font-weight: 300;
+}
+
+/* ============================================
+   MEDIA QUERIES - DESKTOP
+   ============================================ */
+@media (min-width: 1024px) {
+    .settings-main {
+        align-items: center;
+    }
+
+    .settings-footer__delete-btn:hover {
+        background-color: #CC0000;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);
+    }
+
+    .settings-footer__delete-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+    }
+}
