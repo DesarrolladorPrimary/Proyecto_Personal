@@ -1,0 +1,42 @@
+.settings-header__top:nth-child(1) {
+    position: relative;
+    right: 32px;
+}
+
+.settings-header__top {
+    gap: 109px;
+}
+
+
+.model-main {
+    display: flex;
+    justify-content: center;
+}
+
+.model-section {
+    display: flex;
+    flex-direction: column;
+    height: 636px;
+    width: 370px;
+    border: 1px solid black;
+    border-radius: 6px;
+    font-family: var(--font-family-main);
+    font-weight: 300;
+    font-size: var(--font-size-small);
+    color: var(--color-text-light);
+    background-color: var(--color-background-container);
+    gap: 20px;
+    justify-content: space-evenly ;
+    padding: 10px 10px 10px 10px;
+}
+
+
+
+
+
+
+
+.model-features__item{
+    margin-left: 30px;
+    margin-top: 5px;
+}
