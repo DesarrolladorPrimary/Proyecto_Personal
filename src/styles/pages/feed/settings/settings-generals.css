@@ -152,8 +152,9 @@ body {
 }
 
 @media (min-width: 1024px) {
+
     body {
-        width: 600px;
+        width: auto;
     }
 
     .settings-dropdown {

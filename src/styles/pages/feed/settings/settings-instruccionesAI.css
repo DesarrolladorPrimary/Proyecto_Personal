@@ -114,7 +114,18 @@ body {
 
 
 @media (min-width:1024px) {
+    
+    .ai-instructions__input {
+        width: 500px
+    }
 
+    .ai-instructions__input::placeholder {
+    color: #999;
+    text-align:center;
+    line-height:20px;
+
+}
+    
     .ai-instructions__btn:hover {
         background-color: #1976D2;
     }

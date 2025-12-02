@@ -190,8 +190,8 @@ body {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
-    height: 600px;
-    width: 360px;
+    height: 100vh;
+    width: 100wh;
 }
 
 .canvas-book-modal:target {
@@ -308,8 +308,8 @@ body {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
-    height: 600px;
-    width: 360px;
+    height: 100vh;
+    
 
 }
 

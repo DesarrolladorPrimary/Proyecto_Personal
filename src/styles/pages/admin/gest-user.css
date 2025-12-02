@@ -250,6 +250,11 @@ span.user-card__icon {
 }
 
 @media (min-width: 1024px) {
+    .header {
+        margin: 0 0 20px 0;
+    }
+
+    
     .header__title {
         font-size: 24px;
     }
@@ -293,5 +298,9 @@ span.user-card__icon {
 
     .modal__message {
         font-size: 18px;
+    }
+
+    .footer-nav__line {
+        margin-bottom: 20px;
     }
 }

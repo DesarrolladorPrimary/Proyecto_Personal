@@ -186,4 +186,8 @@ body {
     .plan-card__status {
         font-size: 15px;
     }
+
+    .footer-nav__line {
+        margin-bottom: 10px;
+    }
 }
