@@ -86,3 +86,21 @@ body {
 .footer__text {
     font-family: var(--font-family-main);
 }
+
+@media (min-width: 1024px) {
+    .header__title {
+        font-size: 28px;
+        margin-top: 60px;
+    }
+
+    .form {
+        gap: 30px;
+        margin: 50px;
+    }
+
+    .button {
+        transform: translateY(120px);
+        font-size: 18px;
+        padding: 10px 20px;
+    }
+}

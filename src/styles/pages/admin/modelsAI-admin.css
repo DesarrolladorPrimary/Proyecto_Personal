@@ -26,17 +26,27 @@
     color: var(--color-text-light);
     background-color: var(--color-background-container);
     gap: 20px;
-    justify-content: space-evenly ;
+    justify-content: space-evenly;
     padding: 10px 10px 10px 10px;
 }
 
-
-
-
-
-
-
-.model-features__item{
+.model-features__item {
     margin-left: 30px;
     margin-top: 5px;
+}
+
+@media (min-width: 1024px) {
+    .model-section {
+        width: 500px;
+        height: 700px;
+        padding: 20px;
+    }
+
+    .settings-header__top {
+        gap: 150px;
+    }
+
+    .settings-header__top:nth-child(1) {
+        right: 50px;
+    }
 }

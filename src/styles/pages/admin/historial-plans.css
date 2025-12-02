@@ -151,4 +151,26 @@ body {
     font-size: 14px;
 }
 
+@media (min-width: 1024px) {
+    .history-header__title {
+        font-size: 24px;
+    }
 
+    .history-header__separator {
+        width: 500px;
+    }
+
+    .payment-table {
+        max-width: 800px;
+        padding: 30px;
+    }
+
+    .payment-table__column,
+    .payment-row__cell {
+        font-size: 14px;
+    }
+
+    .payment-status {
+        font-size: 14px;
+    }
+}

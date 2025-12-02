@@ -249,7 +249,49 @@ span.user-card__icon {
     display: flex;
 }
 
-/* Optional: Animation for success modal to fade out automatically? 
-   CSS cannot uncheck a radio button automatically. 
-   The user must click the overlay to close it. 
-*/
+@media (min-width: 1024px) {
+    .header__title {
+        font-size: 24px;
+    }
+
+    .header__search-form {
+        width: 350px;
+        height: 40px;
+    }
+
+    .header__search-input {
+        width: 300px;
+        font-size: 16px;
+    }
+
+    .header__separator {
+        width: 450px;
+    }
+
+    .user-card {
+        width: 450px;
+        padding: 25px;
+    }
+
+    .user-card__row {
+        font-size: 18px;
+    }
+
+    .user-card__button {
+        font-size: 15px;
+        padding: 10px 20px;
+    }
+
+    .modal__content {
+        width: 400px;
+        padding: 40px;
+    }
+
+    .modal__title {
+        font-size: 22px;
+    }
+
+    .modal__message {
+        font-size: 18px;
+    }
+}

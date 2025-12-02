@@ -29,3 +29,16 @@
     width: 124.62px;
     height: 34px;
 }
+
+@media (min-width: 1024px) {
+    .settings-footer__container {
+        width: 500px;
+        height: 70px;
+    }
+
+    .settings-footer__delete-btn {
+        width: 150px;
+        height: 40px;
+        font-size: 14px;
+    }
+}

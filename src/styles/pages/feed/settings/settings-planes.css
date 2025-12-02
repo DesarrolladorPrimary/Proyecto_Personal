@@ -99,3 +99,36 @@ body {
 .plan-card__button--upgrade {
   width: 181px;
 }
+
+@media (min-width: 1024px) {
+  .plans__title {
+    font-size: 24px;
+  }
+
+  .plans__subtitle {
+    font-size: 16px;
+  }
+
+  .plan-card {
+    width: 450px;
+    height: 300px;
+  }
+
+  .plan-card__title {
+    font-size: 22px;
+  }
+
+  .plan-card__feature-text {
+    font-size: 15px;
+  }
+
+  .plan-card__button {
+    width: 150px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .plan-card__button--upgrade {
+    width: 200px;
+  }
+}

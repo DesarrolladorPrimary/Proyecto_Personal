@@ -25,3 +25,11 @@ body {
   overflow: hidden;
   padding: 0 var(--spacing-large);
 }
+
+@media (min-width: 1024px) {
+
+  .header,
+  .main {
+    padding: 0 60px;
+  }
+}

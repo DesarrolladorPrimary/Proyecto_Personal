@@ -101,3 +101,16 @@
     font-size: var(--text-width);
     padding: 7px;
 }
+
+@media (min-width: 1024px) {
+    :root {
+        /* Auth login/register - Ampliar inputs para desktop */
+        --auth-input-width: 400px;
+
+        /* Recovery pages - Ampliar contenedores para mejor legibilidad */
+        --recovery-input-width: 300px;
+        --recovery-container-width: 400px;
+        --recovery-container-height: 520px;
+        --recovery-button-width: 220px;
+    }
+}

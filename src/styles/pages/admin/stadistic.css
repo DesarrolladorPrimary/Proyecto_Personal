@@ -263,3 +263,36 @@ body {
     font-family: var(--font-family-main);
     transition: opacity 0.3s ease;
 }
+
+@media (min-width: 1024px) {
+
+    .stats-header,
+    .stats-content,
+    .stats-footer {
+        max-width: 500px;
+    }
+
+    .stats-header__title {
+        font-size: 22px;
+    }
+
+    .stats-card {
+        padding: 20px 25px;
+    }
+
+    .stats-card__label,
+    .stats-card__subtitle,
+    .stats-section__title,
+    .stats-item__text {
+        font-size: 16px;
+    }
+
+    .stats-card__value {
+        font-size: 18px;
+    }
+
+    .stats-footer__button {
+        font-size: 15px;
+        padding: 14px 28px;
+    }
+}

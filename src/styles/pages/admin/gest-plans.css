@@ -159,3 +159,31 @@ body {
     grid-column: 1/2;
     grid-row: 3/4;
 }
+
+@media (min-width: 1024px) {
+
+    .plans-header__separator,
+    .plans-header__history {
+        width: 450px;
+    }
+
+    .plans-header__title {
+        font-size: 24px;
+    }
+
+    .plan-card {
+        width: 450px;
+        height: 280px;
+        padding: 25px 30px;
+    }
+
+    .plan-card__title {
+        font-size: 20px;
+    }
+
+    .plan-card__feature-text,
+    .plan-card__storage,
+    .plan-card__status {
+        font-size: 15px;
+    }
+}

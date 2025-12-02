@@ -100,3 +100,22 @@ body {
 .recovery-password__input--confirm {
     transform: translateY(40px);
 }
+
+@media (min-width: 1024px) {
+    .recovery-password__title {
+        font-size: 20px;
+    }
+
+    .recovery-password__description {
+        font-size: 15px;
+    }
+
+    .recovery-password__form-requirement {
+        font-size: 13px;
+    }
+
+    .recovery-password__button {
+        transform: translateY(50px);
+        font-size: 12px;
+    }
+}

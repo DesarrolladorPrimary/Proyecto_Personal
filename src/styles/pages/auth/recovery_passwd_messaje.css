@@ -14,7 +14,7 @@ body {
     align-items: center;
 }
 
-.recovery-password__container{
+.recovery-password__container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,7 +27,7 @@ body {
     transform: translateY(-150px);
 }
 
-.recovery-password__title{
+.recovery-password__title {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     font-style: 200;
@@ -35,10 +35,26 @@ body {
     font-size: var(--recovery-font-size-title);
 }
 
-.recovery-password__description{
+.recovery-password__description {
     font-family: "Inter", sans-serif;
     font-weight: 300;
     font-style: normal;
     color: var(--color-text-light);
     text-align: center;
+}
+
+@media (min-width: 1024px) {
+    .recovery-password__container {
+        width: 380px;
+        height: 380px;
+    }
+
+    .recovery-password__title {
+        font-size: 20px;
+    }
+
+    .recovery-password__description {
+        font-size: 15px;
+        padding: 0 20px;
+    }
 }
