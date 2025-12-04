@@ -48,7 +48,7 @@
     --aside-position-top: 150px;
     --aside-panel-width: 230px;
     --aside-panel-height: 56px;
-    --aside-panel-left: 80px;
+    --aside-panel-left: 90px;
     --menu-row-height: 30px;
     --color-separator: #ccc;
 
@@ -86,8 +86,6 @@
     --recovery-button-padding: 7px;
 }
 
-
-
 .button {
     text-decoration: var(--decoration-text);
     color: var(--color-text);
@@ -102,6 +100,34 @@
     padding: 7px;
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+    :root {
+        /* Auth login/register - Tamaño intermedio */
+        --auth-input-width: 350px;
+        --auth-input-height: 50px;
+
+        /* Recovery pages - Ajustes para tablet */
+        --recovery-input-width: 260px;
+        --recovery-container-width: 350px;
+        --recovery-container-height: 490px;
+        --recovery-button-width: 200px;
+
+        /* Espaciados más amplios */
+        --spacing-large: 35px;
+        --spacing-xlarge: 50px;
+
+        /* Tipografía más grande */
+        --font-size-body: 14px;
+        --font-size-small: 14px;
+    }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
     :root {
         /* Auth login/register - Ampliar inputs para desktop */
@@ -112,5 +138,36 @@
         --recovery-container-width: 400px;
         --recovery-container-height: 520px;
         --recovery-button-width: 220px;
+
+        /* Espaciados desktop */
+        --spacing-large: 40px;
+        --spacing-xlarge: 60px;
+
+        /* Aside - Ajustes para desktop */
+        --aside-width: 120px;
+        --aside-height: 480px;
+    }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+    :root {
+        /* Auth - Inputs más amplios */
+        --auth-input-width: 450px;
+        --auth-input-height: 52px;
+
+        /* Recovery - Contenedores más grandes */
+        --recovery-input-width: 350px;
+        --recovery-container-width: 450px;
+        --recovery-container-height: 550px;
+        --recovery-button-width: 250px;
+
+        /* Tipografía para pantallas grandes */
+        --font-size-body: 15px;
+        --font-size-small: 14px;
+
+        /* Espaciados generosos */
+        --spacing-large: 45px;
+        --spacing-xlarge: 70px;
     }
 }

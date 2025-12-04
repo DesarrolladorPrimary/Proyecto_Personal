@@ -4,8 +4,6 @@ body {
   grid-template-rows: auto 1fr;
 }
 
-
-
 .plans {
   display: grid;
   grid-template-columns: 1fr;
@@ -34,7 +32,6 @@ body {
   font-weight: lighter;
 }
 
-
 .plans__container {
   grid-column: 1/2;
   grid-row: 2/3;
@@ -44,7 +41,6 @@ body {
   align-items: center;
   gap: 30px;
 }
-
 
 .plan-card {
   display: flex;
@@ -56,7 +52,6 @@ body {
   height: 265px;
   background-color: var(--background-color-nav-subline);
   border-radius: 10px;
-
 }
 
 .plan-card__title {
@@ -64,7 +59,6 @@ body {
   font-weight: lighter;
   font-family: var(--font-family-poppins);
 }
-
 
 .plan-card__feature {
   list-style: none;
@@ -75,7 +69,6 @@ body {
   flex-direction: column;
   gap: 10px;
 }
-
 
 .plan-card__feature-text {
   font-size: var(--font-size-small);
@@ -93,12 +86,75 @@ body {
   font-weight: lighter;
   font-family: var(--font-family-poppins);
   font-size: 14px;
+
+}
+
+.plan-card__button-label{
+  cursor: pointer;
 }
 
 
 .plan-card__button--upgrade {
   width: 181px;
 }
+
+.payment-loading {
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-loading__container {
+  display: flex;
+  padding: 10px 25px 10px 25px;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  width: 345px;
+  height: 265px;
+  background-color: #2a2727;
+  border-radius: 11px;
+}
+
+.payment-loading__title {
+  font-family: var(--font-family-poppins);
+  font-size: 27px;
+  font-weight: 500;
+  color: var(--color-text-light);
+}
+
+.payment-loading__text {
+  font-family: var(--font-family-poppins);
+  font-size: 13px;
+  font-weight: lighter;
+  color: var(--color-text-light);
+}
+
+
+.payment-loading__video {
+  width: 128px;
+  height: 128px;
+}
+
+
+
+#checkPay {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#checkPay:checked + .payment-loading {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
 
 @media (min-width: 1024px) {
   .plans__title {

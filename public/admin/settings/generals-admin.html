@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../../src/styles/components/base.css">
-    <link rel="stylesheet" href="../../../src/styles/components/settings-header.css">
-    <link rel="stylesheet" href="../../../src/styles/components/settings-option.css">
-    <link rel="stylesheet" href="../../../src/styles/pages/admin/generals-admin.css">
-    <link rel="stylesheet" href="../../../src/styles/components/settings-footer.css">
-    <link rel="stylesheet" href="../../../src/styles/layout.css">
+    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/components/settings-header.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/components/settings-option.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/pages/admin/generals-admin.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../../src/styles/components/settings-footer.css"
+    />
+    <link rel="stylesheet" href="../../../src/styles/layout.css" />
 
     <title>Configuraciones Generales - Admin</title>
-</head>
-<body>
+  </head>
+  <body>
     <header class="settings-header">
       <div class="settings-header__top">
         <a href="../dashboard-admin.html" class="settings-header__back">
@@ -70,10 +82,14 @@
             <button class="settings-dropdown__btn settings-dropdown__btn--dark">
               Oscuro
             </button>
-            <button class="settings-dropdown__btn settings-dropdown__btn--light">
+            <button
+              class="settings-dropdown__btn settings-dropdown__btn--light"
+            >
               Blanco
             </button>
-            <button class="settings-dropdown__btn settings-dropdown__btn--system">
+            <button
+              class="settings-dropdown__btn settings-dropdown__btn--system"
+            >
               Sistema
             </button>
           </div>
@@ -82,7 +98,10 @@
         <!-- Notificaciones -->
         <div class="settings-option">
           <span class="settings-option__label">Notificación</span>
-          <input type="range" />
+          <label class="switch">
+            <input type="checkbox" />
+            <span class="slider"></span>
+          </label>
         </div>
 
         <!-- Idioma -->
@@ -115,7 +134,9 @@
         <!-- Instrucciones AI -->
         <div class="settings-option">
           <span class="settings-option__label">Modelos:</span>
-          <a href="modelsAI-admin.html" class="settings-option__link">AI (poly)</a>
+          <a href="modelsAI-admin.html" class="settings-option__link"
+            >AI (poly)</a
+          >
         </div>
       </section>
     </main>
@@ -125,5 +146,5 @@
         <button class="settings-footer__delete-btn">Eliminar Cuenta</button>
       </div>
     </footer>
-</body>
+  </body>
 </html>

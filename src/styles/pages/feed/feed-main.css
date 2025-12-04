@@ -6,8 +6,9 @@ body {
     grid-template-columns: repeat(3, 1fr);
     /* Crea 3 columnas de fracciÃ³n igual */
     grid-template-rows: repeat(3, 200px);
-    
-    min-height: 100vh;/* Crea 3 filas de 200px de alto cada una */
+
+    min-height: 100vh;
+    /* Crea 3 filas de 200px de alto cada una */
     position: relative;
     /* Establece un contexto de posicionamiento para elementos hijos absolutos */
 }
@@ -104,7 +105,7 @@ body {
     /* Bordes redondeados definidos por una variable */
 }
 
-/* Estilo para el botÃ³n de cerrar del menÃº lateral (temporal) */
+/* Estilo para el boton de cerrar del menu lateral (temporal) */
 .aside__close {
     position: absolute;
     /* Lo posiciona de forma absoluta dentro del aside */
@@ -117,7 +118,7 @@ body {
 }
 
 
-/* AlineaciÃ³n para todos los iconos dentro de las celdas del grid del aside */
+/* Alineacion para todos los iconos dentro de las celdas del grid del aside */
 .aside__link {
     justify-self: center;
     /* Centra el icono horizontalmente en su celda */
@@ -125,7 +126,7 @@ body {
     /* Centra el icono verticalmente en su celda */
 }
 
-/* Modificadores de tamaÃ±o para cada icono especÃ­fico del menÃº lateral */
+/* Modificadores de tamaño para cada icono especÃ­fico del menu lateral */
 .aside__icon--mind {
     width: 56px;
     /* Ancho para el icono 'mind' */
@@ -150,7 +151,7 @@ body {
 
 
 
-/* Muestra el menÃº lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
+/* Muestra el menu lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
 .aside:target {
     display: grid;
     /* Cambia el display a grid para que sea visible */
@@ -182,7 +183,7 @@ body {
 .aside__panel--poly {
     top: 25px;
     left: var(--aside-panel-left);
-    
+
 }
 
 /* PosiciÃ³n del panel de la secciÃ³n creativa */
@@ -193,7 +194,7 @@ body {
 
 /* PosiciÃ³n del panel de biblioteca */
 .aside__panel--library {
-    top:244px;
+    top: 244px;
     left: var(--aside-panel-left);
 }
 
@@ -283,9 +284,9 @@ body {
     /* Se superpone al contenido normal de la pÃ¡gina */
     z-index: var(--z-index);
     /* Se apila por encima del contenido base */
-   
+
     grid-column: 2/2;
-    
+
     grid-row: 2/2;
 
     justify-self: center;
@@ -451,16 +452,86 @@ body {
 
 
 
-@media (min-width: 1024px) {
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
 
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+    .feed__image {
+        width: 300px;
+    }
+
+    .feed__text {
+        font-size: 15px;
+    }
+
+    .menu-user {
+        width: 320px;
+        height: 480px;
+    }
+}
+
+/* Desktop (1024px - 1279px) */
+@media (min-width: 1024px) {
     .aside__panel {
         visibility: hidden;
     }
 
     .aside__panel:hover,
-    .aside__link--navi:hover + .aside__panel{
+    .aside__link--navi:hover+.aside__panel {
         visibility: visible;
-
     }
 
+    .feed__image {
+        width: 350px;
+    }
+
+    .feed__text {
+        font-size: 16px;
+    }
+
+    .menu-user {
+        width: 350px;
+        height: 500px;
+    }
+
+    .aside__panel--creative {
+        top: 150px;
+    }
+
+    .aside__panel--library {
+        top: 273px
+    }
+
+    .aside__panel--settings {
+        top: 391px;
+    
+}
+
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+    .aside__panel {
+        visibility: hidden;
+    }
+
+    .aside__panel:hover,
+    .aside__link--navi:hover+.aside__panel {
+        visibility: visible;
+    }
+
+    .feed__image {
+        width: 400px;
+    }
+
+    .feed__text {
+        font-size: 18px;
+    }
+
+    .menu-user {
+        width: 380px;
+        height: 520px;
+    }
 }

@@ -502,6 +502,38 @@ body {
 
 }
 
+
+
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+    body {
+        grid-template-columns: 1fr minmax(380px, 450px) 1fr;
+    }
+
+    .canvas-main {
+        max-width: 420px;
+    }
+
+    .canvas-main__title {
+        font-size: 26px;
+    }
+
+    .canvas-main__quill {
+        left: 555px;
+        bottom: 140px
+    }
+
+    .canvas-main__markers {
+        left: 550px;
+        bottom: 140px
+    }
+
+    .canvas-main__divider {
+        width: 320px;
+    }
+}
+
 @media (min-width: 1024px) {
     body {
         grid-template-columns: 1fr minmax(420px, 520px) 1fr;
@@ -521,6 +553,8 @@ body {
         width: 100vh;
         height: auto;
         max-width: none;
+        justify-self:center;
+
     }
 
 
@@ -556,21 +590,22 @@ body {
     }
 
     .canvas-main__divider {
-        width: 627px;
+        width: 100vh;
     }
 
     .canvas-main__quill {
-        left: 850px;
-        bottom: 90px;
+        left: 85rem;
+        bottom: 150px;
     }
 
     .canvas-main__action {
         bottom: 0;
         left: 200px;
+        justify-content:center;
     }
 
     .canvas-main__markers {
-        left: 846px;
+        left: 84rem;
         bottom: 90px;
         padding: 5px;
     }
@@ -578,5 +613,53 @@ body {
 
     .canvas-footer__line {
         margin-bottom: 10px;
+    }
+}
+
+
+
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+    body {
+        grid-template-columns: 1fr minmax(550px, 700px) 1fr;
+    }
+
+    .canvas-main {
+        width: 120vh;
+        padding: 35px;
+    }
+
+    .canvas-main__title {
+        font-size: 28px;
+    }
+
+    .canvas-main__counter {
+        left: 95rem;
+        font-size: 14px;
+    }
+
+    .canvas-main__quill {
+        left: 93rem;
+        width: 70px;
+        height: 70px;
+    }
+
+    .canvas-main__quill--img {
+        width: 75px;
+        height: 75px;
+    }
+
+    .canvas-main__markers {
+        left: 92.7rem;
+        bottom: 150px;
+        width: 75px;
+    }
+
+    .canvas-main__action {
+        left: 28rem;
+        width: 220px;
+        height: 34px;
+        font-size: 16px;
     }
 }

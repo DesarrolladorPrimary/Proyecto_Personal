@@ -456,16 +456,74 @@ body {
 
 
 
-@media (min-width: 1024px) {
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
 
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+    .feed__image {
+        width: 300px;
+    }
+
+    .feed__text {
+        font-size: 15px;
+    }
+
+    .menu-user {
+        width: 320px;
+        height: 480px;
+    }
+}
+
+/* Desktop (1024px - 1279px) */
+@media (min-width: 1024px) {
     .aside__panel {
         visibility: hidden;
     }
 
     .aside__panel:hover,
-    .aside__link--navi:hover+.aside__panel {
+    .aside__link--navi:hover + .aside__panel {
         visibility: visible;
-
     }
 
+    .aside__panel--users {
+        top: 25px;
+    }
+
+    .aside__panel--content {
+        top: 149px;
+    }
+
+    .aside__panel--library {
+        top: 268px;
+    }
+
+    .aside__panel--reports {
+        top: 387px;
+    }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+    .feed__image {
+        width: 350px;
+    }
+
+    .feed__text {
+        font-size: 18px;
+    }
+
+    .menu-user {
+        width: 350px;
+        height: 520px;
+    }
+
+    .aside {
+        width: 130px;
+    }
+
+    .aside__panel {
+        width: 260px;
+    }
 }
