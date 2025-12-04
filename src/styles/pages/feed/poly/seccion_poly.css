@@ -173,7 +173,7 @@ body {
     z-index: 10;
 }
 
-.poly-modal:target {
+#modalAI:target {
     opacity: 1;
     pointer-events: auto;
 }

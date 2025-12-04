@@ -521,6 +521,8 @@ body {
         width: 100vh;
         height: auto;
         max-width: none;
+        justify-self:center;
+
     }
 
 
@@ -556,21 +558,22 @@ body {
     }
 
     .canvas-main__divider {
-        width: 627px;
+        width: 100vh;
     }
 
     .canvas-main__quill {
-        left: 850px;
-        bottom: 90px;
+        left: 85rem;
+        bottom: 150px;
     }
 
     .canvas-main__action {
         bottom: 0;
         left: 200px;
+        justify-content:center;
     }
 
     .canvas-main__markers {
-        left: 846px;
+        left: 84rem;
         bottom: 90px;
         padding: 5px;
     }
