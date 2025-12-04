@@ -33,7 +33,6 @@ body {
     border-radius: 5px;
 }
 
-
 .form__input:focus {
     outline: none;
     border: 1px solid var(--auth-input-focus-border);
@@ -87,6 +86,30 @@ body {
     font-family: var(--font-family-main);
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+    .header__title {
+        font-size: 24px;
+        margin-top: 55px;
+    }
+
+    .form {
+        gap: 25px;
+        margin: 45px;
+    }
+
+    .button {
+        transform: translateY(110px);
+        font-size: 16px;
+        padding: 9px 18px;
+    }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
     .header__title {
         font-size: 28px;
@@ -102,5 +125,24 @@ body {
         transform: translateY(120px);
         font-size: 18px;
         padding: 10px 20px;
+    }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+    .header__title {
+        font-size: 32px;
+        margin-top: 70px;
+    }
+
+    .form {
+        gap: 35px;
+        margin: 60px;
+    }
+
+    .button {
+        transform: translateY(130px);
+        font-size: 20px;
+        padding: 12px 24px;
     }
 }
