@@ -105,7 +105,7 @@ body {
     /* Bordes redondeados definidos por una variable */
 }
 
-/* Estilo para el botÃ³n de cerrar del menÃº lateral (temporal) */
+/* Estilo para el boton de cerrar del menu lateral (temporal) */
 .aside__close {
     position: absolute;
     /* Lo posiciona de forma absoluta dentro del aside */
@@ -118,7 +118,7 @@ body {
 }
 
 
-/* AlineaciÃ³n para todos los iconos dentro de las celdas del grid del aside */
+/* Alineacion para todos los iconos dentro de las celdas del grid del aside */
 .aside__link {
     justify-self: center;
     /* Centra el icono horizontalmente en su celda */
@@ -126,7 +126,7 @@ body {
     /* Centra el icono verticalmente en su celda */
 }
 
-/* Modificadores de tamaÃ±o para cada icono especÃ­fico del menÃº lateral */
+/* Modificadores de tamaño para cada icono especÃ­fico del menu lateral */
 .aside__icon--mind {
     width: 56px;
     /* Ancho para el icono 'mind' */
@@ -151,7 +151,7 @@ body {
 
 
 
-/* Muestra el menÃº lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
+/* Muestra el menu lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
 .aside:target {
     display: grid;
     /* Cambia el display a grid para que sea visible */
@@ -495,6 +495,20 @@ body {
         width: 350px;
         height: 500px;
     }
+
+    .aside__panel--creative {
+        top: 150px;
+    }
+
+    .aside__panel--library {
+        top: 273px
+    }
+
+    .aside__panel--settings {
+        top: 391px;
+    
+}
+
 }
 
 /* Desktop Grande (1280px+) */

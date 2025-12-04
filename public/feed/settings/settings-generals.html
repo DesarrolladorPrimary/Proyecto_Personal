@@ -80,10 +80,14 @@
             <button class="settings-dropdown__btn settings-dropdown__btn--dark">
               Oscuro
             </button>
-            <button class="settings-dropdown__btn settings-dropdown__btn--light">
+            <button
+              class="settings-dropdown__btn settings-dropdown__btn--light"
+            >
               Blanco
             </button>
-            <button class="settings-dropdown__btn settings-dropdown__btn--system">
+            <button
+              class="settings-dropdown__btn settings-dropdown__btn--system"
+            >
               Sistema
             </button>
           </div>
@@ -91,7 +95,10 @@
 
         <div class="settings-option">
           <span class="settings-option__label">Notificacion</span>
-          <input type="range" />
+          <label class="switch">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
         </div>
 
         <div class="settings-dropdown">
@@ -122,7 +129,9 @@
 
         <div class="settings-option">
           <span class="settings-option__label">Instrucciones</span>
-          <a href="settings-instruccionesAI.html" class="settings-option__link">AI (poly)</a>
+          <a href="settings-instruccionesAI.html" class="settings-option__link"
+            >AI (poly)</a
+          >
         </div>
       </section>
     </main>
