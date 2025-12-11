@@ -1,193 +1,256 @@
 body {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
 }
 
 /* Block: plans-header */
 .plans-header {
-    display: flex;
-    margin-top: 30px;
-    grid-column: 1/2;
-    grid-row: 1/2;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  margin-top: 30px;
+  grid-column: 1/2;
+  grid-row: 1/2;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Element: plans-header__title */
 .plans-header__title {
-    color: var(--color-text-light);
-    font-size: 20px;
-    font-family: var(--font-family-main);
-    font-weight: normal;
+  color: var(--color-text-light);
+  font-size: 20px;
+  font-family: var(--font-family-main);
+  font-weight: normal;
 }
 
 /* Element: plans-header__separator */
 .plans-header__separator {
-    margin-top: 15px;
-    border: 1px solid;
-    color: #ffffff;
-    width: 320px;
-    height: 0px;
+  margin-top: 15px;
+  border: 1px solid;
+  color: #ffffff;
+  width: 320px;
+  height: 0px;
 }
 
 /* Element: plans-header__history */
 .plans-header__history {
-    display: flex;
-    width: 320px;
-    justify-content: space-between;
-    margin-top: 10px;
+  display: flex;
+  width: 320px;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
 /* Element: plans-header__history-title */
 .plans-header__history-title {
-    color: var(--color-text-light);
-    font-size: 16px;
-    font-family: var(--font-family-main);
-    margin: 0;
-    font-weight: lighter;
+  color: var(--color-text-light);
+  font-size: 16px;
+  font-family: var(--font-family-main);
+  margin: 0;
+  font-weight: lighter;
 }
 
 /* Element: plans-header__history-link */
 .plans-header__history-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    text-decoration: none;
-    color: var(--color-text-light);
-    border-radius: 7px;
-    width: 95px;
-    height: 25.54px;
-    background-color: var(--background-color-nav-subline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--color-text-light);
+  border-radius: 7px;
+  width: 95px;
+  height: 25.54px;
+  background-color: var(--background-color-nav-subline);
 }
 
 /* Element: plans-header__history-icon */
 .plans-header__history-icon {
-    font-size: var(--font-size-small);
+  font-size: var(--font-size-small);
 }
 
 /* Element: plans-header__history-text */
 .plans-header__history-text {
-    font-size: var(--font-size-small);
-    font-family: var(--font-family-main);
+  font-size: var(--font-size-small);
+  font-family: var(--font-family-main);
 }
 
 .main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    grid-column: 1/2;
-    grid-row: 2/3;
-    padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  grid-column: 1/2;
+  grid-row: 2/3;
+  padding: 30px 0;
 }
 
 /* Block: plan-card */
 .plan-card {
-    display: flex;
-    width: 330px;
-    height: 246px;
-    background-color: var(--color-background-container);
-    color: #FFFFFF;
-    font-family: var(--font-family-poppins);
-    border-radius: 10px;
-    flex-direction: column;
-    padding: 20px 24px 24px 24px;
-    gap: 10px;
-
+  display: flex;
+  width: 330px;
+  height: 246px;
+  background-color: var(--color-background-container);
+  color: #ffffff;
+  font-family: var(--font-family-poppins);
+  border-radius: 10px;
+  flex-direction: column;
+  padding: 20px 24px 24px 24px;
+  gap: 10px;
 }
 
 /* Element: plan-card__title */
 .plan-card__title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 18px;
-    font-weight: 400;
-    margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0 0 6px 0;
 }
 
 /* Element: plan-card__title-icon */
 .plan-card__title-icon {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 /* Element: plan-card__features */
 .plan-card__features {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 0;
-    margin: 0 0 10px 0;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  margin: 0 0 10px 0;
+  width: 100%;
 }
 
 /* Element: plan-card__feature */
 .plan-card__feature {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* Element: plan-card__feature-text */
 .plan-card__feature-text {
-    font-size: 13px;
-    font-weight: 300;
-    margin: 0;
-    line-height: 1.5;
-    color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 300;
+  margin: 0;
+  line-height: 1.5;
+  color: #ffffff;
 }
 
 /* Element: plan-card__storage */
 .plan-card__storage {
-    font-size: 13px;
-    margin: 6px 0 4px 0;
-    color: #FFFFFF;
+  font-size: 13px;
+  margin: 6px 0 4px 0;
+  color: #ffffff;
 }
 
 /* Element: plan-card__status */
 .plan-card__status {
-    font-size: 13px;
-    margin: 0;
-    color: #FFFFFF;
+  font-size: 13px;
+  margin: 0;
+  color: #ffffff;
 }
 
 .footer-nav {
-    grid-column: 1/2;
-    grid-row: 3/4;
+  grid-column: 1/2;
+  grid-row: 3/4;
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .plans-header__separator,
+  .plans-header__history {
+    width: 380px;
+  }
+
+  .plans-header__title {
+    font-size: 22px;
+  }
+
+  .plan-card {
+    width: 380px;
+    height: 260px;
+    padding: 22px 26px;
+  }
+
+  .plan-card__title {
+    font-size: 19px;
+  }
+
+  .plan-card__feature-text,
+  .plan-card__storage,
+  .plan-card__status {
+    font-size: 14px;
+  }
+
+  .footer-nav__line {
+    margin-bottom: 10px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
+  .plans-header__separator,
+  .plans-header__history {
+    width: 450px;
+  }
 
-    .plans-header__separator,
-    .plans-header__history {
-        width: 450px;
-    }
+  .plans-header__title {
+    font-size: 24px;
+  }
 
-    .plans-header__title {
-        font-size: 24px;
-    }
+  .plan-card {
+    width: 450px;
+    height: 280px;
+    padding: 25px 30px;
+  }
 
-    .plan-card {
-        width: 450px;
-        height: 280px;
-        padding: 25px 30px;
-    }
+  .plan-card__title {
+    font-size: 20px;
+  }
 
-    .plan-card__title {
-        font-size: 20px;
-    }
+  .plan-card__feature-text,
+  .plan-card__storage,
+  .plan-card__status {
+    font-size: 15px;
+  }
 
-    .plan-card__feature-text,
-    .plan-card__storage,
-    .plan-card__status {
-        font-size: 15px;
-    }
+  .footer-nav__line {
+    margin-bottom: 10px;
+  }
+}
 
-    .footer-nav__line {
-        margin-bottom: 10px;
-    }
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .plans-header__separator,
+  .plans-header__history {
+    width: 550px;
+  }
+
+  .plans-header__title {
+    font-size: 26px;
+  }
+
+  .plan-card {
+    width: 500px;
+    height: 310px;
+    padding: 28px 35px;
+  }
+
+  .plan-card__title {
+    font-size: 22px;
+  }
+
+  .plan-card__feature-text,
+  .plan-card__storage,
+  .plan-card__status {
+    font-size: 16px;
+  }
 }

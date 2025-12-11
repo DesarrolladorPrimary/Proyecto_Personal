@@ -86,13 +86,12 @@ body {
   font-weight: lighter;
   font-family: var(--font-family-poppins);
   font-size: 14px;
-
-}
-
-.plan-card__button-label{
   cursor: pointer;
 }
 
+.plan-card__button-label {
+  cursor: pointer;
+}
 
 .plan-card__button--upgrade {
   width: 181px;
@@ -135,13 +134,10 @@ body {
   color: var(--color-text-light);
 }
 
-
 .payment-loading__video {
   width: 128px;
   height: 128px;
 }
-
-
 
 #checkPay {
   position: absolute;
@@ -154,8 +150,45 @@ body {
   pointer-events: auto;
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
 
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .plans__title {
+    font-size: 22px;
+  }
 
+  .plans__subtitle {
+    font-size: 15px;
+  }
+
+  .plan-card {
+    width: 400px;
+    height: 280px;
+  }
+
+  .plan-card__title {
+    font-size: 20px;
+  }
+
+  .plan-card__feature-text {
+    font-size: 14px;
+  }
+
+  .plan-card__button {
+    width: 140px;
+    height: 37px;
+    font-size: 15px;
+  }
+
+  .plan-card__button--upgrade {
+    width: 190px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
   .plans__title {
     font-size: 24px;
@@ -186,5 +219,53 @@ body {
 
   .plan-card__button--upgrade {
     width: 200px;
+  }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .plans__title {
+    font-size: 28px;
+  }
+
+  .plans__subtitle {
+    font-size: 18px;
+  }
+
+  .plan-card {
+    width: 500px;
+    height: 330px;
+    gap: 15px;
+  }
+
+  .plan-card__title {
+    font-size: 24px;
+  }
+
+  .plan-card__feature-text {
+    font-size: 16px;
+  }
+
+  .plan-card__button {
+    width: 170px;
+    height: 44px;
+    font-size: 17px;
+  }
+
+  .plan-card__button--upgrade {
+    width: 220px;
+  }
+
+  .payment-loading__container {
+    width: 400px;
+    height: 300px;
+  }
+
+  .payment-loading__title {
+    font-size: 30px;
+  }
+
+  .payment-loading__text {
+    font-size: 15px;
   }
 }

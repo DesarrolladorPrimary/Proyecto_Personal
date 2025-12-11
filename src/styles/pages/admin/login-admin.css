@@ -1,106 +1,151 @@
 /* Estilos específicos de la página de login admin */
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: var(--auth-login-background);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: var(--auth-login-background);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .header__title {
-    font-family: var(--font-family-main);
-    font-optical-sizing: auto;
-    font-weight: var(--font-weight-regular);
-    font-style: normal;
-    margin-top: var(--auth-spacing-large);
+  font-family: var(--font-family-main);
+  font-optical-sizing: auto;
+  font-weight: var(--font-weight-regular);
+  font-style: normal;
+  margin-top: var(--auth-spacing-large);
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--auth-spacing-small);
-    margin: var(--auth-spacing-medium);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--auth-spacing-small);
+  margin: var(--auth-spacing-medium);
 }
 
 .form__input {
-    height: var(--auth-input-height);
-    width: 100%;
-    padding-left: 45px;
-    border: none;
-    border-radius: 5px;
+  height: var(--auth-input-height);
+  width: 100%;
+  padding-left: 45px;
+  border: none;
+  border-radius: 5px;
 }
 
-
 .form__input:focus {
-    outline: none;
-    border: 1px solid var(--auth-input-focus-border);
+  outline: none;
+  border: 1px solid var(--auth-input-focus-border);
 }
 
 .form__input-container {
-    position: relative;
-    width: var(--auth-input-width);
+  position: relative;
+  width: var(--auth-input-width);
 }
 
 .form__input-icon {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    width: 20px;
-    height: auto;
-    opacity: 0.5;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: auto;
+  opacity: 0.5;
 }
 
 .form__contrasena {
-    transform: translateX(-70px);
-    font-size: var(--font-size-small);
+  transform: translateX(-70px);
+  font-size: var(--font-size-small);
 }
 
 .recover-link {
-    text-decoration: none;
-    color: #1379CD;
+  text-decoration: none;
+  color: #1379cd;
 }
 
 .button {
-    border-radius: 9px;
-    transform: translateY(100px);
+  border-radius: 9px;
+  transform: translateY(100px);
 }
 
 .button-link {
-    text-decoration: none;
-    color: var(--color-text);
+  text-decoration: none;
+  color: var(--color-text);
 }
 
 .main {
-    flex: 1;
+  flex: 1;
 }
 
 .footer {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
 }
 
 .footer__text {
-    font-family: var(--font-family-main);
+  font-family: var(--font-family-main);
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .header__title {
+    font-size: 26px;
+    margin-top: 55px;
+  }
+
+  .form {
+    gap: 25px;
+    margin: 40px;
+  }
+
+  .button {
+    transform: translateY(110px);
+    font-size: 17px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
-    .header__title {
-        font-size: 28px;
-        margin-top: 60px;
-    }
+  .header__title {
+    font-size: 28px;
+    margin-top: 60px;
+  }
 
-    .form {
-        gap: 30px;
-        margin: 50px;
-    }
+  .form {
+    gap: 30px;
+    margin: 50px;
+  }
 
-    .button {
-        transform: translateY(120px);
-        font-size: 18px;
-        padding: 10px 20px;
-    }
+  .button {
+    transform: translateY(120px);
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .header__title {
+    font-size: 32px;
+    margin-top: 70px;
+  }
+
+  .form {
+    gap: 35px;
+    margin: 60px;
+  }
+
+  .button {
+    transform: translateY(140px);
+    font-size: 20px;
+    padding: 12px 24px;
+  }
+
+  .footer__text {
+    font-size: 14px;
+  }
 }

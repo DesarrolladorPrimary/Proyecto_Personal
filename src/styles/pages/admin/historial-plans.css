@@ -1,176 +1,231 @@
 body {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
 }
 
 /* Block: history-header */
 .history-header {
-    display: flex;
-    margin-top: 30px;
-    grid-column: 1/2;
-    grid-row: 1/2;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    position: relative;
-    padding: 0 20px;
+  display: flex;
+  margin-top: 30px;
+  grid-column: 1/2;
+  grid-row: 1/2;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  padding: 0 20px;
 }
 
 /* Element: history-header__back */
 .history-header__back {
-    position: absolute;
-    left: 20px;
-    top: 0;
-    text-decoration: none;
-    cursor: pointer;
+  position: absolute;
+  left: 20px;
+  top: 0;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* Element: history-header__back-icon */
 .history-header__back-icon {
-    width: 16px;
-    height: 16px;
+  width: 16px;
+  height: 16px;
 }
 
 /* Element: history-header__title */
 .history-header__title {
-    color: var(--color-text-light);
-    font-size: 20px;
-    font-family: var(--font-family-main);
-    font-weight: normal;
-    margin: 0;
+  color: var(--color-text-light);
+  font-size: 20px;
+  font-family: var(--font-family-main);
+  font-weight: normal;
+  margin: 0;
 }
 
 /* Element: history-header__separator */
 .history-header__separator {
-    margin-top: 15px;
-    border: 1px solid;
-    color: #ffffff;
-    width: 320px;
-    height: 0px;
+  margin-top: 15px;
+  border: 1px solid;
+  color: #ffffff;
+  width: 320px;
+  height: 0px;
 }
 
 /* Block: history-content */
 .history-content {
-    grid-column: 1/2;
-    grid-row: 2/3;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
+  grid-column: 1/2;
+  grid-row: 2/3;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
 
 /* Block: payment-table */
 .payment-table {
-    width: 100%;
-    max-width: 600px;
-    background-color: #3A3A3A;
-    border-radius: 8px;
-    padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  background-color: #3a3a3a;
+  border-radius: 8px;
+  padding: 20px;
 }
 
 /* Element: payment-table__header */
 .payment-table__header {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr 0.8fr;
-    gap: 10px;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 0.8fr;
+  gap: 10px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  align-items: center;
 }
 
 /* Element: payment-table__column */
 .payment-table__column {
-    color: #FFFFFF;
-    font-family: var(--font-family-main);
-    font-size: 12px;
-    font-weight: 400;
-    text-align: left;
+  color: #ffffff;
+  font-family: var(--font-family-main);
+  font-size: 12px;
+  font-weight: 400;
+  text-align: left;
 }
 
 /* Element: payment-table__body */
 .payment-table__body {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* Block: payment-row */
 .payment-row {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr 0.8fr;
-    gap: 10px;
-    padding: 10px 0;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 0.8fr;
+  gap: 10px;
+  padding: 10px 0;
 }
 
 /* Element: payment-row__cell */
 .payment-row__cell {
-    color: #FFFFFF;
-    font-family: var(--font-family-main);
-    font-size: 12px;
-    font-weight: 300;
-    display: flex;
-    align-items: center;
+  color: #ffffff;
+  font-family: var(--font-family-main);
+  font-size: 12px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
 }
 
 /* Block: payment-status */
 .payment-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    font-family: var(--font-family-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-family: var(--font-family-main);
 }
 
 /* Modifier: payment-status--success */
 .payment-status--success {
-    color: #4ADE80;
+  color: #4ade80;
 }
 
 .payment-status--success::before {
-    content: "●";
-    font-size: 14px;
+  content: "●";
+  font-size: 14px;
 }
 
 /* Modifier: payment-status--pending */
 .payment-status--pending {
-    color: #FCD34D;
+  color: #fcd34d;
 }
 
 .payment-status--pending::before {
-    content: "●";
-    font-size: 14px;
+  content: "●";
+  font-size: 14px;
 }
 
 /* Modifier: payment-status--failed */
 .payment-status--failed {
-    color: #F87171;
+  color: #f87171;
 }
 
 .payment-status--failed::before {
-    content: "●";
-    font-size: 14px;
+  content: "●";
+  font-size: 14px;
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .history-header__title {
+    font-size: 22px;
+  }
+
+  .history-header__separator {
+    width: 400px;
+  }
+
+  .payment-table {
+    max-width: 700px;
+    padding: 25px;
+  }
+
+  .payment-table__column,
+  .payment-row__cell {
+    font-size: 13px;
+  }
+
+  .payment-status {
+    font-size: 13px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
-    .history-header__title {
-        font-size: 24px;
-    }
+  .history-header__title {
+    font-size: 24px;
+  }
 
-    .history-header__separator {
-        width: 500px;
-    }
+  .history-header__separator {
+    width: 500px;
+  }
 
-    .payment-table {
-        max-width: 800px;
-        padding: 30px;
-    }
+  .payment-table {
+    max-width: 800px;
+    padding: 30px;
+  }
 
-    .payment-table__column,
-    .payment-row__cell {
-        font-size: 14px;
-    }
+  .payment-table__column,
+  .payment-row__cell {
+    font-size: 14px;
+  }
 
-    .payment-status {
-        font-size: 14px;
-    }
+  .payment-status {
+    font-size: 14px;
+  }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .history-header__title {
+    font-size: 26px;
+  }
+
+  .history-header__separator {
+    width: 600px;
+  }
+
+  .payment-table {
+    max-width: 900px;
+    padding: 35px;
+  }
+
+  .payment-table__column,
+  .payment-row__cell {
+    font-size: 15px;
+  }
+
+  .payment-status {
+    font-size: 15px;
+  }
 }

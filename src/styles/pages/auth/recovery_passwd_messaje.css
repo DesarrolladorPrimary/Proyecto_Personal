@@ -1,60 +1,99 @@
 /* Estilos específicos de la página de mensaje de recuperación */
 
 body {
-    background-image: url('../../../../assets/image/upscalemedia-transformed.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .recovery-password {
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
 }
 
 .recovery-password__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-    border-radius: 12px;
-    background-color: var(--color-background-container);
-    width: 286px;
-    height: 311px;
-    transform: translateY(-150px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  border-radius: 12px;
+  background-color: var(--color-background-container);
+  width: 286px;
+  height: 311px;
+  transform: translateY(-150px);
 }
 
 .recovery-password__title {
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-style: 200;
-    color: var(--color-text-light);
-    font-size: var(--recovery-font-size-title);
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: 200;
+  color: var(--color-text-light);
+  font-size: var(--recovery-font-size-title);
 }
 
 .recovery-password__description {
-    font-family: "Inter", sans-serif;
-    font-weight: 300;
-    font-style: normal;
-    color: var(--color-text-light);
-    text-align: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  color: var(--color-text-light);
+  text-align: center;
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .recovery-password__container {
+    width: 330px;
+    height: 340px;
+  }
+
+  .recovery-password__title {
+    font-size: 18px;
+  }
+
+  .recovery-password__description {
+    font-size: 14px;
+    padding: 0 15px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
-    .recovery-password__container {
-        width: 380px;
-        height: 380px;
-    }
+  .recovery-password__container {
+    width: 380px;
+    height: 380px;
+  }
 
-    .recovery-password__title {
-        font-size: 20px;
-    }
+  .recovery-password__title {
+    font-size: 20px;
+  }
 
-    .recovery-password__description {
-        font-size: 15px;
-        padding: 0 20px;
-    }
+  .recovery-password__description {
+    font-size: 15px;
+    padding: 0 20px;
+  }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .recovery-password__container {
+    width: 420px;
+    height: 420px;
+  }
+
+  .recovery-password__title {
+    font-size: 22px;
+  }
+
+  .recovery-password__description {
+    font-size: 16px;
+    padding: 0 25px;
+  }
 }

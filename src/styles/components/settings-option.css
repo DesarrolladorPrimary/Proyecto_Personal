@@ -1,51 +1,94 @@
 /* Opciones de Configuraciones */
 .settings-option {
-    background-color: var(--color-background-container);
-    border-radius: 4px;
-    margin-bottom: 15px;
-    width: 371px;
-    height: 63px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 31px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background-color: var(--color-background-container);
+  border-radius: 4px;
+  margin-bottom: 15px;
+  width: 371px;
+  height: 63px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 31px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .settings-option__label {
-    font-family: var(--font-family-poppins);
-    font-size: 20px;
-    color: var(--color-text-light);
-    font-weight: 500;
-    margin-left: 30px;
+  font-family: var(--font-family-poppins);
+  font-size: 20px;
+  color: var(--color-text-light);
+  font-weight: 500;
+  margin-left: 30px;
 }
 
 .settings-option__value {
-    font-family: var(--font-family-main);
-    font-size: 14px;
-    color: #D0D0D0;
-    font-weight: 400;
-    border: 1px solid var(--background-color-nav-subline);
-    border-radius: 3px;
-    padding: 9px;
-    background-color: var(--background-color-nav-subline);
+  font-family: var(--font-family-main);
+  font-size: 14px;
+  color: #d0d0d0;
+  font-weight: 400;
+  border: 1px solid var(--background-color-nav-subline);
+  border-radius: 3px;
+  padding: 9px;
+  background-color: var(--background-color-nav-subline);
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .settings-option {
+    width: 430px;
+    height: 66px;
+    gap: 45px;
+  }
+
+  .settings-option__label {
+    font-size: 21px;
+    margin-left: 35px;
+  }
+
+  .settings-option__value {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
-    .settings-option {
-        width: 500px;
-        height: 70px;
-        gap: 60px;
-    }
+  .settings-option {
+    width: 500px;
+    height: 70px;
+    gap: 60px;
+  }
 
-    .settings-option__label {
-        font-size: 22px;
-        margin-left: 40px;
-    }
+  .settings-option__label {
+    font-size: 22px;
+    margin-left: 40px;
+  }
 
-    .settings-option__value {
-        font-size: 16px;
-        padding: 11px;
-    }
+  .settings-option__value {
+    font-size: 16px;
+    padding: 11px;
+  }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .settings-option {
+    width: 600px;
+    height: 75px;
+    gap: 80px;
+  }
+
+  .settings-option__label {
+    font-size: 24px;
+    margin-left: 50px;
+  }
+
+  .settings-option__value {
+    font-size: 17px;
+    padding: 12px;
+  }
 }

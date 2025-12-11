@@ -1,44 +1,76 @@
 /* Footer */
 .settings-footer {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    margin-top: auto;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
 }
 
 .settings-footer__container {
-    display: flex;
-    background-color: var(--background-color-nav-subline);
-    width: 371px;
-    height: 63px;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  background-color: var(--background-color-nav-subline);
+  width: 371px;
+  height: 63px;
+  justify-content: center;
+  align-items: center;
 }
 
 .settings-footer__delete-btn {
-    background-color: #FF0000;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    font-family: var(--font-family-main);
-    font-size: var(--font-size-small);
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
-    width: 124.62px;
-    height: 34px;
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-family: var(--font-family-main);
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+  width: 124.62px;
+  height: 34px;
 }
 
-@media (min-width: 1024px) {
-    .settings-footer__container {
-        width: 500px;
-        height: 70px;
-    }
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
 
-    .settings-footer__delete-btn {
-        width: 150px;
-        height: 40px;
-        font-size: 14px;
-    }
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .settings-footer__container {
+    width: 430px;
+    height: 66px;
+  }
+
+  .settings-footer__delete-btn {
+    width: 135px;
+    height: 37px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
+@media (min-width: 1024px) {
+  .settings-footer__container {
+    width: 500px;
+    height: 70px;
+  }
+
+  .settings-footer__delete-btn {
+    width: 150px;
+    height: 40px;
+    font-size: 14px;
+  }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .settings-footer__container {
+    width: 600px;
+    height: 75px;
+  }
+
+  .settings-footer__delete-btn {
+    width: 170px;
+    height: 44px;
+    font-size: 15px;
+  }
 }

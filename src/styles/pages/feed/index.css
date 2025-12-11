@@ -1,49 +1,88 @@
 /* Estilos específicos de la página de inicio */
 
-body{
-    display: grid;
-    grid-template-columns: 1fr;
+body {
+  display: grid;
+  grid-template-columns: 1fr;
 
-    background-image: url('../../../../assets/image/upscalemedia-transformed.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
+  background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
 }
 
 .header__logo {
-    width: 100px;
+  width: 100px;
 }
 
 .main__title {
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .main__login {
-    margin-top: 154px;
+  margin-top: 154px;
 }
 
 .main__regist {
-    margin-top: 55px;
+  margin-top: 55px;
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
 
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .main__title {
+    font-size: 40px;
+  }
 
+  .main__login {
+    margin-top: 180px;
+  }
+
+  .main__regist {
+    margin-top: 75px;
+  }
+
+  .header__logo {
+    width: 120px;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
-    .main__title {
-        font-size: 48px;
-    }
+  .main__title {
+    font-size: 48px;
+  }
 
-    .main__login {
-        margin-top: 200px;
-    }
+  .main__login {
+    margin-top: 200px;
+  }
 
-    .main__regist {
-        margin-top: 100px;
-    }
+  .main__regist {
+    margin-top: 100px;
+  }
+}
 
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .main__title {
+    font-size: 56px;
+  }
 
+  .main__login {
+    margin-top: 220px;
+  }
+
+  .main__regist {
+    margin-top: 120px;
+  }
+
+  .header__logo {
+    width: 140px;
+  }
 }

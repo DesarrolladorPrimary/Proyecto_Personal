@@ -1,121 +1,165 @@
 /* Estilos específicos de la página de cambio de contraseña */
 
 body {
-    background-image: url('../../../../assets/image/upscalemedia-transformed.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
+  background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
 }
 
 .recovery-password {
-    display: flex;
-    justify-content: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
 }
 
 .recovery-password__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    margin-top: var(--recovery-container-margin-top);
-    border-radius: var(--recovery-container-radius);
-    background-color: var(--color-background-container);
-    width: var(--recovery-container-width);
-    height: var(--recovery-container-height);
-    gap: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin-top: var(--recovery-container-margin-top);
+  border-radius: var(--recovery-container-radius);
+  background-color: var(--color-background-container);
+  width: var(--recovery-container-width);
+  height: var(--recovery-container-height);
+  gap: 30px;
 }
 
 .recovery-password__title {
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-style: 200;
-    margin-top: var(--recovery-title-margin-top);
-    color: var(--color-text-light);
-    font-size: var(--recovery-font-size-title);
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: 200;
+  margin-top: var(--recovery-title-margin-top);
+  color: var(--color-text-light);
+  font-size: var(--recovery-font-size-title);
 }
 
 .recovery-password__description {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--recovery-description-gap);
-    font-family: "Inter", sans-serif;
-    font-weight: 300;
-    font-style: normal;
-    color: var(--color-text-light);
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--recovery-description-gap);
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  color: var(--color-text-light);
+  text-align: center;
 }
 
 .recovery-password__form-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--recovery-form-gap);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--recovery-form-gap);
 }
 
 .recovery-password__input {
-    height: var(--recovery-input-height);
-    width: var(--recovery-input-width);
-    border: none;
-    border-radius: var(--recovery-input-radius);
-    padding-left: var(--recovery-input-padding-left);
+  height: var(--recovery-input-height);
+  width: var(--recovery-input-width);
+  border: none;
+  border-radius: var(--recovery-input-radius);
+  padding-left: var(--recovery-input-padding-left);
 }
 
 .recovery-password__button {
-    text-decoration: var(--decoration-text);
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 300;
-    font-style: normal;
-    border: 0px solid black;
-    border-radius: var(--recovery-button-radius);
-    background-color: var(--recovery-button-bg);
-    font-size: var(--recovery-text-size);
-    padding: var(--recovery-button-padding);
-    width: var(--recovery-button-width);
-    height: var(--recovery-button-height);
-    transform: translateY(43px);
+  text-decoration: var(--decoration-text);
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  border: 0px solid black;
+  border-radius: var(--recovery-button-radius);
+  background-color: var(--recovery-button-bg);
+  font-size: var(--recovery-text-size);
+  padding: var(--recovery-button-padding);
+  width: var(--recovery-button-width);
+  height: var(--recovery-button-height);
+  transform: translateY(43px);
 }
 
 .recovery-password__link {
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    text-decoration: none;
-    color: var(--color-text);
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  color: var(--color-text);
 }
 
 .recovery-password__form-requirement {
-    font-family: "Inter", sans-serif;
-    font-weight: 200;
-    font-style: normal;
-    color: var(--color-text-light);
-    font-size: 11px;
-    margin-top: var(--font-size-small);
+  font-family: "Inter", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+  color: var(--color-text-light);
+  font-size: 11px;
+  margin-top: var(--font-size-small);
 }
 
 .recovery-password__input--confirm {
-    transform: translateY(40px);
+  transform: translateY(40px);
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+  .recovery-password__title {
+    font-size: 18px;
+  }
+
+  .recovery-password__description {
+    font-size: 14px;
+  }
+
+  .recovery-password__form-requirement {
+    font-size: 12px;
+  }
+
+  .recovery-password__button {
+    transform: translateY(46px);
+  }
+}
+
+/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
-    .recovery-password__title {
-        font-size: 20px;
-    }
+  .recovery-password__title {
+    font-size: 20px;
+  }
 
-    .recovery-password__description {
-        font-size: 15px;
-    }
+  .recovery-password__description {
+    font-size: 15px;
+  }
 
-    .recovery-password__form-requirement {
-        font-size: 13px;
-    }
+  .recovery-password__form-requirement {
+    font-size: 13px;
+  }
 
-    .recovery-password__button {
-        transform: translateY(50px);
-        font-size: 12px;
-    }
+  .recovery-password__button {
+    transform: translateY(50px);
+    font-size: 12px;
+  }
+}
+
+/* Desktop Grande (1280px+) */
+@media (min-width: 1280px) {
+  .recovery-password__title {
+    font-size: 22px;
+  }
+
+  .recovery-password__description {
+    font-size: 16px;
+  }
+
+  .recovery-password__form-requirement {
+    font-size: 14px;
+  }
+
+  .recovery-password__button {
+    transform: translateY(55px);
+    font-size: 14px;
+  }
 }
