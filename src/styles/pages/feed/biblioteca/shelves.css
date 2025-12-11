@@ -7,9 +7,9 @@ body {
 
 .shelves-header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center; /* Centra el título */
   align-items: center;
-  gap: 95px;
+  position: relative; /* Para posicionar la flecha */
 }
 
 .shelves-header__title {
@@ -20,7 +20,8 @@ body {
 }
 
 .shelves-header__arrow {
-  margin-left: 20px;
+  position: absolute; /* Saca la flecha del flujo */
+  left: 20px; /* Posición desde la izquierda */
   width: 22px;
   height: 22px;
 }
