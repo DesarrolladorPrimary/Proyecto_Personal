@@ -22,7 +22,7 @@
       rel="stylesheet"
       href="../../../src/styles/pages/feed/settings/settings-user.css"
     />
-<link
+    <link
       rel="stylesheet"
       href="../../../src/styles/components/settings-footer.css"
     />
@@ -116,10 +116,84 @@
       </section>
     </main>
 
+    <!-- Radio buttons for modal control (hidden) -->
+    <input
+      type="radio"
+      name="delete-modal"
+      id="modal-close"
+      class="modal-state"
+      checked
+    />
+    <input
+      type="radio"
+      name="delete-modal"
+      id="modal-confirm"
+      class="modal-state"
+    />
+    <input
+      type="radio"
+      name="delete-modal"
+      id="modal-processing"
+      class="modal-state"
+    />
+    <input
+      type="radio"
+      name="delete-modal"
+      id="modal-success"
+      class="modal-state"
+    />
+
     <footer class="settings-footer">
       <div class="settings-footer__container">
-        <button class="settings-footer__delete-btn">Eliminar Cuenta</button>
+        <label for="modal-confirm" class="settings-footer__delete-btn"
+          >Eliminar Cuenta</label
+        >
       </div>
     </footer>
+
+    <!-- Modal 1: Confirmación -->
+    <div class="modal modal--confirm">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <h2 class="modal__title modal__title--danger">Eliminar cuenta</h2>
+        <p class="modal__message">
+          Está seguro que desea eliminar su cuenta, esta acción no se puede
+          revertir
+        </p>
+        <div class="modal__actions">
+          <label
+            for="modal-close"
+            class="modal__button modal__button--secondary"
+            >No estoy seguro</label
+          >
+          <label
+            for="modal-processing"
+            class="modal__button modal__button--danger"
+            >Sí, estoy seguro</label
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2: Procesando -->
+    <div class="modal modal--processing">
+      <div class="modal__overlay"></div>
+      <div class="modal__content modal__content--processing">
+        <p class="modal__message">
+          Su cuenta se está eliminando, espere por favor
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal 3: Éxito -->
+    <div class="modal modal--success">
+      <div class="modal__overlay"></div>
+      <div class="modal__content modal__content--success">
+        <p class="modal__message">
+          <span class="modal__icon">✅</span> Su cuenta fue eliminada con éxito
+        </p>
+        <label for="modal-close" class="modal__button">Cerrar</label>
+      </div>
+    </div>
   </body>
 </html>
