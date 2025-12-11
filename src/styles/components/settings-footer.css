@@ -1,31 +1,40 @@
-/* Footer */
+/* ============================================
+   SETTINGS-FOOTER.CSS - Footer de Configuraciones
+   ============================================
+   Footer con botón de eliminar cuenta
+   Incluye estados hover y transiciones
+   ============================================ */
+
+/* Contenedor del footer */
 .settings-footer {
   padding: 20px;
   display: flex;
-  justify-content: center;
-  margin-top: auto;
+  justify-content: center; /* Centra el contenido */
+  margin-top: auto; /* Empuja al fondo de la página */
 }
 
+/* Contenedor interno del footer (fondo oscuro) */
 .settings-footer__container {
   display: flex;
-  background-color: var(--background-color-nav-subline);
+  background-color: var(--background-color-nav-subline); /* Fondo gris */
   width: 371px;
   height: 63px;
   justify-content: center;
   align-items: center;
 }
 
+/* Botón de eliminar cuenta (acción destructiva) */
 .settings-footer__delete-btn {
-  background-color: #ff0000;
+  background-color: #ff0000; /* Rojo para indicar peligro */
   color: white;
   border: none;
   border-radius: 3px;
   font-family: var(--font-family-main);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-small); /* 13px */
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+  transition: all 0.3s ease; /* Transición suave */
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3); /* Sombra roja sutil */
   width: 124.62px;
   height: 34px;
 }
@@ -34,7 +43,7 @@
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Ajusta tamaños */
 @media (min-width: 768px) {
   .settings-footer__container {
     width: 430px;
@@ -47,7 +56,7 @@
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Tamaño desktop */
 @media (min-width: 1024px) {
   .settings-footer__container {
     width: 500px;
@@ -61,7 +70,7 @@
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .settings-footer__container {
     width: 600px;

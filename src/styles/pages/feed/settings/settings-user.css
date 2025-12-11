@@ -1,14 +1,23 @@
+/* ============================================
+   SETTINGS-USER.CSS - Configuración de Usuario
+   ============================================
+   Página de perfil de usuario con:
+   - Acordeón desplegable con información
+   - Sistema de modales para eliminar cuenta
+   ============================================ */
+
+/* Grid principal de la página */
 body {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr; /* Una columna */
+  grid-template-rows: auto 1fr auto; /* Header, main, footer */
   height: 100vh;
   background-color: var(--background-color-body-feed);
   padding: 0;
   margin: 0;
 }
 
-/* Main */
+/* Contenedor principal */
 .settings-main {
   display: flex;
   flex-direction: column;
@@ -20,6 +29,7 @@ body {
   margin-bottom: 40px;
 }
 
+/* Título de la sección "Usuario" */
 .settings-section__title {
   font-family: var(--font-family-poppins);
   font-size: 20px;
@@ -29,7 +39,13 @@ body {
   margin-bottom: 25px;
 }
 
-/* Acordeón */
+/* =========================================
+   ACORDEÓN DESPLEGABLE
+   =========================================
+   Se expande/contrae usando checkbox + CSS
+   ========================================= */
+
+/* Contenedor del acordeón */
 .settings-accordion {
   display: flex;
   justify-content: center;
@@ -42,10 +58,12 @@ body {
   transition: all 0.3s ease;
 }
 
+/* Checkbox oculto (controla el estado) */
 .settings-accordion__checkbox {
   display: none;
 }
 
+/* Trigger clickeable (label asociado al checkbox) */
 .settings-accordion__trigger {
   display: flex;
   justify-content: flex-start;
@@ -57,8 +75,9 @@ body {
   transition: all 0.3s ease;
 }
 
+/* Contenido desplegable (oculto por defecto) */
 .settings-accordion__content {
-  max-height: 0;
+  max-height: 0; /* Oculto por defecto */
   overflow: hidden;
   width: 345px;
   transition: max-height 0.4s ease;
@@ -68,17 +87,20 @@ body {
   margin-left: var(--font-size-small);
 }
 
+/* Estado expandido: cuando checkbox está marcado */
 .settings-accordion__checkbox:checked ~ .settings-accordion__content {
-  max-height: 500px;
+  max-height: 500px; /* Se expande */
   padding: 20px;
 }
 
+/* Oculta el valor cuando está expandido */
 .settings-accordion__checkbox:checked
   ~ .settings-accordion__trigger
   .settings-option__value {
   display: none;
 }
 
+/* Cada campo dentro del acordeón */
 .settings-accordion__field {
   margin-bottom: 12px;
   display: flex;
@@ -89,6 +111,7 @@ body {
   margin-bottom: 0;
 }
 
+/* Etiqueta del campo (ej: "Nombre:") */
 .settings-accordion__label {
   font-family: var(--font-family-main);
   font-size: 14px;
@@ -96,10 +119,11 @@ body {
   font-weight: 400;
 }
 
+/* Valor del campo (ej: "Keyner Arismendy") */
 .settings-accordion__value {
   font-family: var(--font-family-main);
   font-size: 16px;
-  color: #d0d0d0;
+  color: #d0d0d0; /* Gris claro */
   font-weight: 300;
 }
 
@@ -107,7 +131,7 @@ body {
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Acordeón más ancho */
 @media (min-width: 768px) {
   .settings-accordion {
     width: 430px;
@@ -122,14 +146,14 @@ body {
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Contenido centrado + hover en botón */
 @media (min-width: 1024px) {
   .settings-main {
-    align-items: center;
+    align-items: center; /* Centra el contenido */
   }
 
   .settings-footer__delete-btn:hover {
-    background-color: #cc0000;
+    background-color: #cc0000; /* Rojo más oscuro */
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);
   }
@@ -140,7 +164,7 @@ body {
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .settings-accordion {
     width: 550px;
@@ -165,16 +189,19 @@ body {
 
 /* ===========================
    SISTEMA DE MODALES
+   ===========================
+   Modales controlados por radio buttons
+   para eliminar cuenta (3 pasos)
    =========================== */
 
-/* Ocultar radio buttons */
+/* Ocultar radio buttons (controlan el estado) */
 .modal-state {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-/* Modal base */
+/* Base del modal (oculto por defecto) */
 .modal {
   display: none;
   position: fixed;
@@ -187,6 +214,7 @@ body {
   align-items: center;
 }
 
+/* Overlay oscuro con blur */
 .modal__overlay {
   position: absolute;
   top: 0;
@@ -197,6 +225,7 @@ body {
   backdrop-filter: blur(3px);
 }
 
+/* Contenido del modal */
 .modal__content {
   position: relative;
   background-color: var(--color-background-container);
@@ -206,9 +235,10 @@ body {
   width: 90%;
   text-align: center;
   z-index: 1001;
-  animation: modalSlideIn 0.3s ease;
+  animation: modalSlideIn 0.3s ease; /* Animación de entrada */
 }
 
+/* Animación de entrada del modal */
 @keyframes modalSlideIn {
   from {
     opacity: 0;
@@ -220,6 +250,7 @@ body {
   }
 }
 
+/* Título del modal */
 .modal__title {
   font-family: var(--font-family-main);
   font-size: 20px;
@@ -228,10 +259,12 @@ body {
   font-weight: 400;
 }
 
+/* Modificador: título de peligro (rojo) */
 .modal__title--danger {
   color: #ff6b6b;
 }
 
+/* Mensaje del modal */
 .modal__message {
   font-family: var(--font-family-main);
   font-size: 14px;
@@ -240,17 +273,20 @@ body {
   margin-bottom: 20px;
 }
 
+/* Icono dentro del mensaje */
 .modal__icon {
   font-size: 18px;
   margin-right: 5px;
 }
 
+/* Contenedor de botones */
 .modal__actions {
   display: flex;
   justify-content: center;
   gap: 15px;
 }
 
+/* Botón base del modal */
 .modal__button {
   padding: 10px 20px;
   border: none;
@@ -261,6 +297,7 @@ body {
   transition: all 0.2s ease;
 }
 
+/* Botón secundario (gris) */
 .modal__button--secondary {
   background-color: #4a4a4a;
   color: var(--color-text-light);
@@ -270,6 +307,7 @@ body {
   background-color: #5a5a5a;
 }
 
+/* Botón de peligro */
 .modal__button--danger {
   background-color: #4a4a4a;
   color: var(--color-text-light);
@@ -279,7 +317,7 @@ body {
   background-color: #5a5a5a;
 }
 
-/* Modal de procesamiento */
+/* Modal de procesamiento (cargando) */
 .modal__content--processing {
   display: flex;
   justify-content: center;
@@ -303,20 +341,20 @@ body {
   margin-bottom: 0;
 }
 
-/* Mostrar modales según estado del radio */
+/* Mostrar modales según estado del radio button */
 #modal-confirm:checked ~ .modal--confirm {
-  display: flex;
+  display: flex; /* Modal 1: Confirmación */
 }
 
 #modal-processing:checked ~ .modal--processing {
-  display: flex;
+  display: flex; /* Modal 2: Procesando */
 }
 
 #modal-success:checked ~ .modal--success {
-  display: flex;
+  display: flex; /* Modal 3: Éxito */
 }
 
-/* Fix para que el botón actúe como botón */
+/* Fix para que el label actúe como botón */
 .settings-footer__delete-btn {
   cursor: pointer;
   display: flex;

@@ -1,75 +1,89 @@
-/* Header de Configuraciones */
+/* ============================================
+   SETTINGS-HEADER.CSS - Header de Configuraciones
+   ============================================
+   Header específico para las páginas de settings
+   Incluye: título, navegación por iconos, separador
+   ============================================ */
+
+/* Contenedor principal del header de settings */
 .settings-header {
   display: flex;
-  flex-direction: column;
-  padding: 18px 20px 0;
-  text-align: center;
+  flex-direction: column; /* Apila elementos verticalmente */
+  padding: 18px 20px 0; /* Padding con más arriba */
+  text-align: center; /* Centra el contenido */
 }
 
+/* Sección superior: flecha de regreso + título */
 .settings-header__top {
   display: flex;
   margin-bottom: 20px;
-  justify-content: center;
-  gap: 50px;
+  justify-content: center; /* Centra horizontalmente */
+  gap: 50px; /* Espacio entre elementos */
 }
 
+/* Enlace de retroceso (flecha) */
 .settings-header__back {
   display: flex;
   align-items: center;
-  text-decoration: none;
-  margin-left: -60px;
+  text-decoration: none; /* Sin subrayado */
+  margin-left: -60px; /* Posición negativa para esquina */
 }
 
+/* Icono de flecha */
 .settings-header__arrow {
   width: 19px;
   height: 19px;
 }
 
+/* Título principal de la página de settings */
 .settings-header__title {
-  font-family: var(--font-family-main);
+  font-family: var(--font-family-main); /* Fuente Inter */
   font-size: 30px;
-  color: var(--color-text-light);
-  font-weight: 400;
-  text-shadow: 1px 4px 4px rgba(0, 0, 0, 0.5);
+  color: var(--color-text-light); /* Texto blanco */
+  font-weight: 400; /* Peso normal */
+  text-shadow: 1px 4px 4px rgba(0, 0, 0, 0.5); /* Sombra suave */
   margin-top: 15px;
 }
 
-/* Separador */
+/* Línea separadora horizontal */
 .settings-separator {
   width: 100%;
   height: 1px;
-  background-color: var(--color-text-light);
+  background-color: var(--color-text-light); /* Línea blanca */
   margin-bottom: 30px;
 }
 
-/* Navegación de iconos */
+/* Navegación por iconos (perfil, ajustes, suscripciones) */
 .settings-nav {
   display: flex;
   justify-content: center;
-  gap: 0;
+  gap: 0; /* Sin espacio entre iconos */
   margin-bottom: 20px;
-  position: relative;
+  position: relative; /* Para el pseudo-elemento ::after */
   padding-bottom: 10px;
 }
 
+/* Línea decorativa debajo de la navegación */
 .settings-nav::after {
   content: "";
   position: absolute;
   bottom: 15px;
   left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  border-bottom: 1px solid var(--color-text);
+  transform: translateX(-50%); /* Centra la línea */
+  width: 80%; /* Ocupa 80% del ancho */
+  border-bottom: 1px solid var(--color-text); /* Línea negra */
 }
 
+/* Enlace de navegación individual */
 .settings-nav__link {
   display: flex;
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  cursor: pointer;
+  cursor: pointer; /* Cursor de mano */
 }
 
+/* Iconos de navegación */
 .settings-nav__icon {
   width: 73px;
   height: 57px;
@@ -80,7 +94,7 @@
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Título y iconos más grandes */
 @media (min-width: 768px) {
   .settings-header__title {
     font-size: 32px;
@@ -92,15 +106,15 @@
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Efectos hover */
 @media (min-width: 1024px) {
   .settings-nav__link:hover {
-    background-color: rgba(232, 232, 232, 0.1);
-    transform: translateY(-2px);
+    background-color: rgba(232, 232, 232, 0.1); /* Fondo sutil al hover */
+    transform: translateY(-2px); /* Sube ligeramente */
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Tamaños máximos */
 @media (min-width: 1280px) {
   .settings-header__title {
     font-size: 36px;
@@ -112,6 +126,6 @@
   }
 
   .settings-nav {
-    gap: 20px;
+    gap: 20px; /* Más espacio entre iconos */
   }
 }

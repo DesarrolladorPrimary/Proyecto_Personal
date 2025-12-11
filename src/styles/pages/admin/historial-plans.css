@@ -1,3 +1,10 @@
+/* ============================================
+   HISTORIAL-PLANS.CSS - Historial de Planes
+   ============================================
+   Historial de suscripciones y transacciones.
+   Lista de cambios de planes de usuarios.
+   ============================================ */
+
 body {
   display: grid;
   grid-template-columns: 1fr;

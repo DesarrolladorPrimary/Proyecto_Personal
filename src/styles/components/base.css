@@ -1,173 +1,211 @@
-/* Estilos globales y variables compartidas */
+/* ============================================
+   BASE.CSS - Estilos globales y variables
+   ============================================
+   
+   SISTEMA DE BREAKPOINTS (Mobile-First):
+   
+   1. MÓVIL (default)     → 0px - 767px
+      - Estilos base sin @media
+   
+   2. TABLET              → 768px - 1023px
+      @media (min-width: 768px) { }
+   
+   3. DESKTOP             → 1024px - 1279px
+      @media (min-width: 1024px) { }
+   
+   4. DESKTOP GRANDE      → 1280px+
+      @media (min-width: 1280px) { }
+   
+   ============================================ */
+
+/* Reset CSS: Elimina márgenes y paddings por defecto del navegador */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* El padding y border se incluyen en el ancho total */
 }
 
+/* Variables CSS globales - Accesibles desde cualquier archivo */
 :root {
-    --background-color-body-feed: #3C3636;
-    --color-background-container: #655D5D;
-    --color-text: black;
-    --background-color-nav-subline: #615151;
-    --font-family-main: "Inter", sans-serif;
-    --font-family-poppins: "Poppins", sans-serif;
-    --font-weight-regular: 400;
-    --font-weight-light: 300;
-    --font-weight-thin: 100;
-    --color-text-light: white;
-    --aside-border-radius: 8px;
-    --border-radius-small: 3px;
-    --border-radius-medium: 7px;
-    --border-radius-pill: 36px;
-    --spacing-large: 30px;
-    --spacing-medium: 15px;
-    --spacing-small: 10px;
-    --spacing-xsmall: 5px;
-    --spacing-xlarge: 40px;
-    --line-width-thin: 1px;
-    --size-icon-tiny: 8px;
-    --font-size-body: 13px;
-    --font-size-small: 13px;
-    --color-text-buton: #D74747;
-    --color-background-botones: #FFBF00;
-    --color-accent-gold: #FFD700;
-    --text-width: 16px;
-    --border-width-medium: 15px;
-    --border-radius-tiny: 2px;
-    --book-card-width: 30px;
-    --book-card-height: 110px;
-    --book-decoration-spacing: 10px;
-    --book-decoration-line-height: 2px;
-    --decoration-text: none;
-    --z-index: 1;
+  /* ===== COLORES DE FONDO ===== */
+  --background-color-body-feed: #3c3636; /* Fondo principal del feed (gris oscuro) */
+  --color-background-container: #655d5d; /* Fondo de contenedores/cards */
+  --background-color-nav-subline: #615151; /* Fondo de submenús y navegación */
 
-    /* Feed - aside metrics */
-    --aside-width: 107px;
-    --aside-height: 439px;
-    --aside-position-top: 150px;
-    --aside-panel-width: 230px;
-    --aside-panel-height: 56px;
-    --aside-panel-left: 90px;
-    --menu-row-height: 30px;
-    --color-separator: #ccc;
+  /* ===== COLORES DE TEXTO ===== */
+  --color-text: black; /* Texto oscuro (para fondos claros) */
+  --color-text-light: white; /* Texto claro (para fondos oscuros) */
+  --color-text-buton: #d74747; /* Color rojo para botones de eliminar */
 
-    /* Home page layout */
-    --width-main: 100%;
-    --height-header: calc(100% - 70%);
+  /* ===== TIPOGRAFÍA ===== */
+  --font-family-main: "Inter", sans-serif; /* Fuente principal del proyecto */
+  --font-family-poppins: "Poppins", sans-serif; /* Fuente secundaria para títulos */
+  --font-weight-regular: 400; /* Peso normal */
+  --font-weight-light: 300; /* Peso ligero */
+  --font-weight-thin: 100; /* Peso muy delgado */
+  --font-size-body: 13px; /* Tamaño de texto del cuerpo */
+  --font-size-small: 13px; /* Tamaño de texto pequeño */
+  --text-width: 16px; /* Tamaño de texto para botones */
 
-    /* Auth login/register */
-    --auth-login-background: #98A59B;
-    --auth-register-background: #E1DED5;
-    --auth-spacing-large: 50px;
-    --auth-spacing-medium: 40px;
-    --auth-spacing-small: 20px;
-    --auth-input-height: 46px;
-    --auth-input-width: 300px;
+  /* ===== BORDES Y ESQUINAS ===== */
+  --border-radius-tiny: 2px; /* Esquinas apenas redondeadas */
+  --border-radius-small: 3px; /* Esquinas ligeramente redondeadas */
+  --border-radius-medium: 7px; /* Esquinas medianas */
+  --aside-border-radius: 8px; /* Esquinas del panel lateral */
+  --border-radius-pill: 36px; /* Esquinas totalmente redondeadas (píldora) */
+  --line-width-thin: 1px; /* Ancho de línea delgada */
+  --border-width-medium: 15px; /* Ancho de borde para estantes */
 
-    /* Recovery pages */
-    --recovery-button-bg: #D9D9D9;
-    --recovery-text-size: 9px;
-    --recovery-input-height: 33px;
-    --recovery-input-width: 223px;
-    --recovery-font-size-title: 16px;
-    --recovery-container-width: 306px;
-    --recovery-container-height: 470px;
-    --recovery-container-margin-top: 80px;
-    --recovery-container-radius: 12px;
-    --recovery-title-margin-top: 30px;
-    --recovery-description-gap: 10px;
-    --recovery-form-gap: 30px;
-    --recovery-input-radius: 5px;
-    --recovery-input-padding-left: 10px;
-    --recovery-button-radius: 36px;
-    --recovery-button-width: 178px;
-    --recovery-button-height: 44px;
-    --recovery-button-padding: 7px;
+  /* ===== ESPACIADO ===== */
+  --spacing-xsmall: 5px; /* Espaciado extra pequeño */
+  --spacing-small: 10px; /* Espaciado pequeño */
+  --spacing-medium: 15px; /* Espaciado mediano */
+  --spacing-large: 30px; /* Espaciado grande */
+  --spacing-xlarge: 40px; /* Espaciado extra grande */
+
+  /* ===== COLORES DE ACENTO ===== */
+  --color-background-botones: #ffbf00; /* Amarillo dorado para botones CTA */
+  --color-accent-gold: #ffd700; /* Dorado para decoraciones */
+  --color-separator: #ccc; /* Color de líneas separadoras */
+
+  /* ===== ICONOS ===== */
+  --size-icon-tiny: 8px; /* Iconos muy pequeños */
+  --z-index: 1; /* Z-index base */
+  --decoration-text: none; /* Sin decoración de texto */
+
+  /* ===== BIBLIOTECA - Tarjetas de libros ===== */
+  --book-card-width: 30px; /* Ancho de lomo del libro */
+  --book-card-height: 110px; /* Alto del libro */
+  --book-decoration-spacing: 10px; /* Espacio para líneas decorativas */
+  --book-decoration-line-height: 2px; /* Alto de líneas decorativas */
+
+  /* ===== FEED - Panel lateral (Aside) ===== */
+  --aside-width: 107px; /* Ancho del aside colapsado */
+  --aside-height: 439px; /* Alto del aside */
+  --aside-position-top: 150px; /* Posición desde arriba */
+  --aside-panel-width: 230px; /* Ancho del panel desplegado */
+  --aside-panel-height: 56px; /* Alto de cada panel */
+  --aside-panel-left: 90px; /* Posición izquierda del panel */
+  --menu-row-height: 30px; /* Alto de filas del menú */
+
+  /* ===== PÁGINA DE INICIO ===== */
+  --width-main: 100%; /* Ancho del contenedor principal */
+  --height-header: calc(100% - 70%); /* Alto del header en inicio */
+
+  /* ===== AUTH - Login/Registro ===== */
+  --auth-login-background: #98a59b; /* Fondo verde grisáceo del login */
+  --auth-register-background: #e1ded5; /* Fondo beige del registro */
+  --auth-spacing-large: 50px; /* Espaciado grande en auth */
+  --auth-spacing-medium: 40px; /* Espaciado mediano en auth */
+  --auth-spacing-small: 20px; /* Espaciado pequeño en auth */
+  --auth-input-height: 46px; /* Alto de inputs de auth */
+  --auth-input-width: 300px; /* Ancho de inputs de auth */
+  --auth-input-focus-border: #1379cd; /* Color del borde al enfocar */
+
+  /* ===== RECUPERACIÓN DE CONTRASEÑA ===== */
+  --recovery-button-bg: #d9d9d9; /* Fondo gris de botones */
+  --recovery-text-size: 9px; /* Texto pequeño de ayuda */
+  --recovery-input-height: 33px; /* Alto de inputs */
+  --recovery-input-width: 223px; /* Ancho de inputs */
+  --recovery-font-size-title: 16px; /* Tamaño del título */
+  --recovery-container-width: 306px; /* Ancho del contenedor */
+  --recovery-container-height: 470px; /* Alto del contenedor */
+  --recovery-container-margin-top: 80px; /* Margen superior */
+  --recovery-container-radius: 12px; /* Radio del contenedor */
+  --recovery-title-margin-top: 30px; /* Margen del título */
+  --recovery-description-gap: 10px; /* Espacio entre descripción */
+  --recovery-form-gap: 30px; /* Espacio en formulario */
+  --recovery-input-radius: 5px; /* Radio de inputs */
+  --recovery-input-padding-left: 10px; /* Padding izquierdo */
+  --recovery-button-radius: 36px; /* Radio de botones (píldora) */
+  --recovery-button-width: 178px; /* Ancho de botones */
+  --recovery-button-height: 44px; /* Alto de botones */
+  --recovery-button-padding: 7px; /* Padding de botones */
 }
 
+/* Botón global: Estilo base para todos los botones CTA */
 .button {
-    text-decoration: var(--decoration-text);
-    color: var(--color-text);
-    font-family: var(--font-family-main);
-    font-optical-sizing: auto;
-    font-weight: var(--font-weight-light);
-    font-style: normal;
-    border: 0 solid black;
-    border-radius: 5px;
-    background-color: var(--color-background-botones);
-    font-size: var(--text-width);
-    padding: 7px;
+  text-decoration: var(--decoration-text); /* Sin subrayado */
+  color: var(--color-text); /* Texto oscuro */
+  font-family: var(--font-family-main); /* Fuente Inter */
+  font-optical-sizing: auto;
+  font-weight: var(--font-weight-light); /* Peso ligero */
+  font-style: normal;
+  border: 0 solid black; /* Sin borde visible */
+  border-radius: 5px; /* Esquinas redondeadas */
+  background-color: var(--color-background-botones); /* Fondo amarillo */
+  font-size: var(--text-width); /* 16px */
+  padding: 7px; /* Espaciado interno */
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Ajustes para pantallas medianas */
 @media (min-width: 768px) {
-    :root {
-        /* Auth login/register - Tamaño intermedio */
-        --auth-input-width: 350px;
-        --auth-input-height: 50px;
+  :root {
+    /* Auth - Inputs más anchos para tablet */
+    --auth-input-width: 350px;
+    --auth-input-height: 50px;
 
-        /* Recovery pages - Ajustes para tablet */
-        --recovery-input-width: 260px;
-        --recovery-container-width: 350px;
-        --recovery-container-height: 490px;
-        --recovery-button-width: 200px;
+    /* Recovery - Contenedores más grandes */
+    --recovery-input-width: 260px;
+    --recovery-container-width: 350px;
+    --recovery-container-height: 490px;
+    --recovery-button-width: 200px;
 
-        /* Espaciados más amplios */
-        --spacing-large: 35px;
-        --spacing-xlarge: 50px;
+    /* Espaciados más amplios */
+    --spacing-large: 35px;
+    --spacing-xlarge: 50px;
 
-        /* Tipografía más grande */
-        --font-size-body: 14px;
-        --font-size-small: 14px;
-    }
+    /* Tipografía ligeramente más grande */
+    --font-size-body: 14px;
+    --font-size-small: 14px;
+  }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Optimizado para monitores */
 @media (min-width: 1024px) {
-    :root {
-        /* Auth login/register - Ampliar inputs para desktop */
-        --auth-input-width: 400px;
+  :root {
+    /* Auth - Inputs amplios para escritorio */
+    --auth-input-width: 400px;
 
-        /* Recovery pages - Ampliar contenedores para mejor legibilidad */
-        --recovery-input-width: 300px;
-        --recovery-container-width: 400px;
-        --recovery-container-height: 520px;
-        --recovery-button-width: 220px;
+    /* Recovery - Mayor legibilidad */
+    --recovery-input-width: 300px;
+    --recovery-container-width: 400px;
+    --recovery-container-height: 520px;
+    --recovery-button-width: 220px;
 
-        /* Espaciados desktop */
-        --spacing-large: 40px;
-        --spacing-xlarge: 60px;
+    /* Espaciados generosos */
+    --spacing-large: 40px;
+    --spacing-xlarge: 60px;
 
-        /* Aside - Ajustes para desktop */
-        --aside-width: 120px;
-        --aside-height: 480px;
-    }
+    /* Aside más grande */
+    --aside-width: 120px;
+    --aside-height: 480px;
+  }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Pantallas amplias y monitores grandes */
 @media (min-width: 1280px) {
-    :root {
-        /* Auth - Inputs más amplios */
-        --auth-input-width: 450px;
-        --auth-input-height: 52px;
+  :root {
+    /* Auth - Máxima comodidad */
+    --auth-input-width: 450px;
+    --auth-input-height: 52px;
 
-        /* Recovery - Contenedores más grandes */
-        --recovery-input-width: 350px;
-        --recovery-container-width: 450px;
-        --recovery-container-height: 550px;
-        --recovery-button-width: 250px;
+    /* Recovery - Contenedores amplios */
+    --recovery-input-width: 350px;
+    --recovery-container-width: 450px;
+    --recovery-container-height: 550px;
+    --recovery-button-width: 250px;
 
-        /* Tipografía para pantallas grandes */
-        --font-size-body: 15px;
-        --font-size-small: 14px;
+    /* Tipografía para pantallas grandes */
+    --font-size-body: 15px;
+    --font-size-small: 14px;
 
-        /* Espaciados generosos */
-        --spacing-large: 45px;
-        --spacing-xlarge: 70px;
-    }
+    /* Espaciados máximos */
+    --spacing-large: 45px;
+    --spacing-xlarge: 70px;
+  }
 }

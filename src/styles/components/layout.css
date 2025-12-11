@@ -1,119 +1,145 @@
+/* ============================================
+   LAYOUT.CSS - Componentes de estructura
+   ============================================
+   Contiene: Header y Footer Navigation
+   Uso: Importar en páginas que necesiten 
+        estos componentes de layout
+   ============================================ */
+
 /* =========================================
    Header Component
+   =========================================
+   Barra superior con navegación y logo
+   Usa grid para posicionarse en la fila 1
    ========================================= */
+
+/* Contenedor principal del header */
 .header {
-  display: flex;
-  justify-content: space-between;
-  margin: var(--spacing-large);
-  align-items: center;
-  align-self: flex-start;
-  grid-column: 1/4;
-  grid-row: 1/1;
+  display: flex; /* Distribuye elementos en línea */
+  justify-content: space-between; /* Logo a la derecha, nav a la izquierda */
+  margin: var(--spacing-large); /* Margen externo de 30px */
+  align-items: center; /* Centra verticalmente */
+  align-self: flex-start; /* Se alinea arriba del contenedor */
+  grid-column: 1/4; /* Ocupa todo el ancho del grid */
+  grid-row: 1/1; /* Se posiciona en la primera fila */
 }
 
+/* Botón de navegación (hamburguesa) */
 .header__nav {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 41px;
   width: 52px;
-  border-radius: var(--aside-border-radius);
-  background-color: var(--color-background-container);
+  border-radius: var(--aside-border-radius); /* Esquinas redondeadas */
+  background-color: var(--color-background-container); /* Fondo gris */
 }
 
+/* Línea decorativa dentro del botón de navegación */
 .header__nav-line {
   display: flex;
-  justify-content: end;
-  border: var(--color-text) var(--line-width-thin) solid;
-  border-radius: var(--border-radius-small);
+  justify-content: end; /* Alinea contenido a la derecha */
+  border: var(--color-text) var(--line-width-thin) solid; /* Borde negro delgado */
+  border-radius: var(
+    --border-radius-small
+  ); /* Esquinas ligeramente redondeadas */
   width: 30px;
   height: 17px;
   padding: 2px;
 }
 
+/* Indicador de submenú dentro de la línea de navegación */
 .header__nav-link {
-  width: var(--size-icon-tiny);
+  width: var(--size-icon-tiny); /* 8px de ancho */
   height: 15px;
   border-radius: 2px;
-  background-color: var(--background-color-nav-subline);
+  background-color: var(--background-color-nav-subline); /* Color del submenú */
 }
 
+/* Logo del header */
 .header__logo img,
 .header__logo {
-  width: 34px;
+  width: 34px; /* Tamaño del logo */
 }
 
 /* =========================================
    Footer Navigation Component
+   =========================================
+   Barra de navegación inferior con línea 
+   indicadora estilo iOS
    ========================================= */
+
+/* Contenedor del footer de navegación */
 .footer-nav {
   display: flex;
-  flex-direction: column;
-  justify-content: end;
-  align-items: center;
-  grid-column: 1/4;
-  grid-row: 4/4;
+  flex-direction: column; /* Apila elementos verticalmente */
+  justify-content: end; /* Los empuja hacia abajo */
+  align-items: center; /* Centra horizontalmente */
+  grid-column: 1/4; /* Ocupa todo el ancho */
+  grid-row: 4/4; /* Se posiciona en la última fila */
 }
 
+/* Línea indicadora del footer (estilo home indicator de iOS) */
 .footer-nav__line {
   border: 2px solid;
-  color: var(--color-text-light);
+  color: var(--color-text-light); /* Color blanco */
   width: 223px;
-  height: 0px;
-  margin-bottom: 20px;
+  height: 0px; /* Solo muestra el borde */
+  margin-bottom: 20px; /* Espacio desde el fondo */
 }
 
+/* Estado activo de la línea (al presionar) */
 .footer-nav__line:active {
-  color: #5e5b5b;
+  color: #5e5b5b; /* Se oscurece al tocar */
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Ajustes de espaciado */
 @media (min-width: 768px) {
   .header {
-    margin: var(--spacing-large) var(--spacing-xlarge);
+    margin: var(--spacing-large) var(--spacing-xlarge); /* Más margen horizontal */
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Ajustes de posición y hover */
 @media (min-width: 1024px) {
   .header {
-    align-items: flex-end;
+    align-items: flex-end; /* Alinea elementos hacia abajo */
   }
 
   .header__nav {
-    margin-left: 10px;
+    margin-left: 10px; /* Separa del borde izquierdo */
   }
 
   .header__logo {
-    margin-right: 10px;
+    margin-right: 10px; /* Separa del borde derecho */
   }
 
   .footer-nav__line {
-    margin-bottom: 0;
+    margin-bottom: 0; /* Sin margen inferior */
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Tamaños más grandes */
 @media (min-width: 1280px) {
   .header {
-    margin: var(--spacing-xlarge);
+    margin: var(--spacing-xlarge); /* Margen más generoso */
   }
 
   .header__nav {
-    height: 48px;
+    height: 48px; /* Botón de navegación más grande */
     width: 60px;
   }
 
   .header__logo,
   .header__logo img {
-    width: 40px;
+    width: 40px; /* Logo más grande */
   }
 
   .footer-nav__line {
-    width: 280px;
+    width: 280px; /* Línea más ancha */
   }
 }

@@ -1,132 +1,158 @@
+/* ============================================
+   SETTINGS-INSTRUCCIONESAI.CSS - Instrucciones IA
+   ============================================
+   Página para personalizar instrucciones de AI
+   Incluye textarea y mensaje de éxito animado
+   ============================================ */
+
+/* Grid principal de la página */
 body {
-    display: grid;
-    background-color: var(--background-color-body-feed);
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr 90px;
+  display: grid;
+  background-color: var(--background-color-body-feed);
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr 90px; /* Header, contenido, footer */
 }
 
+/* Override del padding del header */
 .settings-header {
-    padding: 17px 20px 0;
+  padding: 17px 20px 0;
 }
 
+/* Contenedor de instrucciones AI */
 .ai-instructions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    grid-column: 1/1;
-    grid-row: 2/3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column: 1/1;
+  grid-row: 2/3;
 }
 
+/* Descripción de las instrucciones */
 .ai-instructions__description {
-    text-align: center;
-    padding: 0 30px 20px 30px;
-    color: #ffffff;
-    font-family: var(--font-family-main);
-    font-weight: 300;
-    font-size: var(--font-size-small);
+  text-align: center;
+  padding: 0 30px 20px 30px;
+  color: #ffffff;
+  font-family: var(--font-family-main);
+  font-weight: 300;
+  font-size: var(--font-size-small);
 }
 
+/* =========================================
+   TEXTAREA DE INSTRUCCIONES
+   =========================================
+   Área de texto para escribir instrucciones
+   ========================================= */
+
+/* Input de texto multilínea */
 .ai-instructions__input {
-    width: 310px;
-    height: 512px;
-    background-color: var(--color-background-container);
-    border: 1px solid black;
-    border-radius: 6px;
-    padding: 10px;
-    font-family: var(--font-family-main);
-    font-size: 14px;
-    color: #ffffff;
-    resize: vertical;
-    box-sizing: border-box;
+  width: 310px;
+  height: 512px;
+  background-color: var(--color-background-container);
+  border: 1px solid black;
+  border-radius: 6px;
+  padding: 10px;
+  font-family: var(--font-family-main);
+  font-size: 14px;
+  color: #ffffff;
+  resize: vertical; /* Solo redimensionable verticalmente */
+  box-sizing: border-box;
 }
 
+/* Placeholder del textarea */
 .ai-instructions__input::placeholder {
-    color: #999;
-    text-align: left;
+  color: #999;
+  text-align: left;
 }
 
+/* =========================================
+   FOOTER CON BOTÓN Y MENSAJE
+   =========================================
+   Contiene botón de guardar y mensaje de éxito
+   ========================================= */
+
+/* Footer de las instrucciones */
 .ai-instructions__footer {
-    position: relative;
-    /* Necesario para posicionar el mensaje absoluto */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    grid-column: 1/1;
-    grid-row: 3/4;
+  position: relative; /* Para posicionar mensaje absoluto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: 1/1;
+  grid-row: 3/4;
 }
 
+/* Checkbox oculto (controla mensaje de éxito) */
 .ai-instructions__save-trigger {
-    display: none;
-    /* Ocultar el checkbox */
+  display: none;
 }
 
+/* Mensaje de éxito (oculto por defecto) */
 .ai-instructions__success-msg {
-    position: absolute;
-    bottom: 50px;
-    /* Encima del botón */
-    background-color: #4a4a4a;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-family: var(--font-family-main);
-    font-size: 14px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+  position: absolute;
+  bottom: 50px; /* Encima del botón */
+  background-color: #4a4a4a;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: var(--font-family-main);
+  font-size: 14px;
+  opacity: 0; /* Invisible por defecto */
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-.ai-instructions__save-trigger:checked~.ai-instructions__success-msg {
-    opacity: 1;
-    animation: fadeOut 2s forwards;
-    /* Desaparece después de 2 segundos */
+/* Estado activo: muestra mensaje cuando checkbox está marcado */
+.ai-instructions__save-trigger:checked ~ .ai-instructions__success-msg {
+  opacity: 1;
+  animation: fadeOut 2s forwards; /* Desaparece después de 2s */
 }
 
+/* Animación de desvanecimiento */
 @keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-
-    70% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
+/* Botón de guardar */
 .ai-instructions__btn {
-    width: 103px;
-    height: 35px;
-    border: none;
-    border-radius: 3px;
-    background-color: #2196F3;
-    color: white;
-    font-family: var(--font-family-main);
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
+  width: 103px;
+  height: 35px;
+  border: none;
+  border-radius: 3px;
+  background-color: #2196f3; /* Azul Material */
+  color: white;
+  font-family: var(--font-family-main);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
 }
 
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
 
+/* Desktop (1024px+): Textarea más ancho + hover */
+@media (min-width: 1024px) {
+  .ai-instructions__input {
+    width: 500px;
+  }
 
-@media (min-width:1024px) {
-    
-    .ai-instructions__input {
-        width: 500px
-    }
-
-    .ai-instructions__input::placeholder {
+  .ai-instructions__input::placeholder {
     color: #999;
-    text-align:center;
-    line-height:20px;
+    text-align: center;
+    line-height: 20px;
+  }
 
-}
-    
-    .ai-instructions__btn:hover {
-        background-color: #1976D2;
-    }
+  .ai-instructions__btn:hover {
+    background-color: #1976d2; /* Azul más oscuro */
+  }
 }

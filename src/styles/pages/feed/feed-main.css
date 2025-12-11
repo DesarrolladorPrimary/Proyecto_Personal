@@ -1,456 +1,448 @@
-body {
-    display: grid;
-    /* Habilita CSS Grid para el layout principal */
-    background-color: var(--background-color-body-feed);
-    /* Establece el color de fondo del cuerpo de la pÃ¡gina */
-    grid-template-columns: repeat(3, 1fr);
-    /* Crea 3 columnas de fracciÃ³n igual */
-    grid-template-rows: repeat(3, 200px);
+/* ============================================
+   FEED-MAIN.CSS - Página Principal del Feed
+   ============================================
+   Layout principal de la aplicación con:
+   - Header con navegación
+   - Aside (menú lateral desplegable)
+   - Feed central con contenido
+   - Menú de usuario
+   ============================================ */
 
-    min-height: 100vh;
-    /* Crea 3 filas de 200px de alto cada una */
-    position: relative;
-    /* Establece un contexto de posicionamiento para elementos hijos absolutos */
+/* Body: Grid principal de 3 columnas × 3 filas */
+body {
+  display: grid;
+  /* Habilita CSS Grid para el layout principal */
+  background-color: var(--background-color-body-feed);
+  /* Establece el color de fondo del cuerpo de la página */
+  grid-template-columns: repeat(3, 1fr);
+  /* Crea 3 columnas de fracción igual */
+  grid-template-rows: repeat(3, 200px);
+
+  min-height: 100vh;
+  /* Crea 3 filas de 200px de alto cada una */
+  position: relative;
+  /* Establece un contexto de posicionamiento para elementos hijos absolutos */
 }
 
 /* Estilos para la cabecera */
 .header {
-    display: flex;
-    /* Usa flexbox para alinear los elementos hijos */
-    justify-content: space-between;
-    /* Distribuye el espacio entre los elementos hijos */
-    margin: var(--spacing-large);
-    /* AÃ±ade un margen general */
-    align-items: center;
-    /* Centra verticalmente los elementos hijos */
-    grid-column: 1/4;
-    /* Hace que la cabecera ocupe desde la columna 1 hasta la 4 */
-    align-self: flex-start;
-    /* Alinea la cabecera al inicio de su Ã¡rea de grid */
+  display: flex;
+  /* Usa flexbox para alinear los elementos hijos */
+  justify-content: space-between;
+  /* Distribuye el espacio entre los elementos hijos */
+  margin: var(--spacing-large);
+  /* AÃ±ade un margen general */
+  align-items: center;
+  /* Centra verticalmente los elementos hijos */
+  grid-column: 1/4;
+  /* Hace que la cabecera ocupe desde la columna 1 hasta la 4 */
+  align-self: flex-start;
+  /* Alinea la cabecera al inicio de su Ã¡rea de grid */
 }
 
 /* Estilos para la navegaciÃ³n de la cabecera */
 .header__nav {
-    display: flex;
-    /* Usa flexbox para alinear los elementos hijos */
-    justify-content: center;
-    /* Centra horizontalmente los elementos hijos */
-    align-items: center;
-    /* Centra verticalmente los elementos hijos */
-    height: 41px;
-    /* Establece la altura del elemento */
-    width: 52px;
-    /* Establece el ancho del elemento */
-    border-radius: var(--aside-border-radius);
-    /* Redondea las esquinas del elemento */
-    background-color: var(--color-background-container);
-    /* Establece el color de fondo del elemento */
+  display: flex;
+  /* Usa flexbox para alinear los elementos hijos */
+  justify-content: center;
+  /* Centra horizontalmente los elementos hijos */
+  align-items: center;
+  /* Centra verticalmente los elementos hijos */
+  height: 41px;
+  /* Establece la altura del elemento */
+  width: 52px;
+  /* Establece el ancho del elemento */
+  border-radius: var(--aside-border-radius);
+  /* Redondea las esquinas del elemento */
+  background-color: var(--color-background-container);
+  /* Establece el color de fondo del elemento */
 }
 
 /* LÃ­nea dentro de la navegaciÃ³n */
 .header__nav-line {
-    display: flex;
-    /* Usa flexbox para alinear los elementos hijos */
-    justify-content: end;
-    /* Alinea los elementos hijos al final del contenedor */
-    border: var(--color-text) var(--line-width-thin) solid;
-    /* AÃ±ade un borde con el color de texto principal */
-    border-radius: var(--border-radius-small);
-    /* Redondea las esquinas del elemento */
-    background-color: transparent;
-    /* Hace que el fondo sea transparente */
-    width: 30px;
-    /* Establece el ancho del elemento */
-    height: 17px;
-    /* Establece la altura del elemento */
-    padding: 2px;
+  display: flex;
+  /* Usa flexbox para alinear los elementos hijos */
+  justify-content: end;
+  /* Alinea los elementos hijos al final del contenedor */
+  border: var(--color-text) var(--line-width-thin) solid;
+  /* AÃ±ade un borde con el color de texto principal */
+  border-radius: var(--border-radius-small);
+  /* Redondea las esquinas del elemento */
+  background-color: transparent;
+  /* Hace que el fondo sea transparente */
+  width: 30px;
+  /* Establece el ancho del elemento */
+  height: 17px;
+  /* Establece la altura del elemento */
+  padding: 2px;
 }
 
 /* SublÃ­nea dentro de la navegaciÃ³n (el botÃ³n clickeable) */
 .header__nav-link {
-    width: var(--size-icon-tiny);
-    /* Establece el ancho del elemento */
-    height: 15px;
-    /* Establece la altura del elemento */
-    border-radius: 2px;
-    /* Redondea las esquinas del elemento */
-    background-color: var(--background-color-nav-subline);
-    /* Establece el color de fondo del elemento */
+  width: var(--size-icon-tiny);
+  /* Establece el ancho del elemento */
+  height: 15px;
+  /* Establece la altura del elemento */
+  border-radius: 2px;
+  /* Redondea las esquinas del elemento */
+  background-color: var(--background-color-nav-subline);
+  /* Establece el color de fondo del elemento */
 }
 
 /* Logo en la cabecera */
 .header__logo {
-    width: 34px;
-    /* Establece el ancho del logo */
+  width: 34px;
+  /* Establece el ancho del logo */
 }
-
 
 /* Contenedor principal del menÃº lateral */
 .aside {
-    display: none;
-    /* Por defecto, el menÃº estÃ¡ oculto */
-    position: absolute;
-    /* Se saca del flujo normal para superponerse */
-    grid-template-rows: repeat(4, 1fr);
-    /* Crea 4 filas de igual tamaÃ±o */
-    background-color: var(--color-background-container);
-    /* Color de fondo reutilizado */
-    width: var(--aside-width);
-    /* Ancho definido por una variable */
-    height: var(--aside-height);
-    /* Altura definida por una variable */
-    top: var(--aside-position-top);
-    /* PosiciÃ³n desde arriba definida por una variable */
-    border-radius: var(--aside-border-radius);
-    /* Bordes redondeados definidos por una variable */
+  display: none;
+  /* Por defecto, el menÃº estÃ¡ oculto */
+  position: absolute;
+  /* Se saca del flujo normal para superponerse */
+  grid-template-rows: repeat(4, 1fr);
+  /* Crea 4 filas de igual tamaÃ±o */
+  background-color: var(--color-background-container);
+  /* Color de fondo reutilizado */
+  width: var(--aside-width);
+  /* Ancho definido por una variable */
+  height: var(--aside-height);
+  /* Altura definida por una variable */
+  top: var(--aside-position-top);
+  /* PosiciÃ³n desde arriba definida por una variable */
+  border-radius: var(--aside-border-radius);
+  /* Bordes redondeados definidos por una variable */
 }
 
 /* Estilo para el boton de cerrar del menu lateral (temporal) */
 .aside__close {
-    position: absolute;
-    /* Lo posiciona de forma absoluta dentro del aside */
-    text-decoration: none;
-    /* Quita el subrayado */
-    color: var(--color-text);
-    /* Usa el color de texto principal */
-    z-index: var(--z-index);
-    /* Se asegura que estÃ© visible sobre otros elementos */
+  position: absolute;
+  /* Lo posiciona de forma absoluta dentro del aside */
+  text-decoration: none;
+  /* Quita el subrayado */
+  color: var(--color-text);
+  /* Usa el color de texto principal */
+  z-index: var(--z-index);
+  /* Se asegura que estÃ© visible sobre otros elementos */
 }
-
 
 /* Alineacion para todos los iconos dentro de las celdas del grid del aside */
 .aside__link {
-    justify-self: center;
-    /* Centra el icono horizontalmente en su celda */
-    align-self: center;
-    /* Centra el icono verticalmente en su celda */
+  justify-self: center;
+  /* Centra el icono horizontalmente en su celda */
+  align-self: center;
+  /* Centra el icono verticalmente en su celda */
 }
 
 /* Modificadores de tamaño para cada icono especÃ­fico del menu lateral */
 .aside__icon--mind {
-    width: 56px;
-    /* Ancho para el icono 'mind' */
+  width: 56px;
+  /* Ancho para el icono 'mind' */
 }
 
 .aside__icon--paper {
-    width: 74px;
-    /* Ancho para el icono 'paper' */
+  width: 74px;
+  /* Ancho para el icono 'paper' */
 }
 
 .aside__icon--libros {
-    width: 91px;
-    /* Ancho para el icono 'libros' */
-    height: 52px;
-    /* Altura para el icono 'libros' */
+  width: 91px;
+  /* Ancho para el icono 'libros' */
+  height: 52px;
+  /* Altura para el icono 'libros' */
 }
 
 .aside__icon--setting {
-    width: 31px;
-    /* Ancho para el icono 'setting' */
+  width: 31px;
+  /* Ancho para el icono 'setting' */
 }
-
-
 
 /* Muestra el menu lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
 .aside:target {
-    display: grid;
-    /* Cambia el display a grid para que sea visible */
+  display: grid;
+  /* Cambia el display a grid para que sea visible */
 }
-
 
 /* Panel base: aplica estilos comunes para todas las celdas descriptivas del aside */
 .aside__panel {
-    display: flex;
-    visibility: visible;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    border-radius: 4px;
-    background-color: var(--color-background-container);
-    border: var(--line-width-thin) solid transparent;
-    width: var(--aside-panel-width);
-    height: var(--aside-panel-height);
+  display: flex;
+  visibility: visible;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border-radius: 4px;
+  background-color: var(--color-background-container);
+  border: var(--line-width-thin) solid transparent;
+  width: var(--aside-panel-width);
+  height: var(--aside-panel-height);
 }
-
 
 /* Enlaces dentro de los paneles del aside */
 .aside__panel-link {
-    text-decoration: none;
-    color: var(--color-text-light);
+  text-decoration: none;
+  color: var(--color-text-light);
 }
 
 /* PosiciÃ³n del panel asociado a Poly/AI */
 .aside__panel--poly {
-    top: 25px;
-    left: var(--aside-panel-left);
-
+  top: 25px;
+  left: var(--aside-panel-left);
 }
 
 /* PosiciÃ³n del panel de la secciÃ³n creativa */
 .aside__panel--creative {
-    top: 134px;
-    left: var(--aside-panel-left);
+  top: 134px;
+  left: var(--aside-panel-left);
 }
 
 /* PosiciÃ³n del panel de biblioteca */
 .aside__panel--library {
-    top: 244px;
-    left: var(--aside-panel-left);
+  top: 244px;
+  left: var(--aside-panel-left);
 }
 
 /* PosiciÃ³n del panel de configuraciones */
 .aside__panel--settings {
-    top: 350px;
-    left: var(--aside-panel-left);
+  top: 350px;
+  left: var(--aside-panel-left);
 }
-
-
-
-
-
-
 
 /* --- Estilos para la secciÃ³n de feed --- */
 .feed {
-    display: grid;
-    /* Habilita grid para el layout del feed */
-    grid-column: 2/3;
-    /* El feed ocupa la segunda columna del grid principal */
-    grid-row: 2/3;
-    /* El feed ocupa la segunda fila del grid principal */
-    align-self: self-start;
-    /* Se alinea al inicio de su Ã¡rea de grid */
+  display: grid;
+  /* Habilita grid para el layout del feed */
+  grid-column: 2/3;
+  /* El feed ocupa la segunda columna del grid principal */
+  grid-row: 2/3;
+  /* El feed ocupa la segunda fila del grid principal */
+  align-self: self-start;
+  /* Se alinea al inicio de su Ã¡rea de grid */
 }
 
 /* Contenido del feed */
 .feed__content {
-    display: flex;
-    /* Usa flexbox para alinear los elementos hijos */
-    flex-direction: column;
-    /* Apila los elementos hijos verticalmente */
-    align-items: center;
-    /* Centra horizontalmente los elementos hijos */
+  display: flex;
+  /* Usa flexbox para alinear los elementos hijos */
+  flex-direction: column;
+  /* Apila los elementos hijos verticalmente */
+  align-items: center;
+  /* Centra horizontalmente los elementos hijos */
 }
 
 /* Texto del feed */
 .feed__text {
-    font-family: var(--font-family-main);
-    /* Establece la fuente del texto */
-    font-optical-sizing: auto;
-    /* Permite que el navegador ajuste el tamaÃ±o Ã³ptico de la fuente */
-    font-weight: var(--font-weight-light);
-    /* Establece el grosor de la fuente */
-    font-style: normal;
-    /* Establece el estilo de la fuente a normal */
-    color: var(--color-text-light);
-    /* Establece el color del texto */
-    font-size: var(--font-size-body);
-    /* Establece el tamaÃ±o de la fuente */
+  font-family: var(--font-family-main);
+  /* Establece la fuente del texto */
+  font-optical-sizing: auto;
+  /* Permite que el navegador ajuste el tamaÃ±o Ã³ptico de la fuente */
+  font-weight: var(--font-weight-light);
+  /* Establece el grosor de la fuente */
+  font-style: normal;
+  /* Establece el estilo de la fuente a normal */
+  color: var(--color-text-light);
+  /* Establece el color del texto */
+  font-size: var(--font-size-body);
+  /* Establece el tamaÃ±o de la fuente */
 }
 
 /* Imagen del feed */
 .feed__image {
-    width: 256px;
-    /* Establece el ancho de la imagen */
+  width: 256px;
+  /* Establece el ancho de la imagen */
 }
-
 
 /* --- Estilos para el menÃº de usuario --- */
 
 /* BotÃ³n para cerrar el menÃº de usuario */
 .menu-user__close {
-    position: absolute;
-    /* Posicionamiento absoluto respecto al contenedor 'menu-user' */
-    text-decoration: none;
-    /* Quita el subrayado del enlace */
-    color: var(--color-text);
-    /* Color del icono de cierre */
-    z-index: var(--z-index);
-    /* Se asegura que estÃ© por encima de otros elementos del menÃº */
-    margin: var(--spacing-medium);
-    /* Espaciado interior */
-    right: 0;
-    /* Lo posiciona a la derecha del contenedor */
+  position: absolute;
+  /* Posicionamiento absoluto respecto al contenedor 'menu-user' */
+  text-decoration: none;
+  /* Quita el subrayado del enlace */
+  color: var(--color-text);
+  /* Color del icono de cierre */
+  z-index: var(--z-index);
+  /* Se asegura que estÃ© por encima de otros elementos del menÃº */
+  margin: var(--spacing-medium);
+  /* Espaciado interior */
+  right: 0;
+  /* Lo posiciona a la derecha del contenedor */
 }
-
 
 /* Contenedor principal del menÃº de usuario */
 .menu-user {
-    visibility: hidden;
-    /* Por defecto, el menÃº no es visible */
-    display: grid;
-    /* Usa CSS Grid para su layout interno */
-    position: absolute;
-    /* Se superpone al contenido normal de la pÃ¡gina */
-    z-index: var(--z-index);
-    /* Se apila por encima del contenido base */
+  visibility: hidden;
+  /* Por defecto, el menÃº no es visible */
+  display: grid;
+  /* Usa CSS Grid para su layout interno */
+  position: absolute;
+  /* Se superpone al contenido normal de la pÃ¡gina */
+  z-index: var(--z-index);
+  /* Se apila por encima del contenido base */
 
-    grid-column: 2/2;
+  grid-column: 2/2;
 
-    grid-row: 2/2;
+  grid-row: 2/2;
 
-    justify-self: center;
-    /* Se centra horizontalmente en su contenedor grid padre */
-    border-radius: var(--border-radius-medium);
-    /* Bordes redondeados */
-    background-color: var(--color-background-container);
-    /* Color de fondo */
-    width: 285px;
-    /* Ancho del menÃº */
-    height: 450px;
-    /* Altura del menÃº */
+  justify-self: center;
+  /* Se centra horizontalmente en su contenedor grid padre */
+  border-radius: var(--border-radius-medium);
+  /* Bordes redondeados */
+  background-color: var(--color-background-container);
+  /* Color de fondo */
+  width: 285px;
+  /* Ancho del menÃº */
+  height: 450px;
+  /* Altura del menÃº */
 
-    /* Define las filas del grid interno del menÃº */
-    grid-template-rows:
-        100px
-        /* Fila 1 (Para el Ã­cono de avatar) */
-        30px
-        /* Fila 2 (Para la lÃ­nea separadora) */
-        40px
-        /* Fila 3 (Usuario) */
-        40px
-        /* Fila 4 (Numero) */
-        40px
-        /* Fila 5 (Correo) */
-        40px
-        /* Fila 6 (Modelos) */
-        170px;
-    /* Fila 7 (BotÃ³n de cierre de sesiÃ³n) */
+  /* Define las filas del grid interno del menÃº */
+  grid-template-rows:
+    100px
+    /* Fila 1 (Para el Ã­cono de avatar) */
+    30px
+    /* Fila 2 (Para la lÃ­nea separadora) */
+    40px
+    /* Fila 3 (Usuario) */
+    40px
+    /* Fila 4 (Numero) */
+    40px
+    /* Fila 5 (Correo) */
+    40px
+    /* Fila 6 (Modelos) */
+    170px;
+  /* Fila 7 (BotÃ³n de cierre de sesiÃ³n) */
 }
-
 
 /* Avatar dentro del menÃº de usuario */
 .menu-user__avatar {
-    margin-top: var(--spacing-xsmall);
-    /*
+  margin-top: var(--spacing-xsmall);
+  /*
     width: 60px;
     /* Ancho del avatar */
-    justify-self: center;
-    /* Centrado horizontal en su fila */
-    align-self: center;
-    /* Centrado vertical en su fila */
+  justify-self: center;
+  /* Centrado horizontal en su fila */
+  align-self: center;
+  /* Centrado vertical en su fila */
 }
 
 /* LÃ­nea separadora horizontal */
 .menu-user__separador {
-    width: 247px;
-    /* Ancho de la lÃ­nea */
-    height: var(--line-width-thin);
-    /* Grosor de la lÃ­nea */
-    background-color: var(--color-separator);
-    /* Color de la lÃ­nea */
-    justify-self: center;
-    /* Centrado horizontal */
-    align-self: center;
-    /* Centrado vertical */
+  width: 247px;
+  /* Ancho de la lÃ­nea */
+  height: var(--line-width-thin);
+  /* Grosor de la lÃ­nea */
+  background-color: var(--color-separator);
+  /* Color de la lÃ­nea */
+  justify-self: center;
+  /* Centrado horizontal */
+  align-self: center;
+  /* Centrado vertical */
 }
 
 /* Estilo de texto genÃ©rico para los elementos del menÃº */
 .menu-user__text {
-    justify-self: start;
-    /* Alineado a la izquierda de su celda */
-    align-self: center;
-    /* Centrado verticalmente */
-    margin-left: var(--spacing-xlarge);
-    /* Margen izquierdo para no pegarse al borde */
-    font-family: var(--font-family-main);
-    /* Fuente principal */
-    font-optical-sizing: auto;
-    /* Ajuste Ã³ptico de la fuente */
-    font-weight: var(--font-weight-light);
-    /* Grosor de fuente ligero */
-    font-style: normal;
-    /* Estilo de fuente normal */
-    color: var(--color-text-light);
-    /* Color de texto claro (blanco) */
-    font-size: var(--font-size-body);
-    /* TamaÃ±o de la fuente */
+  justify-self: start;
+  /* Alineado a la izquierda de su celda */
+  align-self: center;
+  /* Centrado verticalmente */
+  margin-left: var(--spacing-xlarge);
+  /* Margen izquierdo para no pegarse al borde */
+  font-family: var(--font-family-main);
+  /* Fuente principal */
+  font-optical-sizing: auto;
+  /* Ajuste Ã³ptico de la fuente */
+  font-weight: var(--font-weight-light);
+  /* Grosor de fuente ligero */
+  font-style: normal;
+  /* Estilo de fuente normal */
+  color: var(--color-text-light);
+  /* Color de texto claro (blanco) */
+  font-size: var(--font-size-body);
+  /* TamaÃ±o de la fuente */
 }
 
 /* Muestra el menÃº de usuario cuando es el objetivo de la URL */
 .menu-user--hidden:target {
-    visibility: visible;
-    /* Hace que el menÃº sea visible */
+  visibility: visible;
+  /* Hace que el menÃº sea visible */
 }
 
 /* Contenedor para agrupar un icono y un texto */
 .menu-user__group {
-    display: flex;
-    /* Usa flexbox para alinear icono y texto */
-    gap: var(--spacing-small);
-    /* Espacio entre el icono y el texto */
-    justify-content: start;
-    /* Alinea los elementos al inicio */
-    margin-left: var(--spacing-xlarge);
-    /* Margen izquierdo para todo el grupo */
-    height: var(--menu-row-height);
-    /* Altura del grupo */
+  display: flex;
+  /* Usa flexbox para alinear icono y texto */
+  gap: var(--spacing-small);
+  /* Espacio entre el icono y el texto */
+  justify-content: start;
+  /* Alinea los elementos al inicio */
+  margin-left: var(--spacing-xlarge);
+  /* Margen izquierdo para todo el grupo */
+  height: var(--menu-row-height);
+  /* Altura del grupo */
 }
 
 /* TÃ­tulo dentro de un grupo (ej. "Modelos:") */
 .menu-user__group-title {
-    color: var(--color-text-light);
-    /* Color del texto */
+  color: var(--color-text-light);
+  /* Color del texto */
 }
 
 /* Estilo para el botÃ³n de "Modelo" */
 .menu-user__Model {
-    display: flex;
-    /* Usa flexbox */
-    gap: var(--spacing-xsmall);
-    /* Espacio entre icono y texto del modelo */
-    width: 110px;
-    /* Ancho del botÃ³n */
-    height: var(--menu-row-height);
-    /* Altura del botÃ³n */
-    background-color: var(--background-color-nav-subline);
-    /* Color de fondo */
-    justify-content: center;
-    /* Centra el contenido horizontalmente */
-    align-items: center;
-    /* Centra el contenido verticalmente */
-    border-radius: var(--border-radius-small);
-    /* Bordes redondeados */
-    color: var(--color-text-light);
-    /* Color del texto */
-    font-weight: var(--font-weight-thin);
-    /* Grosor de la fuente */
-    transform: translateY(-6px);
-    /* Mueve el botÃ³n 6px hacia arriba */
+  display: flex;
+  /* Usa flexbox */
+  gap: var(--spacing-xsmall);
+  /* Espacio entre icono y texto del modelo */
+  width: 110px;
+  /* Ancho del botÃ³n */
+  height: var(--menu-row-height);
+  /* Altura del botÃ³n */
+  background-color: var(--background-color-nav-subline);
+  /* Color de fondo */
+  justify-content: center;
+  /* Centra el contenido horizontalmente */
+  align-items: center;
+  /* Centra el contenido verticalmente */
+  border-radius: var(--border-radius-small);
+  /* Bordes redondeados */
+  color: var(--color-text-light);
+  /* Color del texto */
+  font-weight: var(--font-weight-thin);
+  /* Grosor de la fuente */
+  transform: translateY(-6px);
+  /* Mueve el botÃ³n 6px hacia arriba */
 }
 
 /* Icono de configuraciÃ³n (engranaje) dentro del botÃ³n de modelo */
 .menu-user__setting-icon {
-    width: var(--size-icon-tiny);
-    /* Ancho del icono */
-    height: 10px;
-    /* Altura del icono */
+  width: var(--size-icon-tiny);
+  /* Ancho del icono */
+  height: 10px;
+  /* Altura del icono */
 }
-
 
 /* BotÃ³n de cerrar sesiÃ³n */
 .menu-user__button {
-    width: 178px;
-    /* Ancho del botÃ³n */
-    height: 44px;
-    /* Altura del botÃ³n */
-    border-radius: var(--border-radius-pill);
-    /* Bordes muy redondeados para hacerlo ovalado */
-    justify-self: center;
-    /* Centrado horizontal en su celda */
-    align-self: center;
-    /* Centrado vertical en su celda */
+  width: 178px;
+  /* Ancho del botÃ³n */
+  height: 44px;
+  /* Altura del botÃ³n */
+  border-radius: var(--border-radius-pill);
+  /* Bordes muy redondeados para hacerlo ovalado */
+  justify-self: center;
+  /* Centrado horizontal en su celda */
+  align-self: center;
+  /* Centrado vertical en su celda */
 }
 
 /* Enlace dentro del botÃ³n de cerrar sesiÃ³n */
 .menu-user__link {
-    text-decoration: none;
-    /* Quita el subrayado del enlace */
-    color: var(--color-text-buton);
-    /* Usa el color rojo definido en las variables */
+  text-decoration: none;
+  /* Quita el subrayado del enlace */
+  color: var(--color-text-buton);
+  /* Usa el color rojo definido en las variables */
 }
-
-
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
@@ -458,80 +450,78 @@ body {
 
 /* Tablets (768px - 1023px) */
 @media (min-width: 768px) {
-    .feed__image {
-        width: 300px;
-    }
+  .feed__image {
+    width: 300px;
+  }
 
-    .feed__text {
-        font-size: 15px;
-    }
+  .feed__text {
+    font-size: 15px;
+  }
 
-    .menu-user {
-        width: 320px;
-        height: 480px;
-    }
+  .menu-user {
+    width: 320px;
+    height: 480px;
+  }
 }
 
 /* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
-    .aside__panel {
-        visibility: hidden;
-    }
+  .aside__panel {
+    visibility: hidden;
+  }
 
-    .aside__panel:hover,
-    .aside__link--navi:hover+.aside__panel {
-        visibility: visible;
-    }
+  .aside__panel:hover,
+  .aside__link--navi:hover + .aside__panel {
+    visibility: visible;
+  }
 
-    .feed__image {
-        width: 350px;
-    }
+  .feed__image {
+    width: 350px;
+  }
 
-    .feed__text {
-        font-size: 16px;
-    }
+  .feed__text {
+    font-size: 16px;
+  }
 
-    .menu-user {
-        width: 350px;
-        height: 500px;
-    }
+  .menu-user {
+    width: 350px;
+    height: 500px;
+  }
 
-    .aside__panel--creative {
-        top: 150px;
-    }
+  .aside__panel--creative {
+    top: 150px;
+  }
 
-    .aside__panel--library {
-        top: 273px
-    }
+  .aside__panel--library {
+    top: 273px;
+  }
 
-    .aside__panel--settings {
-        top: 391px;
-    
-}
-
+  .aside__panel--settings {
+    top: 391px;
+  }
 }
 
 /* Desktop Grande (1280px+) */
 @media (min-width: 1280px) {
-    .aside__panel {
-        visibility: hidden;
-    }
+  .aside__panel {
+    visibility: hidden;
+  }
 
-    .aside__panel:hover,
-    .aside__link--navi:hover+.aside__panel {
-        visibility: visible;
-    }
+  .aside__panel:hover,
+  .aside__link--navi:hover + .aside__panel {
+    visibility: visible;
+  }
 
-    .feed__image {
-        width: 400px;
-    }
+  .feed__image {
+    width: 400px;
+  }
 
-    .feed__text {
-        font-size: 18px;
-    }
+  .feed__text {
+    font-size: 18px;
+  }
 
-    .menu-user {
-        width: 380px;
-        height: 520px;
-    }
+  .menu-user {
+    width: 380px;
+    height: 520px;
+  }
 }

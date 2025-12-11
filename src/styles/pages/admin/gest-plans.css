@@ -1,3 +1,10 @@
+/* ============================================
+   GEST-PLANS.CSS - Gestión de Planes
+   ============================================
+   Administración de planes y suscripciones.
+   Tarjetas de planes con acciones CRUD.
+   ============================================ */
+
 body {
   display: grid;
   grid-template-columns: 1fr;

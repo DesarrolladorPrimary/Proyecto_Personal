@@ -1,3 +1,10 @@
+/* ============================================
+   GEST-USER.CSS - Gestión de Usuarios
+   ============================================
+   Página de administración de usuarios.
+   Lista de usuarios con búsqueda y acciones.
+   ============================================ */
+
 body {
   display: grid;
   grid-template-columns: 1fr;

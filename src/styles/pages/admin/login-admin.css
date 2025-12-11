@@ -1,11 +1,18 @@
-/* Estilos específicos de la página de login admin */
+/* ============================================
+   LOGIN-ADMIN.CSS - Página de Login Admin
+   ============================================
+   Estilos del formulario de login para
+   administradores. Similar a login.css
+   pero con estilos específicos para admin.
+   ============================================ */
 
+/* Body: Configuración principal de la página */
 body {
   font-family: Arial, sans-serif;
-  background-color: var(--auth-login-background);
-  min-height: 100vh;
+  background-color: var(--auth-login-background); /* Fondo verde grisáceo */
+  min-height: 100vh; /* Altura completa */
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Header, main, footer apilados */
 }
 
 .header__title {

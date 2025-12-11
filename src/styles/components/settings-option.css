@@ -1,42 +1,51 @@
-/* Opciones de Configuraciones */
+/* ============================================
+   SETTINGS-OPTION.CSS - Opciones de Configuración
+   ============================================
+   Componente reutilizable para filas de opciones
+   en las páginas de configuraciones
+   ============================================ */
+
+/* Contenedor de cada opción de configuración */
 .settings-option {
-  background-color: var(--color-background-container);
-  border-radius: 4px;
-  margin-bottom: 15px;
-  width: 371px;
-  height: 63px;
+  background-color: var(--color-background-container); /* Fondo gris */
+  border-radius: 4px; /* Esquinas redondeadas */
+  margin-bottom: 15px; /* Espacio entre opciones */
+  width: 371px; /* Ancho fijo en móvil */
+  height: 63px; /* Alto fijo */
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 31px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  justify-content: flex-start; /* Contenido alineado a la izquierda */
+  align-items: center; /* Centrado vertical */
+  gap: 31px; /* Espacio entre label y value */
+  cursor: pointer; /* Indica que es clickeable */
+  transition: all 0.3s ease; /* Transición suave */
 }
 
+/* Etiqueta de la opción (ej: "Plan:", "Perfil:") */
 .settings-option__label {
-  font-family: var(--font-family-poppins);
+  font-family: var(--font-family-poppins); /* Fuente Poppins */
   font-size: 20px;
-  color: var(--color-text-light);
-  font-weight: 500;
-  margin-left: 30px;
+  color: var(--color-text-light); /* Texto blanco */
+  font-weight: 500; /* Semi-bold */
+  margin-left: 30px; /* Separación del borde */
 }
 
+/* Valor de la opción (ej: "Gratuito", "Keyner Arismendy") */
 .settings-option__value {
-  font-family: var(--font-family-main);
+  font-family: var(--font-family-main); /* Fuente Inter */
   font-size: 14px;
-  color: #d0d0d0;
+  color: #d0d0d0; /* Gris claro */
   font-weight: 400;
   border: 1px solid var(--background-color-nav-subline);
   border-radius: 3px;
   padding: 9px;
-  background-color: var(--background-color-nav-subline);
+  background-color: var(--background-color-nav-subline); /* Fondo oscuro */
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Aumenta tamaños */
 @media (min-width: 768px) {
   .settings-option {
     width: 430px;
@@ -55,7 +64,7 @@
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Tamaño desktop */
 @media (min-width: 1024px) {
   .settings-option {
     width: 500px;
@@ -74,7 +83,7 @@
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .settings-option {
     width: 600px;

@@ -1,12 +1,19 @@
-/* Estilos específicos de la página de mensaje de recuperación */
+/* ============================================
+   RECOVERY_PASSWD_MESSAJE.CSS - Mensaje de Éxito
+   ============================================
+   Página de confirmación de recuperación
+   Muestra mensaje de "correo enviado" al usuario
+   ============================================ */
 
+/* Body con imagen de fondo */
 body {
   background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
-  background-size: cover;
+  background-size: cover; /* Cubre toda la pantalla */
   background-position: center;
   background-repeat: no-repeat;
 }
 
+/* Contenedor principal - centra la tarjeta */
 .recovery-password {
   display: flex;
   justify-content: center;
@@ -14,19 +21,21 @@ body {
   align-items: center;
 }
 
+/* Tarjeta de mensaje de confirmación */
 .recovery-password__container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 30px;
-  border-radius: 12px;
+  border-radius: 12px; /* Esquinas redondeadas */
   background-color: var(--color-background-container);
   width: 286px;
   height: 311px;
-  transform: translateY(-150px);
+  transform: translateY(-150px); /* Sube la tarjeta */
 }
 
+/* Título "Correo Enviado" */
 .recovery-password__title {
   font-family: "Poppins", sans-serif;
   font-weight: 500;
@@ -35,19 +44,20 @@ body {
   font-size: var(--recovery-font-size-title);
 }
 
+/* Descripción del mensaje de éxito */
 .recovery-password__description {
   font-family: "Inter", sans-serif;
   font-weight: 300;
   font-style: normal;
   color: var(--color-text-light);
-  text-align: center;
+  text-align: center; /* Centra el texto */
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Tarjeta más grande */
 @media (min-width: 768px) {
   .recovery-password__container {
     width: 330px;
@@ -60,11 +70,11 @@ body {
 
   .recovery-password__description {
     font-size: 14px;
-    padding: 0 15px;
+    padding: 0 15px; /* Padding lateral para texto */
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Tamaño escritorio */
 @media (min-width: 1024px) {
   .recovery-password__container {
     width: 380px;
@@ -81,7 +91,7 @@ body {
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .recovery-password__container {
     width: 420px;

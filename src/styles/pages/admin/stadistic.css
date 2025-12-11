@@ -1,3 +1,10 @@
+/* ============================================
+   STADISTIC.CSS - Página de Estadísticas
+   ============================================
+   Dashboard con métricas y gráficos del sistema.
+   Muestra estadísticas de uso y usuarios.
+   ============================================ */
+
 body {
   display: grid;
   grid-template-columns: 1fr;

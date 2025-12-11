@@ -1,19 +1,30 @@
+/* ============================================
+   SETTINGS-GENERALS.CSS - Ajustes Generales
+   ============================================
+   Página de configuración general con:
+   - Switch toggle para opciones on/off
+   - Dropdown para selección de tema
+   ============================================ */
+
+/* Grid principal de la página */
 body {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto; /* Header, main, footer */
   height: 100vh;
-  width: 411px;
+  width: 411px; /* Ancho fijo móvil */
   background-color: var(--background-color-body-feed);
   padding: 0;
   margin: 0;
 }
 
+/* Posicionamiento del header */
 .settings-header {
   grid-column: 1/1;
   grid-row: 1/2;
 }
 
+/* Contenedor principal centrado */
 .settings-main {
   display: flex;
   justify-content: center;
@@ -21,11 +32,13 @@ body {
   grid-column: 1/1;
 }
 
+/* Ajuste del valor de opción */
 .settings-option__value {
   text-align: center;
   width: 100px;
 }
 
+/* Sección de ajustes */
 .settings-section {
   display: flex;
   flex-direction: column;
@@ -33,12 +46,18 @@ body {
   gap: 10px;
 }
 
+/* Override del gap para opciones */
 .settings-option {
   gap: 50px;
 }
 
-/* 1. EL CONTENEDOR */
-/* Define el tamaño del botón */
+/* =========================================
+   SWITCH TOGGLE (On/Off)
+   =========================================
+   Interruptor estilo iOS controlado por checkbox
+   ========================================= */
+
+/* 1. Contenedor del switch - Define tamaño */
 .switch {
   position: relative;
   display: inline-block;
@@ -46,15 +65,14 @@ body {
   height: 34px;
 }
 
-/* 2. EL INPUT (Oculto) */
-/* Ocultamos el checkbox real, pero sigue funcionando "por debajo" */
+/* 2. Input oculto - Funciona pero no se ve */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* 3. EL DESLIZADOR (Fondo) */
+/* 3. Deslizador (fondo del switch) */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -62,15 +80,12 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
-  /* Color gris (apagado) */
-  transition: 0.4s;
-  /* Suavidad de la animación */
-  border-radius: 34px;
-  /* Bordes redondos */
+  background-color: #ccc; /* Gris cuando está apagado */
+  transition: 0.4s; /* Transición suave */
+  border-radius: 34px; /* Bordes totalmente redondos */
 }
 
-/* 4. EL CIRCULO (Botón) */
+/* 4. Círculo (botón del switch) */
 .slider:before {
   position: absolute;
   content: "";
@@ -80,35 +95,42 @@ body {
   bottom: 4px;
   background-color: white;
   transition: 0.4s;
-  border-radius: 50%;
-  /* Círculo perfecto */
+  border-radius: 50%; /* Círculo perfecto */
 }
 
-/* 5. ESTADO ENCENDIDO (Checked) */
-/* Cuando el input está marcado, cambia el fondo a azul */
+/* 5. Estado encendido - Cambia fondo a azul */
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #2196f3; /* Azul cuando está encendido */
 }
 
-/* Cuando el input está marcado, mueve el círculo a la derecha */
+/* 5b. Estado encendido - Mueve círculo a la derecha */
 input:checked + .slider:before {
   transform: translateX(26px);
 }
 
+/* Sin decoración en valores */
 .settings-option__value {
   text-decoration: none;
 }
 
+/* Título de sección */
 .settings-section__title {
   color: var(--color-text-light);
 }
 
+/* Posicionamiento del footer */
 .settings-footer {
   grid-column: 1/1;
   grid-row: 3/4;
 }
 
-/* Dropdown Styles */
+/* =========================================
+   DROPDOWN (Selector de tema)
+   =========================================
+   Menú desplegable controlado por checkbox
+   ========================================= */
+
+/* Contenedor del dropdown */
 .settings-dropdown {
   position: relative;
   border-radius: 4px;
@@ -120,10 +142,12 @@ input:checked + .slider:before {
   z-index: 5;
 }
 
+/* Checkbox oculto (controla el estado) */
 .settings-dropdown__checkbox {
   display: none;
 }
 
+/* Trigger clickeable */
 .settings-dropdown__trigger {
   display: flex;
   justify-content: flex-start;
@@ -133,24 +157,23 @@ input:checked + .slider:before {
   width: 100%;
   cursor: pointer;
   background-color: var(--color-background-container);
-  /* Fondo sólido */
   border-radius: 4px;
   position: relative;
   z-index: 2;
 }
 
+/* Contenido desplegable (opciones de tema) */
 .settings-dropdown__content {
   position: absolute;
-  top: 100%;
+  top: 100%; /* Aparece debajo del trigger */
   left: 0;
   width: 100%;
-  max-height: 0;
+  max-height: 0; /* Oculto por defecto */
   overflow: hidden;
   transition: max-height 0.3s ease, opacity 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 10px;
   padding: 0 20px;
   border-radius: 0 0 4px 4px;
@@ -159,12 +182,14 @@ input:checked + .slider:before {
   box-sizing: border-box;
 }
 
+/* Estado expandido del dropdown */
 .settings-dropdown__checkbox:checked ~ .settings-dropdown__content {
-  max-height: 200px;
+  max-height: 200px; /* Se expande */
   padding-bottom: 20px;
   opacity: 1;
 }
 
+/* Botón de opción del dropdown */
 .settings-dropdown__btn {
   width: 100px;
   height: 40px;
@@ -177,24 +202,28 @@ input:checked + .slider:before {
 }
 
 .settings-dropdown__btn:active {
-  transform: scale(0.98);
+  transform: scale(0.98); /* Efecto de presión */
 }
 
+/* Variante: Tema oscuro */
 .settings-dropdown__btn--dark {
   background-color: #584e4e;
   color: #d0d0d0;
 }
 
+/* Variante: Tema claro */
 .settings-dropdown__btn--light {
   background-color: white;
   color: black;
 }
 
+/* Variante: Tema del sistema */
 .settings-dropdown__btn--system {
   background-color: black;
   color: white;
 }
 
+/* Enlace estilizado como valor */
 .settings-option__link {
   font-family: var(--font-family-main);
   font-size: 14px;
@@ -211,10 +240,10 @@ input:checked + .slider:before {
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Ajustes de ancho */
 @media (min-width: 768px) {
   body {
-    width: auto;
+    width: auto; /* Quita ancho fijo */
   }
 
   .settings-dropdown {
@@ -237,7 +266,7 @@ input:checked + .slider:before {
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Más grande */
 @media (min-width: 1024px) {
   body {
     width: auto;
@@ -263,7 +292,7 @@ input:checked + .slider:before {
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .settings-dropdown {
     width: 600px;

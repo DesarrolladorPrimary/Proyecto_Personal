@@ -1,3 +1,10 @@
+/* ============================================
+   LIBRARY.CSS - Biblioteca de Libros
+   ============================================
+   Vista principal de estantería con libros.
+   Incluye modals de exportación y opciones.
+   ============================================ */
+
 body {
   display: grid;
   min-height: 100vh;

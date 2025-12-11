@@ -1,9 +1,18 @@
+/* ============================================
+   SETTINGS-PLANES.CSS - Planes y Suscripciones
+   ============================================
+   Página de planes con tarjetas de precios
+   y modal de pago animado
+   ============================================ */
+
+/* Grid principal de la página */
 body {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr; /* Header + contenido */
 }
 
+/* Contenedor de planes */
 .plans {
   display: grid;
   grid-template-columns: 1fr;
@@ -11,6 +20,7 @@ body {
   color: var(--color-text-light);
 }
 
+/* Header de la sección de planes */
 .plans-header {
   grid-column: 1/2;
   grid-row: 1/2;
@@ -22,26 +32,36 @@ body {
   font-family: var(--font-family-poppins);
 }
 
+/* Título "Planes" */
 .plans__title {
   font-size: 20px;
   font-weight: normal;
 }
 
+/* Subtítulo descriptivo */
 .plans__subtitle {
   font-size: 14px;
   font-weight: lighter;
 }
 
+/* Contenedor de tarjetas de planes */
 .plans__container {
   grid-column: 1/2;
   grid-row: 2/3;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Tarjetas apiladas */
   justify-content: center;
   align-items: center;
   gap: 30px;
 }
 
+/* =========================================
+   TARJETA DE PLAN
+   =========================================
+   Cada tarjeta muestra un plan (Free/Premium)
+   ========================================= */
+
+/* Tarjeta de plan individual */
 .plan-card {
   display: flex;
   flex-direction: column;
@@ -54,28 +74,33 @@ body {
   border-radius: 10px;
 }
 
+/* Título del plan (ej: "Gratuito", "Premium") */
 .plan-card__title {
   font-size: 19px;
   font-weight: lighter;
   font-family: var(--font-family-poppins);
 }
 
+/* Cada característica del plan */
 .plan-card__feature {
-  list-style: none;
+  list-style: none; /* Sin bullets */
 }
 
+/* Lista de características */
 .plan-card__features {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+/* Texto de cada característica */
 .plan-card__feature-text {
   font-size: var(--font-size-small);
   font-weight: lighter;
   font-family: var(--font-family-poppins);
 }
 
+/* Botón de la tarjeta */
 .plan-card__button {
   width: 124.62px;
   height: 34px;
@@ -89,17 +114,27 @@ body {
   cursor: pointer;
 }
 
+/* Label dentro del botón */
 .plan-card__button-label {
   cursor: pointer;
 }
 
+/* Modificador: botón de upgrade más ancho */
 .plan-card__button--upgrade {
   width: 181px;
 }
 
+/* =========================================
+   MODAL DE PAGO
+   =========================================
+   Modal que aparece al iniciar el pago
+   Controlado por checkbox
+   ========================================= */
+
+/* Modal de carga de pago (oculto por defecto) */
 .payment-loading {
-  opacity: 0;
-  pointer-events: none;
+  opacity: 0; /* Invisible */
+  pointer-events: none; /* No clickeable */
   display: flex;
   position: absolute;
   width: 100vw;
@@ -108,6 +143,7 @@ body {
   align-items: center;
 }
 
+/* Contenedor del contenido del modal */
 .payment-loading__container {
   display: flex;
   padding: 10px 25px 10px 25px;
@@ -116,10 +152,11 @@ body {
   flex-direction: column;
   width: 345px;
   height: 265px;
-  background-color: #2a2727;
+  background-color: #2a2727; /* Fondo oscuro */
   border-radius: 11px;
 }
 
+/* Título del modal de pago */
 .payment-loading__title {
   font-family: var(--font-family-poppins);
   font-size: 27px;
@@ -127,6 +164,7 @@ body {
   color: var(--color-text-light);
 }
 
+/* Texto descriptivo del modal */
 .payment-loading__text {
   font-family: var(--font-family-poppins);
   font-size: 13px;
@@ -134,27 +172,30 @@ body {
   color: var(--color-text-light);
 }
 
+/* Video/GIF de carga */
 .payment-loading__video {
   width: 128px;
   height: 128px;
 }
 
+/* Checkbox oculto que controla el modal */
 #checkPay {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
+/* Estado activo: muestra el modal cuando se marca */
 #checkPay:checked + .payment-loading {
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 1; /* Visible */
+  pointer-events: auto; /* Clickeable */
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Tarjetas más grandes */
 @media (min-width: 768px) {
   .plans__title {
     font-size: 22px;
@@ -188,7 +229,7 @@ body {
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Tamaño desktop */
 @media (min-width: 1024px) {
   .plans__title {
     font-size: 24px;
@@ -222,7 +263,7 @@ body {
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .plans__title {
     font-size: 28px;

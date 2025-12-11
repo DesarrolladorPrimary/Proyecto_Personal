@@ -1,3 +1,10 @@
+/* ============================================
+   MODELSAI-ADMIN.CSS - Modelos de IA
+   ============================================
+   Administración de modelos de IA del sistema.
+   Configuración y selección de modelos.
+   ============================================ */
+
 .settings-header__top:nth-child(1) {
   position: relative;
   right: 32px;

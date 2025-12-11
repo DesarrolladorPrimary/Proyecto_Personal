@@ -1,148 +1,166 @@
-/* Estilos específicos de la página de login */
+/* ============================================
+   LOGIN.CSS - Página de Inicio de Sesión
+   ============================================
+   Estilos para el formulario de login
+   Fondo: verde grisáceo (#98a59b)
+   ============================================ */
 
+/* Configuración del body para login */
 body {
-    font-family: Arial, sans-serif;
-    background-color: var(--auth-login-background);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: var(--auth-login-background); /* Verde grisáceo */
+  min-height: 100vh; /* Ocupa toda la pantalla */
+  display: flex;
+  flex-direction: column; /* Apila header, main, footer */
 }
 
+/* Título del header "Iniciar Sesión" */
 .header__title {
-    font-family: var(--font-family-main);
-    font-optical-sizing: auto;
-    font-weight: var(--font-weight-regular);
-    font-style: normal;
-    margin-top: var(--auth-spacing-large);
+  font-family: var(--font-family-main); /* Fuente Inter */
+  font-optical-sizing: auto;
+  font-weight: var(--font-weight-regular); /* Peso 400 */
+  font-style: normal;
+  margin-top: var(--auth-spacing-large); /* Separación del top */
 }
 
+/* Contenedor del formulario de login */
 .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--auth-spacing-small);
-    margin: var(--auth-spacing-medium);
+  display: flex;
+  flex-direction: column; /* Inputs apilados verticalmente */
+  align-items: center;
+  justify-content: center;
+  gap: var(--auth-spacing-small); /* Espacio entre inputs */
+  margin: var(--auth-spacing-medium);
 }
 
+/* Campos de entrada (email, contraseña) */
 .form__input {
-    height: var(--auth-input-height);
-    width: 100%;
-    padding-left: 45px;
-    border: none;
-    border-radius: 5px;
+  height: var(--auth-input-height); /* Alto del input */
+  width: 100%;
+  padding-left: 45px; /* Espacio para el icono */
+  border: none;
+  border-radius: 5px;
 }
 
+/* Estado de focus del input */
 .form__input:focus {
-    outline: none;
-    border: 1px solid var(--auth-input-focus-border);
+  outline: none; /* Quita outline por defecto */
+  border: 1px solid var(--auth-input-focus-border); /* Borde azul al enfocar */
 }
 
+/* Contenedor relativo para posicionar el icono dentro del input */
 .form__input-container {
-    position: relative;
-    width: var(--auth-input-width);
+  position: relative;
+  width: var(--auth-input-width); /* Ancho definido en variables */
 }
 
+/* Icono dentro del input (usuario, candado) */
 .form__input-icon {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    width: 20px;
-    height: auto;
-    opacity: 0.5;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%); /* Centra verticalmente */
+  width: 20px;
+  height: auto;
+  opacity: 0.5; /* Semi-transparente */
 }
 
+/* Texto "¿Olvidaste tu contraseña?" */
 .form__contrasena {
-    transform: translateX(-70px);
-    font-size: var(--font-size-small);
+  transform: translateX(-70px); /* Alinea a la izquierda */
+  font-size: var(--font-size-small);
 }
 
+/* Enlace de recuperar contraseña */
 .recover-link {
-    text-decoration: none;
-    color: #1379CD;
+  text-decoration: none; /* Sin subrayado */
+  color: #1379cd; /* Azul como link */
 }
 
+/* Botón de envío (override del button global) */
 .button {
-    border-radius: 9px;
-    transform: translateY(100px);
+  border-radius: 9px;
+  transform: translateY(100px); /* Posición hacia abajo */
 }
 
+/* Enlace dentro del botón */
 .button-link {
-    text-decoration: none;
-    color: var(--color-text);
+  text-decoration: none;
+  color: var(--color-text); /* Texto negro */
 }
 
+/* Contenedor principal */
 .main {
-    flex: 1;
+  flex: 1; /* Ocupa espacio disponible */
 }
 
+/* Footer con texto de registro */
 .footer {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
 }
 
 .footer__text {
-    font-family: var(--font-family-main);
+  font-family: var(--font-family-main);
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Ajustes de tamaño */
 @media (min-width: 768px) {
-    .header__title {
-        font-size: 24px;
-        margin-top: 55px;
-    }
+  .header__title {
+    font-size: 24px;
+    margin-top: 55px;
+  }
 
-    .form {
-        gap: 25px;
-        margin: 45px;
-    }
+  .form {
+    gap: 25px;
+    margin: 45px;
+  }
 
-    .button {
-        transform: translateY(110px);
-        font-size: 16px;
-        padding: 9px 18px;
-    }
+  .button {
+    transform: translateY(110px);
+    font-size: 16px;
+    padding: 9px 18px;
+  }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Tamaño escritorio */
 @media (min-width: 1024px) {
-    .header__title {
-        font-size: 28px;
-        margin-top: 60px;
-    }
+  .header__title {
+    font-size: 28px;
+    margin-top: 60px;
+  }
 
-    .form {
-        gap: 30px;
-        margin: 50px;
-    }
+  .form {
+    gap: 30px;
+    margin: 50px;
+  }
 
-    .button {
-        transform: translateY(120px);
-        font-size: 18px;
-        padding: 10px 20px;
-    }
+  .button {
+    transform: translateY(120px);
+    font-size: 18px;
+    padding: 10px 20px;
+  }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
-    .header__title {
-        font-size: 32px;
-        margin-top: 70px;
-    }
+  .header__title {
+    font-size: 32px;
+    margin-top: 70px;
+  }
 
-    .form {
-        gap: 35px;
-        margin: 60px;
-    }
+  .form {
+    gap: 35px;
+    margin: 60px;
+  }
 
-    .button {
-        transform: translateY(130px);
-        font-size: 20px;
-        padding: 12px 24px;
-    }
+  .button {
+    transform: translateY(130px);
+    font-size: 20px;
+    padding: 12px 24px;
+  }
 }

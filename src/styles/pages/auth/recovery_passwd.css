@@ -1,13 +1,20 @@
-/* Estilos específicos de la página de recuperación de contraseña (ingresar correo) */
+/* ============================================
+   RECOVERY_PASSWD.CSS - Recuperar Contraseña
+   ============================================
+   Página para ingresar correo de recuperación
+   Fondo: Imagen de fondo con tarjeta centrada
+   ============================================ */
 
+/* Body con imagen de fondo a pantalla completa */
 body {
   background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
-  background-size: cover;
-  background-position: center;
+  background-size: cover; /* Cubre toda la pantalla */
+  background-position: center; /* Centra la imagen */
   background-repeat: no-repeat;
   height: 100vh;
 }
 
+/* Contenedor principal - centra la tarjeta */
 .recovery-password {
   display: flex;
   justify-content: center;
@@ -15,27 +22,30 @@ body {
   align-items: center;
 }
 
+/* Tarjeta de recuperación de contraseña */
 .recovery-password__container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Contenido apilado verticalmente */
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  border-radius: 12px;
-  background-color: var(--color-background-container);
+  gap: 30px; /* Espacio entre elementos */
+  border-radius: 12px; /* Esquinas redondeadas */
+  background-color: var(--color-background-container); /* Fondo gris */
   width: 286px;
   height: 311px;
-  transform: translateY(-150px);
+  transform: translateY(-150px); /* Sube la tarjeta */
 }
 
+/* Título "Recuperar Contraseña" */
 .recovery-password__title {
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-style: 200;
-  color: var(--color-text-light);
+  color: var(--color-text-light); /* Texto blanco */
   font-size: var(--recovery-font-size-title);
 }
 
+/* Descripción/instrucciones */
 .recovery-password__description {
   display: flex;
   justify-content: center;
@@ -45,53 +55,57 @@ body {
   font-weight: 300;
   font-style: normal;
   color: var(--color-text-light);
-  text-align: center;
+  text-align: center; /* Centra el texto */
 }
 
+/* Grupo del formulario (inputs + botón) */
 .recovery-password__form-group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 30px; /* Espacio entre input y botón */
 }
 
+/* Input de correo electrónico */
 .recovery-password__input {
-  height: var(--recovery-input-height);
-  width: var(--recovery-input-width);
+  height: var(--recovery-input-height); /* 33px */
+  width: var(--recovery-input-width); /* 223px */
   border: none;
   border-radius: 5px;
-  padding-left: 10px;
+  padding-left: 10px; /* Espacio para texto */
 }
 
+/* Botón de enviar */
 .recovery-password__button {
-  text-decoration: var(--decoration-text);
+  text-decoration: var(--decoration-text); /* Sin subrayado */
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
   border: 0px solid black;
-  border-radius: 9px;
-  background-color: var(--recovery-button-bg);
-  font-size: var(--recovery-text-size);
+  border-radius: 9px; /* Esquinas redondeadas */
+  background-color: var(--recovery-button-bg); /* Fondo gris claro */
+  font-size: var(--recovery-text-size); /* 9px */
   padding: 7px;
   width: 89px;
   height: 24px;
 }
 
+/* Enlace dentro del botón */
 .recovery-password__link {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  text-decoration: none;
-  color: var(--color-text);
+  text-decoration: none; /* Sin subrayado */
+  color: var(--color-text); /* Texto negro */
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Tarjeta más grande */
 @media (min-width: 768px) {
   .recovery-password__container {
     width: 330px;
@@ -112,7 +126,7 @@ body {
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Tamaño escritorio */
 @media (min-width: 1024px) {
   .recovery-password__container {
     width: 380px;
@@ -134,7 +148,7 @@ body {
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .recovery-password__container {
     width: 420px;

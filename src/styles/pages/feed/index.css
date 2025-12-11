@@ -1,40 +1,50 @@
-/* Estilos específicos de la página de inicio */
+/* ============================================
+   INDEX.CSS - Página Principal (Landing)
+   ============================================
+   Página de bienvenida con imagen de fondo
+   y botones de Login/Registro
+   ============================================ */
 
+/* Body con imagen de fondo a pantalla completa */
 body {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr; /* Una sola columna */
 
   background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
-  background-size: cover;
-  background-position: center;
+  background-size: cover; /* Imagen cubre toda la pantalla */
+  background-position: center; /* Centra la imagen */
   background-repeat: no-repeat;
-  height: 100vh;
+  height: 100vh; /* Altura completa */
 }
 
+/* Logo en el header */
 .header__logo {
-  width: 100px;
+  width: 100px; /* Tamaño del logo */
 }
 
+/* Título principal "Poly AI" */
 .main__title {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
+  font-weight: 400; /* Peso normal */
   font-style: normal;
 }
 
+/* Botón de iniciar sesión */
 .main__login {
-  margin-top: 154px;
+  margin-top: 154px; /* Espacio desde el título */
 }
 
+/* Botón de registrarse */
 .main__regist {
-  margin-top: 55px;
+  margin-top: 55px; /* Espacio desde el botón login */
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Título y botones más grandes */
 @media (min-width: 768px) {
   .main__title {
     font-size: 40px;
@@ -53,7 +63,7 @@ body {
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Mayor espaciado */
 @media (min-width: 1024px) {
   .main__title {
     font-size: 48px;
@@ -68,7 +78,7 @@ body {
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .main__title {
     font-size: 56px;

@@ -1,32 +1,41 @@
-/* Estilos específicos de la página de cambio de contraseña */
+/* ============================================
+   RECOVERY_PASSWD_CHANGE.CSS - Cambiar Contraseña
+   ============================================
+   Página para ingresar nueva contraseña
+   Incluye: requisitos de contraseña, confirmación
+   ============================================ */
 
+/* Body con imagen de fondo */
 body {
   background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
-  background-size: cover;
+  background-size: cover; /* Cubre toda la pantalla */
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
 }
 
+/* Contenedor principal - centra la tarjeta */
 .recovery-password {
   display: flex;
   justify-content: center;
   height: 100vh;
 }
 
+/* Tarjeta de cambio de contraseña */
 .recovery-password__container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
-  margin-top: var(--recovery-container-margin-top);
-  border-radius: var(--recovery-container-radius);
+  gap: 40px; /* gap duplicado intencionalmente */
+  margin-top: var(--recovery-container-margin-top); /* 80px desde arriba */
+  border-radius: var(--recovery-container-radius); /* 12px */
   background-color: var(--color-background-container);
-  width: var(--recovery-container-width);
+  width: var(--recovery-container-width); /* Variable responsive */
   height: var(--recovery-container-height);
   gap: 30px;
 }
 
+/* Título "Nueva Contraseña" */
 .recovery-password__title {
   font-family: "Poppins", sans-serif;
   font-weight: 500;
@@ -36,11 +45,12 @@ body {
   font-size: var(--recovery-font-size-title);
 }
 
+/* Descripción/instrucciones */
 .recovery-password__description {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--recovery-description-gap);
+  gap: var(--recovery-description-gap); /* 10px */
   font-family: "Inter", sans-serif;
   font-weight: 300;
   font-style: normal;
@@ -48,13 +58,15 @@ body {
   text-align: center;
 }
 
+/* Grupo de formulario (inputs) */
 .recovery-password__form-group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--recovery-form-gap);
+  gap: var(--recovery-form-gap); /* 30px entre inputs */
 }
 
+/* Input de contraseña */
 .recovery-password__input {
   height: var(--recovery-input-height);
   width: var(--recovery-input-width);
@@ -63,6 +75,7 @@ body {
   padding-left: var(--recovery-input-padding-left);
 }
 
+/* Botón de confirmar cambio */
 .recovery-password__button {
   text-decoration: var(--decoration-text);
   font-family: "Inter", sans-serif;
@@ -70,15 +83,16 @@ body {
   font-weight: 300;
   font-style: normal;
   border: 0px solid black;
-  border-radius: var(--recovery-button-radius);
+  border-radius: var(--recovery-button-radius); /* Botón píldora */
   background-color: var(--recovery-button-bg);
   font-size: var(--recovery-text-size);
   padding: var(--recovery-button-padding);
   width: var(--recovery-button-width);
   height: var(--recovery-button-height);
-  transform: translateY(43px);
+  transform: translateY(43px); /* Ajuste de posición */
 }
 
+/* Enlace dentro del botón */
 .recovery-password__link {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
@@ -88,24 +102,26 @@ body {
   color: var(--color-text);
 }
 
+/* Requisitos de la contraseña (ej: "mínimo 8 caracteres") */
 .recovery-password__form-requirement {
   font-family: "Inter", sans-serif;
   font-weight: 200;
   font-style: normal;
   color: var(--color-text-light);
   font-size: 11px;
-  margin-top: var(--font-size-small);
+  margin-top: var(--font-size-small); /* Espacio del input */
 }
 
+/* Modificador: Input de confirmación de contraseña */
 .recovery-password__input--confirm {
-  transform: translateY(40px);
+  transform: translateY(40px); /* Separación visual */
 }
 
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */
 
-/* Tablets (768px - 1023px) */
+/* Tablets (768px - 1023px): Ajustes tipográficos */
 @media (min-width: 768px) {
   .recovery-password__title {
     font-size: 18px;
@@ -124,7 +140,7 @@ body {
   }
 }
 
-/* Desktop (1024px - 1279px) */
+/* Desktop (1024px - 1279px): Tamaño escritorio */
 @media (min-width: 1024px) {
   .recovery-password__title {
     font-size: 20px;
@@ -144,7 +160,7 @@ body {
   }
 }
 
-/* Desktop Grande (1280px+) */
+/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .recovery-password__title {
     font-size: 22px;
