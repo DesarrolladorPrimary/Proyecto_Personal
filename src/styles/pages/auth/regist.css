@@ -74,7 +74,7 @@ body {
 /* Enlace de recuperación */
 .recover-link {
   text-decoration: none;
-  color: #1379cd; /* Azul como link */
+  color: var(--color-link); /* Azul como link */
 }
 
 /* Botón de registrarse */

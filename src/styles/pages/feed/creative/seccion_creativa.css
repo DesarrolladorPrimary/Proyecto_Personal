@@ -141,7 +141,7 @@ body {
 
 .creative-aside__chat {
   display: flex;
-  background-color: #3c3636;
+  background-color: var(--background-color-body-feed);
   border-radius: 6px;
   width: 202px;
   height: 28px;

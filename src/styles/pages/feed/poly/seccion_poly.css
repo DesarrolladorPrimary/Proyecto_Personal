@@ -322,7 +322,7 @@ body {
 }
 
 .poly-modal__button--reset {
-  background-color: #3a7c4d;
+  background-color: var(--color-success);
   color: var(--color-text-light);
 }
 
@@ -354,7 +354,7 @@ body {
   position: relative;
   width: min(420px, 90vw);
   height: 90vh;
-  background-color: #4b4141;
+  background-color: var(--color-bg-dark-alt);
   border-radius: 20px;
   padding: 28px;
   display: flex;
@@ -512,7 +512,7 @@ body {
 .book-modal__panel {
   position: relative;
   width: min(360px, 90vw);
-  background-color: #4b4141;
+  background-color: var(--color-bg-dark-alt);
   border-radius: 18px;
   padding: 28px;
   color: var(--color-text-light);
@@ -632,7 +632,7 @@ body {
 
 .book-success__panel {
   position: relative;
-  background-color: #4b4141;
+  background-color: var(--color-bg-dark-alt);
   padding: 20px 24px;
   border-radius: 16px;
   color: var(--color-text-light);
@@ -700,7 +700,7 @@ body {
 
 .poly-aside__chat {
   display: flex;
-  background-color: #3c3636;
+  background-color: var(--background-color-body-feed);
   border-radius: 6px;
   width: 202px;
   height: 28px;

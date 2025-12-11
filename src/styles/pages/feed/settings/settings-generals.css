@@ -100,7 +100,7 @@ body {
 
 /* 5. Estado encendido - Cambia fondo a azul */
 input:checked + .slider {
-  background-color: #2196f3; /* Azul cuando está encendido */
+  background-color: var(--color-primary-blue); /* Azul cuando está encendido */
 }
 
 /* 5b. Estado encendido - Mueve círculo a la derecha */
@@ -208,7 +208,7 @@ input:checked + .slider:before {
 /* Variante: Tema oscuro */
 .settings-dropdown__btn--dark {
   background-color: #584e4e;
-  color: #d0d0d0;
+  color: var(--color-text-muted);
 }
 
 /* Variante: Tema claro */
@@ -227,7 +227,7 @@ input:checked + .slider:before {
 .settings-option__link {
   font-family: var(--font-family-main);
   font-size: 14px;
-  color: #d0d0d0;
+  color: var(--color-text-muted);
   text-decoration: none;
   font-weight: 400;
   border: 1px solid var(--background-color-nav-subline);

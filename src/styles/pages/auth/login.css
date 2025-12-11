@@ -74,7 +74,7 @@ body {
 /* Enlace de recuperar contraseña */
 .recover-link {
   text-decoration: none; /* Sin subrayado */
-  color: #1379cd; /* Azul como link */
+  color: var(--color-link); /* Azul como link */
 }
 
 /* Botón de envío (override del button global) */

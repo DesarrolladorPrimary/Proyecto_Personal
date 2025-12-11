@@ -25,7 +25,7 @@
 
 /* Botón de eliminar cuenta (acción destructiva) */
 .settings-footer__delete-btn {
-  background-color: #ff0000; /* Rojo para indicar peligro */
+  background-color: var(--color-danger); /* Rojo para indicar peligro */
   color: white;
   border: none;
   border-radius: 3px;

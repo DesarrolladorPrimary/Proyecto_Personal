@@ -123,7 +123,7 @@ body {
 .settings-accordion__value {
   font-family: var(--font-family-main);
   font-size: 16px;
-  color: #d0d0d0; /* Gris claro */
+  color: var(--color-text-muted); /* Gris claro */
   font-weight: 300;
 }
 
@@ -153,7 +153,7 @@ body {
   }
 
   .settings-footer__delete-btn:hover {
-    background-color: #cc0000; /* Rojo más oscuro */
+    background-color: var(--color-danger-hover); /* Rojo más oscuro */
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);
   }
@@ -261,7 +261,7 @@ body {
 
 /* Modificador: título de peligro (rojo) */
 .modal__title--danger {
-  color: #ff6b6b;
+  color: var(--color-danger-light);
 }
 
 /* Mensaje del modal */
@@ -299,22 +299,22 @@ body {
 
 /* Botón secundario (gris) */
 .modal__button--secondary {
-  background-color: #4a4a4a;
+  background-color: var(--color-modal-bg);
   color: var(--color-text-light);
 }
 
 .modal__button--secondary:hover {
-  background-color: #5a5a5a;
+  background-color: var(--color-modal-hover);
 }
 
 /* Botón de peligro */
 .modal__button--danger {
-  background-color: #4a4a4a;
+  background-color: var(--color-modal-bg);
   color: var(--color-text-light);
 }
 
 .modal__button--danger:hover {
-  background-color: #5a5a5a;
+  background-color: var(--color-modal-hover);
 }
 
 /* Modal de procesamiento (cargando) */

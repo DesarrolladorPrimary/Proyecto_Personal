@@ -60,7 +60,7 @@ body {
 
 /* Placeholder del textarea */
 .ai-instructions__input::placeholder {
-  color: #999;
+  color: var(--color-placeholder);
   text-align: left;
 }
 
@@ -89,7 +89,7 @@ body {
 .ai-instructions__success-msg {
   position: absolute;
   bottom: 50px; /* Encima del botón */
-  background-color: #4a4a4a;
+  background-color: var(--color-modal-bg);
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
@@ -125,7 +125,7 @@ body {
   height: 35px;
   border: none;
   border-radius: 3px;
-  background-color: #2196f3; /* Azul Material */
+  background-color: var(--color-primary-blue); /* Azul Material */
   color: white;
   font-family: var(--font-family-main);
   font-size: 14px;
@@ -147,12 +147,12 @@ body {
   }
 
   .ai-instructions__input::placeholder {
-    color: #999;
+    color: var(--color-placeholder);
     text-align: center;
     line-height: 20px;
   }
 
   .ai-instructions__btn:hover {
-    background-color: #1976d2; /* Azul más oscuro */
+    background-color: var(--color-primary-blue-dark); /* Azul más oscuro */
   }
 }

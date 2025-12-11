@@ -66,7 +66,32 @@
   /* ===== COLORES DE ACENTO ===== */
   --color-background-botones: #ffbf00; /* Amarillo dorado para botones CTA */
   --color-accent-gold: #ffd700; /* Dorado para decoraciones */
+  --color-accent-teal: #4ecdc4; /* Turquesa para barras de progreso */
   --color-separator: #ccc; /* Color de líneas separadoras */
+
+  /* ===== COLORES PRIMARIOS ===== */
+  --color-primary-blue: #2196f3; /* Azul Material para switches/acciones */
+  --color-primary-blue-dark: #1976d2; /* Azul oscuro para hover */
+  --color-link: #1379cd; /* Azul para enlaces */
+
+  /* ===== COLORES DE PELIGRO ===== */
+  --color-danger: #ff0000; /* Rojo para acciones destructivas */
+  --color-danger-hover: #cc0000; /* Rojo oscuro para hover */
+  --color-danger-light: #ff6b6b; /* Rojo claro para warnings */
+
+  /* ===== GRISES Y NEUTROS ===== */
+  --color-text-muted: #d0d0d0; /* Texto secundario/deshabilitado */
+  --color-text-dark: #333; /* Texto oscuro alternativo */
+  --color-placeholder: #999; /* Color de placeholders */
+  --color-modal-bg: #4a4a4a; /* Fondo de modales */
+  --color-modal-hover: #5a5a5a; /* Hover en modales */
+  --color-bg-light: #e8e8e8; /* Fondo de botones claros */
+  --color-bg-dark-alt: #4b4141; /* Fondo oscuro alternativo */
+  --color-input-bg: #4a4444; /* Fondo de inputs */
+
+  /* ===== COLORES ESPECÍFICOS ===== */
+  --color-book-spine: #bb8d3d; /* Color del lomo de libros */
+  --color-success: #3a7c4d; /* Verde para éxito */
 
   /* ===== ICONOS ===== */
   --size-icon-tiny: 8px; /* Iconos muy pequeños */

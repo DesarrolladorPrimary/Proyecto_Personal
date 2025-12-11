@@ -140,7 +140,7 @@ body {
   }
 
   .settings-footer__delete-btn:hover {
-    background-color: #cc0000;
+    background-color: var(--color-danger-hover);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);
   }

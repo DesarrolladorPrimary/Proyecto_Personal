@@ -209,7 +209,7 @@ body {
 /* 5. ESTADO ENCENDIDO (Checked) */
 /* Cuando el input está marcado, cambia el fondo a azul */
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: var(--color-primary-blue);
 }
 
 /* Cuando el input está marcado, mueve el círculo a la derecha */
