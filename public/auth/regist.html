@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="../../src/styles/components/base.css">
     <link rel="stylesheet" href="../../src/styles/layout.css">
     <link rel="stylesheet" href="../../src/styles/pages/auth/regist.css">
@@ -16,33 +17,33 @@
         <h1 class="header__title">Registro</h1>
     </header>
     <main class="main">
-        <form action="/submit-login" method="POST" class="form">
+        <form id="form" method="POST" class="form">
 
              <div class="form__input-container">
                 <img src="../../assets/icons/user.png" class="form__input-icon" alt="Icono de usuario">
-                <input type="text" id="username" name="username" required class="form__input" placeholder="Usuario">
+                <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario">
             </div>
 
             
             <div class="form__input-container">
                 <img src="../../assets/icons/email.png" class="form__input-icon" alt="Icono">
-                <input type="text" id="username" name="username" required class="form__input" placeholder="Correo">
+                <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com">
             </div>
 
 
             <div class="form__input-container">
                 <img src="../../assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
-                <input type="password" id="password" name="password" required class="form__input" placeholder="Contraseña">
+                <input type="password" id="password_regist" name="password" required class="form__input" placeholder="Contraseña">
             </div>
 
              <div class="form__input-container">
                 <img src="../../assets/icons/padlock.png" class="form__input-icon" alt="Icono">
-                <input type="text" id="username" name="username" required class="form__input" placeholder="Confirme Contraseña">
+                <input type="password" id="password_registVery" name="username" required class="form__input" placeholder="Confirme Contraseña">
             </div>
 
             
             <button type="submit"  class="button">
-                <a href="../feed/feed-main.html" class="button-link">Registrarse</a>
+               <p class="button-link">Registrarse</p>
             </button>
         </form>
 
@@ -50,5 +51,8 @@
     <footer class="footer"> 
             <p class="footer__text"> ¿Ya tiene cuenta? <a href="login.html" class="recover-link">Inicie sesión</a></p>
     </footer>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="/src/scripts/regist.js"></script>
 </body>
 </html>

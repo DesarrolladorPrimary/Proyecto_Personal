@@ -80,7 +80,7 @@ body {
 /* Botón de registrarse */
 .button {
   border-radius: 9px;
-  transform: translateY(100px); /* Posición hacia abajo */
+  transform: translateY(40px); 
 }
 
 /* Enlace dentro del botón */
@@ -121,7 +121,7 @@ body {
   }
 
   .button {
-    transform: translateY(110px);
+    /* transform: translateY(110px); */
     font-size: 16px;
     padding: 9px 18px;
   }
@@ -140,7 +140,7 @@ body {
   }
 
   .button {
-    transform: translateY(120px);
+    /* transform: translateY(120px); */
     font-size: 18px;
     padding: 10px 20px;
   }
