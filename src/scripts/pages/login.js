@@ -29,7 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
         contraseña: contraseña,
       };
 
-      const response = await fetch("http://localhost:8080/api/v1/login", {
+      const isEmulator = /Bluestack/i.test(navigator.userAgent) || window.location.hostname==='10.0.2.2';
+      const API_BASE = isEmulator ? 'http://10.0.2.2:8080' : 'http://localhost:8080'; 
+
+
+      const response = await fetch(`http://localhost:8080/api/v1/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +80,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }).showToast();
       }
     } catch (error) {
-      console.log(error);
+       Toastify({
+          text: error,
+          duration: 3000,
+          gravity: "top",
+          position: 'center',
+          stopOnFocus: true,
+          style: {
+              heigth: "300px",
+              background: "red",
+          },
+        }).showToast();
     }
   });
 });

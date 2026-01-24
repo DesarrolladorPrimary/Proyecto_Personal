@@ -254,21 +254,7 @@ body {
 
 /* --- Estilos para el menÃº de usuario --- */
 
-/* BotÃ³n para cerrar el menÃº de usuario */
-.menu-user__close {
-  position: absolute;
-  /* Posicionamiento absoluto respecto al contenedor 'menu-user' */
-  text-decoration: none;
-  /* Quita el subrayado del enlace */
-  color: var(--color-text);
-  /* Color del icono de cierre */
-  z-index: var(--z-index);
-  /* Se asegura que estÃ© por encima de otros elementos del menÃº */
-  margin: var(--spacing-medium);
-  /* Espaciado interior */
-  right: 0;
-  /* Lo posiciona a la derecha del contenedor */
-}
+
 
 /* Contenedor principal del menÃº de usuario */
 .menu-user {
@@ -280,11 +266,11 @@ body {
   /* Se superpone al contenido normal de la pÃ¡gina */
   z-index: var(--z-index);
   /* Se apila por encima del contenido base */
-
+  
   grid-column: 2/2;
-
+  
   grid-row: 2/2;
-
+  
   justify-self: center;
   /* Se centra horizontalmente en su contenedor grid padre */
   border-radius: var(--border-radius-medium);
@@ -295,11 +281,11 @@ body {
   /* Ancho del menÃº */
   height: 450px;
   /* Altura del menÃº */
-
+  
   /* Define las filas del grid interno del menÃº */
   grid-template-rows:
-    100px
-    /* Fila 1 (Para el Ã­cono de avatar) */
+  100px
+  /* Fila 1 (Para el Ã­cono de avatar) */
     30px
     /* Fila 2 (Para la lÃ­nea separadora) */
     40px
@@ -312,6 +298,16 @@ body {
     /* Fila 6 (Modelos) */
     170px;
   /* Fila 7 (BotÃ³n de cierre de sesiÃ³n) */
+
+
+  transition: opacity 0.3s ease,
+  transform 0.3s ease;
+  transform: translateY(-10px);
+}
+.menu-user--visible {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Avatar dentro del menÃº de usuario */
@@ -360,12 +356,6 @@ body {
   /* Color de texto claro (blanco) */
   font-size: var(--font-size-body);
   /* TamaÃ±o de la fuente */
-}
-
-/* Muestra el menÃº de usuario cuando es el objetivo de la URL */
-.menu-user--hidden:target {
-  visibility: visible;
-  /* Hace que el menÃº sea visible */
 }
 
 /* Contenedor para agrupar un icono y un texto */

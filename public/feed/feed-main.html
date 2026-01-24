@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="/src/scripts/feedAcceso.js"></script>
+    <script src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <!-- Encabezado de la página -->
@@ -27,12 +27,13 @@
           ></a>
         </div>
       </div>
-      <a href="#user" class="header__logo">
+      
         <img
           src="../../assets/icons/image.png"
           class="header__logo"
           alt="logo_user"
-      /></a>
+          id="logo_user"
+      />
     </header>
 
     <!-- Menú lateral -->
@@ -99,8 +100,7 @@
     </main>
 
     <!-- BLOQUE: menu-user-->
-    <div class="menu-user menu-user--hidden" id="user">
-      <a href="#" class="menu-user__close">X</a>
+    <div class="menu-user" id="user">
 
       <!-- ELEMENTO: menu-user__avatar -->
       <img
@@ -132,10 +132,13 @@
       </div>
 
       <!-- ELEMENTO: Botón de acción principal -->
-      <button class="menu-user__button">
-        <a class="menu-user__link" href="../auth/login.html">Cerrar Sesión</a>
+      <button class="menu-user__button" id="logout">
+        <p class="menu-user__link">Cerrar Sesión</p>
       </button>
+
     </div>
+    <script src="/src/scripts/pages/feed.js"></script>
 
   </body>
 </html>
+
