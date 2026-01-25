@@ -58,7 +58,7 @@ body {
   /* Establece el color de fondo del elemento */
 }
 
-/* LÃ­nea dentro de la navegaciÃ³n */
+/* Linea dentro de la navegacion */
 .header__nav-line {
   display: flex;
   /* Usa flexbox para alinear los elementos hijos */
@@ -77,7 +77,7 @@ body {
   padding: 2px;
 }
 
-/* SublÃ­nea dentro de la navegaciÃ³n (el botÃ³n clickeable) */
+/* Subli­nea dentro de la navegacion (el boton clickeable) */
 .header__nav-link {
   width: var(--size-icon-tiny);
   /* Establece el ancho del elemento */
@@ -87,10 +87,12 @@ body {
   /* Redondea las esquinas del elemento */
   background-color: var(--background-color-nav-subline);
   /* Establece el color de fondo del elemento */
+  cursor: pointer;
 }
 
 /* Logo en la cabecera */
 .header__logo {
+  cursor: pointer;
   width: 34px;
   /* Establece el ancho del logo */
 }
@@ -113,19 +115,10 @@ body {
   /* PosiciÃ³n desde arriba definida por una variable */
   border-radius: var(--aside-border-radius);
   /* Bordes redondeados definidos por una variable */
+
+  backdrop-filter: blur();
 }
 
-/* Estilo para el boton de cerrar del menu lateral (temporal) */
-.aside__close {
-  position: absolute;
-  /* Lo posiciona de forma absoluta dentro del aside */
-  text-decoration: none;
-  /* Quita el subrayado */
-  color: var(--color-text);
-  /* Usa el color de texto principal */
-  z-index: var(--z-index);
-  /* Se asegura que estÃ© visible sobre otros elementos */
-}
 
 /* Alineacion para todos los iconos dentro de las celdas del grid del aside */
 .aside__link {
@@ -159,15 +152,11 @@ body {
 }
 
 /* Muestra el menu lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
-.aside:target {
-  display: grid;
-  /* Cambia el display a grid para que sea visible */
-}
 
 /* Panel base: aplica estilos comunes para todas las celdas descriptivas del aside */
 .aside__panel {
   display: flex;
-  visibility: visible;
+  visibility: hidden;
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -176,6 +165,24 @@ body {
   border: var(--line-width-thin) solid transparent;
   width: var(--aside-panel-width);
   height: var(--aside-panel-height);
+
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateX(10px) translateY(10px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.aside.aside--active{
+  display: grid;
+}
+
+/* Mostrar paneles solo al pasar el cursor (o mantenerlo encima) */
+.aside--active .aside__link--navi:hover + .aside__panel,
+.aside--active .aside__panel:hover {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+  pointer-events: auto;
 }
 
 /* Enlaces dentro de los paneles del aside */
@@ -303,6 +310,7 @@ body {
   transition: opacity 0.3s ease,
   transform 0.3s ease;
   transform: translateY(-10px);
+  backdrop-filter: blur();
 }
 .menu-user--visible {
   visibility: visible;
@@ -450,7 +458,7 @@ body {
 
   .menu-user {
     width: 320px;
-    height: 480px;
+    height: 415px;
   }
 }
 
@@ -458,11 +466,16 @@ body {
 @media (min-width: 1024px) {
   .aside__panel {
     visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .aside__panel:hover,
   .aside__link--navi:hover + .aside__panel {
     visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) translateX(0);
   }
 
   .feed__image {
@@ -500,6 +513,8 @@ body {
   .aside__panel:hover,
   .aside__link--navi:hover + .aside__panel {
     visibility: visible;
+    opacity: 1;
+    transform: translateX(0) translateY(0);
   }
 
   .feed__image {
@@ -512,6 +527,6 @@ body {
 
   .menu-user {
     width: 380px;
-    height: 520px;
+    height: 415px;
   }
 }
