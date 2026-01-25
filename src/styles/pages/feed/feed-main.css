@@ -461,6 +461,8 @@ body {
   .menu-user {
     width: 320px;
     height: 415px;
+    align-self: center;
+
   }
 }
 
@@ -491,6 +493,7 @@ body {
   .menu-user {
     width: 350px;
     height: 415px;
+    align-self: center;
   }
 
   .aside__panel--creative {
@@ -534,6 +537,7 @@ body {
   .menu-user {
     width: 380px;
     height: 415px;
+    align-self: center;
   }
 
   .menu-user__button{

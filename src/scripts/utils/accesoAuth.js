@@ -1,7 +1,7 @@
 let token = localStorage.getItem("Token");
 let rutaActual = window.location.pathname;
 
-    if(rutaActual.includes("feed-main")){
+    if(rutaActual.includes("/feed/")){
         if (!token) {
             window.location.href="/public/auth/login.html"
         }

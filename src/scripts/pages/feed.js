@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   let logoUser = document.getElementById("logo_user");
   let menuUser = document.getElementById("user");
 
@@ -34,15 +34,66 @@ document.addEventListener("DOMContentLoaded", () => {
     }).showToast();
   });
 
-  window.addEventListener('click', (e)=>{
+  window.addEventListener("click", (e) => {
     if (e.target != logoUser && !menuUser.contains(e.target)) {
-        menuUser.classList.remove("menu-user--visible");
+      menuUser.classList.remove("menu-user--visible");
     }
-
 
     if (!headerAside.contains(e.target) && !aside.contains(e.target)) {
-        aside.classList.remove("aside--active");
+      aside.classList.remove("aside--active");
+    }
+  });
+
+  let token = localStorage.getItem("Token");
+
+  let tokenPayload = token.split(".");
+
+  let datosPayload = atob(tokenPayload[1]);
+
+  let datos = JSON.parse(datosPayload);
+
+  try {
+    const obtenerDatosUser = await fetch(
+      "http://localhost:8080/api/v1/usuarios/id?id=" + datos.id,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      },
+    );
+    const User = await obtenerDatosUser.json();
+
+    const datosUser = {
+      id: User.PK_UsuarioID,
+      nombre: User.Nombre,
+      correo: User.Correo,
+      role: User.Rol,
+    };
+
+    const { id, nombre, correo, role } = datosUser;
+
+    let campoNombre = document.getElementById("nombre_usuario");
+    let campoCorreo = document.getElementById("correo_usuario");
+
+    if (nombre != null && correo != null) {
+      campoNombre.innerText = nombre;
+      campoCorreo.innerText = correo;
     }
 
-  })
+
+  } catch (error) {
+    Toastify({
+      text: error,
+      duration: 2000,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+      style: {
+        with: "300px",
+        background: "red",
+      },
+    }).showToast();
+  }
 });
