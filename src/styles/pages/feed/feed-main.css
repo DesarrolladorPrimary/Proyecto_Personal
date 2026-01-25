@@ -263,10 +263,10 @@ body {
 
 
 
-/* Contenedor principal del menÃº de usuario */
+/* Contenedor principal del menu de usuario */
 .menu-user {
   visibility: hidden;
-  /* Por defecto, el menÃº no es visible */
+  /* Por defecto, el menu no es visible */
   display: grid;
   /* Usa CSS Grid para su layout interno */
   position: absolute;
@@ -274,6 +274,8 @@ body {
   z-index: var(--z-index);
   /* Se apila por encima del contenido base */
   
+  gap: 15px ;
+
   grid-column: 2/2;
   
   grid-row: 2/2;
@@ -286,7 +288,7 @@ body {
   /* Color de fondo */
   width: 285px;
   /* Ancho del menÃº */
-  height: 450px;
+  height: 416px;
   /* Altura del menÃº */
   
   /* Define las filas del grid interno del menÃº */
@@ -488,7 +490,7 @@ body {
 
   .menu-user {
     width: 350px;
-    height: 500px;
+    height: 415px;
   }
 
   .aside__panel--creative {
@@ -501,6 +503,10 @@ body {
 
   .aside__panel--settings {
     top: 391px;
+  }
+
+  .menu-user__button{
+    cursor: pointer;
   }
 }
 
@@ -528,5 +534,9 @@ body {
   .menu-user {
     width: 380px;
     height: 415px;
+  }
+
+  .menu-user__button{
+    cursor: pointer;
   }
 }

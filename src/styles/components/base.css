@@ -107,7 +107,7 @@
   /* ===== FEED - Panel lateral (Aside) ===== */
   --aside-width: 107px; /* Ancho del aside colapsado */
   --aside-height: 439px; /* Alto del aside */
-  --aside-position-top: 150px; /* Posición desde arriba */
+  --aside-position-top: 120px; /* Posición desde arriba */
   --aside-panel-width: 230px; /* Ancho del panel desplegado */
   --aside-panel-height: 56px; /* Alto de cada panel */
   --aside-panel-left: 90px; /* Posición izquierda del panel */

@@ -143,6 +143,7 @@ body {
     transform: translateY(120px);
     font-size: 18px;
     padding: 10px 20px;
+    cursor: pointer;
   }
 }
 
@@ -162,5 +163,6 @@ body {
     transform: translateY(130px);
     font-size: 20px;
     padding: 12px 24px;
+    cursor: pointer;
   }
 }
