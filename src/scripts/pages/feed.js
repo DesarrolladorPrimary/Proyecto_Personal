@@ -63,26 +63,75 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
       },
     );
-    const User = await obtenerDatosUser.json();
 
-    const datosUser = {
-      id: User.PK_UsuarioID,
-      nombre: User.Nombre,
-      correo: User.Correo,
-      role: User.Rol,
-    };
+    switch (obtenerDatosUser.status) {
+      case 401:
+        localStorage.removeItem("Token");
+        Toastify({
+          text: "El token expiro",
+          duration: 2000,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            width: "300px",
+            background: "red",
+          },
+          callback: () => {
+            window.location.href = "/public/auth/login.html";
+          },
+        }).showToast();
+        break;
 
-    const { id, nombre, correo, role } = datosUser;
+      case 404:
+        Toastify({
+          text: "El recurso no fue encontrado",
+          duration: 2000,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            width: "300px",
+            background: "red",
+          },
+        }).showToast();
+        break;
 
-    let campoNombre = document.getElementById("nombre_usuario");
-    let campoCorreo = document.getElementById("correo_usuario");
+      case 500:
+        Toastify({
+          text: "Error del servidor",
+          duration: 2000,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            width: "300px",
+            background: "red",
+          },
+        }).showToast();
+        break;
+      case 200:
+        const User = await obtenerDatosUser.json();
 
-    if (nombre != null && correo != null) {
-      campoNombre.innerText = nombre;
-      campoCorreo.innerText = correo;
+        const datosUser = {
+          id: User.PK_UsuarioID,
+          nombre: User.Nombre,
+          correo: User.Correo,
+          role: User.Rol,
+        };
+
+        const { id, nombre, correo, role } = datosUser;
+
+        let campoNombre = document.getElementById("nombre_usuario");
+        let campoCorreo = document.getElementById("correo_usuario");
+
+        if (nombre != null && correo != null) {
+          campoNombre.innerText = nombre;
+          campoCorreo.innerText = correo;
+        }
+        break;
     }
-
-
+    return;
   } catch (error) {
     Toastify({
       text: error,
@@ -91,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       position: "center",
       stopOnFocus: true,
       style: {
-        with: "300px",
+        width: "300px",
         background: "red",
       },
     }).showToast();
