@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     background: "gray"
                 },
                 callback: ()=>{
-                    window.location.href="../public/auth/login.html"
+                    window.location.href="../auth/login.html"
                 }
             }).showToast();
             
