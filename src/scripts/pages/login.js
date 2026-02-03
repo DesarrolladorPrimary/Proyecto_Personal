@@ -25,15 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const datosLogin = {
-        correo: correo,
-        contraseña: contraseña,
+        "correo": correo,
+        "contraseña": contraseña,
       };
 
-      const isEmulator = /Bluestack/i.test(navigator.userAgent) || window.location.hostname==='10.0.2.2';
-      const API_BASE = isEmulator ? 'http://10.0.2.2:8080' : 'http://localhost:8080'; 
-
-
-      const response = await fetch(`http://localhost:8080/api/v1/login`, {
+      const response = await fetch(`http://127.0.0.1:8080/api/v1/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mensaje = await response.json();
 
         Toastify({
-          text: mensaje.Mensaje,
+          text: `Error: ${mensaje.Mensaje}`,
           duration: 3000,
           gravity: "top",
           position: 'center',
