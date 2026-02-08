@@ -1,3 +1,5 @@
+import { dataToken } from "../utils/dataToken.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   let logoUser = document.getElementById("logo_user");
   let menuUser = document.getElementById("user");
@@ -44,17 +46,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  let token = localStorage.getItem("Token");
-
-  let tokenPayload = token.split(".");
-
-  let datosPayload = atob(tokenPayload[1]);
-
-  let datos = JSON.parse(datosPayload);
+  
+  const {id} = dataToken();
+  
 
   try {
     const obtenerDatosUser = await fetch(
-      "http://localhost:8080/api/v1/usuarios/id?id=" + datos.id,
+      "http://localhost:8080/api/v1/usuarios/id?id=" + id,
       {
         method: "GET",
         headers: {
