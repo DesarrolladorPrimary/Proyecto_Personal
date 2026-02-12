@@ -95,6 +95,7 @@ body {
   cursor: pointer;
   width: 34px;
   /* Establece el ancho del logo */
+  overflow: hidden;
 }
 
 /* Contenedor principal del menÃº lateral */
@@ -262,17 +263,25 @@ body {
 
 
 #profile_photo_user {
+  width: 72px;
+  height: 72px;
+  max-width: 72px;
+  max-height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
   cursor: pointer;
-  transition: transform 0.2;
+  transition: transform 0.2s;
 }
 
-#profile_photo_user {
+#profile_photo_user:hover {
   transform: scale(1.05);
 }
 
 
 /* Contenedor principal del menu de usuario */
 .menu-user {
+  overflow: hidden;
   visibility: hidden;
   /* Por defecto, el menu no es visible */
   display: grid;
