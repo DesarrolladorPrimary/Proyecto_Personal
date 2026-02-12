@@ -259,8 +259,16 @@ body {
   /* Establece el ancho de la imagen */
 }
 
-/* --- Estilos para el menÃº de usuario --- */
 
+
+#profile_photo_user {
+  cursor: pointer;
+  transition: transform 0.2;
+}
+
+#profile_photo_user {
+  transform: scale(1.05);
+}
 
 
 /* Contenedor principal del menu de usuario */
