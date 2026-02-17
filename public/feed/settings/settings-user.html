@@ -84,20 +84,16 @@
     </section>
   </main>
 
-  <!-- Radio buttons for modal control (hidden) -->
-  <input type="radio" name="delete-modal" id="modal-close" class="modal-state" checked />
-  <input type="radio" name="delete-modal" id="modal-confirm" class="modal-state" />
-  <input type="radio" name="delete-modal" id="modal-processing" class="modal-state" />
-  <input type="radio" name="delete-modal" id="modal-success" class="modal-state" />
+
 
   <footer class="settings-footer">
-    <button class="settings-footer__container" >
-      <label for="modal-confirm" class="settings-footer__delete-btn">Eliminar Cuenta</label>
+    <button class="settings-footer__container" id="button-del" >
+      <label class="settings-footer__delete-btn">Eliminar Cuenta</label>
     </button>
   </footer>
 
   <!-- Modal 1: Confirmación -->
-  <div class="modal modal--confirm" id="modal-confirm">
+  <div class="modal " id="modal-confirm">
     <div class="modal__overlay"></div>
     <div class="modal__content">
       <h2 class="modal__title modal__title--danger">Eliminar cuenta</h2>
@@ -133,7 +129,7 @@
     </div>
   </div>
 
-  <script src="/src/scripts/pages/settings/setting-user.js"></script>
+  <script type="module" src="/src/scripts/pages/settings/setting-user.js"></script>
 </body>
 
 </html>

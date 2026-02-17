@@ -9,8 +9,10 @@
 /* Grid principal de la página */
 body {
   display: grid;
-  grid-template-columns: 1fr; /* Una columna */
-  grid-template-rows: auto 1fr auto; /* Header, main, footer */
+  grid-template-columns: 1fr;
+  /* Una columna */
+  grid-template-rows: auto 1fr auto;
+  /* Header, main, footer */
   height: 100vh;
   background-color: var(--background-color-body-feed);
   padding: 0;
@@ -38,6 +40,8 @@ body {
   text-align: center;
   margin-bottom: 25px;
 }
+
+
 
 /* =========================================
    ACORDEÓN DESPLEGABLE
@@ -77,7 +81,8 @@ body {
 
 /* Contenido desplegable (oculto por defecto) */
 .settings-accordion__content {
-  max-height: 0; /* Oculto por defecto */
+  max-height: 0;
+  /* Oculto por defecto */
   overflow: hidden;
   width: 345px;
   transition: max-height 0.4s ease;
@@ -88,15 +93,14 @@ body {
 }
 
 /* Estado expandido: cuando checkbox está marcado */
-.settings-accordion__checkbox:checked ~ .settings-accordion__content {
-  max-height: 500px; /* Se expande */
+.settings-accordion__checkbox:checked~.settings-accordion__content {
+  max-height: 500px;
+  /* Se expande */
   padding: 20px;
 }
 
 /* Oculta el valor cuando está expandido */
-.settings-accordion__checkbox:checked
-  ~ .settings-accordion__trigger
-  .settings-option__value {
+.settings-accordion__checkbox:checked~.settings-accordion__trigger .settings-option__value {
   display: none;
 }
 
@@ -123,69 +127,11 @@ body {
 .settings-accordion__value {
   font-family: var(--font-family-main);
   font-size: 16px;
-  color: var(--color-text-muted); /* Gris claro */
+  color: var(--color-text-muted);
+  /* Gris claro */
   font-weight: 300;
 }
 
-/* ===========================
-   SISTEMA DE BREAKPOINTS
-   =========================== */
-
-/* Tablets (768px - 1023px): Acordeón más ancho */
-@media (min-width: 768px) {
-  .settings-accordion {
-    width: 430px;
-  }
-
-  .settings-accordion__content {
-    width: 400px;
-  }
-
-  .settings-section__title {
-    font-size: 22px;
-  }
-}
-
-/* Desktop (1024px - 1279px): Contenido centrado + hover en botón */
-@media (min-width: 1024px) {
-  .settings-main {
-    align-items: center; /* Centra el contenido */
-  }
-
-  .settings-footer__delete-btn:hover {
-    background-color: var(--color-danger-hover); /* Rojo más oscuro */
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);
-  }
-
-  .settings-footer__delete-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
-  }
-}
-
-/* Desktop Grande (1280px+): Máximo tamaño */
-@media (min-width: 1280px) {
-  .settings-accordion {
-    width: 550px;
-  }
-
-  .settings-accordion__content {
-    width: 520px;
-  }
-
-  .settings-section__title {
-    font-size: 24px;
-  }
-
-  .settings-accordion__label {
-    font-size: 15px;
-  }
-
-  .settings-accordion__value {
-    font-size: 17px;
-  }
-}
 
 /* ===========================
    SISTEMA DE MODALES
@@ -235,7 +181,8 @@ body {
   width: 90%;
   text-align: center;
   z-index: 1001;
-  animation: modalSlideIn 0.3s ease; /* Animación de entrada */
+  animation: modalSlideIn 0.3s ease;
+  /* Animación de entrada */
 }
 
 /* Animación de entrada del modal */
@@ -244,6 +191,7 @@ body {
     opacity: 0;
     transform: translateY(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -341,18 +289,6 @@ body {
   margin-bottom: 0;
 }
 
-/* Mostrar modales según estado del radio button */
-#modal-confirm:checked ~ .modal--confirm {
-  display: flex; /* Modal 1: Confirmación */
-}
-
-#modal-processing:checked ~ .modal--processing {
-  display: flex; /* Modal 2: Procesando */
-}
-
-#modal-success:checked ~ .modal--success {
-  display: flex; /* Modal 3: Éxito */
-}
 
 /* Fix para que el label actúe como botón */
 .settings-footer__delete-btn {
@@ -360,4 +296,74 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+
+.modal--active {
+  display: flex;
+}
+
+
+
+
+/* ===========================
+   SISTEMA DE BREAKPOINTS
+   =========================== */
+
+/* Tablets (768px - 1023px): Acordeón más ancho */
+@media (min-width: 768px) {
+  .settings-accordion {
+    width: 430px;
+  }
+
+  .settings-accordion__content {
+    width: 400px;
+  }
+
+  .settings-section__title {
+    font-size: 22px;
+  }
+}
+
+/* Desktop (1024px - 1279px): Contenido centrado + hover en botón */
+@media (min-width: 1024px) {
+  .settings-main {
+    align-items: center;
+    /* Centra el contenido */
+  }
+
+  .settings-footer__delete-btn:hover {
+    background-color: var(--color-danger-hover);
+    /* Rojo más oscuro */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);
+  }
+
+  .settings-footer__delete-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+  }
+}
+
+/* Desktop Grande (1280px+): Máximo tamaño */
+@media (min-width: 1280px) {
+  .settings-accordion {
+    width: 550px;
+  }
+
+  .settings-accordion__content {
+    width: 520px;
+  }
+
+  .settings-section__title {
+    font-size: 24px;
+  }
+
+  .settings-accordion__label {
+    font-size: 15px;
+  }
+
+  .settings-accordion__value {
+    font-size: 17px;
+  }
 }
