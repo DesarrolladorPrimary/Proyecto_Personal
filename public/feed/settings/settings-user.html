@@ -54,25 +54,25 @@
         <input type="checkbox" id="perfil" class="settings-accordion__checkbox" />
         <label for="perfil" class="settings-accordion__trigger">
           <span class="settings-option__label">Perfil</span>
-          <span class="settings-option__value">Keyner Arismendy</span>
+          <span class="settings-option__value" id="perfilUser"></span>
         </label>
 
         <div class="settings-accordion__content">
           <div class="settings-accordion__field">
-            <span class="settings-accordion__label">Nombre Usuario:</span>
-            <span class="settings-accordion__value">Keyner Arismendy</span>
+            <p class="settings-accordion__label">Nombre Usuario:</p>
+            <span class="settings-accordion__value" id="usuario"></span>
           </div>
           <div class="settings-accordion__field">
-            <span class="settings-accordion__label">Correo:</span>
-            <span class="settings-accordion__value">correo@micorreo.com</span>
+            <p class="settings-accordion__label">Correo:</p>
+            <span class="settings-accordion__value" id="correo"></span>
           </div>
           <div class="settings-accordion__field">
-            <span class="settings-accordion__label">Fecha de unión:</span>
-            <span class="settings-accordion__value">00/00/0000</span>
+            <p class="settings-accordion__label">Fecha de unión:</p>
+            <span class="settings-accordion__value" id="fechaRegistro"</span>
           </div>
           <div class="settings-accordion__field">
             <span class="settings-accordion__label">Funciones:</span>
-            <span class="settings-accordion__value">Básicas</span>
+            <span class="settings-accordion__value" id="funciones"></span>
           </div>
         </div>
       </div>
@@ -130,6 +130,7 @@
   </div>
 
   <script type="module" src="/src/scripts/pages/settings/setting-user.js"></script>
+  <script type="module" src="/src/scripts/pages/settings/data_user.js"></script>
 </body>
 
 </html>
