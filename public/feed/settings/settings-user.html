@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../../../src/styles/components/settings-option.css" />
   <link rel="stylesheet" href="../../../src/styles/pages/feed/settings/settings-user.css" />
   <link rel="stylesheet" href="../../../src/styles/components/settings-footer.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
   <title>Configuraciones</title>
   <script src="/src/scripts/utils/accesoAuth.js"></script>
@@ -54,25 +55,25 @@
         <input type="checkbox" id="perfil" class="settings-accordion__checkbox" />
         <label for="perfil" class="settings-accordion__trigger">
           <span class="settings-option__label">Perfil</span>
-          <span class="settings-option__value" id="perfilUser"></span>
+          <span class="settings-option__value">Keyner Arismendy</span>
         </label>
 
         <div class="settings-accordion__content">
           <div class="settings-accordion__field">
-            <p class="settings-accordion__label">Nombre Usuario:</p>
-            <span class="settings-accordion__value" id="usuario"></span>
+            <span class="settings-accordion__label">Nombre Usuario:</span>
+            <span class="settings-accordion__value">Keyner Arismendy</span>
           </div>
           <div class="settings-accordion__field">
-            <p class="settings-accordion__label">Correo:</p>
-            <span class="settings-accordion__value" id="correo"></span>
+            <span class="settings-accordion__label">Correo:</span>
+            <span class="settings-accordion__value">correo@micorreo.com</span>
           </div>
           <div class="settings-accordion__field">
-            <p class="settings-accordion__label">Fecha de unión:</p>
-            <span class="settings-accordion__value" id="fechaRegistro"</span>
+            <span class="settings-accordion__label">Fecha de unión:</span>
+            <span class="settings-accordion__value">00/00/0000</span>
           </div>
           <div class="settings-accordion__field">
             <span class="settings-accordion__label">Funciones:</span>
-            <span class="settings-accordion__value" id="funciones"></span>
+            <span class="settings-accordion__value">Básicas</span>
           </div>
         </div>
       </div>
@@ -93,7 +94,7 @@
   </footer>
 
   <!-- Modal 1: Confirmación -->
-  <div class="modal " id="modal-confirm">
+  <div class="modal" id="modal-confirm">
     <div class="modal__overlay"></div>
     <div class="modal__content">
       <h2 class="modal__title modal__title--danger">Eliminar cuenta</h2>
@@ -102,14 +103,14 @@
         revertir
       </p>
       <div class="modal__actions">
-        <label for="modal-close"  class="modal__button modal__button--secondary">No estoy seguro</label>
+        <button   class="modal__button modal__button--secondary">No estoy seguro</button>
         <button  class="modal__button modal__button--danger" id="confirm_delete">Sí, estoy seguro</button>
       </div>
     </div>
   </div>
 
   <!-- Modal 2: Procesando -->
-  <div class="modal modal--processing" id="modal-processing">
+  <div class="modal" id="modal-processing">
     <div class="modal__overlay"></div>
     <div class="modal__content modal__content--processing">
       <p class="modal__message">
@@ -129,8 +130,8 @@
     </div>
   </div>
 
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="/src/scripts/pages/settings/setting-user.js"></script>
-  <script type="module" src="/src/scripts/pages/settings/data_user.js"></script>
 </body>
 
 </html>
