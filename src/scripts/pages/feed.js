@@ -222,25 +222,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       try {
         const compressedBase64 = await compressImage(file, 512, 512, 0.8);
 
-        // Convertir base64 a blob
-        const response = await fetch(compressedBase64);
-        const blob = await response.blob();
-
-        // Crear FormData y enviar al backend
-        const formData = new FormData();
-        formData.append('imagen', blob, 'perfil.jpg');
-
+        // Enviar al backend como JSON (base64)
         const uploadResponse = await fetch(`http://localhost:8080/api/v1/upload/perfil?id=${id}`, {
           method: 'POST',
           headers: {
-            Authorization: "Bearer " + token,
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json",
           },
-          body: formData,
+          body: JSON.stringify({
+            imagen: compressedBase64
+          }),
         });
 
+        const data = await uploadResponse.json();
+        
         if (uploadResponse.ok) {
-          const data = await uploadResponse.json();
-          
           // Actualizar la imagen en el frontend
           profileImage.src = compressedBase64;
           
@@ -249,9 +245,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           Toastify({ text: "Foto actualizada", duration: 2000, style: { background: "green" } }).showToast();
         } else {
-          Toastify({ text: "Error al guardar en servidor", duration: 2500, style: { background: "red" } }).showToast();
+          Toastify({ text: data.Mensaje || "Error al guardar", duration: 2500, style: { background: "red" } }).showToast();
         }
       } catch (err) {
+        console.error("Error:", err);
         Toastify({ text: "Error procesando imagen", duration: 2500, style: { background: "red" } }).showToast();
       } finally {
         fileInput.value = "";
@@ -280,8 +277,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const userData = await response.json();
         const fotoPerfil = userData.FotoPerfil;
         
-        // Si tiene foto en el servidor, usarla; si no, usar default
-        const photoSrc = fotoPerfil ? fotoPerfil : defaultPhoto;
+        // Si tiene foto en el servidor, usarla desde el backend
+        let photoSrc = defaultPhoto;
+        if (fotoPerfil) {
+          photoSrc = `http://localhost:8080/${fotoPerfil}`;
+        }
 
         profileImage.src = photoSrc;
         if (logoUser) {
