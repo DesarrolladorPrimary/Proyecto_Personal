@@ -303,6 +303,32 @@ body {
   display: flex;
 }
 
+/* Modal de cambiar contraseña */
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.modal__input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal__input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+#cambiar-password {
+  cursor: pointer;
+}
+
 
 
 

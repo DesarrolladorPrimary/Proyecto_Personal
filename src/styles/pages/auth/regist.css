@@ -86,7 +86,7 @@ body {
 /* Enlace dentro del botón */
 .button-link {
   text-decoration: none;
-  color: var(--color-text); /* Texto negro */
+  color: black !important;
 }
 
 /* Contenedor principal */

@@ -222,13 +222,35 @@ document.addEventListener("DOMContentLoaded", async () => {
       try {
         const compressedBase64 = await compressImage(file, 512, 512, 0.8);
 
-        profileImage.src = compressedBase64;
-        localStorage.setItem(`profilePhoto:${id}`, compressedBase64);
+        // Convertir base64 a blob
+        const response = await fetch(compressedBase64);
+        const blob = await response.blob();
 
-        const logoUser = document.getElementById("logo_user");
-        if (logoUser) logoUser.src = compressedBase64;
+        // Crear FormData y enviar al backend
+        const formData = new FormData();
+        formData.append('imagen', blob, 'perfil.jpg');
 
-        Toastify({ text: "Foto actualizada", duration: 2000, style: { background: "green" } }).showToast();
+        const uploadResponse = await fetch(`http://localhost:8080/api/v1/upload/perfil?id=${id}`, {
+          method: 'POST',
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          body: formData,
+        });
+
+        if (uploadResponse.ok) {
+          const data = await uploadResponse.json();
+          
+          // Actualizar la imagen en el frontend
+          profileImage.src = compressedBase64;
+          
+          const logoUser = document.getElementById("logo_user");
+          if (logoUser) logoUser.src = compressedBase64;
+
+          Toastify({ text: "Foto actualizada", duration: 2000, style: { background: "green" } }).showToast();
+        } else {
+          Toastify({ text: "Error al guardar en servidor", duration: 2500, style: { background: "red" } }).showToast();
+        }
       } catch (err) {
         Toastify({ text: "Error procesando imagen", duration: 2500, style: { background: "red" } }).showToast();
       } finally {
@@ -237,20 +259,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
   // Función para cargar la foto guardada al iniciar
-  const loadSavedProfilePhoto = (userId) => {
+  const loadSavedProfilePhoto = async (userId) => {
     const profileImage = document.getElementById("profile_photo_user");
     const logoUser = document.getElementById("logo_user");
 
     if (!profileImage) return;
 
     const defaultPhoto = "../../assets/icons/image.png";
-    const profilePhotoKey = `profilePhoto:${userId}`;
-    const savedPhoto = localStorage.getItem(profilePhotoKey);
-    const photoSrc = savedPhoto || defaultPhoto;
 
-    profileImage.src = photoSrc;
-    if (logoUser) {
-      logoUser.src = photoSrc;
+    try {
+      // Obtener datos del usuario del backend
+      const response = await fetch(`http://localhost:8080/api/v1/usuarios/id?id=${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        const fotoPerfil = userData.FotoPerfil;
+        
+        // Si tiene foto en el servidor, usarla; si no, usar default
+        const photoSrc = fotoPerfil ? fotoPerfil : defaultPhoto;
+
+        profileImage.src = photoSrc;
+        if (logoUser) {
+          logoUser.src = photoSrc;
+        }
+      } else {
+        // Si hay error, usar default
+        profileImage.src = defaultPhoto;
+        if (logoUser) {
+          logoUser.src = defaultPhoto;
+        }
+      }
+    } catch (error) {
+      console.error("Error cargando foto:", error);
+      profileImage.src = defaultPhoto;
+      if (logoUser) {
+        logoUser.src = defaultPhoto;
+      }
     }
   };
 

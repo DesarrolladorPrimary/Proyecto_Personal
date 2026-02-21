@@ -78,7 +78,7 @@
         </div>
       </div>
 
-      <div class="settings-option">
+      <div class="settings-option" id="cambiar-password">
         <span class="settings-option__label">Contraseña</span>
         <span class="settings-option__value">Cambiar Contraseña</span>
       </div>
@@ -92,6 +92,22 @@
       <label class="settings-footer__delete-btn">Eliminar Cuenta</label>
     </button>
   </footer>
+
+  <!-- Modal: Cambiar Contraseña -->
+  <div class="modal" id="modal-password">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+      <h2 class="modal__title">Cambiar Contraseña</h2>
+      <div class="modal__form">
+        <input type="password" id="nueva-password" class="modal__input" placeholder="Nueva contraseña">
+        <input type="password" id="confirmar-password" class="modal__input" placeholder="Confirmar contraseña">
+      </div>
+      <div class="modal__actions">
+        <button class="modal__button modal__button--secondary" id="cancel-password">Cancelar</button>
+        <button class="modal__button" id="save-password">Guardar</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal 1: Confirmación -->
   <div class="modal" id="modal-confirm">
@@ -132,6 +148,7 @@
 
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="/src/scripts/pages/settings/data_user.js"></script>
+  <script type="module" src="/src/scripts/pages/settings/cambiar-password.js"></script>
   <script type="module" src="/src/scripts/pages/settings/setting-user.js"></script>
 </body>
 

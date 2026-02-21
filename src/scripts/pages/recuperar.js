@@ -35,13 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Solicitud enviada correctamente");
         
         Toastify({
-          text: "Revisa la consola del servidor para el enlace de recuperación",
-          duration: 5000,
+          text: "Correo enviado. Revisa tu bandeja de entrada.",
+          duration: 4000,
           gravity: "top",
           position: 'center',
           stopOnFocus: true,
           style: {
             background: "green",
+          },
+          callback: () => {
+            window.location.href = "recovery_passwd_messaje.html";
           },
         }).showToast();
       } else {
