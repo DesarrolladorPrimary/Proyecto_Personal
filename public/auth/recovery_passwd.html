@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel ="stylesheet" type ="text/css" href ="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" >
 </head>
 
 <body>
@@ -18,15 +19,17 @@
             <h1 class="recovery-password__title">¿Olvidó su contraseña?</h1>
             <p class="recovery-password__description">Ingrese el correo electrónico <br> asociado a su cuenta <br>
                 y le enviaremos un enlace <br> para restablecer su <br> contraseña.</p>
-            <form action="" class="recovery-password__form">
+            <form action="" class="recovery-password__form" id="form">
                 <div class="recovery-password__form-group">
-                    <input type="text" name="" id="" placeholder="Correo" class="recovery-password__input">
+                    <input type="text" id="correo" name="" placeholder="Correo" class="recovery-password__input">
                     <button type="submit" class="recovery-password__button"><a
                             class="recovery-password__link" href="recovery_passwd_messaje.html">Enviar</a></button>
                 </div>
             </form>
         </div>
     </main>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/recuperar.js"></script>
 </body>
 
 </html>
