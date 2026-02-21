@@ -75,20 +75,10 @@ body {
   height: 17px;
   /* Establece la altura del elemento */
   padding: 2px;
-}
 
-/* Subli­nea dentro de la navegacion (el boton clickeable) */
-.header__nav-link {
-  width: var(--size-icon-tiny);
-  /* Establece el ancho del elemento */
-  height: 15px;
-  /* Establece la altura del elemento */
-  border-radius: 2px;
-  /* Redondea las esquinas del elemento */
-  background-color: var(--background-color-nav-subline);
-  /* Establece el color de fondo del elemento */
   cursor: pointer;
 }
+
 
 /* Logo en la cabecera */
 .header__logo {
@@ -116,7 +106,10 @@ body {
   /* PosiciÃ³n desde arriba definida por una variable */
   border-radius: var(--aside-border-radius);
   /* Bordes redondeados definidos por una variable */
-
+  left: -120px;
+  /* Posición inicial fuera de la pantalla a la izquierda */
+  transition: transform 0.3s ease;
+  /* Animación suave al deslizar */
   backdrop-filter: blur();
 }
 
@@ -175,6 +168,7 @@ body {
 
 .aside.aside--active{
   display: grid;
+  transform: translateX(120px);
 }
 
 /* Mostrar paneles solo al pasar el cursor (o mantenerlo encima) */
@@ -210,10 +204,11 @@ body {
   left: var(--aside-panel-left);
 }
 
-/* PosiciÃ³n del panel de configuraciones */
+/* Posición del panel de configuraciones */
 .aside__panel--settings {
   top: 350px;
   left: var(--aside-panel-left);
+  height: 60px; /* Aumentado para dar más área de hover */
 }
 
 /* --- Estilos para la secciÃ³n de feed --- */
@@ -485,6 +480,13 @@ body {
 
 /* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
+  .aside {
+    left: -130px;
+  }
+
+  .aside.aside--active {
+    transform: translateX(130px);
+  }
   .aside__panel {
     visibility: hidden;
     opacity: 0;
@@ -523,6 +525,7 @@ body {
 
   .aside__panel--settings {
     top: 391px;
+    height: 60px; /* Aumentado para dar más área de hover en desktop */
   }
 
   .menu-user__button{

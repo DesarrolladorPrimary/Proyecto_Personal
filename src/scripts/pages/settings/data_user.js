@@ -3,6 +3,8 @@ const correo = document.querySelector("#correo");
 const fechaRegistro = document.querySelector("#fechaRegistro");
 const rolFunciones = document.querySelector("#funciones");
 const perfilUser = document.querySelector("#perfilUser")
+const plan = document.querySelector("#value_plan")
+
 
 import { dataToken } from './../../utils/dataToken.js';
 
@@ -33,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     
     // Asignar datos a los elementos del DOM
     if(user.status === 200) {
+        plan.textContent =  `${user.Rol} (Basico)`
         perfilUser.textContent = user.Nombre;
         usuario.textContent = user.Nombre;
         correo.textContent = user.Correo;

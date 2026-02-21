@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeSuccessBtn.addEventListener("click", () => {
                     modal_success.classList.remove("modal--active");
                     // Redirigir al login o home
+                    localStorage.removeItem("Token"); // Limpiar sesión
                     window.location.href = "../../index.html"; 
                 });
             }
