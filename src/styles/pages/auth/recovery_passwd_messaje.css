@@ -53,6 +53,21 @@ body {
   text-align: center; /* Centra el texto */
 }
 
+/* Enlace volver al login */
+.recovery-password__back-login {
+  text-align: center;
+}
+
+.recovery-password__link {
+  color: var(--color-link);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.recovery-password__link:hover {
+  text-decoration: underline;
+}
+
 /* ===========================
    SISTEMA DE BREAKPOINTS
    =========================== */

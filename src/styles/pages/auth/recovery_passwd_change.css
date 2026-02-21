@@ -102,6 +102,21 @@ body {
   color: var(--color-text);
 }
 
+/* Enlace volver al login */
+.recovery-password__back-login {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.recovery-password__back-login .recovery-password__link {
+  color: var(--color-link);
+  font-size: 14px;
+}
+
+.recovery-password__back-login .recovery-password__link:hover {
+  text-decoration: underline;
+}
+
 /* Requisitos de la contraseña (ej: "mínimo 8 caracteres") */
 .recovery-password__form-requirement {
   font-family: "Inter", sans-serif;
