@@ -68,16 +68,13 @@
         <h2 class="settings-section__title">Generales</h2>
 
         <div class="settings-dropdown">
-          <input
-            type="checkbox"
-            id="theme-dropdown"
-            class="settings-dropdown__checkbox"
-          />
+         
           <label for="theme-dropdown" class="settings-dropdown__trigger">
             <span class="settings-option__label">Tema:</span>
-            <span class="settings-option__value">Oscuro</span>
+            <span class="settings-option__value" id="button_tema">Oscuro</span>
           </label>
-          <div class="settings-dropdown__content">
+          
+          <div id="drop_colors">
             <button class="settings-dropdown__btn settings-dropdown__btn--dark">
               Oscuro
             </button>
@@ -103,14 +100,10 @@
         </div>
 
         <div class="settings-dropdown">
-          <input
-            type="checkbox"
-            id="lang-dropdown"
-            class="settings-dropdown__checkbox"
-          />
+        
           <label for="lang-dropdown" class="settings-dropdown__trigger">
             <span class="settings-option__label">Idioma</span>
-            <span class="settings-option__value">Español ></span>
+            <span class="settings-option__value">Español</span>
           </label>
           <div class="settings-dropdown__content">
             <button class="settings-dropdown__btn settings-dropdown__btn--dark">
@@ -142,6 +135,8 @@
         <button class="settings-footer__delete-btn">Eliminar Cuenta</button>
       </div>
     </footer>
+
+    <script src="/src/scripts/pages/settings/settings-general.js"></script>
   </body>
 </html>
 
