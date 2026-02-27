@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar correo</title>
+    <link rel="stylesheet" href="../../src/styles/components/base.css">
+    <link rel="stylesheet" href="../../src/styles/pages/auth/recovery_passwd_messaje.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel ="stylesheet" type ="text/css" href ="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" >
+    <script src="/src/scripts/utils/theme-manager.js"></script>
+</head>
+
+<body>
+
+    <main class="recovery-password">
+        <div class="recovery-password__container">
+            <h1 class="recovery-password__title" id="titulo">Verificando...</h1>
+            <p class="recovery-password__description" id="descripcion">Por favor espera mientras verificamos tu correo.</p>
+            <p class="recovery-password__back-login" id="link-login" style="display: none;">
+                <a href="login.html" class="recovery-password__link">Ir al login</a>
+            </p>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const titulo = document.getElementById('titulo');
+            const descripcion = document.getElementById('descripcion');
+            const linkLogin = document.getElementById('link-login');
+
+            // Obtener token de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            if (!token) {
+                titulo.textContent = 'Token inválido';
+                descripcion.textContent = 'No se proporcionó ningún token de verificación.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/v1/verificar?token=${token}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    titulo.textContent = '¡Correo verificado!';
+                    descripcion.textContent = 'Tu correo ha sido verificado correctamente. Ya puedes iniciar sesión.';
+                    linkLogin.style.display = 'block';
+                    
+                    Toastify({
+                        text: "Correo verificado correctamente",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "center",
+                        style: { background: "green" },
+                    }).showToast();
+                } else {
+                    titulo.textContent = 'Error';
+                    descripcion.textContent = data.Mensaje || 'El token es inválido o ha expirado.';
+                    
+                    Toastify({
+                        text: data.Mensaje || "Error al verificar",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "center",
+                        style: { background: "red" },
+                    }).showToast();
+                }
+            } catch (error) {
+                titulo.textContent = 'Error de conexión';
+                descripcion.textContent = 'No se pudo conectar con el servidor.';
+                
+                Toastify({
+                    text: "Error de conexión",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    style: { background: "red" },
+                }).showToast();
+            }
+        });
+    </script>
+</body>
+
+</html>
