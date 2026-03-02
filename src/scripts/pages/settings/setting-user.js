@@ -1,127 +1,100 @@
-import { dataToken } from '../../utils/dataToken.js'
+import { fetchJson } from "../../utils/api-client.js";
+import {
+  getCurrentUserId,
+  logoutAndRedirect,
+} from "../../utils/auth-session.js";
 
-const button_delete = document.querySelector("#button-del")
-const modal_confirm = document.querySelector("#modal-confirm")
-const button_confirm = document.querySelector("#confirm_delete");
-const modal_processing = document.querySelector("#modal-processing");
-const modal_success = document.querySelector("#modal-success");
-const button_exit = document.querySelector(".modal__button--secondary")
+const buttonDelete = document.querySelector("#button-del");
+const modalConfirm = document.querySelector("#modal-confirm");
+const buttonConfirm = document.querySelector("#confirm_delete");
+const modalProcessing = document.querySelector("#modal-processing");
+const modalSuccess = document.querySelector("#modal-success");
+const buttonExit = modalConfirm?.querySelector(".modal__button--secondary");
 
-let datos = dataToken();
-const { id } = datos
-const token = localStorage.getItem("Token");
+const toggleModal = (modal, shouldOpen) => {
+  if (!modal) {
+    return;
+  }
 
-// Función para eliminar usuario
-const deleteUser = async (id, token) => {
-    try {
-        let request = await fetch(`http://localhost:8080/api/v1/usuarios/id?id=${id}`, {
-            method: 'DELETE',
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        })
+  modal.classList.toggle("modal--active", shouldOpen);
+};
 
-        if (!request.ok) {
-            // Intenta leer el mensaje de error del backend si existe
-            const errorData = await request.json().catch(() => ({}));
-            throw new Error(errorData.Mensaje || "Error al eliminar usuario");
-        }
+document.addEventListener("DOMContentLoaded", () => {
+  const id = getCurrentUserId();
 
-        const data = await request.json();
-        data.status = request.status;
-        return data;
-    } catch (error) {
-        console.error("Error en deleteUser:", error);
-        return { status: 500, Mensaje: error.message }; 
-    }
-}
+  if (!id) {
+    return;
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    // Helper para cerrar modales al hacer click en el overlay
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal__overlay')) {
-                modal.classList.remove('modal--active');
-            }
-        });
+  document.querySelectorAll(".modal").forEach((modal) => {
+    modal.addEventListener("click", (event) => {
+      if (event.target.classList.contains("modal__overlay")) {
+        toggleModal(modal, false);
+      }
     });
+  });
 
-    // Abrir modal de confirmación
-    button_delete.addEventListener('click', () => {
-        modal_confirm.classList.add("modal--active")
-    })
+  buttonDelete?.addEventListener("click", () => {
+    toggleModal(modalConfirm, true);
+  });
 
-    // Cerrar modal con el botón "No estoy seguro"
-    button_exit.addEventListener('click', () => {
-        modal_confirm.classList.remove("modal--active")
-    })
+  buttonExit?.addEventListener("click", () => {
+    toggleModal(modalConfirm, false);
+  });
 
-    // Cerrar modal al confirmar la eliminación (lógica principal)
-    button_confirm.addEventListener('click', async () => {
-        // 1. Ocultar modal confirmación y mostrar "Procesando"
-        modal_confirm.classList.remove("modal--active");
-        modal_processing.classList.add("modal--active");
+  buttonConfirm?.addEventListener("click", async () => {
+    toggleModal(modalConfirm, false);
+    toggleModal(modalProcessing, true);
 
-        // 2. Llamar a la API
-        let resp = await deleteUser(id, token);
+    try {
+      const { ok, data } = await fetchJson("/api/v1/usuarios/id", {
+        method: "DELETE",
+        params: { id },
+        auth: true,
+      });
 
-        // 3. Ocultar "Procesando"
-        modal_processing.classList.remove("modal--active");
+      toggleModal(modalProcessing, false);
 
-        // 4. Validar respuesta
-        // El backend devuelve status 200 en el JSON si todo va bien
-        if (resp.status === 200) {
-            
-            // Mostrar modal de éxito
-            modal_success.classList.add("modal--active");
+      if (!ok) {
+        Toastify({
+          text: data.Mensaje || "No fue posible eliminar la cuenta",
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "center",
+          style: {
+            background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+          },
+        }).showToast();
+        return;
+      }
 
-            // Opcional: Cerrar modal de éxito y redirigir
-            const closeSuccessBtn = modal_success.querySelector(".modal__button");
-            if(closeSuccessBtn) {
-                closeSuccessBtn.addEventListener("click", () => {
-                    modal_success.classList.remove("modal--active");
-                    // Redirigir al login o home
-                    localStorage.removeItem("Token"); // Limpiar sesión
-                    window.location.href = "../../index.html"; 
-                });
-            }
+      toggleModal(modalSuccess, true);
 
-            // También redirigir automáticamente después de unos segundos
-            setTimeout(() => {
-                 localStorage.removeItem("Token"); // Limpiar sesión
-                 window.location.href = "../../index.html"; 
-            }, 3000);
+      const closeSuccessBtn = modalSuccess?.querySelector(".modal__button");
+      closeSuccessBtn?.addEventListener(
+        "click",
+        () => {
+          toggleModal(modalSuccess, false);
+          logoutAndRedirect("../../index.html");
+        },
+        { once: true },
+      );
 
-        } else {
-            // Mostrar error con Toastify
-            Toastify({
-                text: resp.Mensaje || "Error desconocido al eliminar la cuenta",
-                duration: 3000,
-                close: true,
-                gravity: "top", 
-                position: "center", 
-                style: {
-                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
-                },
-            }).showToast();
-            
-            // Reabrir modal de confirmación si falló? O dejarlo cerrado.
-            // Dejamos cerrado por ahora.
-        }
-    })
+      setTimeout(() => {
+        logoutAndRedirect("../../index.html");
+      }, 3000);
+    } catch (error) {
+      toggleModal(modalProcessing, false);
+      Toastify({
+        text: "Error de conexión",
+        duration: 3000,
+        gravity: "top",
+        position: "center",
+        style: {
+          background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        },
+      }).showToast();
+    }
+  });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

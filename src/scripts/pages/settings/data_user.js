@@ -1,49 +1,60 @@
-const usuario = document.querySelector("#usuario");
-const correo = document.querySelector("#correo");
-const fechaRegistro = document.querySelector("#fechaRegistro");
-const rolFunciones = document.querySelector("#funciones");
-const perfilUser = document.querySelector("#perfilUser")
-const plan = document.querySelector("#value_plan")
+import { fetchJson } from "../../utils/api-client.js";
+import { getCurrentUserId } from "../../utils/auth-session.js";
 
+const userField = document.querySelector("#usuario");
+const emailField = document.querySelector("#correo");
+const registerDateField = document.querySelector("#fechaRegistro");
+const roleField = document.querySelector("#funciones");
+const profileField = document.querySelector("#perfilUser");
+const planField = document.querySelector("#value_plan");
 
-import { dataToken } from './../../utils/dataToken.js';
+const normalizePlanName = (plan) => {
+  if (!plan || plan === "Sin Plan") {
+    return "Gratuito";
+  }
 
-const {id} = dataToken();
+  return plan;
+};
 
-let token = localStorage.getItem("Token");
+document.addEventListener("DOMContentLoaded", async () => {
+  const id = getCurrentUserId();
 
+  if (!id) {
+    return;
+  }
 
-const request = async (id)=> {
-    let rt = await fetch(`http://localhost:8080/api/v1/usuarios/id?id=${id}`, {
-        method: "GET",
-        headers: {
-            Authorization: "Bearer " + token,
-        }
-    })
-    
-    let data = await rt.json()
-    return data;
-}
+  try {
+    const [userResponse, subscriptionResponse] = await Promise.all([
+      fetchJson("/api/v1/usuarios/id", {
+        params: { id },
+        auth: true,
+      }),
+      fetchJson("/api/v1/settings/suscripcion", {
+        params: { id },
+        auth: true,
+      }),
+    ]);
 
+    if (userResponse.ok) {
+      const user = userResponse.data;
+      const role = user.Rol || "Gratuito";
 
-document.addEventListener('DOMContentLoaded', async ()=>{
-    let user = await request(id);
+      profileField.textContent = user.Nombre || "—";
+      userField.textContent = user.Nombre || "—";
+      emailField.textContent = user.Correo || "—";
+      registerDateField.textContent = user["Fecha Registro"] || "—";
+      roleField.textContent = role;
 
-    console.log(user);
-    
-
-    
-    // Asignar datos a los elementos del DOM
-    if(user.status === 200) {
-        plan.textContent =  `${user.Rol} (Basico)`
-        perfilUser.textContent = user.Nombre;
-        usuario.textContent = user.Nombre;
-        correo.textContent = user.Correo;
-        fechaRegistro.textContent = user["Fecha Registro"];
-        rolFunciones.textContent = user.Rol;
-
+      if (!subscriptionResponse.ok) {
+        planField.textContent = `${role} (Básico)`;
+      }
     }
-    
-    
-    
-})
+
+    if (subscriptionResponse.ok) {
+      const plan = normalizePlanName(subscriptionResponse.data.plan);
+      planField.textContent = `${plan} (${plan === "Premium" ? "Activo" : "Básico"})`;
+    }
+  } catch (error) {
+    // accesoAuth.js ya gestiona el caso de token inválido; aquí evitamos ruido extra.
+  }
+});

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Estanterías</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,6 +17,7 @@
       href="../../../src/styles/pages/feed/biblioteca/shelves.css"
     />
       <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
   <body>
     <header class="shelves-header">
@@ -26,21 +28,12 @@
           alt=""
         />
       </a>
-      <h1 class="shelves-header__title">Estanterías</h1>
+      <h1 class="shelves-header__title" data-i18n="shelves.title">Estanterías</h1>
     </header>
 
-    <main class="shelves-main">
-      <a href="library.html" class="shelf-card__link">
-        <div class="shelf-card">
-          <p class="shelf-card__name">Nombre Estanteria</p>
-        </div>
-      </a>
-      <div class="shelf-card">
-        <p class="shelf-card__name">Nombre Estanteria</p>
-      </div>
-    </main>
+    <main class="shelves-main"></main>
 
-    <script src="/src/scripts/pages/biblioteca/shelves.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/biblioteca/shelves.js"></script>
   </body>
 </html>
-

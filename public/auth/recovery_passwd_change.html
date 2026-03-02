@@ -11,29 +11,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel ="stylesheet" type ="text/css" href ="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" >
+    <script src="/src/scripts/utils/language-manager.js"></script>
 </head>
 
 <body>
     <main class="recovery-password">
         <div class="recovery-password__container">
-            <h1 class="recovery-password__title">¿Olvidó su contraseña?</h1>
-            <p class="recovery-password__description">Por favor, ingrese su nueva <br> contraseña.</p>
+            <h1 class="recovery-password__title" data-i18n="reset.title">¿Olvidó su contraseña?</h1>
+            <p class="recovery-password__description" data-i18n="reset.description">Por favor, ingrese su nueva contraseña.</p>
             <form action="" class="recovery-password__form" id="form">
                 <div class="recovery-password__form-group">
-                    <input type="password" id="contraseña" name="" placeholder="Contraseña" class="recovery-password__input">
+                    <input type="password" id="contraseña" name="" placeholder="Contraseña" data-i18n-placeholder="reset.password_placeholder" class="recovery-password__input">
                 </div>
                 <div class="recovery-password__form-requirements-list">
-                    <p class="recovery-password__form-requirement">Debe tener al menos 8 caracteres.</p>
-                    <p class="recovery-password__form-requirement">Debe incluir una letra mayúscula (A-Z).</p>
-                    <p class="recovery-password__form-requirement">Debe incluir una letra minúscula (a-z).</p>
-                    <p class="recovery-password__form-requirement">Debe incluir un número (0-9).</p>
+                    <p class="recovery-password__form-requirement" data-i18n="reset.requirement_1">Debe tener al menos 8 caracteres.</p>
+                    <p class="recovery-password__form-requirement" data-i18n="reset.requirement_2">Debe incluir una letra mayúscula (A-Z).</p>
+                    <p class="recovery-password__form-requirement" data-i18n="reset.requirement_3">Debe incluir una letra minúscula (a-z).</p>
+                    <p class="recovery-password__form-requirement" data-i18n="reset.requirement_4">Debe incluir un número (0-9).</p>
                 </div>
                 <div class="recovery-password__form-group">
-                    <input type="password" id="confirmar_contraseña" name="" placeholder="Confirmar Contraseña" class="recovery-password__input recovery-password__input--confirm">
-                    <button type="submit" class="recovery-password__button">Enviar</button>
+                    <input type="password" id="confirmar_contraseña" name="" placeholder="Confirmar Contraseña" data-i18n-placeholder="reset.confirm_placeholder" class="recovery-password__input recovery-password__input--confirm">
+                    <button type="submit" class="recovery-password__button" data-i18n="reset.submit">Enviar</button>
                 </div>
                 <p class="recovery-password__back-login">
-                    <a href="login.html" class="recovery-password__link">Volver al login</a>
+                    <a href="login.html" class="recovery-password__link" data-i18n="reset.back_login">Volver al login</a>
                 </p>
             </form>
         </div>

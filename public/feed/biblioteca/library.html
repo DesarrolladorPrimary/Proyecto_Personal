@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>biblioteca</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,6 +17,7 @@
       href="../../../src/styles/pages/feed/biblioteca/library.css"
     />
       <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
   <body>
     <header class="library-header">
@@ -30,6 +32,7 @@
         class="library-header__input"
         type="text"
         placeholder="Nombre de la estanteria"
+        data-i18n-placeholder="library.shelf_placeholder"
         maxlength="20"
         id="input_library"
       />
@@ -69,11 +72,9 @@
         />
       </div>
       <div class="library-footer__buttons">
-        <a href="#" class="library-footer__link">
-          <button class="library-footer__button">Nuevo</button>
-        </a>
+        <button class="library-footer__button" type="button" id="create-shelf" data-i18n="library.new">Nuevo</button>
         <a href="shelves.html" class="library-footer__link">
-          <button class="library-footer__button">Estanterías</button>
+          <button class="library-footer__button" data-i18n="library.shelves">Estanterías</button>
         </a>
       </div>
 
@@ -150,7 +151,7 @@
         </div>
       </div>
     </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="/src/scripts/pages/biblioteca/library.js"></script>
   </body>
 </html>
-

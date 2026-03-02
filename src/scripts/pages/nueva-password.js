@@ -1,140 +1,81 @@
+import { fetchJson } from "../utils/api-client.js";
+
+const PASSWORD_COMPLEXITY = /[\d\W_]/;
+
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM cargado - Página de nueva contraseña");
+  const form = document.getElementById("form");
+  const passwordInput = document.getElementById("contraseña");
+  const confirmInput = document.getElementById("confirmar_contraseña");
+  const token = new URLSearchParams(window.location.search).get("token");
 
-  let form = document.getElementById("form");
-  let contraseñaInput = document.getElementById("contraseña");
-  let confirmarInput = document.getElementById("confirmar_contraseña");
-
-  // Obtener el token de la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get("token");
-
-  console.log(`Token recibido: ${token}`);
-
-  // Si no hay token, mostrar error
-  if (!token) {
+  const showToast = (text, background = "red", callback) => {
     Toastify({
-      text: "Token no válido. Por favor Solicite un nuevo enlace de recuperación",
-      duration: 5000,
+      text,
+      duration: 3000,
       gravity: "top",
-      position: 'center',
+      position: "center",
       stopOnFocus: true,
-      style: {
-        background: "red",
-      },
+      style: { background },
+      callback,
     }).showToast();
-    
-    // Deshabilitar el formulario
-    form.querySelector('button').disabled = true;
+  };
+
+  if (!token) {
+    showToast("Token no válido. Solicita un nuevo enlace.");
+    form.querySelector("button").disabled = true;
     return;
   }
 
-  form.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-    const contraseña = contraseñaInput.value;
-    const confirmarContraseña = confirmarInput.value;
+    const contraseña = passwordInput.value;
+    const confirmacion = confirmInput.value;
 
-    // Validaciones
-    if (!contraseña || !confirmarContraseña) {
-      Toastify({
-        text: "Por favor complete todos los campos",
-        duration: 3000,
-        gravity: "top",
-        position: 'center',
-        stopOnFocus: true,
-        style: {
-          background: "red",
-        },
-      }).showToast();
+    if (!contraseña || !confirmacion) {
+      showToast("Completa todos los campos");
       return;
     }
 
     if (contraseña.length < 8) {
-      Toastify({
-        text: "La contraseña debe tener al menos 8 caracteres",
-        duration: 3000,
-        gravity: "top",
-        position: 'center',
-        stopOnFocus: true,
-        style: {
-          background: "red",
-        },
-      }).showToast();
+      showToast("La contraseña debe tener al menos 8 caracteres");
+      passwordInput.focus();
       return;
     }
 
-    if (contraseña !== confirmarContraseña) {
-      Toastify({
-        text: "Las contraseñas no coinciden",
-        duration: 3000,
-        gravity: "top",
-        position: 'center',
-        stopOnFocus: true,
-        style: {
-          background: "red",
-        },
-      }).showToast();
+    if (!PASSWORD_COMPLEXITY.test(contraseña)) {
+      showToast("La contraseña debe incluir un número o símbolo");
+      passwordInput.focus();
       return;
     }
 
-    console.log(`Nueva contraseña: ${contraseña}`);
+    if (contraseña !== confirmacion) {
+      showToast("Las contraseñas no coinciden");
+      confirmInput.focus();
+      return;
+    }
 
     try {
-      const datos = {
-        "token": token,
-        "contraseña": contraseña,
-      };
-
-      const response = await fetch(`http://127.0.0.1:8080/api/v1/recuperar/nueva`, {
+      const { ok, data } = await fetchJson("/api/v1/recuperar/nueva", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datos),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, contraseña }),
       });
 
-      const mensaje = await response.json();
-
-      if (response.ok) {
-        console.log("Contraseña actualizada correctamente");
-        
-        Toastify({
-          text: "Contraseña actualizada correctamente",
-          duration: 3000,
-          gravity: "top",
-          position: 'center',
-          stopOnFocus: true,
-          style: {
-            background: "green",
-          },
-          callback: () => {
+      if (ok) {
+        showToast(
+          data.Mensaje || "Contraseña actualizada correctamente",
+          "green",
+          () => {
             window.location.href = "login.html";
-          }
-        }).showToast();
-      } else {
-        Toastify({
-          text: `Error: ${mensaje.Mensaje}`,
-          duration: 3000,
-          gravity: "top",
-          position: 'center',
-          stopOnFocus: true,
-          style: {
-            background: "red",
           },
-        }).showToast();
+        );
+        return;
       }
+
+      showToast(data.Mensaje || "No fue posible actualizar la contraseña");
     } catch (error) {
-      Toastify({
-        text: "Error de conexión",
-        duration: 3000,
-        gravity: "top",
-        position: 'center',
-        stopOnFocus: true,
-        style: {
-          background: "red",
-        },
-      }).showToast();
+      showToast("Error de conexión");
     }
   });
 });

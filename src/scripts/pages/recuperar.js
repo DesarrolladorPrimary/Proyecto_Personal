@@ -1,75 +1,55 @@
+import { fetchJson } from "../utils/api-client.js";
+
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
+
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM cargado - Página de recuperación de contraseña");
+  const form = document.getElementById("form");
+  const emailInput = document.getElementById("correo");
 
-  let form = document.getElementById("form");
-  let correoInput = document.getElementById("correo");
+  const showToast = (text, background = "red", callback) => {
+    Toastify({
+      text,
+      duration: 3000,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+      style: { background },
+      callback,
+    }).showToast();
+  };
 
-  form.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-    const correo = correoInput.value;
+    const correo = emailInput.value.trim();
 
-    if (!correo) {
-      alert("Por favor ingrese su correo");
+    if (!EMAIL_PATTERN.test(correo)) {
+      showToast("Ingresa un correo válido");
+      emailInput.focus();
       return;
     }
 
-    console.log(`Correo enviado: ${correo}`);
-
     try {
-      const datos = {
-        "correo": correo,
-      };
-
-      const response = await fetch(`http://127.0.0.1:8080/api/v1/recuperar`, {
+      const { ok, data } = await fetchJson("/api/v1/recuperar", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datos),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo }),
       });
 
-      const mensaje = await response.json();
-
-      if (response.ok) {
-        console.log("Solicitud enviada correctamente");
-        
-        Toastify({
-          text: "Correo enviado. Revisa tu bandeja de entrada.",
-          duration: 4000,
-          gravity: "top",
-          position: 'center',
-          stopOnFocus: true,
-          style: {
-            background: "green",
-          },
-          callback: () => {
+      if (ok) {
+        showToast(
+          "Correo enviado. Revisa tu bandeja de entrada.",
+          "green",
+          () => {
             window.location.href = "recovery_passwd_messaje.html";
           },
-        }).showToast();
-      } else {
-        Toastify({
-          text: `Error: ${mensaje.Mensaje}`,
-          duration: 3000,
-          gravity: "top",
-          position: 'center',
-          stopOnFocus: true,
-          style: {
-            background: "red",
-          },
-        }).showToast();
+        );
+        return;
       }
+
+      showToast(data.Mensaje || "No fue posible procesar la solicitud");
     } catch (error) {
-      Toastify({
-        text: "Error de conexión",
-        duration: 3000,
-        gravity: "top",
-        position: 'center',
-        stopOnFocus: true,
-        style: {
-          background: "red",
-        },
-      }).showToast();
+      showToast("Error de conexión");
     }
   });
 });

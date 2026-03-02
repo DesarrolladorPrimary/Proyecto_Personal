@@ -16,6 +16,7 @@
 
     <title>Planes</title>
       <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
 
   <body>
@@ -28,7 +29,7 @@
             class="settings-header__arrow"
           />
         </a>
-        <h1 class="settings-header__title">Configuraciones</h1>
+        <h1 class="settings-header__title" data-i18n="settings.title">Configuraciones</h1>
       </div>
 
       <div class="settings-separator"></div>
@@ -60,16 +61,16 @@
 
     <main class="plans">
       <div class="plans-header">
-        <h1 class="plans__title">Planes de Suscripción</h1>
+        <h1 class="plans__title" data-i18n="settings.plans_title">Planes de Suscripción</h1>
         <p class="plans__subtitle">
-          Elige el plan que mejor se adapte a tus necesidades
+          <span data-i18n="settings.plans_subtitle">Elige el plan que mejor se adapte a tus necesidades</span>
         </p>
       </div>
 
       <div class="plans__container">
         <!-- Plan Gratuito -->
         <div class="plan-card plan-card--free">
-          <h2 class="plan-card__title">Plan Gratuito</h2>
+          <h2 class="plan-card__title" data-i18n="settings.free_plan">Plan Gratuito</h2>
           <p class="plan-card__price">
             $0<span class="plan-card__period">/mes</span>
           </p>
@@ -100,7 +101,7 @@
 
         <!-- Plan Premium -->
         <div class="plan-card plan-card--premium">
-          <h2 class="plan-card__title">Plan Premium</h2>
+          <h2 class="plan-card__title" data-i18n="settings.premium_plan">Plan Premium</h2>
           <p class="plan-card__price">
             $9.99<span class="plan-card__period">/mes</span>
           </p>

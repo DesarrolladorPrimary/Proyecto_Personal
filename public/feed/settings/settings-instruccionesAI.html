@@ -15,29 +15,30 @@
     />
     <title>Instrucciones AI</title>
       <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
   <body>
     <header class="settings-header">
       <div class="settings-header__top">
-        <a href="../feed-main.html" class="settings-header__back">
+        <a href="settings-generals.html" class="settings-header__back">
           <img
             src="../../../assets/icons/arrow-90deg-left.svg"
             alt="Volver"
             class="settings-header__arrow"
           />
         </a>
-        <h1 class="settings-header__title">Instrucciones</h1>
+        <h1 class="settings-header__title" data-i18n="settings.instructions_title">Instrucciones</h1>
       </div>
       <div class="settings-separator"></div>
     </header>
 
     <main class="ai-instructions">
-      <p class="ai-instructions__description">
-        Escribe aquí las reglas, tono o información que &quot;Poly&quot; debe recordar
-        siempre en todos los chats
+      <p class="ai-instructions__description" data-i18n="settings.instructions_description">
+        Escribe aquí las reglas, tono o información que &quot;Poly&quot; debe recordar siempre en todos los chats
       </p>
       <textarea
         class="ai-instructions__input"
+        data-i18n-placeholder="settings.instructions_placeholder"
         placeholder='Respóndeme siempre en español.
 Usa un tono amigable y profesional.
 Mi nombre de autor es " ".
@@ -52,7 +53,7 @@ Nunca uses la palabra "entonces"'
         class="ai-instructions__save-trigger"
       />
       <span class="ai-instructions__success-msg">Guardado con éxito</span>
-      <label for="save-trigger" class="ai-instructions__btn">Guardar</label>
+      <label for="save-trigger" class="ai-instructions__btn" data-i18n="settings.save">Guardar</label>
     </footer>
 
     <script type="module" src="/src/scripts/pages/settings/settings-instruccionesAI.js"></script>

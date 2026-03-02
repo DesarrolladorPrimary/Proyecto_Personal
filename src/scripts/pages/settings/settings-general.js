@@ -1,59 +1,107 @@
-document.addEventListener('DOMContentLoaded', ()=> {
-    const button_tema = document.querySelector("#button_tema");
-    const drop_colors = document.querySelector("#drop_colors");
-    const theme_buttons = document.querySelectorAll(".settings-dropdown__btn");
+document.addEventListener("DOMContentLoaded", () => {
+  const themeButton = document.querySelector("#button_tema");
+  const themeDropdown = document.querySelector("#drop_colors");
+  const themeButtons = document.querySelectorAll("#drop_colors .settings-dropdown__btn");
 
-    // Set initial theme display
-    const currentTheme = window.themeManager.getCurrentTheme();
-    button_tema.textContent = currentTheme;
-    
-    // Set initial button colors
-    if (currentTheme === 'Oscuro') {
-        button_tema.style.backgroundColor = '#584e4e';
-        button_tema.style.color = 'white';
-    } else if (currentTheme === 'Claro') {
-        button_tema.style.backgroundColor = 'white';
-        button_tema.style.color = 'black';
+  const languageTrigger = document.querySelector("#language_trigger");
+  const languageButton = document.querySelector("#button_idioma");
+  const languageDropdown = document.querySelector("#drop_languages");
+  const languageButtons = document.querySelectorAll("#drop_languages .settings-dropdown__btn");
+
+  const languageMap = {
+    es: { label: "Español", htmlLang: "es" },
+    en: { label: "Inglés", htmlLang: "en" },
+    de: { label: "Alemán", htmlLang: "de" },
+    fr: { label: "Francés", htmlLang: "fr" },
+    ja: { label: "Japonés", htmlLang: "ja" },
+  };
+
+  const setThemeDisplay = (theme) => {
+    if (theme === "Oscuro") {
+      themeButton.style.backgroundColor = "#584e4e";
+      themeButton.style.color = "white";
+    } else {
+      themeButton.style.backgroundColor = "white";
+      themeButton.style.color = "black";
+    }
+  };
+
+  const toggleDropdown = (dropdown) => {
+    const isVisible = dropdown.style.display === "flex";
+
+    if (isVisible) {
+      dropdown.style.display = "none";
+      dropdown.style.visibility = "hidden";
+      dropdown.style.opacity = "0";
+      return;
     }
 
-    button_tema.addEventListener('click', ()=> {
-        
-        // Toggle visibility
-        if (drop_colors.style.display === 'flex') {
-            drop_colors.style.display = 'none';
-            drop_colors.style.visibility = 'hidden';
-            drop_colors.style.opacity = '0';
-        } else {
-            drop_colors.style.display = 'flex';
-            drop_colors.style.visibility = 'visible';
-            drop_colors.style.opacity = '1';
-        }
-    })
+    dropdown.style.display = "flex";
+    dropdown.style.visibility = "visible";
+    dropdown.style.opacity = "1";
+  };
 
-    // Add click event to each theme button
-    theme_buttons.forEach(button => {
-        button.addEventListener('click', ()=> {
-            const selectedTheme = button.textContent.trim();
-            button_tema.textContent = selectedTheme;
-            
-            // Change the background color of the value box
-            if (selectedTheme === 'Oscuro') {
-                button_tema.style.backgroundColor = '#584e4e';
-                button_tema.style.color = 'white';
-            } else if (selectedTheme === 'Claro') {
-                button_tema.style.backgroundColor = 'white';
-                button_tema.style.color = 'black';
-            }
-            
-            // Apply theme globally using the theme manager
-            window.applyTheme(selectedTheme);
-            
-            // Hide dropdown after selection
-            drop_colors.style.display = 'none';
-            drop_colors.style.visibility = 'hidden';
-            drop_colors.style.opacity = '0';
-            
-            console.log('Theme selected:', selectedTheme);
-        })
-    })
-})
+  const hideDropdown = (dropdown) => {
+    dropdown.style.display = "none";
+    dropdown.style.visibility = "hidden";
+    dropdown.style.opacity = "0";
+  };
+
+  const applyLanguage = (languageCode) => {
+    const selectedLanguage = languageMap[languageCode] || languageMap.es;
+    languageButton.textContent = selectedLanguage.label;
+    document.documentElement.lang = selectedLanguage.htmlLang;
+    window.languageManager?.setLanguage(languageCode in languageMap ? languageCode : "es");
+  };
+
+  const currentTheme = window.themeManager.getCurrentTheme();
+  themeButton.textContent = currentTheme;
+  setThemeDisplay(currentTheme);
+
+  const currentLanguage = localStorage.getItem("selectedLanguage") || "es";
+  applyLanguage(currentLanguage);
+
+  themeButton.addEventListener("click", () => {
+    toggleDropdown(themeDropdown);
+  });
+
+  languageTrigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    toggleDropdown(languageDropdown);
+  });
+
+  themeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedTheme = button.textContent.trim();
+      themeButton.textContent = selectedTheme;
+      setThemeDisplay(selectedTheme);
+      window.applyTheme(selectedTheme);
+      hideDropdown(themeDropdown);
+    });
+  });
+
+  languageButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      applyLanguage(button.dataset.language || "es");
+      hideDropdown(languageDropdown);
+    });
+  });
+
+  window.addEventListener("click", (event) => {
+    if (
+      themeDropdown.style.display === "flex" &&
+      !themeDropdown.contains(event.target) &&
+      event.target !== themeButton
+    ) {
+      hideDropdown(themeDropdown);
+    }
+
+    if (
+      languageDropdown.style.display === "flex" &&
+      !languageDropdown.contains(event.target) &&
+      !languageTrigger.contains(event.target)
+    ) {
+      hideDropdown(languageDropdown);
+    }
+  });
+});

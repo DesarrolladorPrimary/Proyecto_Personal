@@ -23,6 +23,7 @@
     <title>Configuraciones de Usuario</title>
       <script src="/src/scripts/utils/accesoAuth.js"></script>
       <script src="/src/scripts/utils/theme-manager.js"></script>
+      <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
   <body>
     <header class="settings-header">
@@ -34,7 +35,7 @@
             class="settings-header__arrow"
           />
         </a>
-        <h1 class="settings-header__title">Configuraciones</h1>
+        <h1 class="settings-header__title" data-i18n="settings.title">Configuraciones</h1>
       </div>
 
       <div class="settings-separator"></div>
@@ -66,12 +67,12 @@
 
     <main class="settings-main">
       <section class="settings-section">
-        <h2 class="settings-section__title">Generales</h2>
+        <h2 class="settings-section__title" data-i18n="settings.generals">Generales</h2>
 
         <div class="settings-dropdown">
          
           <label for="theme-dropdown" class="settings-dropdown__trigger">
-            <span class="settings-option__label">Tema:</span>
+            <span class="settings-option__label" data-i18n="settings.theme">Tema:</span>
             <span class="settings-option__value" id="button_tema">Oscuro</span>
           </label>
           
@@ -88,7 +89,7 @@
         </div>
 
         <div class="settings-option">
-          <span class="settings-option__label">Notificacion</span>
+          <span class="settings-option__label" data-i18n="settings.notifications">Notificacion</span>
           <label class="switch">
             <input type="checkbox" checked />
             <span class="slider"></span>
@@ -97,30 +98,33 @@
 
         <div class="settings-dropdown">
         
-          <label for="lang-dropdown" class="settings-dropdown__trigger">
-            <span class="settings-option__label">Idioma</span>
-            <span class="settings-option__value">Español</span>
+          <label for="lang-dropdown" class="settings-dropdown__trigger" id="language_trigger">
+            <span class="settings-option__label" data-i18n="settings.language">Idioma</span>
+            <span class="settings-option__value" id="button_idioma">Español</span>
           </label>
-          <div class="settings-dropdown__content">
-            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+          <div class="settings-dropdown__content" id="drop_languages">
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark" data-language="es">
               Español
             </button>
-            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark" data-language="en">
               Inglés
             </button>
-            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark" data-language="de">
               Alemán
             </button>
-            <button class="settings-dropdown__btn settings-dropdown__btn--dark">
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark" data-language="fr">
+              Francés
+            </button>
+            <button class="settings-dropdown__btn settings-dropdown__btn--dark" data-language="ja">
               Japonés
             </button>
           </div>
         </div>
 
         <div class="settings-option">
-          <span class="settings-option__label">Instrucciones</span>
+          <span class="settings-option__label" data-i18n="settings.instructions">Instrucciones</span>
           <a href="settings-instruccionesAI.html" class="settings-option__link"
-            >AI (poly)</a
+            data-i18n="settings.ai_link">AI (poly)</a
           >
         </div>
       </section>
@@ -135,4 +139,3 @@
     <script src="/src/scripts/pages/settings/settings-general.js"></script>
   </body>
 </html>
-

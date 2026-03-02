@@ -16,6 +16,7 @@
 
   <title>Configuraciones</title>
   <script src="/src/scripts/utils/accesoAuth.js"></script>
+  <script src="/src/scripts/utils/language-manager.js"></script>
 </head>
 
 <body>
@@ -24,7 +25,7 @@
       <a href="../feed-main.html" class="settings-header__back">
         <img src="../../../assets/icons/arrow-90deg-left.svg" alt="Volver" class="settings-header__arrow" />
       </a>
-      <h1 class="settings-header__title">Configuraciones</h1>
+      <h1 class="settings-header__title" data-i18n="settings.title">Configuraciones</h1>
     </div>
 
     <div class="settings-separator"></div>
@@ -44,43 +45,43 @@
 
   <main class="settings-main">
     <section class="settings-section">
-      <h2 class="settings-section__title">Usuario</h2>
+      <h2 class="settings-section__title" data-i18n="settings.user">Usuario</h2>
 
       <div class="settings-option">
-        <span class="settings-option__label">Plan:</span>
+        <span class="settings-option__label" data-i18n="settings.plan">Plan:</span>
         <span class="settings-option__value" id="value_plan">Gratuito (Básico)</span>
       </div>
 
       <div class="settings-accordion">
         <input type="checkbox" id="perfil" class="settings-accordion__checkbox" />
         <label for="perfil" class="settings-accordion__trigger">
-          <span class="settings-option__label">Perfil</span>
+          <span class="settings-option__label" data-i18n="settings.profile">Perfil</span>
           <span class="settings-option__value" id="perfilUser">—</span>
         </label>
 
         <div class="settings-accordion__content">
           <div class="settings-accordion__field">
-            <span class="settings-accordion__label">Nombre Usuario:</span>
+            <span class="settings-accordion__label" data-i18n="settings.user_name">Nombre Usuario:</span>
             <span class="settings-accordion__value" id="usuario">—</span>
           </div>
           <div class="settings-accordion__field">
-            <span class="settings-accordion__label">Correo:</span>
+            <span class="settings-accordion__label" data-i18n="settings.email">Correo:</span>
             <span class="settings-accordion__value" id="correo">—</span>
           </div>
           <div class="settings-accordion__field">
-            <span class="settings-accordion__label">Fecha de unión:</span>
+            <span class="settings-accordion__label" data-i18n="settings.joined">Fecha de unión:</span>
             <span class="settings-accordion__value" id="fechaRegistro">—</span>
           </div>
           <div class="settings-accordion__field">
-            <span class="settings-accordion__label">Funciones:</span>
+            <span class="settings-accordion__label" data-i18n="settings.functions">Funciones:</span>
             <span class="settings-accordion__value" id="funciones">—</span>
           </div>
         </div>
       </div>
 
       <div class="settings-option" id="cambiar-password">
-        <span class="settings-option__label">Contraseña</span>
-        <span class="settings-option__value">Cambiar Contraseña</span>
+        <span class="settings-option__label" data-i18n="settings.password">Contraseña</span>
+        <span class="settings-option__value" data-i18n="settings.change_password">Cambiar Contraseña</span>
       </div>
     </section>
   </main>
@@ -89,7 +90,7 @@
 
   <footer class="settings-footer">
     <button class="settings-footer__container" id="button-del">
-      <label class="settings-footer__delete-btn">Eliminar Cuenta</label>
+      <label class="settings-footer__delete-btn" data-i18n="settings.delete_account">Eliminar Cuenta</label>
     </button>
   </footer>
 

@@ -1,92 +1,69 @@
+import { fetchJson } from "../utils/api-client.js";
+
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
+
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Dom cargado");
+  const form = document.getElementById("form");
+  const emailInput = document.getElementById("login_email");
+  const passwordInput = document.getElementById("login_password");
 
-  let form = document.getElementById("form");
-  let correoInput = document.getElementById("login_email");
-  let contraseñaInput = document.getElementById("login_password");
+  const showToast = (text, background = "red", callback) => {
+    Toastify({
+      text,
+      duration: 3000,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+      style: { background },
+      callback,
+    }).showToast();
+  };
 
-  console.log(`Campo correo cargado: ${correoInput}`);
-  console.log(`Campo contraseña cargado: ${contraseñaInput}`);
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  form.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
+    const correo = emailInput.value.trim();
+    const contraseña = passwordInput.value;
 
-    const correo = correoInput.value;
-    const contraseña = contraseñaInput.value;
-
-    if (contraseña.length <= 2) {
-      alert("La contraseña es muy corta");
-      contraseñaInput.focus();
+    if (!EMAIL_PATTERN.test(correo)) {
+      showToast("Ingresa un correo válido");
+      emailInput.focus();
       return;
     }
 
-    console.log(`Correo recibido: ${correo}`);
-    console.log(`Contraseña recibida: ${contraseña}`);
+    if (!contraseña) {
+      showToast("Ingresa tu contraseña");
+      passwordInput.focus();
+      return;
+    }
 
     try {
-      const datosLogin = {
-        "correo": correo,
-        "contraseña": contraseña,
-      };
-
-      const response = await fetch(`http://127.0.0.1:8080/api/v1/login`, {
+      const { ok, status, data } = await fetchJson("/api/v1/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datosLogin),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo, contraseña }),
       });
 
-    let mensaje = "";
-
-      if (response.ok) {
-        console.log("Inicio de sesion correcto");
-        mensaje = await response.json();
-
-        localStorage.setItem("Token", mensaje.Token);
-        
-        Toastify({
-          text: "Bienvenido, inicio de sesion correcto",
-          duration: 2000,
-          gravity: "top",
-          position: 'center',
-          stopOnFocus: true,
-          style: {
-              heigth: "500px",
-              background: "gray",
+      if (ok && data.Token) {
+        localStorage.setItem("Token", data.Token);
+        showToast(
+          data.Mensaje || "Inicio de sesión correcto",
+          "green",
+          () => {
+            window.location.href = "../feed/feed-main.html";
           },
-          callback: ()=>{
-            window.location.href="../feed/feed-main.html"
-          }
-        }).showToast();
-      } else {
-        
-        const mensaje = await response.json();
-
-        Toastify({
-          text: `Error: ${mensaje.Mensaje}`,
-          duration: 3000,
-          gravity: "top",
-          position: 'center',
-          stopOnFocus: true,
-          style: {
-              heigth: "300px",
-              background: "red",
-          },
-        }).showToast();
+        );
+        return;
       }
+
+      if (status === 403) {
+        showToast(data.Mensaje || "Debes verificar tu correo", "orange");
+        return;
+      }
+
+      showToast(data.Mensaje || "No fue posible iniciar sesión");
     } catch (error) {
-       Toastify({
-          text: error,
-          duration: 3000,
-          gravity: "top",
-          position: 'center',
-          stopOnFocus: true,
-          style: {
-              heigth: "300px",
-              background: "red",
-          },
-        }).showToast();
+      showToast("Error de conexión");
     }
   });
 });

@@ -1,12 +1,3 @@
-export const dataToken = () => {
-    let token = localStorage.getItem("Token");
+import { parseTokenSafely } from "./auth-session.js";
 
-    let tokenPayload = token.split(".");
-
-    let datosPayload = atob(tokenPayload[1]);
-
-    let datos = JSON.parse(datosPayload);
-
-    return datos;
-
-}
+export const dataToken = () => parseTokenSafely() || {};

@@ -1,101 +1,86 @@
-document.addEventListener('DOMContentLoaded', ()=> {
-    let form = document.getElementById("form")
-    let userInput = document.getElementById("user_regist")
-    let correoInput = document.getElementById("correo_regist")
-    let contraseñaInput = document.getElementById("password_regist")
-    let contraseñaInputVery = document.getElementById("password_registVery")
+import { fetchJson } from "../utils/api-client.js";
 
-    form.addEventListener('submit', async (e)=> {
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
+const PASSWORD_COMPLEXITY = /[\d\W_]/;
 
-        e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("form");
+  const userInput = document.getElementById("user_regist");
+  const emailInput = document.getElementById("correo_regist");
+  const passwordInput = document.getElementById("password_regist");
+  const confirmInput = document.getElementById("password_registVery");
 
-        const username = userInput.value;
-        const correo = correoInput.value;
-        const contraseña = contraseñaInput.value;
-        const contraseñaVery = contraseñaInputVery.value;
+  const showToast = (text, background = "red", callback) => {
+    Toastify({
+      text,
+      duration: 3000,
+      gravity: "bottom",
+      position: "center",
+      stopOnFocus: true,
+      style: { background },
+      callback,
+    }).showToast();
+  };
 
-        if (username.length <= 2) {
-            alert("El nombre es muy corto")
-            return;
-        }
-        
-        if (contraseña !== contraseñaVery)  {
-            alert("Las contraseñas no coinciden")
-            return;
-        }
-        else if(contraseña.length <= 2){
-            alert("La contraseña es muy corta")
-            return;
-        }
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
+    const nombre = userInput.value.trim();
+    const correo = emailInput.value.trim();
+    const contraseña = passwordInput.value;
+    const confirmacion = confirmInput.value;
 
-        if (username == null) {
-            alert("Campo de usuario vacio");
-            return;
-        }
-        else if (correo == null){
-            alert("Campo del correo vacio");
-            return;
-        }
-        else if(contraseña == null){
-            alert("Campo de la contraseña vacio");
-            return;
-        }
-        else if (username == null && correo == null && contraseña == null){
-            alert("Los campos estan vacios");
-            return;
-        }
+    if (nombre.length < 3) {
+      showToast("El nombre debe tener al menos 3 caracteres");
+      userInput.focus();
+      return;
+    }
 
+    if (!EMAIL_PATTERN.test(correo)) {
+      showToast("Ingresa un correo válido");
+      emailInput.focus();
+      return;
+    }
 
-        const datosUser = {
-            "nombre": username,
-            "correo": correo,
-            "contraseña": contraseña
-        }
+    if (contraseña.length < 8) {
+      showToast("La contraseña debe tener mínimo 8 caracteres");
+      passwordInput.focus();
+      return;
+    }
 
-        let mensaje = "";
+    if (!PASSWORD_COMPLEXITY.test(contraseña)) {
+      showToast("La contraseña debe incluir un número o símbolo");
+      passwordInput.focus();
+      return;
+    }
 
-        const response = await fetch("http://localhost:8080/api/v1/usuarios", {
-            method : "POST",
-            headers: {
-                "Content-Type" : "application/json"
-            },
-            body: JSON.stringify(datosUser)
-        });
+    if (contraseña !== confirmacion) {
+      showToast("Las contraseñas no coinciden");
+      confirmInput.focus();
+      return;
+    }
 
-        if (response.ok) {
-            mensaje = await response.json();
+    try {
+      const { ok, data } = await fetchJson("/api/v1/usuarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, correo, contraseña }),
+      });
 
-            Toastify({
-                text: mensaje.Mensaje,
-                duration: 2000,
-                gravity: "bottom",
-                position: 'center',
-                stopOnFocus: true,
-                style: {
-                    heigth: "200px",
-                    background: "gray"
-                },
-                callback: ()=>{
-                    window.location.href="../auth/login.html"
-                }
-            }).showToast();
-            
-            
-        }
-        else {
-            mensaje = await response.json();
-            Toastify({
-                text: mensaje.Mensaje,
-                duration: 2000,
-                ravity: "bottom",
-                position: 'center',
-                stopOnFocus: true,
-                style: {
-                    heigth: "200px",
-                    background: "red"
-                },
-            }).showToast();
-        }
-    })
+      if (ok) {
+        showToast(
+          data.Mensaje || "Usuario registrado correctamente",
+          "green",
+          () => {
+            window.location.href = "../auth/login.html";
+          },
+        );
+        return;
+      }
+
+      showToast(data.Mensaje || "No fue posible registrar el usuario");
+    } catch (error) {
+      showToast("Error de conexión");
+    }
+  });
 });

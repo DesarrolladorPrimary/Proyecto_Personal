@@ -1,4 +1,7 @@
-import { dataToken } from '../../utils/dataToken.js';
+import { fetchJson } from "../../utils/api-client.js";
+import { getCurrentUserId } from "../../utils/auth-session.js";
+
+const PASSWORD_COMPLEXITY = /[\d\W_]/;
 
 const btnCambiarPassword = document.getElementById("cambiar-password");
 const modalPassword = document.getElementById("modal-password");
@@ -7,120 +10,83 @@ const btnGuardar = document.getElementById("save-password");
 const inputNuevaPassword = document.getElementById("nueva-password");
 const inputConfirmarPassword = document.getElementById("confirmar-password");
 
-const { id } = dataToken();
-const token = localStorage.getItem("Token");
-
-// Función para cambiar contraseña
-const cambiarPassword = async (id, nuevaPassword, token) => {
-    try {
-        let request = await fetch(`http://localhost:8080/api/v1/usuarios/campo?id=${id}`, {
-            method: 'PUT',
-            headers: {
-                "Authorization": "Bearer " + token,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                campo: "contraseña",
-                valor: nuevaPassword
-            }),
-        });
-
-        if (!request.ok) {
-            const errorData = await request.json().catch(() => ({}));
-            throw new Error(errorData.Mensaje || "Error al cambiar contraseña");
-        }
-
-        const data = await request.json();
-        data.status = request.status;
-        return data;
-    } catch (error) {
-        console.error("Error en cambiarPassword:", error);
-        return { status: 500, Mensaje: error.message };
-    }
+const resetForm = () => {
+  inputNuevaPassword.value = "";
+  inputConfirmarPassword.value = "";
 };
 
-// Abrir modal al hacer click en "Cambiar Contraseña"
-btnCambiarPassword.addEventListener('click', () => {
-    modalPassword.classList.add("modal--active");
+const closeModal = () => {
+  modalPassword.classList.remove("modal--active");
+  resetForm();
+};
+
+const showToast = (text, background = "red") => {
+  Toastify({
+    text,
+    duration: 3000,
+    gravity: "top",
+    position: "center",
+    style: { background },
+  }).showToast();
+};
+
+btnCambiarPassword?.addEventListener("click", () => {
+  modalPassword.classList.add("modal--active");
 });
 
-// Cerrar modal al hacer click en "Cancelar"
-btnCancelar.addEventListener('click', () => {
-    modalPassword.classList.remove("modal--active");
-    // Limpiar campos
-    inputNuevaPassword.value = "";
-    inputConfirmarPassword.value = "";
-});
+btnCancelar?.addEventListener("click", closeModal);
 
-// Cerrar modal al hacer click en el overlay
-modalPassword.querySelector('.modal__overlay').addEventListener('click', () => {
-    modalPassword.classList.remove("modal--active");
-    inputNuevaPassword.value = "";
-    inputConfirmarPassword.value = "";
-});
+modalPassword?.querySelector(".modal__overlay")?.addEventListener("click", closeModal);
 
-// Guardar nueva contraseña
-btnGuardar.addEventListener('click', async () => {
-    const nuevaPassword = inputNuevaPassword.value;
-    const confirmarPassword = inputConfirmarPassword.value;
+btnGuardar?.addEventListener("click", async () => {
+  const id = getCurrentUserId();
+  const nuevaPassword = inputNuevaPassword.value;
+  const confirmarPassword = inputConfirmarPassword.value;
 
-    // Validaciones
-    if (!nuevaPassword || !confirmarPassword) {
-        Toastify({
-            text: "Por favor complete todos los campos",
-            duration: 3000,
-            gravity: "top",
-            position: "center",
-            style: { background: "red" },
-        }).showToast();
-        return;
+  if (!id) {
+    return;
+  }
+
+  if (!nuevaPassword || !confirmarPassword) {
+    showToast("Por favor completa todos los campos");
+    return;
+  }
+
+  if (nuevaPassword.length < 8) {
+    showToast("La contraseña debe tener al menos 8 caracteres");
+    return;
+  }
+
+  if (!PASSWORD_COMPLEXITY.test(nuevaPassword)) {
+    showToast("La contraseña debe incluir un número o símbolo");
+    return;
+  }
+
+  if (nuevaPassword !== confirmarPassword) {
+    showToast("Las contraseñas no coinciden");
+    return;
+  }
+
+  try {
+    const { ok, data } = await fetchJson("/api/v1/usuarios/campo", {
+      method: "PUT",
+      params: { id },
+      auth: true,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        campo: "contraseña",
+        valor: nuevaPassword,
+      }),
+    });
+
+    if (!ok) {
+      showToast(data.Mensaje || "No fue posible actualizar la contraseña");
+      return;
     }
 
-    if (nuevaPassword.length < 8) {
-        Toastify({
-            text: "La contraseña debe tener al menos 8 caracteres",
-            duration: 3000,
-            gravity: "top",
-            position: "center",
-            style: { background: "red" },
-        }).showToast();
-        return;
-    }
-
-    if (nuevaPassword !== confirmarPassword) {
-        Toastify({
-            text: "Las contraseñas no coinciden",
-            duration: 3000,
-            gravity: "top",
-            position: "center",
-            style: { background: "red" },
-        }).showToast();
-        return;
-    }
-
-    // Llamar a la API
-    let resp = await cambiarPassword(id, nuevaPassword, token);
-
-    if (resp.status === 200) {
-        Toastify({
-            text: "Contraseña actualizada correctamente",
-            duration: 3000,
-            gravity: "top",
-            position: "center",
-            style: { background: "green" },
-        }).showToast();
-        
-        // Cerrar modal y limpiar
-        modalPassword.classList.remove("modal--active");
-        inputNuevaPassword.value = "";
-        inputConfirmarPassword.value = "";
-    } else {
-        Toastify({
-            text: resp.Mensaje || "Error al cambiar contraseña",
-            duration: 3000,
-            gravity: "top",
-            position: "center",
-            style: { background: "red" },
-        }).showToast();
-    }
+    showToast(data.Mensaje || "Contraseña actualizada correctamente", "green");
+    closeModal();
+  } catch (error) {
+    showToast("Error de conexión");
+  }
 });

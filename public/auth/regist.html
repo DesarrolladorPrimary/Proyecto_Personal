@@ -13,48 +13,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script src="/src/scripts/utils/accesoAuth.js"></script>
     <script src="/src/scripts/utils/theme-manager.js"></script>
+    <script src="/src/scripts/utils/language-manager.js"></script>
 </head>
 <body>
     <header class="header">
-        <h1 class="header__title">Registro</h1>
+        <h1 class="header__title" data-i18n="register.title">Registro</h1>
     </header>
     <main class="main">
         <form id="form" method="POST" class="form">
 
              <div class="form__input-container">
                 <img src="../../assets/icons/user.png" class="form__input-icon" alt="Icono de usuario">
-                <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario">
+                <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario" data-i18n-placeholder="register.user_placeholder">
             </div>
 
             
             <div class="form__input-container">
                 <img src="../../assets/icons/email.png" class="form__input-icon" alt="Icono">
-                <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com">
+                <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="register.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com">
             </div>
 
 
             <div class="form__input-container">
                 <img src="../../assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
-                <input type="password" id="password_regist" name="password" required class="form__input" placeholder="Contraseña">
+                <input type="password" id="password_regist" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="register.password_placeholder">
             </div>
 
              <div class="form__input-container">
                 <img src="../../assets/icons/padlock.png" class="form__input-icon" alt="Icono">
-                <input type="password" id="password_registVery" name="username" required class="form__input" placeholder="Confirme Contraseña">
+                <input type="password" id="password_registVery" name="username" required class="form__input" placeholder="Confirme Contraseña" data-i18n-placeholder="register.confirm_placeholder">
             </div>
 
             
             <button type="submit"  class="button">
-               <p class="button-link">Registrarse</p>
+               <p class="button-link" data-i18n="register.submit">Registrarse</p>
             </button>
         </form>
 
     </main>
     <footer class="footer"> 
-            <p class="footer__text"> ¿Ya tiene cuenta? <a href="login.html" class="recover-link">Inicie sesión</a></p>
+            <p class="footer__text"><span data-i18n="register.has_account">¿Ya tiene cuenta?</span> <a href="login.html" class="recover-link" data-i18n="register.login">Inicie sesión</a></p>
     </footer>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="/src/scripts/pages/regist.js"></script>
+    <script type="module" src="/src/scripts/pages/regist.js"></script>
 </body>
 </html>

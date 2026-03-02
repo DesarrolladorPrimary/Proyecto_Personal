@@ -13,36 +13,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script src="/src/scripts/utils/accesoAuth.js"></script>
     <script src="/src/scripts/utils/theme-manager.js"></script>
+    <script src="/src/scripts/utils/language-manager.js"></script>
 </head>
 <body>
     <header class="header">
-        <h1 class="header__title">Inicio</h1>
+        <h1 class="header__title" data-i18n="login.title">Inicio</h1>
     </header>
     <main class="main">
         <form method="POST" class="form" id="form">
 
             <div class="form__input-container">
                 <img src="../../assets/icons/email.png" class="form__input-icon" alt="Icono">
-            <input type="email" id="login_email" name="username" required class="form__input" placeholder="Correo" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com">
+            <input type="email" id="login_email" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="login.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com">
             </div>
 
 
             <div class="form__input-container">
                 <img src="../../assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
-                <input type="password" id="login_password" name="password" required class="form__input" placeholder="Contraseña">
+                <input type="password" id="login_password" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="login.password_placeholder">
             </div>
 
-            <p class="form__contrasena"> ¿Olvidó la contraseña? <a href="recovery_passwd.html" class="recover-link">aquí</a></p>
+            <p class="form__contrasena"><span data-i18n="login.forgot">¿Olvidó la contraseña?</span> <a href="recovery_passwd.html" class="recover-link" data-i18n="login.here">aquí</a></p>
             
             
             <button type="submit"  class="button" id="btn_login">
-                <p class="button-link">Iniciar</p>
+                <p class="button-link" data-i18n="login.submit">Iniciar</p>
             </button>
         </form>
 
     </main>
     <footer class="footer"> 
-            <p class="footer__text"> ¿No tiene cuenta? <a href="regist.html" class="recover-link">Regístrese</a></p>
+            <p class="footer__text"><span data-i18n="login.no_account">¿No tiene cuenta?</span> <a href="regist.html" class="recover-link" data-i18n="login.register">Regístrese</a></p>
     </footer>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

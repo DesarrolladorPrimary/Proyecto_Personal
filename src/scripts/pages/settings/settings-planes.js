@@ -1,38 +1,50 @@
-import { dataToken } from '/src/scripts/utils/dataToken.js';
+import { fetchJson } from "/src/scripts/utils/api-client.js";
+import { getCurrentUserId } from "/src/scripts/utils/auth-session.js";
 
-const { id } = dataToken();
-const token  = localStorage.getItem('Token');
+const freeBtn = document.querySelector(".plan-card--free .plan-card__button");
+const premBtn = document.querySelector(".plan-card--premium .plan-card__button");
+const t = (key) => window.languageManager?.translate(key) || key;
 
-const freeBtn = document.querySelector('.plan-card--free .plan-card__button');
-const premBtn = document.querySelector('.plan-card--premium .plan-card__button');
+const markActivePlan = (planActivo) => {
+  const normalizedPlan = (planActivo || "Gratuito").toLowerCase();
+  const esPremium = normalizedPlan.includes("premium");
 
-// Marca visualmente qué plan está activo según la respuesta del backend
-const marcarActivo = (planActivo) => {
-    const esPremium = planActivo.toLowerCase().includes('premium');
+  if (esPremium) {
+    freeBtn.classList.remove("plan-card__button--current");
+    premBtn.classList.remove("plan-card__button--upgrade");
+    premBtn.classList.add("plan-card__button--current");
+    premBtn.textContent = t("common.active");
+    freeBtn.textContent = t("common.available");
+    return;
+  }
 
-    if (esPremium) {
-        freeBtn.classList.remove('plan-card__button--current');
-        premBtn.classList.remove('plan-card__button--upgrade');
-        premBtn.classList.add('plan-card__button--current');
-        premBtn.innerHTML   = 'Activo';
-        freeBtn.textContent = 'Disponible';
-    } else {
-        freeBtn.classList.add('plan-card__button--current');
-        premBtn.classList.remove('plan-card__button--current');
-        premBtn.classList.add('plan-card__button--upgrade');
-        premBtn.innerHTML = '<label for="checkPay" class="plan-card__button-label">💎 Comprar Premium</label>';
-    }
+  freeBtn.classList.add("plan-card__button--current");
+  freeBtn.textContent = t("common.active");
+  premBtn.classList.remove("plan-card__button--current");
+  premBtn.classList.add("plan-card__button--upgrade");
+  premBtn.innerHTML = `<span class="plan-card__button-label">${t("common.coming_soon")}</span>`;
 };
 
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const res  = await fetch(`http://localhost:8080/api/v1/settings/suscripcion?id=${id}`, {
-            method: 'GET',
-            headers: { Authorization: 'Bearer ' + token }
-        });
-        const data = await res.json();
-        marcarActivo(data.plan || '');
-    } catch (e) {
-        console.error('Error cargando suscripción:', e);
+document.addEventListener("DOMContentLoaded", async () => {
+  const id = getCurrentUserId();
+
+  if (!id) {
+    return;
+  }
+
+  try {
+    const { ok, data } = await fetchJson("/api/v1/settings/suscripcion", {
+      params: { id },
+      auth: true,
+    });
+
+    if (!ok) {
+      markActivePlan("Gratuito");
+      return;
     }
+
+    markActivePlan(data.plan);
+  } catch (error) {
+    markActivePlan("Gratuito");
+  }
 });

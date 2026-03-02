@@ -16,6 +16,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="/src/scripts/utils/accesoAuth.js"></script>
     <script src="/src/scripts/utils/theme-manager.js"></script>
+    <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
   <body>
     <!-- Encabezado de la página -->
@@ -45,9 +46,7 @@
           alt="mind_icon"
       /></a>
       <div class="aside__panel aside__panel--poly" id="polyAI">
-        <a href="poly/seccion_poly.html" class="aside__panel-link"
-          >Seccion Artificial/Poly</a
-        >
+        <a href="poly/seccion_poly.html" class="aside__panel-link" data-i18n="feed.poly">Seccion Artificial/Poly</a>
       </div>
 
       <a href="#" class="aside__link aside__link--navi"
@@ -57,9 +56,7 @@
           alt="papel_icon"
       /></a>
       <div class="aside__panel aside__panel--creative">
-        <a href="creative/seccion_creativa.html" class="aside__panel-link"
-          >Seccion Creativa</a
-        >
+        <a href="creative/seccion_creativa.html" class="aside__panel-link" data-i18n="feed.creative">Seccion Creativa</a>
       </div>
 
       <a href="#" class="aside__link aside__link--navi"
@@ -69,9 +66,7 @@
           alt="libros_icon"
       /></a>
       <div class="aside__panel aside__panel--library">
-        <a href="biblioteca/library.html" class="aside__panel-link"
-          >Biblioteca</a
-        >
+        <a href="biblioteca/library.html" class="aside__panel-link" data-i18n="feed.library">Biblioteca</a>
       </div>
 
       <a href="#" class="aside__link aside__link--navi"
@@ -81,7 +76,7 @@
           alt="setting"
       /></a>
       <div class="aside__panel aside__panel--settings">
-        <a href="settings/settings-user.html" class="aside__panel-link">Configuraciones</a>
+        <a href="settings/settings-user.html" class="aside__panel-link" data-i18n="feed.settings">Configuraciones</a>
       </div>
     </aside>
 
@@ -93,7 +88,7 @@
           src="../../assets/image/image-removebg-preview.png"
           alt="Ilustracion del feed principal"
         />
-        <p class="feed__text">Que comenzaremos hoy?</p>
+        <p class="feed__text" data-i18n="feed.start_question">Que comenzaremos hoy?</p>
       </div>
     </main>
 
@@ -113,12 +108,12 @@
       <div class="menu-user__separador"></div>
 
       <!-- ELEMENTOS: Párrafos de información -->
-      <p class="menu-user__text">Usuario: <span id="nombre_usuario"></span></p>
-      <p class="menu-user__text">Correo: <span id="correo_usuario"></span> </p>
+      <p class="menu-user__text"><span data-i18n="feed.user">Usuario:</span> <span id="nombre_usuario"></span></p>
+      <p class="menu-user__text"><span data-i18n="feed.email">Correo:</span> <span id="correo_usuario"></span> </p>
 
       <!-- ELEMENTO: Un grupo de opciones o información -->
       <div class="menu-user__group">
-        <p class="menu-user__group-title">Modelos:</p>
+        <p class="menu-user__group-title" data-i18n="feed.models">Modelos:</p>
 
         <!-- ELEMENTO: Un item específico dentro del grupo -->
         <div class="menu-user__Model">
@@ -133,7 +128,7 @@
 
       <!-- ELEMENTO: Botón de acción principal -->
       <button class="menu-user__button" id="logout">
-        <p class="menu-user__link">Cerrar Sesión</p>
+        <p class="menu-user__link" data-i18n="feed.logout">Cerrar Sesión</p>
       </button>
 
     </div>
@@ -141,4 +136,3 @@
 
   </body>
 </html>
-
