@@ -1,0 +1,1187 @@
+import { fetchJson } from "../../utils/api-client.js";
+import { buildUploadedAssetUrl } from "../../utils/api-config.js";
+import {
+  getCurrentUserId,
+  getToken,
+  logoutAndRedirect,
+} from "../../utils/auth-session.js";
+
+const STORY_MODE = "Seccion_Artificial";
+const DEFAULT_AI_SETTINGS = {
+  estiloEscritura: "Narrativo",
+  nivelCreatividad: "Medio",
+  longitudRespuesta: "Media",
+  tonoEmocional: "Neutral",
+};
+const AI_SETTING_OPTIONS = {
+  estiloEscritura: ["Narrativo", "Descriptivo", "Dialogado"],
+  longitudRespuesta: ["Corta", "Media", "Larga"],
+  tonoEmocional: ["Neutral", "Dramático", "Poético"],
+};
+const CREATIVITY_OPTIONS = {
+  low: "Bajo",
+  medium: "Medio",
+  high: "Alto",
+};
+
+const state = {
+  userId: getCurrentUserId(),
+  stories: [],
+  activeStoryId: null,
+  messages: [],
+  sending: false,
+  asideOpen: false,
+  sourceFiles: [],
+  aiSettings: { ...DEFAULT_AI_SETTINGS },
+  aiSettingsDraft: { ...DEFAULT_AI_SETTINGS },
+};
+
+const elements = {
+  aside: document.getElementById("sidebar"),
+  asideNav: document.querySelector(".header__nav"),
+  asideToggle: document.getElementById("poly-aside-toggle"),
+  asideClose: document.getElementById("poly-aside-close"),
+  logoUserButton: document.getElementById("logo_user_button"),
+  logoUser: document.getElementById("logo_user"),
+  userMenu: document.getElementById("user"),
+  userName: document.getElementById("nombre_usuario"),
+  userEmail: document.getElementById("correo_usuario"),
+  userMenuPhoto: document.getElementById("profile_photo_user"),
+  logoutButton: document.getElementById("logout"),
+  form: document.getElementById("poly-form"),
+  input: document.getElementById("poly-message-input"),
+  emptyState: document.getElementById("poly-empty-state"),
+  messageList: document.getElementById("poly-messages"),
+  status: document.getElementById("poly-chat-status"),
+  storyList: document.getElementById("poly-story-list"),
+  newChatButton: document.getElementById("poly-new-chat"),
+  attachButton: document.getElementById("poly-attach"),
+  aiModalOpen: document.querySelector(".poly-input__action--intruction"),
+  fileInput: document.getElementById("poly-file-input"),
+  fileAttachment: document.getElementById("poly-file-attachment"),
+  fileAttachmentName: document.getElementById("poly-file-name"),
+  fileAttachmentRemove: document.getElementById("poly-file-remove"),
+  sendButton: document.getElementById("poly-send-button"),
+  modalForm: document.querySelector(".poly-modal__form"),
+  styleButton: document.getElementById("poly-style-button"),
+  lengthButton: document.getElementById("poly-length-button"),
+  toneButton: document.getElementById("poly-tone-button"),
+  creativityLow: document.getElementById("poly-creativity-low"),
+  creativityMedium: document.getElementById("poly-creativity-medium"),
+  creativityHigh: document.getElementById("poly-creativity-high"),
+  paramsReset: document.getElementById("poly-params-reset"),
+  canvasTitle: document.getElementById("canvas-title"),
+  canvasBody: document.getElementById("canvas-body"),
+  canvasCounter: document.getElementById("canvas-counter"),
+  bookTitle: document.getElementById("book-title"),
+  bookFormat: document.getElementById("book-format"),
+  bookSubmit: document.getElementById("book-submit"),
+};
+
+const getStorageKey = (suffix) => `poly:${state.userId}:${suffix}`;
+
+const showToast = (text, background = "red") => {
+  if (!window.Toastify) {
+    return;
+  }
+
+  window.Toastify({
+    text,
+    duration: 2800,
+    gravity: "top",
+    position: "center",
+    stopOnFocus: true,
+    style: { background },
+  }).showToast();
+};
+
+const setStatus = (text = "") => {
+  if (!elements.status) {
+    return;
+  }
+
+  elements.status.textContent = text;
+  elements.status.classList.toggle("poly-chat__status--visible", Boolean(text));
+};
+
+const syncAsideState = () => {
+  if (!elements.aside || !elements.asideToggle) {
+    return;
+  }
+
+  elements.aside.classList.toggle("poly-aside--open", state.asideOpen);
+  elements.aside.setAttribute("aria-hidden", String(!state.asideOpen));
+  elements.asideToggle.setAttribute("aria-expanded", String(state.asideOpen));
+  elements.asideNav?.classList.toggle("header__nav--hidden", state.asideOpen);
+};
+
+const setAsideOpen = (nextValue) => {
+  state.asideOpen = Boolean(nextValue);
+  syncAsideState();
+};
+
+const setUserMenuOpen = (nextValue) => {
+  elements.userMenu?.classList.toggle("menu-user--visible", Boolean(nextValue));
+};
+
+const getPrimarySourceFile = () => state.sourceFiles[0] || null;
+
+const syncAttachedFile = () => {
+  if (!elements.fileAttachment || !elements.fileAttachmentName) {
+    return;
+  }
+
+  const primaryFile = getPrimarySourceFile();
+  const hasFile = Boolean(primaryFile);
+  elements.fileAttachment.classList.toggle("poly-hidden", !hasFile);
+  elements.fileAttachmentName.textContent = hasFile
+    ? state.sourceFiles.length > 1
+      ? `${primaryFile.nombreArchivo || primaryFile.name} (+${state.sourceFiles.length - 1})`
+      : (primaryFile.nombreArchivo || primaryFile.name)
+    : "";
+};
+
+const cycleValue = (currentValue, options) => {
+  const currentIndex = options.indexOf(currentValue);
+  const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % options.length;
+  return options[nextIndex];
+};
+
+const syncAiSettingsUI = () => {
+  const settings = state.aiSettingsDraft;
+
+  if (elements.styleButton) {
+    elements.styleButton.textContent = settings.estiloEscritura;
+  }
+
+  if (elements.lengthButton) {
+    elements.lengthButton.textContent = settings.longitudRespuesta;
+  }
+
+  if (elements.toneButton) {
+    elements.toneButton.textContent = settings.tonoEmocional;
+  }
+
+  if (elements.creativityLow) {
+    elements.creativityLow.checked = settings.nivelCreatividad === CREATIVITY_OPTIONS.low;
+  }
+
+  if (elements.creativityMedium) {
+    elements.creativityMedium.checked = settings.nivelCreatividad === CREATIVITY_OPTIONS.medium;
+  }
+
+  if (elements.creativityHigh) {
+    elements.creativityHigh.checked = settings.nivelCreatividad === CREATIVITY_OPTIONS.high;
+  }
+};
+
+const syncFormState = () => {
+  const disabled = state.sending;
+
+  if (elements.input) {
+    elements.input.disabled = disabled;
+  }
+
+  if (elements.sendButton) {
+    elements.sendButton.disabled = disabled;
+    elements.sendButton.classList.toggle("poly-input__action--disabled", disabled);
+  }
+
+  if (elements.newChatButton) {
+    elements.newChatButton.disabled = disabled;
+  }
+
+  if (elements.attachButton) {
+    elements.attachButton.disabled = disabled;
+  }
+
+  if (elements.fileAttachmentRemove) {
+    elements.fileAttachmentRemove.disabled = disabled;
+  }
+};
+
+const focusInput = () => {
+  if (elements.input && !elements.input.disabled) {
+    elements.input.focus();
+  }
+};
+
+const truncate = (text, maxLength = 36) => {
+  const normalized = String(text || "").trim();
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+
+  return `${normalized.slice(0, maxLength - 1)}…`;
+};
+
+const countWords = (text) => {
+  const normalized = String(text || "").trim();
+  if (!normalized) {
+    return 0;
+  }
+
+  return normalized.split(/\s+/).filter(Boolean).length;
+};
+
+const splitIntoParagraphs = (text) =>
+  String(text || "")
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+const getCanvasDraft = () => {
+  const activeStory = state.stories.find((story) => story.id === state.activeStoryId);
+  const savedDescription = String(activeStory?.descripcion || "").trim();
+
+  if (savedDescription) {
+    return savedDescription;
+  }
+
+  const polyMessages = state.messages
+    .filter((message) => message.emisor === "Poly")
+    .map((message) => String(message.contenido || "").trim())
+    .filter(Boolean);
+
+  if (!polyMessages.length) {
+    return "";
+  }
+
+  return polyMessages.reduce((selected, current) =>
+    current.length >= selected.length ? current : selected
+  , polyMessages[0]);
+};
+
+const getCanvasText = () => {
+  if (elements.canvasBody?.innerText?.trim()) {
+    return elements.canvasBody.innerText.trim();
+  }
+
+  return getCanvasDraft();
+};
+
+const sanitizeFileName = (value) =>
+  String(value || "historia-poly")
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g, "-")
+    .replace(/\s+/g, " ")
+    .slice(0, 80) || "historia-poly";
+
+const escapeHtml = (value) =>
+  String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const buildExportHtml = (title, content) => `<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>${escapeHtml(title)}</title>
+    <style>
+      body { font-family: Georgia, serif; margin: 48px; line-height: 1.7; color: #222; }
+      h1 { margin-bottom: 32px; font-size: 28px; }
+      p { margin: 0 0 16px; }
+    </style>
+  </head>
+  <body>
+    <h1>${escapeHtml(title)}</h1>
+    ${splitIntoParagraphs(content).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+  </body>
+</html>`;
+
+const downloadBlob = (filename, blob) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+};
+
+const buildWordBlob = (title, content) => {
+  const html = buildExportHtml(title, content);
+  return new Blob(["\ufeff", html], {
+    type: "application/msword",
+  });
+};
+
+const blobToBase64 = (blob) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || "");
+      resolve(result.includes(",") ? result.split(",")[1] : result);
+    };
+    reader.onerror = () => reject(new Error("No fue posible convertir el archivo"));
+    reader.readAsDataURL(blob);
+  });
+
+const exportWordDocument = (title, blob) => {
+  downloadBlob(`${sanitizeFileName(title)}.doc`, blob);
+};
+
+const exportPdfDocument = (title, content, printWindow) => {
+  if (!printWindow) {
+    return false;
+  }
+
+  printWindow.document.open();
+  printWindow.document.write(buildExportHtml(title, content));
+  printWindow.document.close();
+  printWindow.focus();
+  window.setTimeout(() => {
+    printWindow.print();
+  }, 250);
+  return true;
+};
+
+const isSupportedStoryFile = (file) => {
+  const supportedExtensions = [".pdf", ".doc", ".docx"];
+  const lowerName = file.name.toLowerCase();
+
+  return supportedExtensions.some((extension) => lowerName.endsWith(extension))
+    || file.type === "application/pdf"
+    || file.type === "application/msword"
+    || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+};
+
+const arrayBufferToBase64 = (buffer) => {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+
+  return window.btoa(binary);
+};
+
+const updateCanvas = () => {
+  if (!elements.canvasTitle || !elements.canvasBody || !elements.canvasCounter) {
+    return;
+  }
+
+  const activeStory = state.stories.find((story) => story.id === state.activeStoryId);
+  const draft = getCanvasDraft();
+
+  elements.canvasTitle.textContent = activeStory?.titulo || "Título";
+  elements.bookTitle.value = activeStory?.titulo || "Mi historia con Poly-AI";
+
+  if (!draft) {
+    elements.canvasBody.innerHTML = "<p>Aquí aparecerá el borrador final de la historia cuando Poly empiece a desarrollarlo.</p>";
+    elements.canvasCounter.textContent = "0 palabras";
+    return;
+  }
+
+  elements.canvasBody.innerHTML = splitIntoParagraphs(draft)
+    .map((paragraph) => `<p>${paragraph}</p>`)
+    .join("");
+  const words = countWords(draft);
+  elements.canvasCounter.textContent = `${words} palabra${words === 1 ? "" : "s"}`;
+};
+
+const renderMessages = () => {
+  if (!elements.messageList || !elements.emptyState) {
+    return;
+  }
+
+  elements.messageList.innerHTML = "";
+
+  const hasMessages = state.messages.length > 0;
+  elements.emptyState.classList.toggle("poly-hidden", hasMessages);
+  elements.messageList.classList.toggle("poly-chat__messages--empty", !hasMessages);
+
+  if (!hasMessages) {
+    updateCanvas();
+    focusInput();
+    return;
+  }
+
+  state.messages.forEach((message) => {
+    const article = document.createElement("article");
+    article.className = `poly-message poly-message--${(message.emisor || "Sistema").toLowerCase()}`;
+
+    const author = document.createElement("p");
+    author.className = "poly-message__author";
+    author.textContent = message.emisor || "Sistema";
+
+    const content = document.createElement("p");
+    content.className = "poly-message__content";
+    content.textContent = message.contenido || "";
+
+    article.append(author, content);
+    elements.messageList.appendChild(article);
+  });
+
+  elements.messageList.scrollTop = elements.messageList.scrollHeight;
+  updateCanvas();
+  focusInput();
+};
+
+const renderStories = () => {
+  if (!elements.storyList) {
+    return;
+  }
+
+  elements.storyList.innerHTML = "";
+
+  if (!state.stories.length) {
+    const empty = document.createElement("p");
+    empty.className = "poly-aside__empty";
+    empty.textContent = "No hay chats todavía";
+    elements.storyList.appendChild(empty);
+    return;
+  }
+
+  state.stories.forEach((story) => {
+    const row = document.createElement("div");
+    row.className = "poly-aside__chat";
+    if (story.id === state.activeStoryId) {
+      row.classList.add("poly-aside__chat--active");
+    }
+
+    const titleButton = document.createElement("button");
+    titleButton.type = "button";
+    titleButton.className = "poly-aside__chat-title poly-aside__chat-title--button";
+    titleButton.textContent = truncate(story.titulo || "Chat sin título");
+    titleButton.addEventListener("click", () => {
+      selectStory(story.id);
+      setAsideOpen(false);
+    });
+
+    const options = document.createElement("div");
+    options.className = "poly-aside__options";
+
+    const toggleButton = document.createElement("button");
+    toggleButton.type = "button";
+    toggleButton.className = "poly-aside__chat-opciones";
+    toggleButton.textContent = "⋮";
+    toggleButton.setAttribute("aria-label", "Opciones del chat");
+    toggleButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      row.classList.toggle("poly-aside__chat--menu-open");
+    });
+
+    const renameButton = document.createElement("button");
+    renameButton.type = "button";
+    renameButton.className = "poly-aside__option poly-aside__option--rename";
+    renameButton.textContent = "Renombrar";
+    renameButton.addEventListener("click", async () => {
+      const nextTitle = window.prompt("Nuevo nombre del chat", story.titulo || "");
+      if (!nextTitle || !nextTitle.trim()) {
+        return;
+      }
+
+      const { ok, data } = await fetchJson(`/api/v1/stories/${story.id}`, {
+        method: "PUT",
+        auth: true,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ titulo: nextTitle.trim() }),
+      });
+
+      if (!ok) {
+        showToast(data.Mensaje || "No fue posible renombrar");
+        return;
+      }
+
+      showToast(data.Mensaje || "Chat actualizado", "green");
+      await loadStories(story.id);
+      row.classList.remove("poly-aside__chat--menu-open");
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "poly-aside__option poly-aside__option--delete";
+    deleteButton.textContent = "Eliminar";
+    deleteButton.addEventListener("click", async () => {
+      if (!window.confirm("¿Eliminar este chat?")) {
+        return;
+      }
+
+      const { ok, data } = await fetchJson(`/api/v1/stories/${story.id}`, {
+        method: "DELETE",
+        auth: true,
+      });
+
+      if (!ok) {
+        showToast(data.Mensaje || "No fue posible eliminar");
+        return;
+      }
+
+      if (state.activeStoryId === story.id) {
+        state.activeStoryId = null;
+        state.messages = [];
+      }
+
+      showToast(data.Mensaje || "Chat eliminado", "green");
+      await loadStories();
+      await selectStory(state.activeStoryId);
+      row.classList.remove("poly-aside__chat--menu-open");
+    });
+
+    options.append(renameButton, deleteButton);
+    row.append(titleButton, toggleButton, options);
+    elements.storyList.appendChild(row);
+  });
+};
+
+const applyUserData = (user) => {
+  const defaultPhoto = "../../../assets/icons/image.png";
+  const photoSrc = user.FotoPerfil
+    ? buildUploadedAssetUrl(user.FotoPerfil)
+    : defaultPhoto;
+
+  if (elements.userName) {
+    elements.userName.textContent = user.Nombre || "—";
+  }
+
+  if (elements.userEmail) {
+    elements.userEmail.textContent = user.Correo || "—";
+  }
+
+  if (elements.logoUser) {
+    elements.logoUser.src = photoSrc;
+  }
+
+  if (elements.userMenuPhoto) {
+    elements.userMenuPhoto.src = photoSrc;
+  }
+};
+
+const loadUser = async () => {
+  const token = getToken();
+
+  if (!state.userId || !token) {
+    logoutAndRedirect();
+    return;
+  }
+
+  const { ok, status, data } = await fetchJson("/api/v1/usuarios/id", {
+    params: { id: state.userId },
+    auth: true,
+  });
+
+  if (!ok) {
+    if (status === 401) {
+      logoutAndRedirect();
+      return;
+    }
+
+    showToast(data.Mensaje || "No fue posible cargar el perfil");
+    return;
+  }
+
+  applyUserData(data);
+};
+
+const loadMessages = async (storyId) => {
+  if (!storyId) {
+    state.messages = [];
+    renderMessages();
+    return;
+  }
+
+  setStatus("Cargando conversación...");
+  const { ok, data } = await fetchJson(`/api/v1/chat/${storyId}`, {
+    auth: true,
+  });
+
+  if (!ok) {
+    state.messages = [];
+    renderMessages();
+    setStatus("");
+    showToast(data.Mensaje || "No fue posible cargar la conversación");
+    return;
+  }
+
+  state.messages = Array.isArray(data.mensajes) ? data.mensajes : [];
+  setStatus("");
+  renderMessages();
+};
+
+const loadStoryDetails = async (storyId) => {
+  if (!storyId) {
+    state.aiSettings = { ...DEFAULT_AI_SETTINGS };
+    state.aiSettingsDraft = { ...DEFAULT_AI_SETTINGS };
+    state.sourceFiles = [];
+    syncAiSettingsUI();
+    syncAttachedFile();
+    updateCanvas();
+    return;
+  }
+
+  const { ok, status, data } = await fetchJson(`/api/v1/stories/${storyId}`, {
+    auth: true,
+  });
+
+  if (!ok) {
+    if (status === 401) {
+      logoutAndRedirect();
+      return;
+    }
+
+    state.aiSettings = { ...DEFAULT_AI_SETTINGS };
+    state.aiSettingsDraft = { ...DEFAULT_AI_SETTINGS };
+    state.sourceFiles = [];
+    syncAiSettingsUI();
+    syncAttachedFile();
+    showToast(data.Mensaje || "No fue posible cargar el detalle del chat");
+    return;
+  }
+
+  if (data.relato) {
+    state.stories = state.stories.map((story) =>
+      story.id === storyId ? { ...story, ...data.relato } : story
+    );
+  }
+
+  state.aiSettings = {
+    ...DEFAULT_AI_SETTINGS,
+    ...(data.configuracionIA || {}),
+  };
+  state.aiSettingsDraft = { ...state.aiSettings };
+  state.sourceFiles = Array.isArray(data.archivosFuente) ? data.archivosFuente : [];
+  syncAiSettingsUI();
+  syncAttachedFile();
+  renderStories();
+  updateCanvas();
+};
+
+const selectStory = async (storyId) => {
+  state.activeStoryId = storyId;
+
+  if (storyId) {
+    sessionStorage.setItem(getStorageKey("activeStoryId"), String(storyId));
+  } else {
+    sessionStorage.removeItem(getStorageKey("activeStoryId"));
+  }
+
+  renderStories();
+  await loadStoryDetails(storyId);
+  await loadMessages(storyId);
+};
+
+const createStory = async (title = "Nuevo chat Poly") => {
+  const normalizedTitle = String(title || "Nuevo chat Poly")
+    .replace(/\.[^/.]+$/, "")
+    .trim();
+
+  const { ok, data } = await fetchJson("/api/v1/stories", {
+    method: "POST",
+    auth: true,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      titulo: truncate(normalizedTitle || "Nuevo chat Poly", 80),
+      modoOrigen: STORY_MODE,
+      descripcion: "",
+    }),
+  });
+
+  if (!ok) {
+    showToast(data.Mensaje || "No fue posible crear el chat");
+    return null;
+  }
+
+  return data.id || null;
+};
+
+const ensureActiveStory = async (preferredTitle = "Nuevo chat Poly") => {
+  if (state.activeStoryId) {
+    return state.activeStoryId;
+  }
+
+  const storyId = await createStory(preferredTitle);
+  if (!storyId) {
+    return null;
+  }
+
+  await loadStories(storyId);
+  await selectStory(storyId);
+  return storyId;
+};
+
+const loadStories = async (preferredStoryId = null) => {
+  const { ok, data } = await fetchJson("/api/v1/stories", {
+    auth: true,
+  });
+
+  if (!ok) {
+    showToast(data.Mensaje || "No fue posible cargar los chats");
+    return;
+  }
+
+  const stories = Array.isArray(data.relatos)
+    ? data.relatos.filter((story) => story?.modoOrigen === STORY_MODE)
+    : [];
+
+  state.stories = stories;
+
+  const storedStoryId = Number(sessionStorage.getItem(getStorageKey("activeStoryId")) || 0);
+  const candidateId = preferredStoryId || state.activeStoryId || storedStoryId;
+  const existingCandidate = stories.find((story) => story.id === candidateId);
+
+  if (existingCandidate) {
+    state.activeStoryId = existingCandidate.id;
+  } else {
+    state.activeStoryId = stories[0]?.id ?? null;
+  }
+
+  renderStories();
+};
+
+const sendMessage = async (content) => {
+  setStatus("Enviando mensaje...");
+  const { ok, data } = await fetchJson("/api/v1/chat/message", {
+    method: "POST",
+    auth: true,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      relatoId: state.activeStoryId,
+      emisor: "Usuario",
+      contenido: content,
+      parametrosIA: state.aiSettings,
+    }),
+  });
+
+  setStatus("");
+
+  if (!ok) {
+    showToast(data.Mensaje || "No fue posible enviar el mensaje");
+    return false;
+  }
+
+  return true;
+};
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  if (state.sending) {
+    return;
+  }
+
+  const typedContent = elements.input?.value.trim() || "";
+  const content = typedContent || (
+    state.sourceFiles.length
+      ? "Usa los archivos fuente asociados como contexto para continuar y desarrollar el relato."
+      : ""
+  );
+  if (!content) {
+    return;
+  }
+
+  elements.input.value = "";
+  state.sending = true;
+  syncFormState();
+
+  try {
+    if (!state.activeStoryId) {
+      const initialTitle = typedContent || getPrimarySourceFile()?.nombreArchivo || "Nuevo chat Poly";
+      const storyId = await ensureActiveStory(initialTitle);
+      if (!storyId) {
+        elements.input.value = typedContent;
+        return;
+      }
+    }
+
+    const sent = await sendMessage(content);
+    if (!sent) {
+      elements.input.value = typedContent;
+      return;
+    }
+
+    await loadStories(state.activeStoryId);
+    await selectStory(state.activeStoryId);
+  } finally {
+    state.sending = false;
+    syncFormState();
+    focusInput();
+  }
+};
+
+const handleCreateNewChat = async () => {
+  const storyId = await createStory("Nuevo chat Poly");
+  if (!storyId) {
+    return;
+  }
+
+  showToast("Chat creado", "green");
+  await loadStories(storyId);
+  await selectStory(storyId);
+};
+
+const handleAttachClick = () => {
+  elements.fileInput?.click();
+};
+
+const handleBookSubmit = async (event) => {
+  event.preventDefault();
+
+  const storyId = await ensureActiveStory(elements.bookTitle?.value.trim() || "Mi historia con Poly-AI");
+  if (!storyId) {
+    showToast("Primero crea o selecciona un chat");
+    return;
+  }
+
+  const nextTitle = elements.bookTitle?.value.trim();
+  if (!nextTitle) {
+    showToast("Ingresa un título para el libro");
+    return;
+  }
+
+  const format = elements.bookFormat?.value || "word";
+  const pdfWindow = format === "pdf"
+    ? window.open("", "_blank", "width=900,height=700")
+    : null;
+
+  if (format === "pdf" && !pdfWindow) {
+    showToast("Habilita ventanas emergentes para exportar en PDF");
+    return;
+  }
+
+  const description = getCanvasText();
+
+  if (!description) {
+    pdfWindow?.close();
+    showToast("Todavía no hay contenido para exportar");
+    return;
+  }
+
+  const wordBlob = format === "word" ? buildWordBlob(nextTitle, description) : null;
+
+  const { ok, data } = await fetchJson(`/api/v1/stories/${storyId}/export`, {
+    method: "POST",
+    auth: true,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      titulo: nextTitle,
+      contenido: description,
+      formato: format,
+      nombreArchivo: wordBlob ? `${sanitizeFileName(nextTitle)}.doc` : null,
+      tipoArchivo: wordBlob ? "DOC" : null,
+      archivoBase64: wordBlob ? await blobToBase64(wordBlob) : null,
+    }),
+  });
+
+  if (!ok) {
+    pdfWindow?.close();
+    showToast(data.Mensaje || "No fue posible exportar el libro");
+    return;
+  }
+
+  showToast(data.Mensaje || "Libro exportado", "green");
+  await loadStories(storyId);
+  await selectStory(storyId);
+
+  if (format === "pdf") {
+    const opened = exportPdfDocument(nextTitle, description, pdfWindow);
+    if (!opened) {
+      showToast("Habilita ventanas emergentes para exportar en PDF");
+      return;
+    }
+  } else {
+    exportWordDocument(nextTitle, wordBlob);
+  }
+
+  window.location.hash = "#bookSuccess";
+};
+
+const setupInputAutoResize = () => {
+  if (!elements.input) {
+    return;
+  }
+
+  const resize = () => {
+    elements.input.style.height = "auto";
+    elements.input.style.height = `${Math.min(elements.input.scrollHeight, 120)}px`;
+  };
+
+  elements.input.addEventListener("input", resize);
+  resize();
+};
+
+const setupCanvasBindings = () => {
+  elements.canvasTitle?.addEventListener("input", () => {
+    const nextTitle = elements.canvasTitle.textContent?.trim();
+    if (elements.bookTitle) {
+      elements.bookTitle.value = nextTitle || "Mi historia con Poly-AI";
+    }
+  });
+};
+
+const setupInputSubmitBehavior = () => {
+  if (!elements.input || !elements.form) {
+    return;
+  }
+
+  elements.input.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" || event.shiftKey) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (state.sending) {
+      return;
+    }
+
+    elements.form.requestSubmit();
+  });
+};
+
+const setupFileAttachment = () => {
+  elements.fileAttachmentRemove?.addEventListener("click", async () => {
+    const primaryFile = getPrimarySourceFile();
+    if (!primaryFile || !state.activeStoryId) {
+      return;
+    }
+
+    const { ok, data } = await fetchJson("/api/v1/upload/relato", {
+      method: "DELETE",
+      auth: true,
+      params: {
+        storyId: state.activeStoryId,
+        fileId: primaryFile.id,
+      },
+    });
+
+    if (!ok) {
+      showToast(data.Mensaje || "No fue posible quitar el archivo");
+      return;
+    }
+
+    showToast(data.Mensaje || "Archivo eliminado", "green");
+    await loadStoryDetails(state.activeStoryId);
+  });
+
+  elements.fileInput?.addEventListener("change", async (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!isSupportedStoryFile(file)) {
+      showToast("Poly solo admite PDF, DOC o DOCX", "orange");
+      elements.fileInput.value = "";
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      showToast("Máximo 10MB por archivo", "orange");
+      elements.fileInput.value = "";
+      return;
+    }
+
+    try {
+      const storyId = await ensureActiveStory(file.name);
+      if (!storyId) {
+        return;
+      }
+
+      const buffer = await file.arrayBuffer();
+      const base64File = arrayBufferToBase64(buffer);
+      const { ok, data } = await fetchJson("/api/v1/upload/relato", {
+        method: "POST",
+        auth: true,
+        params: { storyId },
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombreArchivo: file.name,
+          mimeType: file.type,
+          archivo: base64File,
+        }),
+      });
+
+      if (!ok) {
+        showToast(data.Mensaje || "No fue posible subir el archivo");
+        return;
+      }
+
+      showToast(data.Mensaje || "Archivo fuente vinculado", "green");
+      await loadStoryDetails(storyId);
+    } catch (error) {
+      showToast("No fue posible procesar el archivo");
+    } finally {
+      elements.fileInput.value = "";
+    }
+  });
+};
+
+const setupAiParameters = () => {
+  state.aiSettings = { ...DEFAULT_AI_SETTINGS };
+  state.aiSettingsDraft = { ...DEFAULT_AI_SETTINGS };
+  syncAiSettingsUI();
+
+  elements.aiModalOpen?.addEventListener("click", () => {
+    state.aiSettingsDraft = { ...state.aiSettings };
+    syncAiSettingsUI();
+  });
+
+  elements.styleButton?.addEventListener("click", () => {
+    state.aiSettingsDraft.estiloEscritura = cycleValue(
+      state.aiSettingsDraft.estiloEscritura,
+      AI_SETTING_OPTIONS.estiloEscritura
+    );
+    syncAiSettingsUI();
+  });
+
+  elements.lengthButton?.addEventListener("click", () => {
+    state.aiSettingsDraft.longitudRespuesta = cycleValue(
+      state.aiSettingsDraft.longitudRespuesta,
+      AI_SETTING_OPTIONS.longitudRespuesta
+    );
+    syncAiSettingsUI();
+  });
+
+  elements.toneButton?.addEventListener("click", () => {
+    state.aiSettingsDraft.tonoEmocional = cycleValue(
+      state.aiSettingsDraft.tonoEmocional,
+      AI_SETTING_OPTIONS.tonoEmocional
+    );
+    syncAiSettingsUI();
+  });
+
+  [
+    [elements.creativityLow, CREATIVITY_OPTIONS.low],
+    [elements.creativityMedium, CREATIVITY_OPTIONS.medium],
+    [elements.creativityHigh, CREATIVITY_OPTIONS.high],
+  ].forEach(([input, label]) => {
+    input?.addEventListener("change", () => {
+      state.aiSettingsDraft.nivelCreatividad = label;
+      syncAiSettingsUI();
+    });
+  });
+
+  elements.modalForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const storyId = await ensureActiveStory("Nuevo chat Poly");
+    if (!storyId) {
+      showToast("No fue posible preparar el chat");
+      return;
+    }
+
+    const { ok, data } = await fetchJson(`/api/v1/stories/${storyId}/configuracion-ia`, {
+      method: "PUT",
+      auth: true,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(state.aiSettingsDraft),
+    });
+
+    if (!ok) {
+      showToast(data.Mensaje || "No fue posible guardar la configuración");
+      return;
+    }
+
+    state.aiSettings = {
+      ...DEFAULT_AI_SETTINGS,
+      ...(data.configuracionIA || state.aiSettingsDraft),
+    };
+    state.aiSettingsDraft = { ...state.aiSettings };
+    syncAiSettingsUI();
+    showToast(data.Mensaje || "Parámetros de Poly actualizados", "green");
+    window.location.hash = "#";
+  });
+
+  elements.paramsReset?.addEventListener("click", async () => {
+    state.aiSettingsDraft = { ...DEFAULT_AI_SETTINGS };
+    syncAiSettingsUI();
+
+    if (state.activeStoryId) {
+      const { ok, data } = await fetchJson(`/api/v1/stories/${state.activeStoryId}/configuracion-ia`, {
+        method: "PUT",
+        auth: true,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(state.aiSettingsDraft),
+      });
+
+      if (!ok) {
+        showToast(data.Mensaje || "No fue posible restablecer la configuración");
+        return;
+      }
+    }
+
+    state.aiSettings = { ...state.aiSettingsDraft };
+    showToast("Parámetros restablecidos", "green");
+  });
+};
+
+const setupAsideBehavior = () => {
+  elements.asideToggle?.addEventListener("click", () => {
+    setUserMenuOpen(false);
+    setAsideOpen(!state.asideOpen);
+  });
+
+  elements.asideClose?.addEventListener("click", () => {
+    setAsideOpen(false);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!elements.aside?.contains(event.target) && !elements.asideToggle?.contains(event.target)) {
+      setAsideOpen(false);
+    }
+
+    if (
+      !elements.userMenu?.contains(event.target) &&
+      !elements.logoUserButton?.contains(event.target)
+    ) {
+      setUserMenuOpen(false);
+    }
+
+    elements.storyList
+      ?.querySelectorAll(".poly-aside__chat--menu-open")
+      .forEach((chat) => {
+        if (!chat.contains(event.target)) {
+          chat.classList.remove("poly-aside__chat--menu-open");
+        }
+      });
+  });
+};
+
+const setupUserMenu = () => {
+  elements.logoUserButton?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const nextVisible = !elements.userMenu?.classList.contains("menu-user--visible");
+    setUserMenuOpen(nextVisible);
+    setAsideOpen(false);
+  });
+
+  elements.logoutButton?.addEventListener("click", () => {
+    showToast("Sesión cerrada", "red");
+    window.setTimeout(() => {
+      logoutAndRedirect();
+    }, 450);
+  });
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!state.userId) {
+    return;
+  }
+
+  elements.form?.addEventListener("submit", handleSubmit);
+  elements.newChatButton?.addEventListener("click", handleCreateNewChat);
+  elements.attachButton?.addEventListener("click", handleAttachClick);
+  elements.bookSubmit?.addEventListener("click", handleBookSubmit);
+  setupInputAutoResize();
+  setupInputSubmitBehavior();
+  setupCanvasBindings();
+  setupFileAttachment();
+  setupAiParameters();
+  setupAsideBehavior();
+  setupUserMenu();
+  syncFormState();
+  syncAsideState();
+  syncAttachedFile();
+  focusInput();
+
+  await loadUser();
+  await loadStories();
+  await selectStory(state.activeStoryId);
+});

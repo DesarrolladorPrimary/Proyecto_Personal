@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Seccion Poly</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,18 +21,22 @@
       rel="stylesheet"
       href="../../../src/styles/pages/feed/poly/seccion_poly.css"
     />
-      <script src="/src/scripts/utils/accesoAuth.js"></script>
+    <script src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
 
   <body>
     <header class="header">
       <div class="header__nav">
-        <div class="header__nav-line">
-          <a
-            href="#sidebar"
-            class="header__nav-link header__nav-link--action"
-          ></a>
-        </div>
+        <button
+          type="button"
+          class="header__nav-line header__nav-toggle"
+          id="poly-aside-toggle"
+          aria-label="Mostrar chats"
+          aria-controls="sidebar"
+          aria-expanded="false"
+        >
+          <span class="header__nav-link header__nav-link--action"></span>
+        </button>
       </div>
 
       <a href="#canvasAI" class="header__imageBook-link">
@@ -37,29 +46,38 @@
           alt="libro de exportacion"
         />
       </a>
-      <a href="#user" class="header__logo">
+      <button type="button" class="header__logo header__logo-button" id="logo_user_button" aria-label="Abrir perfil de usuario">
         <img
           src="../../../assets/icons/image.png"
           class="header__logo"
           alt="logo_user"
+          id="logo_user"
         />
-      </a>
+      </button>
     </header>
 
     <main class="poly">
-      <div class="poly__container">
+      <div class="poly__container" id="poly-empty-state">
+        <span class="poly__eyebrow">Poly Workspace</span>
         <img
           class="poly__img"
           src="../../../assets/image/brain_pencil.png"
           alt="Ilustracion de un cerebro y un lapiz"
         />
         <p class="poly__text">Que hare hoy?</p>
+        <p class="poly__hint">Escribe una idea, una escena o una duda narrativa y Poly la desarrollara contigo.</p>
       </div>
 
-      <form class="poly-input">
+      <section class="poly-chat" id="poly-chat">
+        <div class="poly-chat__status" id="poly-chat-status"></div>
+        <div class="poly-chat__messages" id="poly-messages"></div>
+      </section>
+
+      <form class="poly-input" id="poly-form">
         <button
           class="poly-input__action poly-input__action--attach"
           type="button"
+          id="poly-attach"
         >
           <img
             class="poly-input__icon poly-input__icon--file"
@@ -67,10 +85,17 @@
             alt="Adjuntar archivo"
           />
         </button>
+        <input
+          type="file"
+          id="poly-file-input"
+          class="poly-input__file"
+          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        />
         <textarea
           class="poly-input__field"
           rows="1"
           placeholder="Escribe tu mensaje..."
+          id="poly-message-input"
         ></textarea>
         <a
           href="#modalAI"
@@ -86,6 +111,7 @@
           class="poly-input__action poly-input__action--send"
           type="submit"
           aria-label="Enviar mensaje"
+          id="poly-send-button"
         >
           <svg
             class="poly-input__icon poly-input__icon--send"
@@ -96,6 +122,12 @@
           </svg>
         </button>
       </form>
+      <div class="poly-input__attachment poly-hidden" id="poly-file-attachment">
+        <span class="poly-input__attachment-name" id="poly-file-name"></span>
+        <button type="button" class="poly-input__attachment-remove" id="poly-file-remove">
+          Quitar
+        </button>
+      </div>
     </main>
 
     <section class="poly-modal" id="modalAI" aria-hidden="true">
@@ -120,7 +152,7 @@
               >&#9997;&#65039;</span
             >
             <span class="poly-modal__label">Estilo de escritura:</span>
-            <button class="poly-modal__chip" type="button">Narrativo</button>
+            <button class="poly-modal__chip" type="button" id="poly-style-button">Narrativo</button>
           </div>
 
           <div class="poly-modal__group poly-modal__group--choices">
@@ -133,6 +165,7 @@
                   type="checkbox"
                   name="creativity-low"
                   value="low"
+                  id="poly-creativity-low"
                 />
                 <span class="poly-modal__choice-text">Bajo</span>
               </label>
@@ -143,6 +176,7 @@
                   name="creativity-medium"
                   value="medium"
                   checked
+                  id="poly-creativity-medium"
                 />
                 <span class="poly-modal__choice-text">Medio</span>
               </label>
@@ -152,6 +186,7 @@
                   type="checkbox"
                   name="creativity-high"
                   value="high"
+                  id="poly-creativity-high"
                 />
                 <span class="poly-modal__choice-text">Alto</span>
               </label>
@@ -161,25 +196,27 @@
           <div class="poly-modal__group poly-modal__group--single">
             <span class="poly-modal__icon" aria-hidden="true">&#128337;</span>
             <span class="poly-modal__label">Longitud de respuesta:</span>
-            <button class="poly-modal__chip" type="button">Corta</button>
+            <button class="poly-modal__chip" type="button" id="poly-length-button">Media</button>
           </div>
 
           <div class="poly-modal__group poly-modal__group--single">
             <span class="poly-modal__icon" aria-hidden="true">&#128172;</span>
             <span class="poly-modal__label">Tono emocional:</span>
-            <button class="poly-modal__chip" type="button">Neutral</button>
+            <button class="poly-modal__chip" type="button" id="poly-tone-button">Neutral</button>
           </div>
 
           <div class="poly-modal__actions">
             <button
               class="poly-modal__button poly-modal__button--primary"
               type="submit"
+              id="poly-params-save"
             >
               Guardar
             </button>
             <button
               class="poly-modal__button poly-modal__button--reset"
               type="button"
+              id="poly-params-reset"
             >
               Restablecer
             </button>
@@ -203,11 +240,11 @@
             <h2 class="canvas__title" id="canvas-title" contenteditable="true">
               Título
             </h2>
-            <span class="canvas__counter">0 palabras</span>
+            <span class="canvas__counter" id="canvas-counter">0 palabras</span>
           </div>
           <div class="canvas__divider"></div>
         </header>
-        <section class="canvas__body" contenteditable="true">
+        <section class="canvas__body" contenteditable="true" id="canvas-body">
           <p>Resultado de la IA</p>
         </section>
         <footer class="canvas__footer">
@@ -259,7 +296,12 @@
             type="text"
             value="Mi historia con Poly-AI"
           />
-          <a class="book-modal__submit" href="#bookSuccess">
+          <label class="book-modal__label" for="book-format">Formato de salida:</label>
+          <select class="book-modal__input" id="book-format">
+            <option value="word">Word (.doc)</option>
+            <option value="pdf">PDF</option>
+          </select>
+          <a class="book-modal__submit" href="#bookSuccess" id="book-submit">
             <img
               src="../../../assets/icons/addLibro.png"
               alt=""
@@ -280,7 +322,7 @@
         aria-labelledby="book-success-message"
       >
         <p class="book-success__message" id="book-success-message">
-          ✅ Libro generado con éxito.<br />Guardado en tu Biblioteca.
+          ✅ Documento generado con éxito.<br />Tu relato quedó actualizado y exportado.
         </p>
         <a
           href="#canvasAI"
@@ -291,53 +333,49 @@
       </article>
     </section>
 
-    <aside class="poly-aside" id="sidebar">
+    <aside class="poly-aside" id="sidebar" aria-hidden="true">
       <div class="poly-aside__header">
         <p class="poly-aside__title">Chats</p>
-        <button class="poly-aside__button">Nuevo Chat</button>
+        <button class="poly-aside__button" type="button" id="poly-new-chat">Nuevo Chat</button>
       </div>
 
       <div class="poly-aside__separator"></div>
 
-      <div class="poly-aside__chat">
-        <p class="poly-aside__chat-title">Libro</p>
-        <a class="poly-aside__chat-opciones poly-aside__chat-opciones--button"
-          >⋮</a
-        >
+      <div class="poly-aside__list" id="poly-story-list"></div>
 
-        <div class="poly-aside__options">
-          <button
-            class="poly-aside__option poly-aside__option--rename"
-            type="button"
-          >
-            <span class="poly-aside__option-label">Renombrar</span>
-            <img
-              src="../../../assets/icons/reescribir.png"
-              alt=""
-              class="poly-aside__option-icon"
-            />
-          </button>
-
-          <button
-            class="poly-aside__option poly-aside__option--delete"
-            type="button"
-          >
-            <span class="poly-aside__option-label">Eliminar</span>
-            <img
-              src="../../../assets/icons/delete.png"
-              alt=""
-              class="poly-aside__option-icon"
-            />
-          </button>
-        </div>
-      </div>
-
-      <a href="#" class="poly-aside__close"></a>
+      <button
+        type="button"
+        class="poly-aside__close"
+        id="poly-aside-close"
+        aria-label="Ocultar chats"
+      ></button>
     </aside>
+
+    <div class="menu-user" id="user">
+      <img
+        class="menu-user__avatar"
+        src="../../../assets/icons/image.png"
+        alt="Avatar del usuario"
+        id="profile_photo_user"
+      />
+
+      <div class="menu-user__separador"></div>
+
+      <p class="menu-user__text"><span>Usuario:</span> <span id="nombre_usuario"></span></p>
+      <p class="menu-user__text"><span>Correo:</span> <span id="correo_usuario"></span></p>
+
+      <div class="menu-user__actions">
+        <a class="menu-user__secondary" href="../settings/settings-user.html">Ver perfil</a>
+        <button class="menu-user__button" id="logout" type="button">
+          <span class="menu-user__link">Cerrar Sesión</span>
+        </button>
+      </div>
+    </div>
 
     <footer class="footer-nav">
       <a class="footer-nav__line" href="../feed-main.html"></a>
     </footer>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/poly/seccion_poly.js"></script>
   </body>
 </html>
-
