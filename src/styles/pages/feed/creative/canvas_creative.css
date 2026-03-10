@@ -172,6 +172,8 @@ body {
   height: 29px;
   bottom: 5px;
   left: 60px;
+  border: none;
+  cursor: pointer;
 }
 
 .canvas-book-modal {
@@ -403,6 +405,10 @@ body {
   font-weight: 300;
   margin-left: 10px;
   font-size: var(--font-size-small);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
 }
 
 .canvas-sidebar__item-options {
@@ -460,6 +466,18 @@ body {
 
 .canvas-sidebar__option-icon {
   width: 15px;
+}
+
+.creative-canvas__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+}
+
+.creative-canvas__date {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .canvas-footer {

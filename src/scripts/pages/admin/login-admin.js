@@ -1,16 +1,17 @@
-import { fetchJson } from "../utils/api-client.js";
+import { fetchJson } from "../../utils/api-client.js";
 import {
+  clearToken,
   consumeAuthNotice,
-  getDefaultRouteForRole,
+  isAdminRole,
   parseTokenSafely,
-} from "../utils/auth-session.js";
+} from "../../utils/auth-session.js";
 
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("form");
-  const emailInput = document.getElementById("login_email");
-  const passwordInput = document.getElementById("login_password");
+  const form = document.getElementById("admin-login-form");
+  const emailInput = document.getElementById("admin_email");
+  const passwordInput = document.getElementById("admin_password");
 
   const showToast = (text, background = "red", callback) => {
     Toastify({
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(authNotice.text, authNotice.background || "orange");
   }
 
-  form.addEventListener("submit", async (event) => {
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const correo = emailInput.value.trim();
@@ -42,34 +43,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!contrasena) {
-      showToast("Ingresa tu contrasena");
+      showToast("Ingresa la contrasena");
       passwordInput.focus();
       return;
     }
 
     try {
-      const { ok, status, data } = await fetchJson("/api/v1/login", {
+      const { ok, data } = await fetchJson("/api/v1/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ correo, contraseña: contrasena }),
       });
 
-      if (ok && data.Token) {
-        localStorage.setItem("Token", data.Token);
-        const payload = parseTokenSafely(data.Token);
-
-        showToast(data.Mensaje || "Inicio de sesion correcto", "green", () => {
-          window.location.href = getDefaultRouteForRole(payload?.role);
-        });
+      if (!ok || !data.Token) {
+        showToast(data.Mensaje || "No fue posible iniciar sesion");
         return;
       }
 
-      if (status === 403) {
-        showToast(data.Mensaje || "Debes verificar tu correo", "orange");
+      localStorage.setItem("Token", data.Token);
+      const payload = parseTokenSafely(data.Token);
+
+      if (!isAdminRole(payload?.role)) {
+        clearToken();
+        showToast("La cuenta no tiene permisos de administrador");
         return;
       }
 
-      showToast(data.Mensaje || "No fue posible iniciar sesion");
+      showToast("Acceso administrador correcto", "green", () => {
+        window.location.href = "/public/admin/dashboard-admin.html";
+      });
     } catch (error) {
       showToast("Error de conexion");
     }

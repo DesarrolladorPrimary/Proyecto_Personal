@@ -1,31 +1,25 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Admin</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
-    <link
-      rel="stylesheet"
-      href="/src/styles/pages/admin/dashboard-admin.css"
-    />
+    <link rel="stylesheet" href="/src/styles/pages/admin/dashboard-admin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
-      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
-    <!-- Encabezado de la página -->
     <header class="header">
       <div class="header__nav">
         <div class="header__nav-line">
-          <a
-            href="#sidebar"
-            class="header__nav-link header__nav-link--action"
-          ></a>
+          <a href="#sidebar" class="header__nav-link header__nav-link--action"></a>
         </div>
       </div>
       <a href="#user" class="header__logo">
@@ -33,25 +27,19 @@
           src="/assets/icons/image.png"
           class="header__logo"
           alt="logo_admin"
+          id="admin_logo"
         />
       </a>
     </header>
 
-    <!-- Menú lateral -->
     <aside class="aside" id="sidebar">
       <a href="#" class="aside__close">X</a>
 
       <a href="#" class="aside__link aside__link--navi">
-        <img
-          class="aside__icon aside__icon--users"
-          src="/assets/icons/usuarios.png"
-          alt="users_icon"
-        />
+        <img class="aside__icon aside__icon--users" src="/assets/icons/usuarios.png" alt="users_icon" />
       </a>
       <div class="aside__panel aside__panel--users" id="users">
-        <a href="users/gest-user.html" class="aside__panel-link"
-          >Gestión de Usuarios</a
-        >
+        <a href="/public/admin/users/gest-user.html" class="aside__panel-link">Gestion de Usuarios</a>
       </div>
 
       <a href="#" class="aside__link aside__link--navi">
@@ -62,9 +50,7 @@
         />
       </a>
       <div class="aside__panel aside__panel--content">
-        <a href="plans/gest-plans.html" class="aside__panel-link"
-          >Gestión de Planes</a
-        >
+        <a href="/public/admin/plans/gest-plans.html" class="aside__panel-link">Gestion de Planes</a>
       </div>
 
       <a href="#" class="aside__link aside__link--navi">
@@ -75,62 +61,45 @@
         />
       </a>
       <div class="aside__panel aside__panel--library">
-        <a href="stadistics/stadistic.html" class="aside__panel-link"
-          >Estadisticas</a
-        >
+        <a href="/public/admin/stadistics/stadistic.html" class="aside__panel-link">Estadisticas</a>
       </div>
 
       <a href="#" class="aside__link aside__link--navi">
-        <img
-          class="aside__icon aside__icon--reports"
-          src="/assets/icons/setting.png"
-          alt="reports_icon"
-        />
+        <img class="aside__icon aside__icon--reports" src="/assets/icons/setting.png" alt="reports_icon" />
       </a>
       <div class="aside__panel aside__panel--reports">
-        <a href="settings/settings-admin.html" class="aside__panel-link"
-          >Configuraciones</a
-        >
+        <a href="/public/admin/settings/settings-admin.html" class="aside__panel-link">Configuraciones</a>
       </div>
     </aside>
 
-    <!-- Contenido principal -->
     <main class="feed">
       <div class="feed__content">
-        <img
-          class="feed__image"
-          src="/assets/image/admin.png"
-          alt="Ilustracion del dashboard admin"
-        />
-        <p class="feed__text">Que administraremos Hoy?</p>
+        <img class="feed__image" src="/assets/image/admin.png" alt="Panel admin" />
+        <p class="feed__text">Que administraremos hoy?</p>
       </div>
     </main>
 
-    <!-- BLOQUE: menu-user (admin) -->
     <div class="menu-user menu-user--hidden" id="user">
       <a href="#" class="menu-user__close">X</a>
 
-      <!-- ELEMENTO: menu-user__avatar -->
       <img
         class="menu-user__avatar"
         src="/assets/icons/image.png"
         alt="Avatar del administrador"
+        id="admin_profile_photo"
       />
 
       <div class="menu-user__separador"></div>
 
-      <!-- ELEMENTOS: Párrafos de información -->
-      <p class="menu-user__text">Administrador:</p>
-      <p class="menu-user__text">ID:</p>
-      <p class="menu-user__text">Correo:</p>
+      <p class="menu-user__text">Administrador: <span id="admin_name"></span></p>
+      <p class="menu-user__text">ID: <span id="admin_id"></span></p>
+      <p class="menu-user__text">Correo: <span id="admin_email"></span></p>
 
-      <!-- ELEMENTO: Un grupo de opciones o información -->
       <div class="menu-user__group">
         <p class="menu-user__group-title">Permisos:</p>
 
-        <!-- ELEMENTO: Un item específico dentro del grupo -->
         <div class="menu-user__Model">
-          <p class="menu-user__Model-text">Admin-Full</p>
+          <p class="menu-user__Model-text" id="admin_role">Admin</p>
           <img
             class="menu-user__setting-icon"
             src="/assets/icons/icono_model.png"
@@ -139,14 +108,12 @@
         </div>
       </div>
 
-      <!-- ELEMENTO: Botón de acción principal -->
-      <button class="menu-user__button">
-        <a class="menu-user__link" href="login-admin.html">Cerrar Sesión</a>
+      <button class="menu-user__button" id="admin_logout">
+        <span class="menu-user__link">Cerrar sesion</span>
       </button>
     </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/admin/dashboard-admin.js"></script>
   </body>
 </html>
-
-
-
-

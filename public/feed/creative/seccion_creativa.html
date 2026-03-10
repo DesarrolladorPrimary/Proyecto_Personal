@@ -12,11 +12,12 @@
     />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
     <link rel="stylesheet" href="/src/styles/components/layout.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link
       rel="stylesheet"
       href="/src/styles/pages/feed/creative/seccion_creativa.css"
     />
-      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <header class="header">
@@ -45,59 +46,28 @@
       </div>
 
       <form class="creative-input">
-        <a href="canvas_creative.html" class="creative-input__link"
-          >Nuevo lienzo</a
-        >
+        <button type="button" class="creative-input__link creative-input__button" id="creative-new-story">
+          Nuevo lienzo
+        </button>
       </form>
     </main>
 
     <aside class="creative-aside" id="sidebar">
       <div class="creative-aside__header">
         <p class="creative-aside__title">Relatos</p>
-        <button class="creative-aside__button">Nuevo lienzo</button>
+        <button class="creative-aside__button" type="button" id="creative-sidebar-new">Nuevo lienzo</button>
       </div>
 
       <div class="creative-aside__separator"></div>
-
-      <div class="creative-aside__chat">
-        <p class="creative-aside__chat-title">Sueño lunar</p>
-        <a
-          class="creative-aside__chat-options creative-aside__chat-options--button"
-          >⋮</a
-        >
-
-        <div class="creative-aside__options">
-          <button
-            class="creative-aside__option creative-aside__option--rename"
-            type="button"
-          >
-            <span class="creative-aside__option-label">Renombrar</span>
-            <img
-              src="/assets/icons/reescribir.png"
-              alt=""
-              class="creative-aside__option-icon"
-            />
-          </button>
-
-          <button
-            class="creative-aside__option creative-aside__option--delete"
-            type="button"
-          >
-            <span class="creative-aside__option-label">Eliminar</span>
-            <img
-              src="/assets/icons/delete.png"
-              alt=""
-              class="creative-aside__option-icon"
-            />
-          </button>
-        </div>
-      </div>
+      <div id="creative-story-list"></div>
       <a href="#" class="creative-aside__close"></a>
     </aside>
 
     <footer class="footer-nav">
       <a class="footer-nav__line" href="../feed-main.html"></a>
     </footer>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/creative/seccion-creativa.js"></script>
   </body>
 </html>
 

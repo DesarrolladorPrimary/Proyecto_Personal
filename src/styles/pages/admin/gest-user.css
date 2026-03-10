@@ -1,14 +1,21 @@
 /* ============================================
-   GEST-USER.CSS - Gestión de Usuarios
+   GEST-USER.CSS - Gestion de Usuarios
    ============================================
-   Página de administración de usuarios.
-   Lista de usuarios con búsqueda y acciones.
+   Pagina de administracion de usuarios.
+   Lista de usuarios con busqueda y acciones.
    ============================================ */
 
 body {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
+}
+
+.main {
+  display: grid;
+  gap: 20px;
+  justify-content: center;
+  padding-bottom: 30px;
 }
 
 .header {
@@ -56,7 +63,7 @@ body {
   border: 1px solid;
   color: #ffffff;
   width: 320px;
-  height: 0px;
+  height: 0;
 }
 
 .footer-nav {
@@ -74,6 +81,12 @@ body {
   align-items: center;
   gap: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-card--empty {
+  text-align: center;
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
 }
 
 .user-card__separator {
@@ -106,7 +119,8 @@ body {
 }
 
 span.user-card__icon {
-  font-size: 18px;
+  font-size: 12px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,6 +129,34 @@ span.user-card__icon {
 
 .user-card__text {
   font-weight: var(--font-weight-regular);
+}
+
+.user-card__label {
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
+  font-size: 14px;
+}
+
+.user-card__role-editor {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.user-card__select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
+}
+
+.user-card__select:disabled,
+.user-card__button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .user-card__status-dot {
@@ -131,6 +173,7 @@ span.user-card__icon {
   width: 100%;
   justify-content: center;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 
 .user-card__button {
@@ -154,112 +197,13 @@ span.user-card__icon {
 }
 
 .user-card__button--suspend span,
-.user-card__button--suspend span,
-.user-card__button--delete span {
+.user-card__button--delete span,
+.user-card__button--role span {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-/* Modal Styles (CSS Only) */
-.modal-state {
-  display: none;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal__overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: -1;
-  cursor: pointer;
-}
-
-.modal__content {
-  background-color: var(--color-background-container);
-  padding: 30px;
-  border-radius: 12px;
-  width: 300px;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: relative;
-  z-index: 10;
-}
-
-.modal__content--success {
-  justify-content: center;
-  height: 150px;
-}
-
-.modal__title {
-  color: var(--color-text-light);
-  font-family: var(--font-family-main);
-  font-size: 20px;
-  font-weight: normal;
-  margin: 0;
-}
-
-.modal__message {
-  color: var(--color-text-light);
-  font-family: var(--font-family-main);
-  font-size: 16px;
-  line-height: 1.4;
-}
-
-.modal__actions {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 10px;
-}
-
-.modal__button {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: var(--color-text-light);
-  padding: 8px 25px;
-  cursor: pointer;
-  font-family: var(--font-family-main);
-  font-size: 14px;
-  transition: background-color 0.2s;
-  display: inline-block;
-}
-
-.modal__button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Logic to show modals based on checked radio */
-#modal-confirm-delete:checked ~ .modal--confirm-delete,
-#modal-confirm-suspend:checked ~ .modal--confirm-suspend,
-#modal-success-delete:checked ~ .modal--success-delete,
-#modal-success-suspend:checked ~ .modal--success-suspend {
-  display: flex;
-}
-
-/* ===========================
-   SISTEMA DE BREAKPOINTS
-   =========================== */
-
-/* Tablets (768px - 1023px) */
 @media (min-width: 768px) {
   .header {
     margin: 0 0 15px 0;
@@ -296,22 +240,8 @@ span.user-card__icon {
     font-size: 14px;
     padding: 9px 18px;
   }
-
-  .modal__content {
-    width: 350px;
-    padding: 35px;
-  }
-
-  .modal__title {
-    font-size: 21px;
-  }
-
-  .modal__message {
-    font-size: 17px;
-  }
 }
 
-/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
   .header {
     margin: 0 0 20px 0;
@@ -349,25 +279,11 @@ span.user-card__icon {
     padding: 10px 20px;
   }
 
-  .modal__content {
-    width: 400px;
-    padding: 40px;
-  }
-
-  .modal__title {
-    font-size: 22px;
-  }
-
-  .modal__message {
-    font-size: 18px;
-  }
-
   .footer-nav__line {
     margin-bottom: 20px;
   }
 }
 
-/* Desktop Grande (1280px+) */
 @media (min-width: 1280px) {
   .header__title {
     font-size: 26px;
@@ -399,18 +315,5 @@ span.user-card__icon {
   .user-card__button {
     font-size: 16px;
     padding: 12px 24px;
-  }
-
-  .modal__content {
-    width: 450px;
-    padding: 45px;
-  }
-
-  .modal__title {
-    font-size: 24px;
-  }
-
-  .modal__message {
-    font-size: 19px;
   }
 }

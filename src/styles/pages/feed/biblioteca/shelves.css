@@ -1,88 +1,106 @@
 /* ============================================
-   SHELVES.CSS - Página de Estanterías
+   SHELVES.CSS - Pagina de Estanterias
    ============================================
-   Lista de estanterías del usuario
-   Cada tarjeta representa una estantería
+   Lista de estanterias del usuario.
+   Cada tarjeta representa una estanteria.
    ============================================ */
 
-/* Grid principal de la página */
 body {
   display: grid;
-  grid-template-columns: 1fr; /* Una columna */
-  grid-template-rows: 50px 1fr; /* Header 50px + contenido */
+  grid-template-columns: 1fr;
+  grid-template-rows: 50px 1fr;
   background-color: var(--background-color-body-feed);
 }
 
-/* Header con título centrado y flecha en esquina */
 .shelves-header {
   display: flex;
-  justify-content: center; /* Centra el título */
+  justify-content: center;
   align-items: center;
-  position: relative; /* Para posicionar la flecha */
+  position: relative;
 }
 
-/* Título "Estanterías" */
 .shelves-header__title {
   font-size: 16px;
   font-family: var(--font-family-main);
-  color: var(--color-text-light); /* Texto blanco */
+  color: var(--color-text-light);
   font-weight: 400;
 }
 
-/* Flecha de regreso (posición absoluta en esquina) */
 .shelves-header__arrow {
-  position: absolute; /* Saca la flecha del flujo normal */
-  left: 20px; /* Fija en la esquina izquierda */
+  position: absolute;
+  left: 20px;
   width: 22px;
   height: 22px;
 }
 
-/* Contenedor principal de estanterías */
 .shelves-main {
   display: flex;
-  flex-direction: column; /* Estanterías apiladas */
-  gap: 20px; /* Espacio entre tarjetas */
+  flex-direction: column;
+  gap: 20px;
   padding: 20px;
 }
 
-/* Enlace de cada tarjeta */
-.shelf-card__link {
-  text-decoration: none; /* Sin subrayado */
-  display: block;
-}
-
-/* Tarjeta de estantería con gradiente radial */
 .shelf-card {
-  background: radial-gradient(
-    circle,
-    var(--color-background-container) 0%,
-    /* Centro más claro */ #999999 100% /* Bordes más oscuros */
-  );
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
+  background: radial-gradient(circle, var(--color-background-container) 0%, #999999 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   min-height: 60px;
-  cursor: pointer;
-  transition: all 0.3s ease; /* Transición suave */
+  transition: all 0.3s ease;
 }
 
-/* Nombre de la estantería */
+.shelf-card--selected {
+  outline: 2px solid #ffffff;
+}
+
+.shelf-card__content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .shelf-card__name {
   font-family: var(--font-family-main);
   font-size: var(--font-size-small);
   color: var(--color-text-light);
   font-weight: 400;
-  text-align: center;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
-/* ===========================
-   SISTEMA DE BREAKPOINTS
-   =========================== */
+.shelf-card__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
-/* Tablets (768px - 1023px): Tarjetas más grandes */
+.shelf-card__action {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.shelf-card__action--open {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.shelf-card__action--danger {
+  background: rgba(216, 141, 141, 0.8);
+}
+
 @media (min-width: 768px) {
   .shelves-header__title {
     font-size: 18px;
@@ -98,20 +116,14 @@ body {
   }
 }
 
-/* Desktop (1024px - 1279px): Efectos hover */
 @media (min-width: 1024px) {
   .shelf-card:hover {
-    background: radial-gradient(
-      circle,
-      rgba(176, 176, 176, 0.6) 0%,
-      rgba(176, 176, 176, 0.4) 100%
-    );
-    transform: translateY(-2px); /* Levanta la tarjeta */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra al hover */
+    background: radial-gradient(circle, rgba(176, 176, 176, 0.6) 0%, rgba(176, 176, 176, 0.4) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 }
 
-/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
   .shelves-header__title {
     font-size: 20px;

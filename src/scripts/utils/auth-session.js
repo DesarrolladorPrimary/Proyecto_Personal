@@ -6,6 +6,8 @@ const ROUTES = {
   login: "/public/auth/login.html",
   register: "/public/auth/regist.html",
   feed: "/public/feed/feed-main.html",
+  adminLogin: "/public/admin/login-admin.html",
+  adminDashboard: "/public/admin/dashboard-admin.html",
 };
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
@@ -91,6 +93,19 @@ export const getCurrentUserId = () => {
   return payload.id;
 };
 
+export const getCurrentUserRole = () => {
+  const payload = parseTokenSafely();
+
+  if (!payload || typeof payload.role !== "string") {
+    return "";
+  }
+
+  return payload.role;
+};
+
+export const isAdminRole = (role = getCurrentUserRole()) =>
+  role.trim().toLowerCase() === "admin";
+
 export const getAuthHeaders = (extraHeaders = {}) => {
   const token = getToken();
 
@@ -151,6 +166,21 @@ export const isAuthRoute = (pathname = window.location.pathname) =>
 export const isFeedRoute = (pathname = window.location.pathname) =>
   pathname.startsWith("/public/feed/");
 
+export const isAdminRoute = (pathname = window.location.pathname) =>
+  pathname.startsWith("/public/admin/");
+
+export const isAdminLoginRoute = (pathname = window.location.pathname) =>
+  pathname === ROUTES.adminLogin;
+
+export const isProtectedAdminRoute = (pathname = window.location.pathname) =>
+  isAdminRoute(pathname) && !isAdminLoginRoute(pathname);
+
+export const getDefaultRouteForRole = (role = getCurrentUserRole()) =>
+  isAdminRole(role) ? ROUTES.adminDashboard : ROUTES.feed;
+
+export const getLoginRouteForPath = (pathname = window.location.pathname) =>
+  isAdminRoute(pathname) ? ROUTES.adminLogin : ROUTES.login;
+
 export const redirectTo = (target) => {
   window.location.href = target;
 };
@@ -158,6 +188,7 @@ export const redirectTo = (target) => {
 export const enforceSessionRoute = (pathname = window.location.pathname) => {
   const validSession = hasValidSession();
   const payload = parseTokenSafely();
+  const role = payload?.role ?? "";
   const notice = payload && isTokenExpired(payload)
     ? {
         text: DEFAULT_EXPIRED_MESSAGE,
@@ -173,17 +204,36 @@ export const enforceSessionRoute = (pathname = window.location.pathname) => {
     storeAuthNotice(notice);
   }
 
+  if (isAdminLoginRoute(pathname) && validSession) {
+    redirectTo(getDefaultRouteForRole(role));
+    return;
+  }
+
+  if (isProtectedAdminRoute(pathname) && !validSession) {
+    redirectTo(ROUTES.adminLogin);
+    return;
+  }
+
+  if (isProtectedAdminRoute(pathname) && !isAdminRole(role)) {
+    storeAuthNotice({
+      text: "No tienes permisos de administrador.",
+      background: "red",
+    });
+    redirectTo(ROUTES.feed);
+    return;
+  }
+
   if (isFeedRoute(pathname) && !validSession) {
     redirectTo(ROUTES.login);
     return;
   }
 
   if (isAuthRoute(pathname) && validSession) {
-    redirectTo(ROUTES.feed);
+    redirectTo(getDefaultRouteForRole(role));
   }
 };
 
-export const logoutAndRedirect = (target = ROUTES.login, notice = null) => {
+export const logoutAndRedirect = (target = getLoginRouteForPath(), notice = null) => {
   clearToken();
 
   if (notice) {

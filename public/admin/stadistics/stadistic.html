@@ -1,107 +1,91 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
     <link rel="stylesheet" href="/src/styles/components/layout.css" />
     <link rel="stylesheet" href="/src/styles/layout.css" />
-    <link
-      rel="stylesheet"
-      href="/src/styles/pages/admin/stadistic.css"
-    />
-    <title>Estadísticas - Panel de Administración</title>
-      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
+    <link rel="stylesheet" href="/src/styles/pages/admin/stadistic.css" />
+    <title>Estadisticas - Panel de Administracion</title>
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <div class="stats-container">
-      <!-- Header -->
       <header class="stats-header">
-        <h1 class="stats-header__title">Estadísticas Generales</h1>
+        <h1 class="stats-header__title">Estadisticas Generales</h1>
         <div class="stats-header__separator"></div>
-        <p class="stats-header__update">Actualizado: 8 / Nov / 2025</p>
+        <p class="stats-header__update" id="stats_last_update">Actualizado: --</p>
       </header>
 
-      <!-- Main Content -->
       <main class="stats-content">
-        <!-- Total Users Card -->
         <div class="stats-card stats-card--users">
-        <div class="stats-card__icon">📊</div>
+          <div class="stats-card__icon">SYS</div>
           <div class="stats-card__info">
             <span class="stats-card__label">Usuarios Totales:</span>
-            <span class="stats-card__value">127</span>
+            <span class="stats-card__value" id="stats_total_users">0</span>
           </div>
         </div>
 
-        <!-- Active Users Card -->
         <div class="stats-card stats-card--active">
           <div class="stats-card__indicator stats-card__indicator--green"></div>
           <div class="stats-card__info">
             <span class="stats-card__label">Activos</span>
-            <span class="stats-card__value">118</span>
+            <span class="stats-card__value" id="stats_active_users">0</span>
           </div>
         </div>
 
-        <!-- Suspended Users Card -->
         <div class="stats-card stats-card--suspended">
           <div class="stats-card__indicator stats-card__indicator--red"></div>
           <div class="stats-card__info">
             <span class="stats-card__label">Suspendidos</span>
-            <span class="stats-card__value">9</span>
+            <span class="stats-card__value" id="stats_suspended_users">0</span>
           </div>
         </div>
 
-        <!-- Requests Section -->
         <div class="stats-section">
-          <h3 class="stats-section__title">Solicitudes procesadas este mes:</h3>
+          <h3 class="stats-section__title">Actividad del sistema:</h3>
           <div class="stats-section__items">
             <div class="stats-item">
-          <span class="stats-item__icon stats-item__icon--green">✓</span>
-              <span class="stats-item__text">Aprobadas: 10</span>
+              <span class="stats-item__icon stats-item__icon--green">OK</span>
+              <span class="stats-item__text" id="stats_ai_requests">Solicitudes IA este mes: 0</span>
             </div>
             <div class="stats-item">
-          <span class="stats-item__icon stats-item__icon--red">✖</span>
-              <span class="stats-item__text">Rechazadas: 3</span>
-            </div>
-            <div class="stats-item">
-          <span class="stats-item__icon stats-item__icon--gray">○</span>
-              <span class="stats-item__text">Pendientes: 0</span>
+              <span class="stats-item__icon stats-item__icon--red">TXT</span>
+              <span class="stats-item__text" id="stats_total_stories">Relatos creados: 0</span>
             </div>
           </div>
         </div>
 
-        <!-- Plans Distribution Card -->
         <div class="stats-card stats-card--plans">
-          <h3 class="stats-card__subtitle">Distribución de planes:</h3>
+          <h3 class="stats-card__subtitle">Distribucion de planes:</h3>
           <div class="stats-card__plan-item">
             <div class="stats-card__plan-info">
-            <span class="stats-card__plan-icon">✨</span>
+              <span class="stats-card__plan-icon">PR</span>
               <span class="stats-card__plan-name">Premium</span>
               <span class="stats-card__plan-separator">|</span>
             </div>
-            <span class="stats-card__plan-count">12 Usuarios</span>
+            <span class="stats-card__plan-count" id="stats_premium_users">0 usuarios</span>
           </div>
           <div class="stats-card__plan-item">
             <div class="stats-card__plan-info">
-            <span class="stats-card__plan-icon">💎</span>
+              <span class="stats-card__plan-icon">GR</span>
               <span class="stats-card__plan-name">Gratuito</span>
               <span class="stats-card__plan-separator">|</span>
             </div>
-            <span class="stats-card__plan-count">115 Usuarios</span>
+            <span class="stats-card__plan-count" id="stats_free_users">0 usuarios</span>
           </div>
         </div>
       </main>
 
-      <!-- Footer -->
       <footer class="stats-footer">
-        <button class="stats-footer__button">Actualizar datos</button>
-        <a href="../dashboard-admin.html" class="footer-nav__line"></a>
+        <button class="stats-footer__button" id="stats_refresh">Actualizar datos</button>
+        <a href="/public/admin/dashboard-admin.html" class="footer-nav__line"></a>
       </footer>
     </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/admin/stadistic.js"></script>
   </body>
 </html>
-
-
-
-
-

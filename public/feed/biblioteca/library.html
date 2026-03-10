@@ -1,32 +1,22 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>biblioteca</title>
+    <title>Biblioteca</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
-    <link
-      rel="stylesheet"
-      href="/src/styles/pages/feed/biblioteca/library.css"
-    />
-      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
-      <script src="/src/scripts/utils/language-manager.js"></script>
+    <link rel="stylesheet" href="/src/styles/pages/feed/biblioteca/library.css" />
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
+    <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
   <body>
     <header class="library-header">
       <a href="../feed-main.html" class="library-header__link">
-        <img
-          class="library-header__arrow"
-          src="/assets/icons/arrow-90deg-left.svg"
-          alt=""
-        />
+        <img class="library-header__arrow" src="/assets/icons/arrow-90deg-left.svg" alt="" />
       </a>
       <input
         class="library-header__input"
@@ -37,32 +27,31 @@
         id="input_library"
       />
       <button class="library-header__action" type="button" id="refresh-library" aria-label="Actualizar biblioteca">
-        <img
-          class="library-header__arrow"
-          src="/assets/icons/box-arrow-down.svg"
-          alt=""
-        />
+        <img class="library-header__arrow" src="/assets/icons/box-arrow-down.svg" alt="" />
       </button>
     </header>
+
+    <section class="library-filter">
+      <p class="library-filter__label">Vista actual:</p>
+      <div class="library-filter__chip-group">
+        <span class="library-filter__chip" id="active-shelf-chip">Toda la biblioteca</span>
+        <button class="library-filter__clear" type="button" id="clear-shelf-filter">Ver todo</button>
+      </div>
+    </section>
 
     <main class="library-main" id="library-main"></main>
 
     <footer class="library-footer">
       <div class="library-footer__icon-container">
-        <img
-          class="library-footer__icon"
-          src="/assets/icons/libros.png"
-          alt="Lista"
-        />
+        <img class="library-footer__icon" src="/assets/icons/libros.png" alt="Lista" />
       </div>
       <div class="library-footer__buttons">
         <button class="library-footer__button" type="button" id="create-shelf" data-i18n="library.new">Nuevo</button>
         <a href="shelves.html" class="library-footer__link">
-          <button class="library-footer__button" data-i18n="library.shelves">Estanterías</button>
+          <button class="library-footer__button" type="button" data-i18n="library.shelves">Estanterias</button>
         </a>
       </div>
 
-      <!-- Barra de almacenamiento -->
       <div class="storage-bar">
         <div class="storage-bar__progress">
           <div class="storage-bar__fill" style="width: 2%"></div>
@@ -71,26 +60,20 @@
       </div>
     </footer>
 
-    <!-- Modal de Opciones del Libro -->
     <div class="book-modal" id="bookModal">
       <div class="book-modal__overlay"></div>
       <div class="book-modal__content">
         <a href="#" class="book-modal__close">&times;</a>
-
         <h2 class="book-modal__shelf-name" id="book-modal-title">Documento</h2>
         <p class="book-modal__meta" id="book-modal-meta"></p>
-
         <div class="book-modal__actions">
           <button class="book-modal__button" type="button" id="book-modal-download">Descargar</button>
           <button class="book-modal__button book-modal__button--delete" type="button" id="book-modal-delete">Eliminar</button>
         </div>
       </div>
     </div>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="/src/scripts/pages/biblioteca/library.js"></script>
   </body>
 </html>
-
-
-
-

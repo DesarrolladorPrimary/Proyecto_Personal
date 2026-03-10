@@ -3,6 +3,7 @@ import { fetchJson } from "../../utils/api-client.js";
 import {
   getAuthHeaders,
   getCurrentUserId,
+  getLoginRouteForPath,
   getUnauthorizedNotice,
   logoutAndRedirect,
 } from "../../utils/auth-session.js";
@@ -11,6 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const inputLibrary = document.getElementById("input_library");
   const createButton = document.getElementById("create-shelf");
   const refreshButton = document.getElementById("refresh-library");
+  const clearFilterButton = document.getElementById("clear-shelf-filter");
+  const activeShelfChip = document.getElementById("active-shelf-chip");
   const libraryMain = document.getElementById("library-main");
   const storageBar = document.querySelector(".storage-bar");
   const storageFill = document.querySelector(".storage-bar__fill");
@@ -40,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   const showToast = (text, background = "red") => {
-    Toastify({
+    window.Toastify?.({
       text,
       duration: 2500,
       gravity: "top",
@@ -72,8 +75,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    if (savedShelfName) {
-      inputLibrary.value = savedShelfName;
+    inputLibrary.value = savedShelfName;
+  };
+
+  const syncShelfFilterUi = () => {
+    const shelfName = inputLibrary.value.trim();
+    if (activeShelfChip) {
+      activeShelfChip.textContent = shelfName || "Toda la biblioteca";
+    }
+
+    if (clearFilterButton) {
+      clearFilterButton.disabled = !state.selectedShelfId;
     }
   };
 
@@ -85,47 +97,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
   };
 
-  const setSelectedDocument = (document) => {
-    state.selectedDocument = document;
-
-    const isEnabled = Boolean(document);
-    if (modalDownloadButton) {
-      modalDownloadButton.disabled = !isEnabled;
-    }
-    if (modalDeleteButton) {
-      modalDeleteButton.disabled = !isEnabled;
-    }
-
-    if (!document) {
-      if (modalTitle) {
-        modalTitle.textContent = t("library.modal_title", "Documento");
-      }
-      if (modalMeta) {
-        modalMeta.textContent = "";
-      }
-      return;
-    }
-
-    if (modalTitle) {
-      modalTitle.textContent = document.nombreArchivo || document.tituloRelato || t("library.document", "Documento");
-    }
-
-    if (modalMeta) {
-      modalMeta.textContent = buildDocumentMeta(document);
-    }
-  };
-
   const formatMb = (value) => numberFormatter.format(Number(value || 0));
-
-  const formatFileSize = (bytes) => formatMb((Number(bytes) || 0) / 1024 / 1024) + " MB";
+  const formatFileSize = (bytes) => `${formatMb((Number(bytes) || 0) / 1024 / 1024)} MB`;
 
   const formatDate = (value) => {
     if (!value) {
       return "";
     }
 
-    const normalized = String(value).replace(" ", "T");
-    const parsed = new Date(normalized);
+    const parsed = new Date(String(value).replace(" ", "T"));
     if (Number.isNaN(parsed.getTime())) {
       return "";
     }
@@ -158,6 +138,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     return parts.join(" · ");
   };
 
+  const setSelectedDocument = (document) => {
+    state.selectedDocument = document;
+
+    const enabled = Boolean(document);
+    modalDownloadButton.disabled = !enabled;
+    modalDeleteButton.disabled = !enabled;
+
+    if (!document) {
+      modalTitle.textContent = t("library.modal_title", "Documento");
+      modalMeta.textContent = "";
+      return;
+    }
+
+    modalTitle.textContent = document.nombreArchivo || document.tituloRelato || "Documento";
+    modalMeta.textContent = buildDocumentMeta(document);
+  };
+
   const getDocumentCountLabel = () => {
     const total = state.documents.length;
     return `${total} documento${total === 1 ? "" : "s"}`;
@@ -172,12 +169,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "book-card";
-    button.title = document.nombreArchivo || document.tituloRelato || t("library.document", "Documento");
+    button.title = document.nombreArchivo || document.tituloRelato || "Documento";
     button.addEventListener("click", () => openDocumentModal(document));
 
     const title = document.createElement("p");
     title.className = "book-card__title";
-    title.textContent = document.nombreArchivo || document.tituloRelato || t("library.document", "Documento");
+    title.textContent = document.nombreArchivo || document.tituloRelato || "Documento";
     button.appendChild(title);
 
     return button;
@@ -193,12 +190,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const title = document.createElement("h2");
     title.className = "library-empty__title";
     title.textContent = state.selectedShelfId
-      ? "Esta estantería aún no tiene documentos convertidos"
-      : "Aún no tienes documentos convertidos guardados";
+      ? "Esta estanteria aun no tiene documentos convertidos"
+      : "Aun no tienes documentos convertidos guardados";
 
     const description = document.createElement("p");
     description.className = "library-empty__text";
-    description.textContent = "Los archivos exportados desde Poly aparecerán aquí para descargarlos o eliminarlos.";
+    description.textContent = "Los archivos exportados apareceran aqui para descargarlos o eliminarlos.";
 
     emptyState.append(title, description);
     libraryMain.appendChild(emptyState);
@@ -223,9 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const createShelfPanel = () => {
     const panel = document.createElement("section");
     panel.className = "library-panel";
-    panel.append(
-      createPanelHeader("Vista de estantería", getDocumentCountLabel()),
-    );
+    panel.append(createPanelHeader("Vista de estanteria", getDocumentCountLabel()));
 
     const shelfStack = document.createElement("div");
     shelfStack.className = "library-shelf-stack";
@@ -273,9 +268,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const story = document.createElement("p");
     story.className = "document-list__story";
-    story.textContent = document.tituloRelato
-      ? `Relato: ${document.tituloRelato}`
-      : "Documento exportado";
+    story.textContent = document.tituloRelato ? `Relato: ${document.tituloRelato}` : "Documento exportado";
 
     const meta = document.createElement("p");
     meta.className = "document-list__meta";
@@ -298,9 +291,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const createListPanel = () => {
     const panel = document.createElement("section");
     panel.className = "library-panel library-panel--list";
-    panel.append(
-      createPanelHeader("Lista de documentos", "Nombre, relato, fecha y acciones directas"),
-    );
+    panel.append(createPanelHeader("Lista de documentos", "Nombre, relato, fecha y acciones directas"));
 
     const list = document.createElement("div");
     list.className = "document-list";
@@ -321,10 +312,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    libraryMain.append(
-      createShelfPanel(),
-      createListPanel(),
-    );
+    libraryMain.append(createShelfPanel(), createListPanel());
   };
 
   const loadSubscription = async () => {
@@ -341,23 +329,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       const used = Number(data.almacenamientoUsadoMb ?? 0);
       const limit = Number(data.limiteAlmacenamientoMb ?? data.almacenamiento ?? 500);
       const unlimited = Boolean(data.almacenamientoIlimitado);
-      const percentage = !unlimited && limit > 0
-        ? Math.min(100, Math.round((used / limit) * 100))
-        : 100;
+      const percentage = !unlimited && limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 100;
 
       storageBar?.classList.toggle("storage-bar--unlimited", unlimited);
-
       if (storageFill) {
         storageFill.style.width = `${percentage}%`;
       }
-
       if (storageText) {
         storageText.textContent = unlimited
           ? `${formatMb(used)} MB / Ilimitado`
           : `${formatMb(used)}/${formatMb(limit)} MB`;
       }
     } catch (error) {
-      // Dejamos el estado visual por defecto si no carga la suscripción.
     }
   };
 
@@ -377,14 +360,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       state.documents = Array.isArray(data.documentos) ? data.documentos : [];
       renderDocuments();
     } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
       renderEmptyState();
     }
   };
 
   const parseErrorResponse = async (response) => {
     const raw = await response.text();
-
     if (!raw) {
       return {};
     }
@@ -402,17 +384,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-      const response = await fetch(
-        buildApiUrl("/api/v1/library/documents/download", { fileId: document.id }),
-        {
-          method: "GET",
-          headers: getAuthHeaders(),
-        },
-      );
+      const response = await fetch(buildApiUrl("/api/v1/library/documents/download", { fileId: document.id }), {
+        method: "GET",
+        headers: getAuthHeaders(),
+      });
 
       if (response.status === 401) {
         const errorData = await parseErrorResponse(response);
-        logoutAndRedirect("/public/auth/login.html", getUnauthorizedNotice(errorData));
+        logoutAndRedirect(getLoginRouteForPath(), getUnauthorizedNotice(errorData));
         return;
       }
 
@@ -434,7 +413,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       showToast("Documento descargado", "green");
     } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
     }
   };
 
@@ -443,9 +422,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const confirmed = window.confirm(
-      `¿Eliminar "${document.nombreArchivo || "documento"}" de la biblioteca?`,
-    );
+    const confirmed = window.confirm(`Eliminar "${document.nombreArchivo || "documento"}" de la biblioteca?`);
     if (!confirmed) {
       return;
     }
@@ -470,12 +447,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       showToast(data.Mensaje || "Documento eliminado", "green");
       await Promise.all([loadDocuments(), loadSubscription()]);
     } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
     }
   };
 
   refreshButton?.addEventListener("click", async () => {
     await Promise.all([loadDocuments(), loadSubscription()]);
+  });
+
+  clearFilterButton?.addEventListener("click", async () => {
+    state.selectedShelfId = "";
+    inputLibrary.value = "";
+    sessionStorage.removeItem(storageNameKey);
+    sessionStorage.removeItem(storageIdKey);
+    history.replaceState(null, "", window.location.pathname);
+    syncShelfFilterUi();
+    await loadDocuments();
   });
 
   modalDownloadButton?.addEventListener("click", () => downloadDocument());
@@ -491,7 +478,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const nombre = inputLibrary.value.trim();
 
     if (!nombre) {
-      showToast("Ingresa un nombre para la estantería");
+      showToast("Ingresa un nombre para la estanteria");
       inputLibrary.focus();
       return;
     }
@@ -508,7 +495,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (!ok) {
-        showToast(data.Mensaje || "No fue posible crear la estantería");
+        showToast(data.Mensaje || "No fue posible crear la estanteria");
         return;
       }
 
@@ -517,14 +504,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         sessionStorage.setItem(storageIdKey, String(data.id));
       }
 
-      showToast(data.Mensaje || "Estantería creada correctamente", "green");
+      showToast(data.Mensaje || "Estanteria creada correctamente", "green");
       window.location.href = `shelves.html?selected=${encodeURIComponent(data.id || "")}`;
     } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
     }
   });
 
   syncSelectedShelf();
+  syncShelfFilterUi();
   setSelectedDocument(null);
   await Promise.all([loadDocuments(), loadSubscription()]);
 });

@@ -1,17 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
     <link rel="stylesheet" href="/src/styles/components/layout.css" />
     <link rel="stylesheet" href="/src/styles/layout.css" />
-    <link
-      rel="stylesheet"
-      href="/src/styles/pages/admin/gest-plans.css"
-    />
-    <title>Gestión de Planes</title>
-      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
+    <link rel="stylesheet" href="/src/styles/pages/admin/gest-plans.css" />
+    <title>Gestion de Planes</title>
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <header class="plans-header">
@@ -19,73 +17,20 @@
       <div class="plans-header__separator"></div>
       <div class="plans-header__history">
         <p class="plans-header__history-title">Historial de pagos</p>
-        <a href="historial-plans.html" class="plans-header__history-link">
-        <span class="plans-header__history-icon">🧾</span>
-          <span class="plans-header__history-text">ver</span>
+        <a href="/public/admin/plans/historial-plans.html" class="plans-header__history-link">
+          <span class="plans-header__history-icon">LOG</span>
+          <span class="plans-header__history-text">Ver</span>
         </a>
       </div>
     </header>
 
-    <main class="main-content">
-      <div class="plan-card plan-card--basic">
-        <h2 class="plan-card__title">
-            <span class="plan-card__title-icon">📘</span>
-          Plan Gratuito
-        </h2>
-        <ul class="plan-card__features">
-          <li class="plan-card__feature">
-            <p class="plan-card__feature-text">
-                ✓ Acceso básico a la biblioteca
-            </p>
-          </li>
-          <li class="plan-card__feature">
-              <p class="plan-card__feature-text">✓ Crear y guardar relatos</p>
-          </li>
-          <li class="plan-card__feature">
-            <p class="plan-card__feature-text">
-                ✓ Chat con Poly limitado (modelo low)
-            </p>
-          </li>
-        </ul>
-              <p class="plan-card__storage">⚙️ Espacio: 500 MB</p>
-        <p class="plan-card__status">Estado: Activo</p>
-      </div>
-      <div class="plan-card plan-card--premium">
-        <h2 class="plan-card__title">
-            <span class="plan-card__title-icon">✨</span>
-          Plan Premium
-        </h2>
-        <ul class="plan-card__features">
-          <li class="plan-card__feature">
-            <p class="plan-card__feature-text">
-                ✨ Acceso a IA avanzada (Poly completa)
-            </p>
-          </li>
-          <li class="plan-card__feature">
-            <p class="plan-card__feature-text">
-                ✨ Más herramientas de redacción
-            </p>
-          </li>
-          <li class="plan-card__feature">
-            <p class="plan-card__feature-text">
-                ✨ Respuestas extendidas y coherentes
-            </p>
-          </li>
-          <li class="plan-card__feature">
-              <p class="plan-card__feature-text">✨ Espacio ilimitado</p>
-          </li>
-        </ul>
-        <p class="plan-card__status">Estado: Activo</p>
-      </div>
-    </main>
+    <main class="main-content" id="admin-plans-list"></main>
 
     <footer class="footer-nav">
-      <a href="../dashboard-admin.html" class="footer-nav__line"></a>
+      <a href="/public/admin/dashboard-admin.html" class="footer-nav__line"></a>
     </footer>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/admin/gest-plans.js"></script>
   </body>
 </html>
-
-
-
-
-

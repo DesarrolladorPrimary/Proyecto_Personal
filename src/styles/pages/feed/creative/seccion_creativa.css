@@ -97,6 +97,13 @@ body {
   font-size: var(--font-size-small);
 }
 
+.creative-input__button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .creative-aside {
   visibility: hidden;
   background-color: var(--color-background-container);
@@ -158,6 +165,10 @@ body {
   font-weight: 300;
   margin-left: 10px;
   font-size: var(--font-size-small);
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
 }
 
 .creative-aside__chat-options {
@@ -219,6 +230,18 @@ body {
   display: flex;
   gap: 6px;
   align-items: center;
+}
+
+.creative-story-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+}
+
+.creative-story-card__date {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .creative-aside__option-icon {

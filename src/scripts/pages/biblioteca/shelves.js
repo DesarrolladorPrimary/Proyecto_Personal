@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const selectedId = new URLSearchParams(window.location.search).get("selected");
 
   const showToast = (text, background = "red") => {
-    Toastify({
+    window.Toastify?.({
       text,
       duration: 2500,
       gravity: "top",
@@ -16,17 +16,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       style: { background },
     }).showToast();
   };
+
   const t = (key) => window.languageManager?.translate(key) || key;
 
   if (!container || !userId) {
     return;
   }
 
-  const createActionButton = (text, onClick) => {
+  const goToShelf = (shelf) => {
+    window.location.href = `library.html?shelfId=${encodeURIComponent(shelf.id)}&shelfName=${encodeURIComponent(shelf.nombre)}`;
+  };
+
+  const createActionButton = (text, variant, onClick) => {
     const button = document.createElement("button");
     button.type = "button";
+    button.className = `shelf-card__action${variant ? ` shelf-card__action--${variant}` : ""}`;
     button.textContent = text;
-    button.style.marginLeft = "0.5rem";
     button.addEventListener("click", onClick);
     return button;
   };
@@ -41,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (!ok) {
-        showToast(data.Mensaje || "No fue posible cargar las estanterías");
+        showToast(data.Mensaje || "No fue posible cargar las estanterias");
         return;
       }
 
@@ -61,22 +66,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         const row = document.createElement("div");
         row.className = "shelf-card";
         if (selectedId && String(shelf.id) === selectedId) {
-          row.style.outline = "2px solid #ffffff";
+          row.classList.add("shelf-card--selected");
         }
 
-        const name = document.createElement("p");
+        const content = document.createElement("div");
+        content.className = "shelf-card__content";
+
+        const name = document.createElement("button");
+        name.type = "button";
         name.className = "shelf-card__name";
         name.textContent = shelf.nombre;
-        row.appendChild(name);
+        name.addEventListener("click", () => goToShelf(shelf));
 
-        const openLink = document.createElement("a");
-        openLink.href = `library.html?shelfId=${encodeURIComponent(shelf.id)}&shelfName=${encodeURIComponent(shelf.nombre)}`;
-        openLink.textContent = t("shelves.open");
-        openLink.style.marginLeft = "0.5rem";
-        row.appendChild(openLink);
-
-        row.appendChild(
-          createActionButton(t("shelves.rename"), async () => {
+        const actions = document.createElement("div");
+        actions.className = "shelf-card__actions";
+        actions.append(
+          createActionButton(t("shelves.open"), "open", () => goToShelf(shelf)),
+          createActionButton(t("shelves.rename"), "", async () => {
             const nuevoNombre = window.prompt(t("shelves.rename_prompt"), shelf.nombre);
 
             if (!nuevoNombre || !nuevoNombre.trim()) {
@@ -96,13 +102,10 @@ document.addEventListener("DOMContentLoaded", async () => {
               return;
             }
 
-            showToast(updateData.Mensaje || "Estantería actualizada", "green");
+            showToast(updateData.Mensaje || "Estanteria actualizada", "green");
             await renderShelves();
           }),
-        );
-
-        row.appendChild(
-          createActionButton(t("shelves.delete"), async () => {
+          createActionButton(t("shelves.delete"), "danger", async () => {
             const confirmed = window.confirm(t("shelves.delete_confirm"));
             if (!confirmed) {
               return;
@@ -119,15 +122,17 @@ document.addEventListener("DOMContentLoaded", async () => {
               return;
             }
 
-            showToast(removeData.Mensaje || "Estantería eliminada", "green");
+            showToast(removeData.Mensaje || "Estanteria eliminada", "green");
             await renderShelves();
           }),
         );
 
+        content.append(name, actions);
+        row.appendChild(content);
         container.appendChild(row);
       });
     } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
     }
   };
 

@@ -1,6 +1,7 @@
 import { buildApiUrl } from "./api-config.js";
 import {
   getAuthHeaders,
+  getLoginRouteForPath,
   getToken,
   getUnauthorizedNotice,
   isTokenExpired,
@@ -44,7 +45,7 @@ export const fetchJson = async (
       };
 
       if (redirectOnUnauthorized) {
-        logoutAndRedirect("/public/auth/login.html", getUnauthorizedNotice(data));
+        logoutAndRedirect(getLoginRouteForPath(), getUnauthorizedNotice(data));
       }
 
       return {
@@ -66,7 +67,7 @@ export const fetchJson = async (
   const data = await parseJsonSafely(response);
 
   if (response.status === 401 && redirectOnUnauthorized) {
-    logoutAndRedirect("/public/auth/login.html", getUnauthorizedNotice(data));
+    logoutAndRedirect(getLoginRouteForPath(), getUnauthorizedNotice(data));
   }
 
   return {
