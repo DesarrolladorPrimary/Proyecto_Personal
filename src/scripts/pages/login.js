@@ -1,4 +1,5 @@
 import { fetchJson } from "../utils/api-client.js";
+import { consumeAuthNotice } from "../utils/auth-session.js";
 
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
 
@@ -18,6 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
       callback,
     }).showToast();
   };
+
+  const authNotice = consumeAuthNotice();
+  if (authNotice?.text) {
+    showToast(authNotice.text, authNotice.background || "orange");
+  }
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();

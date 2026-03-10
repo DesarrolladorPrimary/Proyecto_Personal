@@ -23,6 +23,31 @@ const CREATIVITY_OPTIONS = {
   medium: "Medio",
   high: "Alto",
 };
+const DEFAULT_INPUT_PLACEHOLDER = "Escribe tu mensaje...";
+const DEFAULT_CANVAS_PLACEHOLDER = "Aqui aparecera el borrador final de la historia cuando Poly empiece a desarrollarlo.";
+const WAITING_STATUS_STAGES = [
+  {
+    afterMs: 0,
+    getText: (hasFiles) =>
+      hasFiles
+        ? "Poly esta leyendo tu mensaje y revisando los documentos"
+        : "Poly esta pensando en la mejor respuesta",
+  },
+  {
+    afterMs: 5000,
+    getText: (hasFiles) =>
+      hasFiles
+        ? "Poly esta cruzando el contexto y escribiendo la respuesta"
+        : "Poly esta escribiendo la respuesta",
+  },
+  {
+    afterMs: 12000,
+    getText: (hasFiles) =>
+      hasFiles
+        ? "Poly sigue procesando el contexto; puede tardar un poco mas"
+        : "Poly sigue trabajando en la respuesta; puede tardar un poco mas",
+  },
+];
 
 const state = {
   userId: getCurrentUserId(),
@@ -30,8 +55,13 @@ const state = {
   activeStoryId: null,
   messages: [],
   sending: false,
+  awaitingPolyResponse: false,
+  pendingUserMessage: null,
+  responseWaitStartedAt: 0,
+  responseWaitTimerId: null,
   asideOpen: false,
   sourceFiles: [],
+  sourceFilesExpanded: false,
   aiSettings: { ...DEFAULT_AI_SETTINGS },
   aiSettingsDraft: { ...DEFAULT_AI_SETTINGS },
 };
@@ -59,8 +89,13 @@ const elements = {
   aiModalOpen: document.querySelector(".poly-input__action--intruction"),
   fileInput: document.getElementById("poly-file-input"),
   fileAttachment: document.getElementById("poly-file-attachment"),
+  fileAttachmentToggle: document.getElementById("poly-file-toggle"),
   fileAttachmentName: document.getElementById("poly-file-name"),
+  fileAttachmentChevron: document.getElementById("poly-file-chevron"),
   fileAttachmentRemove: document.getElementById("poly-file-remove"),
+  sourceFilesPanel: document.getElementById("poly-source-files"),
+  sourceFilesCount: document.getElementById("poly-source-files-count"),
+  sourceFilesList: document.getElementById("poly-source-files-list"),
   sendButton: document.getElementById("poly-send-button"),
   modalForm: document.querySelector(".poly-modal__form"),
   styleButton: document.getElementById("poly-style-button"),
@@ -73,6 +108,7 @@ const elements = {
   canvasTitle: document.getElementById("canvas-title"),
   canvasBody: document.getElementById("canvas-body"),
   canvasCounter: document.getElementById("canvas-counter"),
+  canvasSaveButton: document.getElementById("canvas-save-button"),
   bookTitle: document.getElementById("book-title"),
   bookFormat: document.getElementById("book-format"),
   bookSubmit: document.getElementById("book-submit"),
@@ -102,6 +138,7 @@ const setStatus = (text = "") => {
 
   elements.status.textContent = text;
   elements.status.classList.toggle("poly-chat__status--visible", Boolean(text));
+  elements.status.classList.toggle("poly-chat__status--loading", state.awaitingPolyResponse && Boolean(text));
 };
 
 const syncAsideState = () => {
@@ -126,6 +163,32 @@ const setUserMenuOpen = (nextValue) => {
 
 const getPrimarySourceFile = () => state.sourceFiles[0] || null;
 
+const getSourceFileName = (file) => file?.nombreArchivo || file?.name || "Documento";
+
+const getSourceFileType = (file) => String(file?.tipoArchivo || file?.type || "")
+  .replace("application/", "")
+  .replace("vnd.openxmlformats-officedocument.wordprocessingml.document", "DOCX")
+  .replace("msword", "DOC")
+  .toUpperCase();
+
+const formatBytesToMb = (bytes) => {
+  const normalized = Number(bytes || 0);
+  if (!normalized) {
+    return "";
+  }
+
+  return `${(normalized / 1024 / 1024).toFixed(normalized >= 1024 * 1024 ? 2 : 1)} MB`;
+};
+
+const syncSourceFilesAccordion = () => {
+  const hasFiles = state.sourceFiles.length > 0;
+  const isExpanded = hasFiles && state.sourceFilesExpanded;
+
+  elements.sourceFilesPanel?.classList.toggle("poly-hidden", !isExpanded);
+  elements.fileAttachmentToggle?.setAttribute("aria-expanded", String(isExpanded));
+  elements.fileAttachmentChevron?.classList.toggle("poly-input__attachment-chevron--expanded", isExpanded);
+};
+
 const syncAttachedFile = () => {
   if (!elements.fileAttachment || !elements.fileAttachmentName) {
     return;
@@ -133,12 +196,97 @@ const syncAttachedFile = () => {
 
   const primaryFile = getPrimarySourceFile();
   const hasFile = Boolean(primaryFile);
+  if (!hasFile) {
+    state.sourceFilesExpanded = false;
+  }
+
   elements.fileAttachment.classList.toggle("poly-hidden", !hasFile);
   elements.fileAttachmentName.textContent = hasFile
     ? state.sourceFiles.length > 1
       ? `${primaryFile.nombreArchivo || primaryFile.name} (+${state.sourceFiles.length - 1})`
-      : (primaryFile.nombreArchivo || primaryFile.name)
+      : getSourceFileName(primaryFile)
     : "";
+  syncSourceFilesAccordion();
+};
+
+const removeSourceFile = async (fileId) => {
+  if (!fileId || !state.activeStoryId) {
+    return;
+  }
+
+  const { ok, data } = await fetchJson("/api/v1/upload/relato", {
+    method: "DELETE",
+    auth: true,
+    params: {
+      storyId: state.activeStoryId,
+      fileId,
+    },
+  });
+
+  if (!ok) {
+    showToast(data.Mensaje || "No fue posible quitar el archivo");
+    return;
+  }
+
+  showToast(data.Mensaje || "Archivo eliminado", "green");
+  await loadStoryDetails(state.activeStoryId);
+};
+
+const renderSourceFilesList = () => {
+  if (!elements.sourceFilesPanel || !elements.sourceFilesList || !elements.sourceFilesCount) {
+    return;
+  }
+
+  const hasFiles = state.sourceFiles.length > 0;
+  elements.sourceFilesCount.textContent = String(state.sourceFiles.length);
+  elements.sourceFilesList.innerHTML = "";
+
+  if (!hasFiles) {
+    syncSourceFilesAccordion();
+    return;
+  }
+
+  state.sourceFiles.forEach((file, index) => {
+    const row = document.createElement("article");
+    row.className = "poly-source-files__item";
+
+    const content = document.createElement("div");
+    content.className = "poly-source-files__content";
+
+    const title = document.createElement("p");
+    title.className = "poly-source-files__name";
+    title.textContent = getSourceFileName(file);
+
+    const meta = document.createElement("p");
+    meta.className = "poly-source-files__meta";
+    const metaParts = [];
+    const fileType = getSourceFileType(file);
+    const fileSize = formatBytesToMb(file?.tamanoBytes || file?.size);
+    if (fileType) {
+      metaParts.push(fileType);
+    }
+    if (fileSize) {
+      metaParts.push(fileSize);
+    }
+    metaParts.push(index === 0 ? "Adjunto principal" : `Documento ${index + 1}`);
+    meta.textContent = metaParts.join(" · ");
+
+    content.append(title, meta);
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "poly-source-files__remove";
+    removeButton.textContent = "Quitar";
+    removeButton.disabled = state.sending || !file?.id;
+    removeButton.addEventListener("click", async () => {
+      await removeSourceFile(file.id);
+    });
+
+    row.append(content, removeButton);
+    elements.sourceFilesList.appendChild(row);
+  });
+
+  syncSourceFilesAccordion();
 };
 
 const cycleValue = (currentValue, options) => {
@@ -180,11 +328,14 @@ const syncFormState = () => {
 
   if (elements.input) {
     elements.input.disabled = disabled;
+    elements.input.placeholder = disabled ? "Poly esta respondiendo..." : DEFAULT_INPUT_PLACEHOLDER;
   }
 
   if (elements.sendButton) {
     elements.sendButton.disabled = disabled;
     elements.sendButton.classList.toggle("poly-input__action--disabled", disabled);
+    elements.sendButton.classList.toggle("poly-input__action--loading", disabled);
+    elements.sendButton.setAttribute("aria-label", disabled ? "Poly esta respondiendo" : "Enviar mensaje");
   }
 
   if (elements.newChatButton) {
@@ -198,6 +349,12 @@ const syncFormState = () => {
   if (elements.fileAttachmentRemove) {
     elements.fileAttachmentRemove.disabled = disabled;
   }
+
+  if (elements.fileAttachmentToggle) {
+    elements.fileAttachmentToggle.disabled = disabled;
+  }
+
+  renderSourceFilesList();
 };
 
 const focusInput = () => {
@@ -230,31 +387,155 @@ const splitIntoParagraphs = (text) =>
     .map((paragraph) => paragraph.trim())
     .filter(Boolean);
 
-const getCanvasDraft = () => {
-  const activeStory = state.stories.find((story) => story.id === state.activeStoryId);
-  const savedDescription = String(activeStory?.descripcion || "").trim();
+const isCanvasPlaceholder = (text) => String(text || "").trim() === DEFAULT_CANVAS_PLACEHOLDER;
 
-  if (savedDescription) {
-    return savedDescription;
+const getCanvasBodyText = () => {
+  const currentText = elements.canvasBody?.innerText?.trim() || "";
+  return isCanvasPlaceholder(currentText) ? "" : currentText;
+};
+
+const updateCanvasCounter = (text) => {
+  if (!elements.canvasCounter) {
+    return;
   }
 
-  const polyMessages = state.messages
-    .filter((message) => message.emisor === "Poly")
-    .map((message) => String(message.contenido || "").trim())
-    .filter(Boolean);
+  const words = countWords(text);
+  elements.canvasCounter.textContent = `${words} palabra${words === 1 ? "" : "s"}`;
+};
 
-  if (!polyMessages.length) {
+const setCanvasPlaceholder = () => {
+  if (!elements.canvasBody) {
+    return;
+  }
+
+  elements.canvasBody.innerHTML = `<p>${DEFAULT_CANVAS_PLACEHOLDER}</p>`;
+  updateCanvasCounter("");
+};
+
+const normalizeMessageContent = (text) => String(text || "").trim();
+
+const getPendingDisplayContent = (typedContent) => {
+  const normalized = normalizeMessageContent(typedContent);
+  if (normalized) {
+    return normalized;
+  }
+
+  if (state.sourceFiles.length) {
+    return "Usa los documentos cargados como contexto para continuar el relato.";
+  }
+
+  return "";
+};
+
+const hasPersistedPendingUserMessage = () => {
+  if (!state.pendingUserMessage) {
+    return false;
+  }
+
+  const pendingContent = normalizeMessageContent(state.pendingUserMessage.contenido);
+  if (!pendingContent) {
+    return false;
+  }
+
+  for (let index = state.messages.length - 1; index >= 0; index -= 1) {
+    const message = state.messages[index];
+    if (String(message?.emisor || "").toLowerCase() !== "usuario") {
+      continue;
+    }
+
+    return normalizeMessageContent(message.contenido) === pendingContent;
+  }
+
+  return false;
+};
+
+const shouldShowTypingIndicator = () => {
+  if (!state.awaitingPolyResponse) {
+    return false;
+  }
+
+  const lastMessage = state.messages[state.messages.length - 1];
+  return String(lastMessage?.emisor || "").toLowerCase() !== "poly";
+};
+
+const getVisibleMessages = () => {
+  const visibleMessages = [...state.messages];
+
+  if (state.pendingUserMessage && !hasPersistedPendingUserMessage()) {
+    visibleMessages.push({
+      ...state.pendingUserMessage,
+      pending: true,
+    });
+  }
+
+  if (shouldShowTypingIndicator()) {
+    visibleMessages.push({
+      emisor: "Poly",
+      pending: true,
+      typing: true,
+    });
+  }
+
+  return visibleMessages;
+};
+
+const getWaitingStatusText = () => {
+  if (!state.awaitingPolyResponse || !state.responseWaitStartedAt) {
     return "";
   }
 
-  return polyMessages.reduce((selected, current) =>
-    current.length >= selected.length ? current : selected
-  , polyMessages[0]);
+  const elapsedMs = Math.max(0, Date.now() - state.responseWaitStartedAt);
+  const elapsedSeconds = Math.max(1, Math.round(elapsedMs / 1000));
+  let currentStage = WAITING_STATUS_STAGES[0];
+
+  WAITING_STATUS_STAGES.forEach((stage) => {
+    if (elapsedMs >= stage.afterMs) {
+      currentStage = stage;
+    }
+  });
+
+  return `${currentStage.getText(state.sourceFiles.length > 0)} · ${elapsedSeconds}s`;
+};
+
+const clearResponseWaitTimer = () => {
+  if (state.responseWaitTimerId) {
+    window.clearInterval(state.responseWaitTimerId);
+    state.responseWaitTimerId = null;
+  }
+};
+
+const startResponseWait = (displayContent) => {
+  clearResponseWaitTimer();
+  state.pendingUserMessage = displayContent
+    ? { emisor: "Usuario", contenido: displayContent }
+    : null;
+  state.awaitingPolyResponse = true;
+  state.responseWaitStartedAt = Date.now();
+  setStatus(getWaitingStatusText());
+  renderMessages();
+
+  state.responseWaitTimerId = window.setInterval(() => {
+    setStatus(getWaitingStatusText());
+  }, 1000);
+};
+
+const stopResponseWait = () => {
+  clearResponseWaitTimer();
+  state.awaitingPolyResponse = false;
+  state.pendingUserMessage = null;
+  state.responseWaitStartedAt = 0;
+  setStatus("");
+};
+
+const getCanvasDraft = () => {
+  const activeStory = state.stories.find((story) => story.id === state.activeStoryId);
+  return String(activeStory?.descripcion || "").trim();
 };
 
 const getCanvasText = () => {
-  if (elements.canvasBody?.innerText?.trim()) {
-    return elements.canvasBody.innerText.trim();
+  const bodyText = getCanvasBodyText();
+  if (bodyText) {
+    return bodyText;
   }
 
   return getCanvasDraft();
@@ -373,16 +654,56 @@ const updateCanvas = () => {
   elements.bookTitle.value = activeStory?.titulo || "Mi historia con Poly-AI";
 
   if (!draft) {
-    elements.canvasBody.innerHTML = "<p>Aquí aparecerá el borrador final de la historia cuando Poly empiece a desarrollarlo.</p>";
-    elements.canvasCounter.textContent = "0 palabras";
+    setCanvasPlaceholder();
     return;
   }
 
   elements.canvasBody.innerHTML = splitIntoParagraphs(draft)
     .map((paragraph) => `<p>${paragraph}</p>`)
     .join("");
-  const words = countWords(draft);
-  elements.canvasCounter.textContent = `${words} palabra${words === 1 ? "" : "s"}`;
+  updateCanvasCounter(draft);
+};
+
+const saveCanvasDraft = async () => {
+  if (!state.activeStoryId) {
+    showToast("Primero crea o selecciona un chat");
+    return;
+  }
+
+  const titulo = elements.canvasTitle?.textContent?.trim() || "Nuevo chat Poly";
+  const descripcion = getCanvasText();
+
+  if (!descripcion) {
+    showToast("Todavia no hay borrador para guardar");
+    return;
+  }
+
+  if (elements.canvasSaveButton) {
+    elements.canvasSaveButton.disabled = true;
+  }
+
+  const { ok, data } = await fetchJson(`/api/v1/stories/${state.activeStoryId}`, {
+    method: "PUT",
+    auth: true,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      titulo,
+      descripcion,
+    }),
+  });
+
+  if (elements.canvasSaveButton) {
+    elements.canvasSaveButton.disabled = false;
+  }
+
+  if (!ok) {
+    showToast(data.Mensaje || "No fue posible guardar el canvas");
+    return;
+  }
+
+  showToast(data.Mensaje || "Canvas guardado", "green");
+  await loadStories(state.activeStoryId);
+  await loadStoryDetails(state.activeStoryId);
 };
 
 const renderMessages = () => {
@@ -392,7 +713,8 @@ const renderMessages = () => {
 
   elements.messageList.innerHTML = "";
 
-  const hasMessages = state.messages.length > 0;
+  const visibleMessages = getVisibleMessages();
+  const hasMessages = visibleMessages.length > 0;
   elements.emptyState.classList.toggle("poly-hidden", hasMessages);
   elements.messageList.classList.toggle("poly-chat__messages--empty", !hasMessages);
 
@@ -402,17 +724,44 @@ const renderMessages = () => {
     return;
   }
 
-  state.messages.forEach((message) => {
+  visibleMessages.forEach((message) => {
     const article = document.createElement("article");
     article.className = `poly-message poly-message--${(message.emisor || "Sistema").toLowerCase()}`;
+    if (message.pending) {
+      article.classList.add("poly-message--pending");
+    }
+    if (message.typing) {
+      article.classList.add("poly-message--typing");
+    }
 
     const author = document.createElement("p");
     author.className = "poly-message__author";
     author.textContent = message.emisor || "Sistema";
 
-    const content = document.createElement("p");
-    content.className = "poly-message__content";
-    content.textContent = message.contenido || "";
+    let content;
+    if (message.typing) {
+      content = document.createElement("div");
+      content.className = "poly-message__typing-indicator";
+
+      const typingText = document.createElement("span");
+      typingText.className = "poly-message__typing-text";
+      typingText.textContent = "Escribiendo";
+
+      const dots = document.createElement("span");
+      dots.className = "poly-message__typing-dots";
+
+      for (let index = 0; index < 3; index += 1) {
+        const dot = document.createElement("span");
+        dot.className = "poly-message__typing-dot";
+        dots.appendChild(dot);
+      }
+
+      content.append(typingText, dots);
+    } else {
+      content = document.createElement("p");
+      content.className = "poly-message__content";
+      content.textContent = message.contenido || "";
+    }
 
     article.append(author, content);
     elements.messageList.appendChild(article);
@@ -579,14 +928,17 @@ const loadUser = async () => {
   applyUserData(data);
 };
 
-const loadMessages = async (storyId) => {
+const loadMessages = async (storyId, { showLoadingStatus = true } = {}) => {
   if (!storyId) {
     state.messages = [];
     renderMessages();
     return;
   }
 
-  setStatus("Cargando conversación...");
+  if (showLoadingStatus) {
+    setStatus("Cargando conversación...");
+  }
+
   const { ok, data } = await fetchJson(`/api/v1/chat/${storyId}`, {
     auth: true,
   });
@@ -594,13 +946,17 @@ const loadMessages = async (storyId) => {
   if (!ok) {
     state.messages = [];
     renderMessages();
-    setStatus("");
+    if (showLoadingStatus) {
+      setStatus("");
+    }
     showToast(data.Mensaje || "No fue posible cargar la conversación");
     return;
   }
 
   state.messages = Array.isArray(data.mensajes) ? data.mensajes : [];
-  setStatus("");
+  if (showLoadingStatus) {
+    setStatus("");
+  }
   renderMessages();
 };
 
@@ -611,6 +967,7 @@ const loadStoryDetails = async (storyId) => {
     state.sourceFiles = [];
     syncAiSettingsUI();
     syncAttachedFile();
+    renderSourceFilesList();
     updateCanvas();
     return;
   }
@@ -630,6 +987,7 @@ const loadStoryDetails = async (storyId) => {
     state.sourceFiles = [];
     syncAiSettingsUI();
     syncAttachedFile();
+    renderSourceFilesList();
     showToast(data.Mensaje || "No fue posible cargar el detalle del chat");
     return;
   }
@@ -648,11 +1006,12 @@ const loadStoryDetails = async (storyId) => {
   state.sourceFiles = Array.isArray(data.archivosFuente) ? data.archivosFuente : [];
   syncAiSettingsUI();
   syncAttachedFile();
+  renderSourceFilesList();
   renderStories();
   updateCanvas();
 };
 
-const selectStory = async (storyId) => {
+const selectStory = async (storyId, { showMessageLoadingStatus = true } = {}) => {
   state.activeStoryId = storyId;
 
   if (storyId) {
@@ -663,7 +1022,7 @@ const selectStory = async (storyId) => {
 
   renderStories();
   await loadStoryDetails(storyId);
-  await loadMessages(storyId);
+  await loadMessages(storyId, { showLoadingStatus: showMessageLoadingStatus });
 };
 
 const createStory = async (title = "Nuevo chat Poly") => {
@@ -690,7 +1049,7 @@ const createStory = async (title = "Nuevo chat Poly") => {
   return data.id || null;
 };
 
-const ensureActiveStory = async (preferredTitle = "Nuevo chat Poly") => {
+const ensureActiveStory = async (preferredTitle = "Nuevo chat Poly", selectionOptions = {}) => {
   if (state.activeStoryId) {
     return state.activeStoryId;
   }
@@ -701,7 +1060,7 @@ const ensureActiveStory = async (preferredTitle = "Nuevo chat Poly") => {
   }
 
   await loadStories(storyId);
-  await selectStory(storyId);
+  await selectStory(storyId, selectionOptions);
   return storyId;
 };
 
@@ -735,7 +1094,6 @@ const loadStories = async (preferredStoryId = null) => {
 };
 
 const sendMessage = async (content) => {
-  setStatus("Enviando mensaje...");
   const { ok, data } = await fetchJson("/api/v1/chat/message", {
     method: "POST",
     auth: true,
@@ -747,8 +1105,6 @@ const sendMessage = async (content) => {
       parametrosIA: state.aiSettings,
     }),
   });
-
-  setStatus("");
 
   if (!ok) {
     showToast(data.Mensaje || "No fue posible enviar el mensaje");
@@ -775,14 +1131,16 @@ const handleSubmit = async (event) => {
     return;
   }
 
+  const pendingDisplayContent = getPendingDisplayContent(typedContent);
   elements.input.value = "";
   state.sending = true;
+  startResponseWait(pendingDisplayContent);
   syncFormState();
 
   try {
     if (!state.activeStoryId) {
       const initialTitle = typedContent || getPrimarySourceFile()?.nombreArchivo || "Nuevo chat Poly";
-      const storyId = await ensureActiveStory(initialTitle);
+      const storyId = await ensureActiveStory(initialTitle, { showMessageLoadingStatus: false });
       if (!storyId) {
         elements.input.value = typedContent;
         return;
@@ -796,10 +1154,12 @@ const handleSubmit = async (event) => {
     }
 
     await loadStories(state.activeStoryId);
-    await selectStory(state.activeStoryId);
+    await selectStory(state.activeStoryId, { showMessageLoadingStatus: false });
   } finally {
+    stopResponseWait();
     state.sending = false;
     syncFormState();
+    renderMessages();
     focusInput();
   }
 };
@@ -912,6 +1272,27 @@ const setupCanvasBindings = () => {
       elements.bookTitle.value = nextTitle || "Mi historia con Poly-AI";
     }
   });
+
+  elements.canvasBody?.addEventListener("focus", () => {
+    if (isCanvasPlaceholder(elements.canvasBody.innerText)) {
+      elements.canvasBody.innerHTML = "";
+      updateCanvasCounter("");
+    }
+  });
+
+  elements.canvasBody?.addEventListener("blur", () => {
+    if (!getCanvasBodyText()) {
+      setCanvasPlaceholder();
+    }
+  });
+
+  elements.canvasBody?.addEventListener("input", () => {
+    updateCanvasCounter(getCanvasBodyText());
+  });
+
+  elements.canvasSaveButton?.addEventListener("click", async () => {
+    await saveCanvasDraft();
+  });
 };
 
 const setupInputSubmitBehavior = () => {
@@ -935,28 +1316,22 @@ const setupInputSubmitBehavior = () => {
 };
 
 const setupFileAttachment = () => {
+  elements.fileAttachmentToggle?.addEventListener("click", () => {
+    if (!state.sourceFiles.length) {
+      return;
+    }
+
+    state.sourceFilesExpanded = !state.sourceFilesExpanded;
+    syncSourceFilesAccordion();
+  });
+
   elements.fileAttachmentRemove?.addEventListener("click", async () => {
     const primaryFile = getPrimarySourceFile();
-    if (!primaryFile || !state.activeStoryId) {
+    if (!primaryFile) {
       return;
     }
 
-    const { ok, data } = await fetchJson("/api/v1/upload/relato", {
-      method: "DELETE",
-      auth: true,
-      params: {
-        storyId: state.activeStoryId,
-        fileId: primaryFile.id,
-      },
-    });
-
-    if (!ok) {
-      showToast(data.Mensaje || "No fue posible quitar el archivo");
-      return;
-    }
-
-    showToast(data.Mensaje || "Archivo eliminado", "green");
-    await loadStoryDetails(state.activeStoryId);
+    await removeSourceFile(primaryFile.id);
   });
 
   elements.fileInput?.addEventListener("change", async (event) => {

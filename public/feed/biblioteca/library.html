@@ -36,32 +36,16 @@
         maxlength="20"
         id="input_library"
       />
-      <a href="#exportModal" class="library-header__link">
+      <button class="library-header__action" type="button" id="refresh-library" aria-label="Actualizar biblioteca">
         <img
           class="library-header__arrow"
           src="../../../assets/icons/box-arrow-down.svg"
           alt=""
         />
-      </a>
+      </button>
     </header>
 
-    <main class="library-main">
-      <section class="shelf">
-        <!-- <a href="#bookModal" class="book-card__link">
-          <div class="book-card">
-            <p class="book-card__title">libro</p>
-          </div>
-        </a> -->
-        <!-- <div class="book-card"></div> -->
-        <!-- <div class="book-card"></div> -->
-      </section>
-
-      <!-- Estante 2 -->
-      <section class="shelf"></section>
-
-      <!-- Estante 3 -->
-      <section class="shelf"></section>
-    </main>
+    <main class="library-main" id="library-main"></main>
 
     <footer class="library-footer">
       <div class="library-footer__icon-container">
@@ -87,67 +71,18 @@
       </div>
     </footer>
 
-    <!-- Modal de Exportación -->
-    <div class="modal" id="exportModal">
-      <div class="modal__overlay"></div>
-      <div class="modal__content">
-        <a href="#" class="modal__close">&times;</a>
-
-        <h2 class="modal__title">
-          <span class="modal__icon">📁</span> Exportar
-        </h2>
-
-        <form class="modal__form">
-          <div class="modal__field">
-            <label class="modal__label">Categoría:</label>
-            <select class="modal__select">
-              <option>Libros</option>
-              <option>Documentos</option>
-              <option>Artículos</option>
-            </select>
-          </div>
-
-          <div class="modal__field">
-            <label class="modal__label">Título:</label>
-            <select class="modal__select">
-              <option>Libro</option>
-              <option>Documento 1</option>
-              <option>Documento 2</option>
-            </select>
-          </div>
-
-          <div class="modal__field">
-            <label class="modal__label">Formato de salida:</label>
-            <div class="modal__radio-group">
-              <label class="modal__radio">
-                <input type="radio" name="format" value="pdf" checked />
-                <span>PDF (.pdf)</span>
-              </label>
-              <label class="modal__radio">
-                <input type="radio" name="format" value="word" />
-                <span>Word (.doc)</span>
-              </label>
-            </div>
-          </div>
-
-          <button type="button" class="modal__button">Descargar</button>
-        </form>
-      </div>
-    </div>
-
     <!-- Modal de Opciones del Libro -->
     <div class="book-modal" id="bookModal">
       <div class="book-modal__overlay"></div>
       <div class="book-modal__content">
         <a href="#" class="book-modal__close">&times;</a>
 
-        <h2 class="book-modal__shelf-name">Nombre Libro</h2>
+        <h2 class="book-modal__shelf-name" id="book-modal-title">Documento</h2>
+        <p class="book-modal__meta" id="book-modal-meta"></p>
 
         <div class="book-modal__actions">
-          <button class="book-modal__button">Editar</button>
-          <button class="book-modal__button book-modal__button--delete">
-            Borrar
-          </button>
+          <button class="book-modal__button" type="button" id="book-modal-download">Descargar</button>
+          <button class="book-modal__button book-modal__button--delete" type="button" id="book-modal-delete">Eliminar</button>
         </div>
       </div>
     </div>

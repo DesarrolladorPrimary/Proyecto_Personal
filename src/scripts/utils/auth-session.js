@@ -1,9 +1,34 @@
 const TOKEN_KEY = "Token";
+const AUTH_NOTICE_KEY = "AuthRedirectNotice";
+const DEFAULT_EXPIRED_MESSAGE = "Tu sesion expiro. Inicia sesion de nuevo.";
+const DEFAULT_INVALID_MESSAGE = "Tu sesion ya no es valida. Inicia sesion de nuevo.";
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 export const clearToken = () => {
   localStorage.removeItem(TOKEN_KEY);
+};
+
+const normalizeAuthNotice = (notice) => {
+  if (!notice) {
+    return null;
+  }
+
+  if (typeof notice === "string") {
+    return {
+      text: notice,
+      background: "orange",
+    };
+  }
+
+  if (typeof notice.text !== "string" || !notice.text.trim()) {
+    return null;
+  }
+
+  return {
+    text: notice.text.trim(),
+    background: notice.background || "orange",
+  };
 };
 
 export const parseTokenSafely = (token = getToken()) => {
@@ -74,7 +99,53 @@ export const getAuthHeaders = (extraHeaders = {}) => {
   };
 };
 
-export const logoutAndRedirect = (target = "/public/auth/login.html") => {
+export const getUnauthorizedNotice = (data = {}) => {
+  if (data?.code === "TOKEN_EXPIRED") {
+    return {
+      text: data.Mensaje || DEFAULT_EXPIRED_MESSAGE,
+      background: "orange",
+    };
+  }
+
+  return {
+    text: data?.Mensaje || DEFAULT_INVALID_MESSAGE,
+    background: "red",
+  };
+};
+
+export const storeAuthNotice = (notice) => {
+  const normalized = normalizeAuthNotice(notice);
+
+  if (!normalized) {
+    sessionStorage.removeItem(AUTH_NOTICE_KEY);
+    return;
+  }
+
+  sessionStorage.setItem(AUTH_NOTICE_KEY, JSON.stringify(normalized));
+};
+
+export const consumeAuthNotice = () => {
+  const rawNotice = sessionStorage.getItem(AUTH_NOTICE_KEY);
+
+  if (!rawNotice) {
+    return null;
+  }
+
+  sessionStorage.removeItem(AUTH_NOTICE_KEY);
+
+  try {
+    return normalizeAuthNotice(JSON.parse(rawNotice));
+  } catch (error) {
+    return null;
+  }
+};
+
+export const logoutAndRedirect = (target = "/public/auth/login.html", notice = null) => {
   clearToken();
+
+  if (notice) {
+    storeAuthNotice(notice);
+  }
+
   window.location.href = target;
 };

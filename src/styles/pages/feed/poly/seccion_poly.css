@@ -16,6 +16,11 @@ body {
   overflow: hidden;
 }
 
+:root {
+  --poly-shell-width: min(840px, 100%);
+  --poly-stage-width: min(940px, calc(100% - 32px));
+}
+
 .header {
   display: grid;
   grid-template-columns: 56px 1fr 34px;
@@ -138,7 +143,7 @@ body {
   justify-content: flex-start;
   position: relative;
   z-index: 1;
-  width: min(860px, calc(100% - 32px));
+  width: var(--poly-stage-width);
   justify-self: center;
   min-height: 0;
   padding: 8px 0 12px;
@@ -192,7 +197,7 @@ body {
 }
 
 .poly-chat {
-  width: min(760px, 100%);
+  width: var(--poly-shell-width);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -217,17 +222,36 @@ body {
   display: block;
 }
 
+.poly-chat__status--loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.poly-chat__status--loading::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: rgba(203, 255, 190, 0.9);
+  box-shadow: 0 0 0 0 rgba(203, 255, 190, 0.45);
+  animation: poly-status-pulse 1.3s ease infinite;
+  flex-shrink: 0;
+}
+
 .poly-chat__messages {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
   width: 100%;
   min-height: 0;
   max-height: 50vh;
   overflow-y: auto;
-  padding: 14px 12px 18px 0;
+  padding: 8px 4px 22px 2px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.32) transparent;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
 }
 
 .poly-chat__messages::-webkit-scrollbar {
@@ -255,57 +279,126 @@ body {
 }
 
 .poly-message {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   align-self: flex-start;
-  max-width: min(560px, 82vw);
-  padding: 8px 6px;
-  border-radius: 0;
+  max-width: min(590px, 82vw);
+  padding: 14px 16px 15px;
+  border-radius: 22px;
   text-align: left;
-  background-color: transparent;
-  border: none;
+  background-color: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
 }
 
 .poly-message--usuario {
   align-self: flex-end;
-  text-align: right;
+  border-top-right-radius: 10px;
 }
 
 .poly-message--poly {
-  text-align: left;
+  border-top-left-radius: 10px;
 }
 
 .poly-message--sistema {
   align-self: center;
+  max-width: min(460px, 92%);
+  padding: 10px 14px;
+  border-radius: 16px;
   text-align: center;
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.poly-message--pending {
+  opacity: 0.9;
+}
+
+.poly-message--typing {
+  width: fit-content;
+  max-width: min(320px, 82vw);
+  opacity: 0.96;
 }
 
 .poly-message__author {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-bottom: 4px;
-  opacity: 0.7;
+  margin: 0;
+  opacity: 0.62;
+}
+
+.poly-message--usuario .poly-message__author {
+  text-align: right;
 }
 
 .poly-message__content {
   margin: 0;
-  line-height: 1.65;
+  font-size: 14px;
+  line-height: 1.72;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.poly-message__typing-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 24px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.poly-message__typing-text {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.poly-message__typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.poly-message__typing-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.28;
+  animation: poly-typing-bounce 1s ease-in-out infinite;
+}
+
+.poly-message__typing-dot:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.poly-message__typing-dot:nth-child(3) {
+  animation-delay: 0.32s;
 }
 
 .poly-input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  max-width: 760px;
-  padding: 10px 14px;
-  border-radius: 18px;
+  max-width: var(--poly-shell-width);
+  padding: 12px 14px 12px 12px;
+  border-radius: 22px;
   background-color: var(--color-background-container);
   border: 1px solid rgba(255, 255, 255, 0.08);
   margin: 0 auto;
   margin-bottom: 6px;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.14);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.poly-input:focus-within {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.2);
 }
 
 .menu-user {
@@ -395,7 +488,7 @@ body {
   justify-content: space-between;
   gap: 12px;
   width: 100%;
-  max-width: 760px;
+  max-width: var(--poly-shell-width);
   margin: -2px auto 8px;
   padding: 10px 14px;
   border-radius: 14px;
@@ -404,11 +497,56 @@ body {
   text-align: left;
 }
 
+.poly-input__attachment-trigger {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.poly-input__attachment-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.poly-input__attachment-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
 .poly-input__attachment-name {
   font-size: 12px;
   line-height: 1.4;
   opacity: 0.88;
   word-break: break-word;
+}
+
+.poly-input__attachment-chevron {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid rgba(255, 255, 255, 0.78);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.78);
+  transform: rotate(45deg);
+  transition: transform 0.18s ease;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.poly-input__attachment-chevron--expanded {
+  transform: rotate(-135deg);
 }
 
 .poly-input__attachment-remove {
@@ -422,16 +560,120 @@ body {
   cursor: pointer;
 }
 
+.poly-source-files {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: var(--poly-shell-width);
+  margin: -2px auto 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+  color: var(--color-text-light);
+}
+
+.poly-source-files__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.poly-source-files__title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.poly-source-files__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.poly-source-files__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.poly-source-files__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.poly-source-files__content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.poly-source-files__name,
+.poly-source-files__meta {
+  margin: 0;
+}
+
+.poly-source-files__name {
+  font-size: 13px;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.poly-source-files__meta {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.72;
+}
+
+.poly-source-files__remove {
+  border: none;
+  border-radius: 999px;
+  min-width: 72px;
+  min-height: 32px;
+  padding: 0 12px;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: var(--color-text-light);
+  cursor: pointer;
+}
+
+.poly-input__attachment-trigger:disabled,
+.poly-source-files__remove:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.poly-input__attachment.poly-hidden,
+.poly-source-files.poly-hidden {
+  display: none;
+}
+
 .poly-input__field {
   flex: 1;
-  min-height: 28px;
+  min-height: 34px;
   max-height: 110px;
   resize: none;
   overflow: hidden;
-  padding: 6px 0;
+  padding: 7px 0;
   color: var(--color-text-light);
   font-family: var(--font-family-main);
   font-size: var(--font-size-body);
+  line-height: 1.55;
   background-color: transparent;
   border: none;
 }
@@ -482,9 +724,17 @@ body {
   cursor: not-allowed;
 }
 
+.poly-input__action--loading {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
 .poly-input__icon--send {
   width: 15px;
   fill: var(--color-text-light);
+}
+
+.poly-input__action--loading .poly-input__icon--send {
+  animation: poly-send-pulse 1s ease-in-out infinite;
 }
 
 .poly-modal {
@@ -498,6 +748,50 @@ body {
   transition: opacity 0.3s ease;
   font-family: var(--font-family-main);
   z-index: 10;
+}
+
+@keyframes poly-status-pulse {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(203, 255, 190, 0.45);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(203, 255, 190, 0);
+  }
+
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(203, 255, 190, 0);
+  }
+}
+
+@keyframes poly-typing-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.28;
+  }
+
+  40% {
+    transform: translateY(-3px);
+    opacity: 0.95;
+  }
+}
+
+@keyframes poly-send-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 #modalAI:target {
@@ -1241,6 +1535,11 @@ body {
 }
 
 @media (min-width: 1024px) {
+  :root {
+    --poly-shell-width: min(980px, 90vw);
+    --poly-stage-width: min(1060px, calc(100% - 56px));
+  }
+
   body {
     grid-template-columns: 1.4fr 0.8fr 1.4fr;
     grid-template-rows: auto 1fr auto;
@@ -1267,12 +1566,17 @@ body {
   }
 
   .poly-chat {
-    width: min(880px, 88vw);
+    width: var(--poly-shell-width);
     margin-top: 0;
   }
 
+  .poly-chat__messages {
+    max-height: 56vh;
+    padding-right: 6px;
+  }
+
   .poly-input {
-    max-width: 880px;
+    max-width: var(--poly-shell-width);
     margin-top: 0;
     margin-bottom: 14px;
   }
@@ -1308,5 +1612,29 @@ body {
   .canvas__action:hover + .canvas__action-convert,
   .canvas__action-convert:hover {
     visibility: visible;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --poly-shell-width: 100%;
+    --poly-stage-width: min(100%, calc(100% - 24px));
+  }
+
+  .poly-chat__messages {
+    gap: 12px;
+    max-height: 48vh;
+    padding-right: 0;
+  }
+
+  .poly-message {
+    max-width: min(100%, 92vw);
+    padding: 13px 14px 14px;
+    border-radius: 20px;
+  }
+
+  .poly-input {
+    padding: 10px 12px;
+    border-radius: 20px;
   }
 }

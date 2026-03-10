@@ -1,3 +1,13 @@
+const AUTH_NOTICE_KEY = "AuthRedirectNotice";
+const EXPIRED_NOTICE = {
+  text: "Tu sesion expiro. Inicia sesion de nuevo.",
+  background: "orange",
+};
+const INVALID_NOTICE = {
+  text: "Tu sesion ya no es valida. Inicia sesion de nuevo.",
+  background: "red",
+};
+
 const parseTokenPayload = (token) => {
   if (!token) {
     return null;
@@ -23,8 +33,13 @@ const payload = parseTokenPayload(token);
 const tokenExpired = payload?.exp ? payload.exp * 1000 <= Date.now() : false;
 const hasValidSession = Boolean(token && payload && !tokenExpired);
 
+const storeAuthNotice = (notice) => {
+  sessionStorage.setItem(AUTH_NOTICE_KEY, JSON.stringify(notice));
+};
+
 if (token && !hasValidSession) {
   localStorage.removeItem("Token");
+  storeAuthNotice(tokenExpired ? EXPIRED_NOTICE : INVALID_NOTICE);
 }
 
 if (route.includes("/feed/") && !hasValidSession) {

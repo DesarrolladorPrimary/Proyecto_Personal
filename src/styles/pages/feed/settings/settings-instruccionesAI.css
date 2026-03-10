@@ -23,18 +23,75 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 18px;
   grid-column: 1/1;
   grid-row: 2/3;
+  padding-bottom: 20px;
 }
 
 /* Descripción de las instrucciones */
 .ai-instructions__description {
   text-align: center;
-  padding: 0 30px 20px 30px;
+  padding: 0 30px;
   color: #ffffff;
   font-family: var(--font-family-main);
   font-weight: 300;
   font-size: var(--font-size-small);
+}
+
+.ai-models {
+  width: min(310px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #ffffff;
+}
+
+.ai-models__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.ai-models__title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.ai-models__hint,
+.ai-models__meta-note,
+.ai-models__plan-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ai-models__card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 10px;
+  background-color: var(--color-background-container);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ai-models__meta-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ai-models__meta-value {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 600;
 }
 
 /* =========================================
@@ -45,8 +102,9 @@ body {
 
 /* Input de texto multilínea */
 .ai-instructions__input {
-  width: 310px;
-  height: 512px;
+  width: min(310px, calc(100vw - 32px));
+  min-height: 360px;
+  height: 360px;
   background-color: var(--color-background-container);
   border: 1px solid black;
   border-radius: 6px;
@@ -142,8 +200,13 @@ body {
 
 /* Desktop (1024px+): Textarea más ancho + hover */
 @media (min-width: 1024px) {
+  .ai-models,
   .ai-instructions__input {
     width: 500px;
+  }
+
+  .ai-models__card {
+    padding: 16px 18px;
   }
 
   .ai-instructions__input::placeholder {

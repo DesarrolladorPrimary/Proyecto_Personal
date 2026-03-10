@@ -123,11 +123,30 @@
         </button>
       </form>
       <div class="poly-input__attachment poly-hidden" id="poly-file-attachment">
-        <span class="poly-input__attachment-name" id="poly-file-name"></span>
+        <button
+          type="button"
+          class="poly-input__attachment-trigger"
+          id="poly-file-toggle"
+          aria-expanded="false"
+          aria-controls="poly-source-files"
+        >
+          <span class="poly-input__attachment-copy">
+            <span class="poly-input__attachment-label">Documentos cargados</span>
+            <span class="poly-input__attachment-name" id="poly-file-name"></span>
+          </span>
+          <span class="poly-input__attachment-chevron" id="poly-file-chevron" aria-hidden="true"></span>
+        </button>
         <button type="button" class="poly-input__attachment-remove" id="poly-file-remove">
           Quitar
         </button>
       </div>
+      <section class="poly-source-files poly-hidden" id="poly-source-files">
+        <header class="poly-source-files__header">
+          <h2 class="poly-source-files__title">Documentos fuente</h2>
+          <span class="poly-source-files__count" id="poly-source-files-count">0</span>
+        </header>
+        <div class="poly-source-files__list" id="poly-source-files-list"></div>
+      </section>
     </main>
 
     <section class="poly-modal" id="modalAI" aria-hidden="true">
@@ -252,6 +271,7 @@
             class="canvas__action"
             type="button"
             aria-label="Guardar canvas"
+            id="canvas-save-button"
           >
             <img
               src="../../../assets/icons/addLibro.png"
