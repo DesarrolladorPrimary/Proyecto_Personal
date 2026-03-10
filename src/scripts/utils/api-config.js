@@ -1,4 +1,21 @@
-export const API_BASE_URL = "http://localhost:8080";
+const normalizeBaseUrl = (value) => {
+  if (!value || typeof value !== "string") {
+    return "";
+  }
+
+  return value.endsWith("/") ? value.slice(0, -1) : value;
+};
+
+const resolveApiBaseUrl = () => {
+  const configuredUrl =
+    window.__APP_CONFIG__?.apiBaseUrl ||
+    localStorage.getItem("apiBaseUrl") ||
+    "http://localhost:8080";
+
+  return normalizeBaseUrl(configuredUrl);
+};
+
+export const API_BASE_URL = resolveApiBaseUrl();
 
 export const buildApiUrl = (path, params) => {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
