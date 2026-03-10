@@ -2,6 +2,11 @@ const TOKEN_KEY = "Token";
 const AUTH_NOTICE_KEY = "AuthRedirectNotice";
 const DEFAULT_EXPIRED_MESSAGE = "Tu sesion expiro. Inicia sesion de nuevo.";
 const DEFAULT_INVALID_MESSAGE = "Tu sesion ya no es valida. Inicia sesion de nuevo.";
+const ROUTES = {
+  login: "/public/auth/login.html",
+  register: "/public/auth/regist.html",
+  feed: "/public/feed/feed-main.html",
+};
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 
@@ -140,12 +145,50 @@ export const consumeAuthNotice = () => {
   }
 };
 
-export const logoutAndRedirect = (target = "/public/auth/login.html", notice = null) => {
+export const isAuthRoute = (pathname = window.location.pathname) =>
+  pathname === ROUTES.login || pathname === ROUTES.register;
+
+export const isFeedRoute = (pathname = window.location.pathname) =>
+  pathname.startsWith("/public/feed/");
+
+export const redirectTo = (target) => {
+  window.location.href = target;
+};
+
+export const enforceSessionRoute = (pathname = window.location.pathname) => {
+  const validSession = hasValidSession();
+  const payload = parseTokenSafely();
+  const notice = payload && isTokenExpired(payload)
+    ? {
+        text: DEFAULT_EXPIRED_MESSAGE,
+        background: "orange",
+      }
+    : {
+        text: DEFAULT_INVALID_MESSAGE,
+        background: "red",
+      };
+
+  if (getToken() && !validSession) {
+    clearToken();
+    storeAuthNotice(notice);
+  }
+
+  if (isFeedRoute(pathname) && !validSession) {
+    redirectTo(ROUTES.login);
+    return;
+  }
+
+  if (isAuthRoute(pathname) && validSession) {
+    redirectTo(ROUTES.feed);
+  }
+};
+
+export const logoutAndRedirect = (target = ROUTES.login, notice = null) => {
   clearToken();
 
   if (notice) {
     storeAuthNotice(notice);
   }
 
-  window.location.href = target;
+  redirectTo(target);
 };

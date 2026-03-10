@@ -1,21 +1,21 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
-    <link rel="stylesheet" href="../../../src/styles/layout.css" />
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/layout.css" />
     <link
       rel="stylesheet"
-      href="../../../src/styles/components/settings-header.css"
+      href="/src/styles/components/settings-header.css"
     />
     <link
       rel="stylesheet"
-      href="../../../src/styles/pages/feed/settings/settings-planes.css"
+      href="/src/styles/pages/feed/settings/settings-planes.css"
     />
 
     <title>Planes</title>
-      <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
       <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
 
@@ -24,7 +24,7 @@
       <div class="settings-header__top">
         <a href="../feed-main.html" class="settings-header__back">
           <img
-            src="../../../assets/icons/arrow-90deg-left.svg"
+            src="/assets/icons/arrow-90deg-left.svg"
             alt="Volver"
             class="settings-header__arrow"
           />
@@ -37,21 +37,21 @@
       <nav class="settings-nav">
         <a href="settings-user.html" class="settings-nav__link">
           <img
-            src="../../../assets/icons/user-settings.png"
+            src="/assets/icons/user-settings.png"
             alt="Perfil"
             class="settings-nav__icon"
           />
         </a>
         <a href="settings-generals.html" class="settings-nav__link">
           <img
-            src="../../../assets/icons/settings-module.png"
+            src="/assets/icons/settings-module.png"
             alt="Ajustes"
             class="settings-nav__icon"
           />
         </a>
         <a href="#" class="settings-nav__link">
           <img
-            src="../../../assets/icons/suscrip-settings.png"
+            src="/assets/icons/suscrip-settings.png"
             alt="Suscripciones"
             class="settings-nav__icon"
           />
@@ -77,17 +77,17 @@
           <ul class="plan-card__features">
             <li class="plan-card__feature">
               <p class="plan-card__feature-text">
-                ✅ Acceso básico a la biblioteca
+                ✓ Acceso básico a la biblioteca
               </p>
               <p></p>
             </li>
 
             <li class="plan-card__feature">
-              <p class="plan-card__feature-text">✅ Crear y guardar relatos</p>
+              <p class="plan-card__feature-text">✓ Crear y guardar relatos</p>
             </li>
             <li class="plan-card__feature">
               <p class="plan-card__feature-text">
-                ✅ Chat con Poly limitado (respuestas cortas)
+                ✓ Chat con Poly limitado (respuestas cortas)
               </p>
             </li>
             <li class="plan-card__feature">
@@ -127,7 +127,7 @@
           </ul>
           <button class="plan-card__button plan-card__button--upgrade">
             <label for="checkPay" class="plan-card__button-label"
-              >💎 Comprar Premium</label
+              >Comprar Premium</label
             >
           </button>
         </div>
@@ -141,7 +141,7 @@
         <h1 class="payment-loading__title">Procesando <br />Pago...</h1>
         <img
           class="payment-loading__video"
-          src="../../../assets/gif/cargando-unscreen.gif"
+          src="/assets/gif/cargando-unscreen.gif"
           alt="Cargando pago"
         />
         <p class="payment-loading__text">
@@ -153,3 +153,7 @@
     <script type="module" src="/src/scripts/pages/settings/settings-planes.js"></script>
   </body>
 </html>
+
+
+
+

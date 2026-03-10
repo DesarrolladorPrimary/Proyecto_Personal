@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -11,12 +11,12 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
     <link
       rel="stylesheet"
-      href="../../../src/styles/pages/feed/biblioteca/library.css"
+      href="/src/styles/pages/feed/biblioteca/library.css"
     />
-      <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
       <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
   <body>
@@ -24,7 +24,7 @@
       <a href="../feed-main.html" class="library-header__link">
         <img
           class="library-header__arrow"
-          src="../../../assets/icons/arrow-90deg-left.svg"
+          src="/assets/icons/arrow-90deg-left.svg"
           alt=""
         />
       </a>
@@ -39,7 +39,7 @@
       <button class="library-header__action" type="button" id="refresh-library" aria-label="Actualizar biblioteca">
         <img
           class="library-header__arrow"
-          src="../../../assets/icons/box-arrow-down.svg"
+          src="/assets/icons/box-arrow-down.svg"
           alt=""
         />
       </button>
@@ -51,7 +51,7 @@
       <div class="library-footer__icon-container">
         <img
           class="library-footer__icon"
-          src="../../../assets/icons/libros.png"
+          src="/assets/icons/libros.png"
           alt="Lista"
         />
       </div>
@@ -90,3 +90,7 @@
     <script type="module" src="/src/scripts/pages/biblioteca/library.js"></script>
   </body>
 </html>
+
+
+
+

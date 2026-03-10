@@ -1,12 +1,12 @@
- <!DOCTYPE html>
+﻿ <!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Feed Principal</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="../../src/styles/components/base.css" />
-    <link rel="stylesheet" href="../../src/styles/pages/feed/feed-main.css" />
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/pages/feed/feed-main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="/src/scripts/utils/accesoAuth.js"></script>
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
     <script src="/src/scripts/utils/theme-manager.js"></script>
     <script src="/src/scripts/utils/language-manager.js"></script>
   </head>
@@ -29,7 +29,7 @@
       </div>
       
         <img
-          src="../../assets/icons/image.png"
+          src="/assets/icons/image.png"
           class="header__logo"
           alt="logo_user"
           id="logo_user"
@@ -42,7 +42,7 @@
       <a href="#" class="aside__link aside__link--navi"
         ><img
           class="aside__icon aside__icon--mind"
-          src="../../assets/icons/mind.png"
+          src="/assets/icons/mind.png"
           alt="mind_icon"
       /></a>
       <div class="aside__panel aside__panel--poly" id="polyAI">
@@ -52,7 +52,7 @@
       <a href="#" class="aside__link aside__link--navi"
         ><img
           class="aside__icon aside__icon--paper"
-          src="../../assets/icons/papel.png"
+          src="/assets/icons/papel.png"
           alt="papel_icon"
       /></a>
       <div class="aside__panel aside__panel--creative">
@@ -62,7 +62,7 @@
       <a href="#" class="aside__link aside__link--navi"
         ><img
           class="aside__icon aside__icon--libros"
-          src="../../assets/icons/libros.png"
+          src="/assets/icons/libros.png"
           alt="libros_icon"
       /></a>
       <div class="aside__panel aside__panel--library">
@@ -72,7 +72,7 @@
       <a href="#" class="aside__link aside__link--navi"
         ><img
           class="aside__icon aside__icon--setting"
-          src="../../assets/icons/setting.png"
+          src="/assets/icons/setting.png"
           alt="setting"
       /></a>
       <div class="aside__panel aside__panel--settings">
@@ -85,7 +85,7 @@
       <div class="feed__content">
         <img
           class="feed__image"
-          src="../../assets/image/image-removebg-preview.png"
+          src="/assets/image/image-removebg-preview.png"
           alt="Ilustracion del feed principal"
         />
         <p class="feed__text" data-i18n="feed.start_question">Que comenzaremos hoy?</p>
@@ -99,7 +99,7 @@
       
         <img
           class="menu-user__avatar"
-          src="../../assets/icons/image.png"
+          src="/assets/icons/image.png"
           alt="Avatar del usuario"
           id="profile_photo_user"
         />
@@ -120,7 +120,7 @@
           <p class="menu-user__Model-text">Modelo-AI</p>
           <img
             class="menu-user__setting-icon"
-            src="../../assets/icons/icono_model.png"
+            src="/assets/icons/icono_model.png"
             alt="Icono de ajuste"
           />
         </div>
@@ -136,3 +136,6 @@
 
   </body>
 </html>
+
+
+

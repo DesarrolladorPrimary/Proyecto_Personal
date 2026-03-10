@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -7,15 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../../src/styles/components/base.css" />
-  <link rel="stylesheet" href="../../../src/styles/components/settings-header.css" />
-  <link rel="stylesheet" href="../../../src/styles/components/settings-option.css" />
-  <link rel="stylesheet" href="../../../src/styles/pages/feed/settings/settings-user.css" />
-  <link rel="stylesheet" href="../../../src/styles/components/settings-footer.css" />
+  <link rel="stylesheet" href="/src/styles/components/base.css" />
+  <link rel="stylesheet" href="/src/styles/components/settings-header.css" />
+  <link rel="stylesheet" href="/src/styles/components/settings-option.css" />
+  <link rel="stylesheet" href="/src/styles/pages/feed/settings/settings-user.css" />
+  <link rel="stylesheet" href="/src/styles/components/settings-footer.css" />
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
   <title>Configuraciones</title>
-  <script src="/src/scripts/utils/accesoAuth.js"></script>
+  <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   <script src="/src/scripts/utils/language-manager.js"></script>
 </head>
 
@@ -23,7 +23,7 @@
   <header class="settings-header">
     <div class="settings-header__top">
       <a href="../feed-main.html" class="settings-header__back">
-        <img src="../../../assets/icons/arrow-90deg-left.svg" alt="Volver" class="settings-header__arrow" />
+        <img src="/assets/icons/arrow-90deg-left.svg" alt="Volver" class="settings-header__arrow" />
       </a>
       <h1 class="settings-header__title" data-i18n="settings.title">Configuraciones</h1>
     </div>
@@ -32,13 +32,13 @@
 
     <nav class="settings-nav">
       <a href="#perfil" class="settings-nav__link">
-        <img src="../../../assets/icons/user-settings.png" alt="Perfil" class="settings-nav__icon" />
+        <img src="/assets/icons/user-settings.png" alt="Perfil" class="settings-nav__icon" />
       </a>
       <a href="settings-generals.html" class="settings-nav__link">
-        <img src="../../../assets/icons/settings-module.png" alt="Ajustes" class="settings-nav__icon" />
+        <img src="/assets/icons/settings-module.png" alt="Ajustes" class="settings-nav__icon" />
       </a>
       <a href="settings-planes.html" class="settings-nav__link">
-        <img src="../../../assets/icons/suscrip-settings.png" alt="Suscripciones" class="settings-nav__icon" />
+        <img src="/assets/icons/suscrip-settings.png" alt="Suscripciones" class="settings-nav__icon" />
       </a>
     </nav>
   </header>
@@ -141,7 +141,7 @@
     <div class="modal__overlay"></div>
     <div class="modal__content modal__content--success">
       <p class="modal__message">
-        <span class="modal__icon">✅</span> Su cuenta fue eliminada con éxito
+        <span class="modal__icon">✓</span> Su cuenta fue eliminada con éxito
       </p>
       <label for="modal-close" class="modal__button">Cerrar</label>
     </div>
@@ -154,3 +154,7 @@
 </body>
 
 </html>
+
+
+
+

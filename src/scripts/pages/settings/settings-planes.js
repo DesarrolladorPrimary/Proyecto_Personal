@@ -1,5 +1,5 @@
-import { fetchJson } from "/src/scripts/utils/api-client.js";
-import { getCurrentUserId } from "/src/scripts/utils/auth-session.js";
+import { fetchJson } from "../../utils/api-client.js";
+import { getCurrentUserId } from "../../utils/auth-session.js";
 
 const freeBtn = document.querySelector(".plan-card--free .plan-card__button");
 const premBtn = document.querySelector(".plan-card--premium .plan-card__button");

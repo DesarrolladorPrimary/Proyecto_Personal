@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -15,13 +15,13 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
-    <link rel="stylesheet" href="../../../src/styles/components/layout.css" />
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/components/layout.css" />
     <link
       rel="stylesheet"
-      href="../../../src/styles/pages/feed/poly/seccion_poly.css"
+      href="/src/styles/pages/feed/poly/seccion_poly.css"
     />
-    <script src="/src/scripts/utils/accesoAuth.js"></script>
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
 
   <body>
@@ -42,13 +42,13 @@
       <a href="#canvasAI" class="header__imageBook-link">
         <img
           class="header__imageBook"
-          src="../../../assets/icons/book.svg"
+          src="/assets/icons/book.svg"
           alt="libro de exportacion"
         />
       </a>
       <button type="button" class="header__logo header__logo-button" id="logo_user_button" aria-label="Abrir perfil de usuario">
         <img
-          src="../../../assets/icons/image.png"
+          src="/assets/icons/image.png"
           class="header__logo"
           alt="logo_user"
           id="logo_user"
@@ -61,7 +61,7 @@
         <span class="poly__eyebrow">Poly Workspace</span>
         <img
           class="poly__img"
-          src="../../../assets/image/brain_pencil.png"
+          src="/assets/image/brain_pencil.png"
           alt="Ilustracion de un cerebro y un lapiz"
         />
         <p class="poly__text">Que hare hoy?</p>
@@ -81,7 +81,7 @@
         >
           <img
             class="poly-input__icon poly-input__icon--file"
-            src="../../../assets/icons/paperclip.svg"
+            src="/assets/icons/paperclip.svg"
             alt="Adjuntar archivo"
           />
         </button>
@@ -103,7 +103,7 @@
         >
           <img
             class="poly-input__icon poly-input__icon--idea"
-            src="../../../assets/icons/light-bulb-brain.png"
+            src="/assets/icons/light-bulb-brain.png"
             alt="Sugerencias"
           />
         </a>
@@ -274,13 +274,13 @@
             id="canvas-save-button"
           >
             <img
-              src="../../../assets/icons/addLibro.png"
+              src="/assets/icons/addLibro.png"
               class="canvas__action-icon"
               alt=""
             />
           </button>
           <a class="canvas__action-convert" href="#bookModal">
-            <span class="canvas__action-label">📘 Convertir a libro</span>
+            <span class="canvas__action-label">Convertir a libro</span>
           </a>
           <div class="canvas__footer-line"></div>
         </footer>
@@ -302,7 +302,7 @@
         ></a>
         <header class="book-modal__header">
           <h2 class="book-modal__title" id="book-modal-title">
-            📘 Convertir historia a libro
+            Convertir historia a libro
           </h2>
           <div class="book-modal__divider"></div>
         </header>
@@ -323,11 +323,11 @@
           </select>
           <a class="book-modal__submit" href="#bookSuccess" id="book-submit">
             <img
-              src="../../../assets/icons/addLibro.png"
+              src="/assets/icons/addLibro.png"
               alt=""
               class="book-modal__submit-icon"
             />
-            🔄 Generar documento
+            Generar documento
           </a>
         </form>
       </article>
@@ -342,7 +342,7 @@
         aria-labelledby="book-success-message"
       >
         <p class="book-success__message" id="book-success-message">
-          ✅ Documento generado con éxito.<br />Tu relato quedó actualizado y exportado.
+          Documento generado con éxito.<br />Tu relato quedó actualizado y exportado.
         </p>
         <a
           href="#canvasAI"
@@ -374,7 +374,7 @@
     <div class="menu-user" id="user">
       <img
         class="menu-user__avatar"
-        src="../../../assets/icons/image.png"
+        src="/assets/icons/image.png"
         alt="Avatar del usuario"
         id="profile_photo_user"
       />
@@ -399,3 +399,7 @@
     <script type="module" src="/src/scripts/pages/poly/seccion_poly.js"></script>
   </body>
 </html>
+
+
+
+

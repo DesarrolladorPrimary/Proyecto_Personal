@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../../src/styles/components/layout.css" />
-    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
-    <link rel="stylesheet" href="../../../src/styles/layout.css" />
+    <link rel="stylesheet" href="/src/styles/components/layout.css" />
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/layout.css" />
     <link
       rel="stylesheet"
-      href="../../../src/styles/pages/admin/gest-user.css"
+      href="/src/styles/pages/admin/gest-user.css"
     />
     <title>Gestion de Usuarios</title>
-      <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <header class="header">
@@ -27,7 +27,7 @@
         <img
           class="header__search-icon"
           id="img"
-          src="../../../assets/icons/lupa.png"
+          src="/assets/icons/lupa.png"
           alt=""
         />
       </form>
@@ -41,7 +41,7 @@
         <div class="user-card__content">
           <div class="user-card__row">
             <img
-              src="../../../assets/icons/user.png"
+              src="/assets/icons/user.png"
               class="user-card__icon"
               alt="User"
             />
@@ -50,7 +50,7 @@
 
           <div class="user-card__row">
             <img
-              src="../../../assets/icons/email.png"
+              src="/assets/icons/email.png"
               class="user-card__icon"
               alt="Email"
             />
@@ -58,12 +58,12 @@
           </div>
 
           <div class="user-card__row">
-            <span class="user-card__icon">📅</span>
+          <span class="user-card__icon">👤</span>
             <span class="user-card__text">Registrado: 12/09/2025</span>
           </div>
 
           <div class="user-card__row">
-            <span class="user-card__icon">💼</span>
+          <span class="user-card__icon">📋</span>
             <span class="user-card__text">Plan: Gratuito</span>
           </div>
 
@@ -78,7 +78,7 @@
             <span>⚠️ Suspender</span>
           </label>
           <label for="modal-confirm-delete" class="user-card__button user-card__button--delete">
-            <span>❌ Eliminar</span>
+            <span>✖ Eliminar</span>
           </label>
         </div>
 
@@ -140,4 +140,8 @@
       <label for="modal-close" class="modal__overlay"></label>
     </div>
 </html>
+
+
+
+
 

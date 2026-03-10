@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="../../src/styles/components/base.css">
-    <link rel="stylesheet" href="../../src/styles/layout.css">
-    <link rel="stylesheet" href="../../src/styles/pages/auth/regist.css">
+    <link rel="stylesheet" href="/src/styles/components/base.css">
+    <link rel="stylesheet" href="/src/styles/layout.css">
+    <link rel="stylesheet" href="/src/styles/pages/auth/regist.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="/src/scripts/utils/accesoAuth.js"></script>
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
     <script src="/src/scripts/utils/theme-manager.js"></script>
     <script src="/src/scripts/utils/language-manager.js"></script>
 </head>
@@ -23,24 +23,24 @@
         <form id="form" method="POST" class="form">
 
              <div class="form__input-container">
-                <img src="../../assets/icons/user.png" class="form__input-icon" alt="Icono de usuario">
+                <img src="/assets/icons/user.png" class="form__input-icon" alt="Icono de usuario">
                 <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario" data-i18n-placeholder="register.user_placeholder">
             </div>
 
             
             <div class="form__input-container">
-                <img src="../../assets/icons/email.png" class="form__input-icon" alt="Icono">
+                <img src="/assets/icons/email.png" class="form__input-icon" alt="Icono">
                 <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="register.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com">
             </div>
 
 
             <div class="form__input-container">
-                <img src="../../assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
+                <img src="/assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
                 <input type="password" id="password_regist" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="register.password_placeholder">
             </div>
 
              <div class="form__input-container">
-                <img src="../../assets/icons/padlock.png" class="form__input-icon" alt="Icono">
+                <img src="/assets/icons/padlock.png" class="form__input-icon" alt="Icono">
                 <input type="password" id="password_registVery" name="username" required class="form__input" placeholder="Confirme Contraseña" data-i18n-placeholder="register.confirm_placeholder">
             </div>
 
@@ -59,3 +59,6 @@
     <script type="module" src="/src/scripts/pages/regist.js"></script>
 </body>
 </html>
+
+
+

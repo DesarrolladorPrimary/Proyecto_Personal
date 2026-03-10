@@ -1,16 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
-    <link rel="stylesheet" href="../../../src/styles/components/layout.css" />
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/components/layout.css" />
     <link
       rel="stylesheet"
-      href="../../../src/styles/pages/feed/creative/canvas_creative.css"
+      href="/src/styles/pages/feed/creative/canvas_creative.css"
     />
     <title>Canvas Creative</title>
-      <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <header class="header">
@@ -24,7 +24,7 @@
       </div>
 
       <a href="#user" class="header__logo">
-        <img src="../../../assets/icons/image.png" alt="Perfil de usuario" />
+        <img src="/assets/icons/image.png" alt="Perfil de usuario" />
       </a>
     </header>
 
@@ -37,7 +37,7 @@
         <div class="canvas-main__divider"></div>
         <textarea
           class="canvas-main__body"
-          placeholder="Inspírate aquí…"
+          placeholder="Inspírate aquí..."
         ></textarea>
         <footer class="canvas-main__footer">
           <div class="canvas-main__markers" id="herramientas">
@@ -48,15 +48,15 @@
             <button type="button" class="canvas-main__marker">U</button>
             <button type="button" class="canvas-main__marker">•/1</button>
             <button type="button" class="canvas-main__marker">❝</button>
-            <button type="button" class="canvas-main__marker">↔︎</button>
+            <button type="button" class="canvas-main__marker">↔</button>
             <button type="button" class="canvas-main__marker">—</button>
-            <button type="button" class="canvas-main__marker">🖼️</button>
-            <button type="button" class="canvas-main__marker">🔎</button>
+            <button type="button" class="canvas-main__marker">⚙</button>
+            <button type="button" class="canvas-main__marker">💡</button>
             <button type="button" class="canvas-main__marker">...</button>
             <button type="button" class="canvas-main__marker">●</button>
           </div>
           <a class="canvas-main__action" href="#canvasBookModal"
-            >📘 Convertir a libro</a
+            >Convertir a libro</a
           >
           <button class="canvas-main__quill" type="button">
             <a
@@ -66,7 +66,7 @@
             >
               <img
                 class="canvas-main__quill--img"
-                src="../../../assets/icons/pluma.png"
+                src="/assets/icons/pluma.png"
                 alt=""
               />
             </a>
@@ -91,7 +91,7 @@
         ></a>
         <header class="canvas-book-modal__header">
           <h2 class="canvas-book-modal__title" id="canvas-book-modal-title">
-            📘 Convertir historia a libro
+            Convertir historia a libro
           </h2>
           <div class="canvas-book-modal__divider"></div>
         </header>
@@ -107,11 +107,11 @@
           />
           <a class="canvas-book-modal__submit" href="#canvasBookSuccess">
             <img
-              src="../../../assets/icons/addLibro.png"
+              src="/assets/icons/addLibro.png"
               alt=""
               class="canvas-book-modal__submit-icon"
             />
-            🔄 Generar documento
+            Generar documento
           </a>
         </form>
       </article>
@@ -133,7 +133,7 @@
           class="canvas-book-success__message"
           id="canvas-book-success-message"
         >
-          📘 Libro generado con exito.<br />Guardado en tu Biblioteca.
+          Libro generado con éxito.<br />Guardado en tu Biblioteca.
         </p>
         <a
           href="#canvasLayout"
@@ -166,7 +166,7 @@
           >
             <span class="canvas-sidebar__option-label">Renombrar</span>
             <img
-              src="../../../assets/icons/reescribir.png"
+              src="/assets/icons/reescribir.png"
               alt=""
               class="canvas-sidebar__option-icon"
             />
@@ -178,7 +178,7 @@
           >
             <span class="canvas-sidebar__option-label">Eliminar</span>
             <img
-              src="../../../assets/icons/delete.png"
+              src="/assets/icons/delete.png"
               alt=""
               class="canvas-sidebar__option-icon"
             />
@@ -193,4 +193,8 @@
     </footer>
   </body>
 </html>
+
+
+
+
 

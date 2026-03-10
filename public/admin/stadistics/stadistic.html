@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../../src/styles/components/base.css" />
-    <link rel="stylesheet" href="../../../src/styles/components/layout.css" />
-    <link rel="stylesheet" href="../../../src/styles/layout.css" />
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/components/layout.css" />
+    <link rel="stylesheet" href="/src/styles/layout.css" />
     <link
       rel="stylesheet"
-      href="../../../src/styles/pages/admin/stadistic.css"
+      href="/src/styles/pages/admin/stadistic.css"
     />
     <title>Estadísticas - Panel de Administración</title>
-      <script src="/src/scripts/utils/accesoAuth.js"></script>
+      <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <div class="stats-container">
@@ -26,7 +26,7 @@
       <main class="stats-content">
         <!-- Total Users Card -->
         <div class="stats-card stats-card--users">
-          <div class="stats-card__icon">👥</div>
+        <div class="stats-card__icon">📊</div>
           <div class="stats-card__info">
             <span class="stats-card__label">Usuarios Totales:</span>
             <span class="stats-card__value">127</span>
@@ -56,15 +56,15 @@
           <h3 class="stats-section__title">Solicitudes procesadas este mes:</h3>
           <div class="stats-section__items">
             <div class="stats-item">
-              <span class="stats-item__icon stats-item__icon--green">✅</span>
+          <span class="stats-item__icon stats-item__icon--green">✓</span>
               <span class="stats-item__text">Aprobadas: 10</span>
             </div>
             <div class="stats-item">
-              <span class="stats-item__icon stats-item__icon--red">❌</span>
+          <span class="stats-item__icon stats-item__icon--red">✖</span>
               <span class="stats-item__text">Rechazadas: 3</span>
             </div>
             <div class="stats-item">
-              <span class="stats-item__icon stats-item__icon--gray">⚪</span>
+          <span class="stats-item__icon stats-item__icon--gray">○</span>
               <span class="stats-item__text">Pendientes: 0</span>
             </div>
           </div>
@@ -75,7 +75,7 @@
           <h3 class="stats-card__subtitle">Distribución de planes:</h3>
           <div class="stats-card__plan-item">
             <div class="stats-card__plan-info">
-              <span class="stats-card__plan-icon">💎</span>
+            <span class="stats-card__plan-icon">✨</span>
               <span class="stats-card__plan-name">Premium</span>
               <span class="stats-card__plan-separator">|</span>
             </div>
@@ -83,7 +83,7 @@
           </div>
           <div class="stats-card__plan-item">
             <div class="stats-card__plan-info">
-              <span class="stats-card__plan-icon">🎁</span>
+            <span class="stats-card__plan-icon">💎</span>
               <span class="stats-card__plan-name">Gratuito</span>
               <span class="stats-card__plan-separator">|</span>
             </div>
@@ -94,10 +94,14 @@
 
       <!-- Footer -->
       <footer class="stats-footer">
-        <button class="stats-footer__button">🔄 Actualizar datos</button>
+        <button class="stats-footer__button">Actualizar datos</button>
         <a href="../dashboard-admin.html" class="footer-nav__line"></a>
       </footer>
     </div>
   </body>
 </html>
+
+
+
+
 
