@@ -1203,16 +1203,40 @@ body {
 }
 
 .book-modal__input {
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   padding: 10px 14px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(10, 12, 16, 0.55);
   color: var(--color-text-light);
   font-size: 14px;
 }
 
 .book-modal__input:focus {
   outline: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.book-modal__input:is(select) {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 42px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.86) 50%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.86) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 2px),
+    calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.book-modal__input:is(select):hover {
+  background-color: rgba(16, 19, 24, 0.72);
+}
+
+.book-modal__input option {
+  color: #111;
 }
 
 .book-modal__hint {

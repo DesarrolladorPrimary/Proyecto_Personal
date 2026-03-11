@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const getDocumentCountLabel = () => {
     const total = state.documents.length;
-    return `${total} documento${total === 1 ? "" : "s"}`;
+    return `${total} libro${total === 1 ? "" : "s"}`;
   };
 
   const getStoryCountLabel = () => {
@@ -301,12 +301,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const title = document.createElement("h2");
     title.className = "library-empty__title";
     title.textContent = state.selectedShelfId
-      ? "Esta estanteria aun no tiene documentos convertidos"
-      : "Aun no tienes documentos convertidos guardados";
+      ? "Esta estantería aún no tiene libros guardados"
+      : "Aún no tienes libros guardados";
 
     const description = document.createElement("p");
     description.className = "library-empty__text";
-    description.textContent = "Los archivos exportados apareceran aqui para descargarlos o eliminarlos.";
+    description.textContent = "Cuando conviertas un relato en libro, aparecerá aquí para abrirlo, descargarlo o eliminarlo.";
 
     emptyState.append(title, description);
     libraryMain.appendChild(emptyState);
@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const createShelfPanel = () => {
     const panel = document.createElement("section");
     panel.className = "library-panel library-panel--shelf";
-    panel.append(createPanelHeader("Vista de estanteria", getDocumentCountLabel()));
+    panel.append(createPanelHeader("Libros", getDocumentCountLabel()));
 
     const spotlight = document.createElement("div");
     spotlight.className = "library-shelf-preview";
@@ -383,41 +383,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return button;
   };
 
-  const createDocumentListItem = (libraryDocument) => {
-    const item = document.createElement("article");
-    item.className = "document-list__item";
-
-    const content = document.createElement("div");
-    content.className = "document-list__content";
-
-    const title = document.createElement("button");
-    title.type = "button";
-    title.className = "document-list__title";
-    title.textContent = libraryDocument.nombreArchivo || libraryDocument.tituloRelato || "Documento";
-    title.addEventListener("click", () => openDocumentModal(libraryDocument));
-
-    const story = document.createElement("p");
-    story.className = "document-list__story";
-    story.textContent = libraryDocument.tituloRelato ? `Libro generado desde: ${libraryDocument.tituloRelato}` : "Libro exportado";
-
-    const meta = document.createElement("p");
-    meta.className = "document-list__meta";
-    meta.textContent = buildDocumentMeta(libraryDocument);
-
-    content.append(title, story, meta);
-
-    const actions = document.createElement("div");
-    actions.className = "document-list__actions";
-    actions.append(
-      createListActionButton("Ver", "ghost", () => openDocumentModal(libraryDocument)),
-      createListActionButton("Descargar", "", () => downloadDocument(libraryDocument)),
-      createListActionButton("Eliminar", "danger", () => deleteDocument(libraryDocument)),
-    );
-
-    item.append(content, actions);
-    return item;
-  };
-
   const createStoryListItem = (story) => {
     const item = document.createElement("article");
     item.className = "document-list__item";
@@ -458,21 +423,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return item;
   };
 
-  const createListPanel = () => {
-    const panel = document.createElement("section");
-    panel.className = "library-panel library-panel--list";
-    panel.append(createPanelHeader("Libros exportados", "Resultado final listo para abrir, descargar o eliminar"));
-
-    const list = document.createElement("div");
-    list.className = "document-list";
-    state.documents.forEach((libraryDocument) => {
-      list.appendChild(createDocumentListItem(libraryDocument));
-    });
-
-    panel.appendChild(list);
-    return panel;
-  };
-
   const createStoriesPanel = () => {
     const panel = document.createElement("section");
     panel.className = "library-panel library-panel--list";
@@ -502,7 +452,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (state.documents.length) {
-      libraryMain.append(createShelfPanel(), createListPanel());
+      libraryMain.appendChild(createShelfPanel());
     }
   };
 
@@ -603,6 +553,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const exportStory = async (story = state.selectedStory) => {
     if (!story?.id) {
+      return;
+    }
+
+    if (!story.estanteriaId) {
+      showToast("Debes asignar una estantería antes de convertir este relato en libro");
       return;
     }
 
@@ -771,11 +726,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   createButton?.addEventListener("click", async () => {
-    const nombre = inputLibrary.value.trim();
+    const suggestedName = state.selectedShelfId ? "" : inputLibrary.value.trim();
+    const nombre = window.prompt("Nombre de la nueva estantería", suggestedName)?.trim();
 
     if (!nombre) {
-      showToast("Ingresa un nombre para la estanteria");
-      inputLibrary.focus();
       return;
     }
 

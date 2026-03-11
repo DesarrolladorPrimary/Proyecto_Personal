@@ -1230,6 +1230,12 @@ const handleBookSubmit = async (event) => {
     : null;
   const selectedShelf = selectedShelfId ? getShelfById(selectedShelfId) : null;
 
+  if (!selectedShelfId || !selectedShelf) {
+    showToast("Debes seleccionar una estantería antes de guardar el relato");
+    elements.bookShelf?.focus();
+    return;
+  }
+
   const description = getCanvasText();
 
   if (!description) {
