@@ -52,6 +52,7 @@ const WAITING_STATUS_STAGES = [
 const state = {
   userId: getCurrentUserId(),
   stories: [],
+  shelves: [],
   activeStoryId: null,
   messages: [],
   sending: false,
@@ -109,12 +110,16 @@ const elements = {
   canvasBody: document.getElementById("canvas-body"),
   canvasCounter: document.getElementById("canvas-counter"),
   canvasSaveButton: document.getElementById("canvas-save-button"),
+  bookForm: document.getElementById("book-form"),
   bookTitle: document.getElementById("book-title"),
-  bookFormat: document.getElementById("book-format"),
+  bookShelf: document.getElementById("book-shelf"),
   bookSubmit: document.getElementById("book-submit"),
+  bookSuccessMessage: document.getElementById("book-success-message"),
+  bookLibraryLink: document.getElementById("book-library-link"),
 };
 
 const getStorageKey = (suffix) => `poly:${state.userId}:${suffix}`;
+const getActiveStory = () => state.stories.find((story) => story.id === state.activeStoryId) || null;
 
 const showToast = (text, background = "red") => {
   if (!window.Toastify) {
@@ -159,6 +164,79 @@ const setAsideOpen = (nextValue) => {
 
 const setUserMenuOpen = (nextValue) => {
   elements.userMenu?.classList.toggle("menu-user--visible", Boolean(nextValue));
+};
+
+const getShelfById = (shelfId) =>
+  state.shelves.find((shelf) => String(shelf.id) === String(shelfId)) || null;
+
+const buildLibraryUrl = (shelfId) => {
+  const basePath = "../biblioteca/library.html";
+  const shelf = getShelfById(shelfId);
+
+  if (!shelf) {
+    return basePath;
+  }
+
+  const params = new URLSearchParams({
+    shelfId: String(shelf.id),
+    shelfName: shelf.nombre,
+  });
+
+  return `${basePath}?${params.toString()}`;
+};
+
+const syncLibraryLink = (shelfId = "") => {
+  if (!elements.bookLibraryLink) {
+    return;
+  }
+
+  const shelf = getShelfById(shelfId);
+  elements.bookLibraryLink.href = buildLibraryUrl(shelfId);
+  elements.bookLibraryLink.textContent = shelf
+    ? `Abrir biblioteca: ${shelf.nombre}`
+    : "Abrir biblioteca";
+};
+
+const syncBookShelfSelection = () => {
+  if (!elements.bookShelf) {
+    return;
+  }
+
+  const activeStory = getActiveStory();
+  const nextValue = activeStory?.estanteriaId != null ? String(activeStory.estanteriaId) : "";
+  const optionExists = Array.from(elements.bookShelf.options).some((option) => option.value === nextValue);
+
+  elements.bookShelf.value = optionExists ? nextValue : "";
+  syncLibraryLink(elements.bookShelf.value);
+};
+
+const renderShelfOptions = () => {
+  if (!elements.bookShelf) {
+    return;
+  }
+
+  const currentValue = elements.bookShelf.value;
+  elements.bookShelf.innerHTML = "";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Biblioteca general";
+  elements.bookShelf.appendChild(defaultOption);
+
+  state.shelves.forEach((shelf) => {
+    const option = document.createElement("option");
+    option.value = String(shelf.id);
+    option.textContent = shelf.nombre;
+    elements.bookShelf.appendChild(option);
+  });
+
+  const activeStory = getActiveStory();
+  const preferredValue = currentValue
+    || (activeStory?.estanteriaId != null ? String(activeStory.estanteriaId) : "");
+  const optionExists = Array.from(elements.bookShelf.options).some((option) => option.value === preferredValue);
+
+  elements.bookShelf.value = optionExists ? preferredValue : "";
+  syncLibraryLink(elements.bookShelf.value);
 };
 
 const getPrimarySourceFile = () => state.sourceFiles[0] || null;
@@ -528,7 +606,7 @@ const stopResponseWait = () => {
 };
 
 const getCanvasDraft = () => {
-  const activeStory = state.stories.find((story) => story.id === state.activeStoryId);
+  const activeStory = getActiveStory();
   return String(activeStory?.descripcion || "").trim();
 };
 
@@ -539,86 +617,6 @@ const getCanvasText = () => {
   }
 
   return getCanvasDraft();
-};
-
-const sanitizeFileName = (value) =>
-  String(value || "historia-poly")
-    .trim()
-    .replace(/[\\/:*?"<>|]+/g, "-")
-    .replace(/\s+/g, " ")
-    .slice(0, 80) || "historia-poly";
-
-const escapeHtml = (value) =>
-  String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-
-const buildExportHtml = (title, content) => `<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>${escapeHtml(title)}</title>
-    <style>
-      body { font-family: Georgia, serif; margin: 48px; line-height: 1.7; color: #222; }
-      h1 { margin-bottom: 32px; font-size: 28px; }
-      p { margin: 0 0 16px; }
-    </style>
-  </head>
-  <body>
-    <h1>${escapeHtml(title)}</h1>
-    ${splitIntoParagraphs(content).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
-  </body>
-</html>`;
-
-const downloadBlob = (filename, blob) => {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-};
-
-const buildWordBlob = (title, content) => {
-  const html = buildExportHtml(title, content);
-  return new Blob(["\ufeff", html], {
-    type: "application/msword",
-  });
-};
-
-const blobToBase64 = (blob) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result || "");
-      resolve(result.includes(",") ? result.split(",")[1] : result);
-    };
-    reader.onerror = () => reject(new Error("No fue posible convertir el archivo"));
-    reader.readAsDataURL(blob);
-  });
-
-const exportWordDocument = (title, blob) => {
-  downloadBlob(`${sanitizeFileName(title)}.doc`, blob);
-};
-
-const exportPdfDocument = (title, content, printWindow) => {
-  if (!printWindow) {
-    return false;
-  }
-
-  printWindow.document.open();
-  printWindow.document.write(buildExportHtml(title, content));
-  printWindow.document.close();
-  printWindow.focus();
-  window.setTimeout(() => {
-    printWindow.print();
-  }, 250);
-  return true;
 };
 
 const isSupportedStoryFile = (file) => {
@@ -647,7 +645,7 @@ const updateCanvas = () => {
     return;
   }
 
-  const activeStory = state.stories.find((story) => story.id === state.activeStoryId);
+  const activeStory = getActiveStory();
   const draft = getCanvasDraft();
 
   elements.canvasTitle.textContent = activeStory?.titulo || "Título";
@@ -701,7 +699,12 @@ const saveCanvasDraft = async () => {
     return;
   }
 
-  showToast(data.Mensaje || "Canvas guardado", "green");
+  showToast(
+    data.version
+      ? `${data.Mensaje || "Canvas guardado"} · Versión ${data.version}`
+      : data.Mensaje || "Canvas guardado",
+    "green",
+  );
   await loadStories(state.activeStoryId);
   await loadStoryDetails(state.activeStoryId);
 };
@@ -968,6 +971,7 @@ const loadStoryDetails = async (storyId) => {
     syncAiSettingsUI();
     syncAttachedFile();
     renderSourceFilesList();
+    syncBookShelfSelection();
     updateCanvas();
     return;
   }
@@ -988,6 +992,7 @@ const loadStoryDetails = async (storyId) => {
     syncAiSettingsUI();
     syncAttachedFile();
     renderSourceFilesList();
+    syncBookShelfSelection();
     showToast(data.Mensaje || "No fue posible cargar el detalle del chat");
     return;
   }
@@ -1007,6 +1012,7 @@ const loadStoryDetails = async (storyId) => {
   syncAiSettingsUI();
   syncAttachedFile();
   renderSourceFilesList();
+  syncBookShelfSelection();
   renderStories();
   updateCanvas();
 };
@@ -1091,6 +1097,31 @@ const loadStories = async (preferredStoryId = null) => {
   }
 
   renderStories();
+  syncBookShelfSelection();
+};
+
+const loadShelves = async () => {
+  const { ok, status, data } = await fetchJson("/api/v1/estanterias", {
+    params: { id: state.userId },
+    auth: true,
+  });
+
+  if (!ok) {
+    if (status === 401) {
+      logoutAndRedirect();
+      return;
+    }
+
+    state.shelves = [];
+    renderShelfOptions();
+    showToast(data.Mensaje || "No fue posible cargar las estanterías");
+    return;
+  }
+
+  state.shelves = Array.isArray(data)
+    ? data.filter((item) => item && typeof item === "object" && item.id)
+    : [];
+  renderShelfOptions();
 };
 
 const sendMessage = async (content) => {
@@ -1194,59 +1225,57 @@ const handleBookSubmit = async (event) => {
     return;
   }
 
-  const format = elements.bookFormat?.value || "word";
-  const pdfWindow = format === "pdf"
-    ? window.open("", "_blank", "width=900,height=700")
+  const selectedShelfId = elements.bookShelf?.value
+    ? Number(elements.bookShelf.value)
     : null;
-
-  if (format === "pdf" && !pdfWindow) {
-    showToast("Habilita ventanas emergentes para exportar en PDF");
-    return;
-  }
+  const selectedShelf = selectedShelfId ? getShelfById(selectedShelfId) : null;
 
   const description = getCanvasText();
 
   if (!description) {
-    pdfWindow?.close();
-    showToast("Todavía no hay contenido para exportar");
+    showToast("Todavía no hay contenido para guardar");
     return;
   }
 
-  const wordBlob = format === "word" ? buildWordBlob(nextTitle, description) : null;
+  if (elements.bookSubmit) {
+    elements.bookSubmit.disabled = true;
+  }
 
-  const { ok, data } = await fetchJson(`/api/v1/stories/${storyId}/export`, {
-    method: "POST",
+  const { ok, data } = await fetchJson(`/api/v1/stories/${storyId}`, {
+    method: "PUT",
     auth: true,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       titulo: nextTitle,
-      contenido: description,
-      formato: format,
-      nombreArchivo: wordBlob ? `${sanitizeFileName(nextTitle)}.doc` : null,
-      tipoArchivo: wordBlob ? "DOC" : null,
-      archivoBase64: wordBlob ? await blobToBase64(wordBlob) : null,
+      descripcion: description,
+      estanteriaId: selectedShelfId,
     }),
   });
 
+  if (elements.bookSubmit) {
+    elements.bookSubmit.disabled = false;
+  }
+
   if (!ok) {
-    pdfWindow?.close();
-    showToast(data.Mensaje || "No fue posible exportar el libro");
+    showToast(data.Mensaje || "No fue posible guardar el relato");
     return;
   }
 
-  showToast(data.Mensaje || "Libro exportado", "green");
+  showToast(
+    data.version
+      ? `${data.Mensaje || "Relato guardado en biblioteca"} · Versión ${data.version}`
+      : data.Mensaje || "Relato guardado en biblioteca",
+    "green",
+  );
   await loadStories(storyId);
   await selectStory(storyId);
 
-  if (format === "pdf") {
-    const opened = exportPdfDocument(nextTitle, description, pdfWindow);
-    if (!opened) {
-      showToast("Habilita ventanas emergentes para exportar en PDF");
-      return;
-    }
-  } else {
-    exportWordDocument(nextTitle, wordBlob);
+  if (elements.bookSuccessMessage) {
+    elements.bookSuccessMessage.textContent = selectedShelf
+      ? `Relato guardado con éxito. Quedó actualizado en la estantería ${selectedShelf.nombre}.`
+      : "Relato guardado con éxito. Quedó actualizado en tu biblioteca.";
   }
+  syncLibraryLink(selectedShelfId ? String(selectedShelfId) : "");
 
   window.location.hash = "#bookSuccess";
 };
@@ -1543,7 +1572,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   elements.form?.addEventListener("submit", handleSubmit);
   elements.newChatButton?.addEventListener("click", handleCreateNewChat);
   elements.attachButton?.addEventListener("click", handleAttachClick);
-  elements.bookSubmit?.addEventListener("click", handleBookSubmit);
+  elements.bookForm?.addEventListener("submit", handleBookSubmit);
   setupInputAutoResize();
   setupInputSubmitBehavior();
   setupCanvasBindings();
@@ -1551,12 +1580,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupAiParameters();
   setupAsideBehavior();
   setupUserMenu();
+  elements.bookShelf?.addEventListener("change", () => {
+    syncLibraryLink(elements.bookShelf.value);
+  });
   syncFormState();
   syncAsideState();
   syncAttachedFile();
+  renderShelfOptions();
   focusInput();
 
   await loadUser();
+  await loadShelves();
   await loadStories();
   await selectStory(state.activeStoryId);
 });

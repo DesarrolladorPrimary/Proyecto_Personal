@@ -1,4 +1,4 @@
-const normalizeBaseUrl = (value) => {
+export const normalizeBaseUrl = (value) => {
   if (!value || typeof value !== "string") {
     return "";
   }
@@ -6,20 +6,61 @@ const normalizeBaseUrl = (value) => {
   return value.endsWith("/") ? value.slice(0, -1) : value;
 };
 
-const resolveApiBaseUrl = () => {
-  const configuredUrl =
-    window.__APP_CONFIG__?.apiBaseUrl ||
-    localStorage.getItem("apiBaseUrl") ||
-    "http://localhost:8080";
+const DEFAULT_API_BASE_URLS = [
+  "http://localhost:8080",
+  "http://127.0.0.1:8080",
+  "http://localhost:8081",
+  "http://127.0.0.1:8081",
+];
 
-  return normalizeBaseUrl(configuredUrl);
+const getWindowConfigUrl = () => {
+  if (typeof window === "undefined") {
+    return "";
+  }
+
+  return window.__APP_CONFIG__?.apiBaseUrl || "";
 };
 
-export const API_BASE_URL = resolveApiBaseUrl();
+const getStoredApiBaseUrl = () => {
+  if (typeof window === "undefined" || !window.localStorage) {
+    return "";
+  }
 
-export const buildApiUrl = (path, params) => {
+  return window.localStorage.getItem("apiBaseUrl") || "";
+};
+
+export const getApiBaseCandidates = () => {
+  const candidates = [
+    getWindowConfigUrl(),
+    getStoredApiBaseUrl(),
+    ...DEFAULT_API_BASE_URLS,
+  ]
+    .map(normalizeBaseUrl)
+    .filter(Boolean);
+
+  return [...new Set(candidates)];
+};
+
+export const getApiBaseUrl = () => getApiBaseCandidates()[0] || DEFAULT_API_BASE_URLS[0];
+
+export const rememberApiBaseUrl = (baseUrl) => {
+  if (typeof window === "undefined" || !window.localStorage) {
+    return;
+  }
+
+  const normalized = normalizeBaseUrl(baseUrl);
+  if (!normalized) {
+    return;
+  }
+
+  window.localStorage.setItem("apiBaseUrl", normalized);
+};
+
+export const API_BASE_URL = getApiBaseUrl();
+
+export const buildApiUrl = (path, params, baseUrl = getApiBaseUrl()) => {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  const url = new URL(`${API_BASE_URL}${normalizedPath}`);
+  const url = new URL(`${normalizeBaseUrl(baseUrl)}${normalizedPath}`);
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
@@ -41,5 +82,5 @@ export const buildUploadedAssetUrl = (relativePath) => {
     ? relativePath
     : `/${relativePath}`;
 
-  return `${API_BASE_URL}${normalizedPath}`;
+  return `${getApiBaseUrl()}${normalizedPath}`;
 };

@@ -35,6 +35,11 @@ const getStatusLabel = (status) => {
   return { text: status || "Desconocido", className: "" };
 };
 
+const buildReference = (payment) => {
+  const baseReference = payment.Referencia || payment.PK_PagoID;
+  return payment.Simulado ? `${baseReference} (Simulado)` : baseReference;
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const { ok, data } = await fetchJson("/api/v1/admin/payments", {
@@ -53,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const row = document.createElement("div");
       row.className = "payment-row";
       row.innerHTML = `
-        <div class="payment-row__cell">${payment.Referencia || payment.PK_PagoID}</div>
+        <div class="payment-row__cell">${buildReference(payment)}</div>
         <div class="payment-row__cell">${payment.Correo || payment.Nombre || "Sin usuario"}</div>
         <div class="payment-row__cell">${formatDate(payment.FechaPago)}</div>
         <div class="payment-row__cell">

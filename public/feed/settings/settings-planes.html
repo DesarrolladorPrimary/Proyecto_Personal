@@ -13,6 +13,11 @@
       rel="stylesheet"
       href="/src/styles/pages/feed/settings/settings-planes.css"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
 
     <title>Planes</title>
       <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
@@ -94,7 +99,11 @@
               <p class="plan-card__feature-text">⚙ Espacio: 500 MB</p>
             </li>
           </ul>
-          <button class="plan-card__button plan-card__button--current">
+          <button
+            id="plan-free-button"
+            class="plan-card__button plan-card__button--current"
+            type="button"
+          >
             Activo
           </button>
         </div>
@@ -125,10 +134,12 @@
               <p class="plan-card__feature-text">✨ Espacio ilimitado</p>
             </li>
           </ul>
-          <button class="plan-card__button plan-card__button--upgrade">
-            <label for="checkPay" class="plan-card__button-label"
-              >Comprar Premium</label
-            >
+          <button
+            id="plan-premium-button"
+            class="plan-card__button plan-card__button--upgrade"
+            type="button"
+          >
+            Simular Premium
           </button>
         </div>
       </div>
@@ -138,22 +149,27 @@
 
     <div class="payment-loading">
       <section class="payment-loading__container">
-        <h1 class="payment-loading__title">Procesando <br />Pago...</h1>
+        <h1 id="payment-loading-title" class="payment-loading__title">
+          Actualizando <br />plan...
+        </h1>
         <img
           class="payment-loading__video"
           src="/assets/gif/cargando-unscreen.gif"
           alt="Cargando pago"
         />
-        <p class="payment-loading__text">
-          Se le reenviará a nuestro proveedor de pagos para continuar
+        <p id="payment-loading-text" class="payment-loading__text">
+          Simulando el cambio de suscripción en tu cuenta
         </p>
       </section>
     </div>
 
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script type="module" src="/src/scripts/pages/settings/settings-planes.js"></script>
   </body>
 </html>
-
 
 
 

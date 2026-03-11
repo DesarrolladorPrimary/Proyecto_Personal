@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/src/styles/components/base.css" />
     <link rel="stylesheet" href="/src/styles/components/layout.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link
       rel="stylesheet"
       href="/src/styles/pages/feed/creative/canvas_creative.css"
@@ -43,20 +44,24 @@
         ></textarea>
         <footer class="canvas-main__footer">
           <div class="canvas-main__markers" id="herramientas">
-            <button type="button" class="canvas-main__marker">↶/↷</button>
-            <button type="button" class="canvas-main__marker">H1/H2</button>
-            <button type="button" class="canvas-main__marker">B</button>
-            <button type="button" class="canvas-main__marker">I</button>
-            <button type="button" class="canvas-main__marker">U</button>
-            <button type="button" class="canvas-main__marker">•/1</button>
-            <button type="button" class="canvas-main__marker">❝</button>
-            <button type="button" class="canvas-main__marker">↔</button>
-            <button type="button" class="canvas-main__marker">—</button>
-            <button type="button" class="canvas-main__marker">⚙</button>
-            <button type="button" class="canvas-main__marker">💡</button>
-            <button type="button" class="canvas-main__marker">...</button>
-            <button type="button" class="canvas-main__marker">●</button>
+            <button type="button" class="canvas-main__marker" data-tool="undo" title="Deshacer">↶</button>
+            <button type="button" class="canvas-main__marker" data-tool="redo" title="Rehacer">↷</button>
+            <button type="button" class="canvas-main__marker" data-tool="heading" title="Encabezado">H1/H2</button>
+            <button type="button" class="canvas-main__marker" data-tool="bold" title="Negrita">B</button>
+            <button type="button" class="canvas-main__marker" data-tool="italic" title="Cursiva">I</button>
+            <button type="button" class="canvas-main__marker" data-tool="underline" title="Subrayado">U</button>
+            <button type="button" class="canvas-main__marker" data-tool="list" title="Lista">•/1</button>
+            <button type="button" class="canvas-main__marker" data-tool="quote" title="Cita">❝</button>
+            <button type="button" class="canvas-main__marker" data-tool="separator" title="Separador">↔</button>
+            <button type="button" class="canvas-main__marker" data-tool="emdash" title="Raya">—</button>
+            <button type="button" class="canvas-main__marker" data-tool="correct" title="Corregir texto">⚙</button>
+            <button type="button" class="canvas-main__marker" data-tool="style" title="Mejorar estilo">💡</button>
+            <button type="button" class="canvas-main__marker" data-tool="continue" title="Continuar relato">...</button>
+            <button type="button" class="canvas-main__marker" data-tool="scene" title="Corte de escena">●</button>
           </div>
+          <p class="canvas-main__tool-status" id="creative-tool-status">
+            Selecciona texto o usa las ayudas para seguir escribiendo.
+          </p>
           <button class="canvas-main__action" type="button" id="creative-save-draft">Guardar borrador</button>
           <button class="canvas-main__quill" type="button">
             <a
@@ -105,6 +110,13 @@
             type="text"
             value="Mi historia creativa"
           />
+          <label class="canvas-book-modal__label" for="canvas-book-format"
+            >Formato:</label
+          >
+          <select class="canvas-book-modal__input" id="canvas-book-format">
+            <option value="word">Word (.doc)</option>
+            <option value="pdf">PDF (.pdf)</option>
+          </select>
           <button class="canvas-book-modal__submit" type="submit">
             <img
               src="/assets/icons/addLibro.png"
@@ -162,7 +174,6 @@
     <script type="module" src="/src/scripts/pages/creative/canvas-creativo.js"></script>
   </body>
 </html>
-
 
 
 

@@ -132,7 +132,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         container.appendChild(row);
       });
     } catch (error) {
-      showToast("Error de conexion");
+      console.error("Error cargando estanterías:", error);
+      showToast("No fue posible cargar las estanterías");
     }
   };
 

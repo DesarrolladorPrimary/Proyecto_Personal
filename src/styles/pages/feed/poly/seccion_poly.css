@@ -1215,6 +1215,13 @@ body {
   outline: 1px solid rgba(255, 255, 255, 0.4);
 }
 
+.book-modal__hint {
+  margin: -2px 0 4px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .book-modal__submit {
   border: none;
   border-radius: 12px;
@@ -1272,6 +1279,15 @@ body {
   margin-bottom: 16px;
 }
 
+.book-success__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.book-success__link,
 .book-success__close {
   display: inline-block;
   padding: 8px 16px;
@@ -1280,6 +1296,10 @@ body {
   color: var(--color-text-light);
   text-decoration: none;
   font-size: var(--font-size-small);
+}
+
+.book-success__link {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .poly-aside {

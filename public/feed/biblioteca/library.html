@@ -73,6 +73,28 @@
       </div>
     </div>
 
+    <div class="book-modal" id="exportModal">
+      <div class="book-modal__overlay"></div>
+      <div class="book-modal__content">
+        <a href="#" class="book-modal__close">&times;</a>
+        <h2 class="book-modal__shelf-name" id="export-modal-title">Convertir en libro</h2>
+        <p class="book-modal__meta" id="export-modal-meta"></p>
+        <form class="book-modal__form" id="export-form">
+          <label class="book-modal__label" for="export-title">Título del libro</label>
+          <input class="book-modal__input" type="text" id="export-title" />
+          <label class="book-modal__label" for="export-format">Formato</label>
+          <select class="book-modal__input" id="export-format">
+            <option value="word">Word (.doc)</option>
+            <option value="pdf">PDF</option>
+          </select>
+          <p class="book-modal__hint">El libro final quedará guardado en esta biblioteca para descargarlo después.</p>
+          <div class="book-modal__actions">
+            <button class="book-modal__button" type="submit" id="export-submit">Convertir</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="/src/scripts/pages/biblioteca/library.js"></script>
   </body>

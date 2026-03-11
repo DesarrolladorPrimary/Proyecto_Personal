@@ -11,13 +11,17 @@ const elements = {
   saveButton: document.getElementById("creative-save-draft"),
   exportForm: document.getElementById("creative-export-form"),
   exportTitle: document.getElementById("canvas-book-title"),
+  exportFormat: document.getElementById("canvas-book-format"),
   newButton: document.getElementById("creative-canvas-new"),
   storyList: document.getElementById("creative-canvas-story-list"),
+  toolButtons: Array.from(document.querySelectorAll(".canvas-main__marker")),
+  toolStatus: document.getElementById("creative-tool-status"),
 };
 
 const state = {
   storyId: null,
   stories: [],
+  assistantBusy: false,
 };
 
 const showToast = (text, background = "red") => {
@@ -31,6 +35,12 @@ const showToast = (text, background = "red") => {
   }).showToast();
 };
 
+const setToolStatus = (text) => {
+  if (elements.toolStatus) {
+    elements.toolStatus.textContent = text;
+  }
+};
+
 const getWordCount = (text) =>
   text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
 
@@ -39,6 +49,15 @@ const updateCounter = () => {
   if (elements.counter) {
     elements.counter.textContent = `${words} palabras`;
   }
+};
+
+const syncBodyState = () => {
+  updateCounter();
+  elements.body?.dispatchEvent(new Event("input", { bubbles: true }));
+};
+
+const focusBody = () => {
+  elements.body?.focus();
 };
 
 const getSelectedStoryId = () => {
@@ -81,6 +100,40 @@ const buildWordBlob = (title, content) => {
   });
 };
 
+const buildPdfBlob = (title, content) => {
+  const jsPDF = window.jspdf?.jsPDF;
+  if (!jsPDF) {
+    throw new Error("No fue posible cargar el exportador PDF");
+  }
+
+  const pdf = new jsPDF({ unit: "pt", format: "a4" });
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const margin = 40;
+  const lineHeight = 18;
+
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(18);
+  pdf.text(title, margin, 55);
+
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(12);
+  const lines = pdf.splitTextToSize(content, pageWidth - margin * 2);
+  let y = 85;
+
+  lines.forEach((line) => {
+    if (y > pageHeight - margin) {
+      pdf.addPage();
+      y = 55;
+    }
+
+    pdf.text(line, margin, y);
+    y += lineHeight;
+  });
+
+  return pdf.output("blob");
+};
+
 const downloadBlob = (blob, fileName) => {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -90,6 +143,323 @@ const downloadBlob = (blob, fileName) => {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
+};
+
+const getSelectionInfo = () => {
+  const textarea = elements.body;
+  const value = textarea?.value || "";
+  const start = textarea?.selectionStart ?? 0;
+  const end = textarea?.selectionEnd ?? 0;
+
+  return {
+    value,
+    start,
+    end,
+    selectedText: value.slice(start, end),
+    hasSelection: end > start,
+  };
+};
+
+const setSelection = (start, end = start) => {
+  elements.body?.setSelectionRange(start, end);
+  focusBody();
+};
+
+const replaceRange = (start, end, text, selectionMode = "end") => {
+  if (!elements.body) {
+    return;
+  }
+
+  elements.body.setRangeText(text, start, end, selectionMode);
+  syncBodyState();
+  focusBody();
+};
+
+const replaceCurrentSelection = (text, selectionMode = "end") => {
+  const { start, end } = getSelectionInfo();
+  replaceRange(start, end, text, selectionMode);
+};
+
+const getExpandedLineRange = () => {
+  const { value, start, end } = getSelectionInfo();
+  const lineStart = value.lastIndexOf("\n", Math.max(0, start - 1)) + 1;
+  const lineEndIndex = value.indexOf("\n", end);
+  const lineEnd = lineEndIndex === -1 ? value.length : lineEndIndex;
+
+  return {
+    value,
+    start: lineStart,
+    end: lineEnd,
+    text: value.slice(lineStart, lineEnd),
+  };
+};
+
+const transformSelectedLines = (transformer) => {
+  const { start, end, text } = getExpandedLineRange();
+  const lines = text.split("\n");
+  const nextText = transformer(lines).join("\n");
+  replaceRange(start, end, nextText, "select");
+};
+
+const toggleInlineWrap = (token) => {
+  const { selectedText, start, end } = getSelectionInfo();
+
+  if (!selectedText) {
+    replaceCurrentSelection(`${token}${token}`, "end");
+    setSelection(start + token.length, start + token.length);
+    return;
+  }
+
+  if (selectedText.startsWith(token) && selectedText.endsWith(token)) {
+    replaceCurrentSelection(selectedText.slice(token.length, selectedText.length - token.length), "select");
+    return;
+  }
+
+  replaceCurrentSelection(`${token}${selectedText}${token}`, "select");
+};
+
+const insertAtCursor = (text) => {
+  replaceCurrentSelection(text, "end");
+};
+
+const toggleList = () => {
+  transformSelectedLines((lines) => {
+    const normalized = lines.filter((line) => line.trim());
+
+    if (normalized.length && normalized.every((line) => /^\d+\.\s/.test(line))) {
+      return lines.map((line) => line.replace(/^\d+\.\s/, ""));
+    }
+
+    if (normalized.length && normalized.every((line) => line.startsWith("- "))) {
+      let index = 1;
+      return lines.map((line) => {
+        if (!line.trim()) {
+          return line;
+        }
+
+        const cleaned = line.replace(/^- /, "");
+        const numbered = `${index}. ${cleaned}`;
+        index += 1;
+        return numbered;
+      });
+    }
+
+    return lines.map((line) => (line.trim() ? `- ${line.replace(/^\d+\.\s/, "").replace(/^- /, "")}` : line));
+  });
+};
+
+const toggleQuote = () => {
+  transformSelectedLines((lines) => {
+    const normalized = lines.filter((line) => line.trim());
+    const allQuoted = normalized.length && normalized.every((line) => line.startsWith("> "));
+
+    return lines.map((line) => {
+      if (!line.trim()) {
+        return line;
+      }
+
+      return allQuoted ? line.replace(/^>\s/, "") : `> ${line}`;
+    });
+  });
+};
+
+const cycleHeading = () => {
+  transformSelectedLines((lines) =>
+    lines.map((line) => {
+      if (!line.trim()) {
+        return line;
+      }
+
+      if (line.startsWith("## ")) {
+        return line.slice(3);
+      }
+
+      if (line.startsWith("# ")) {
+        return `## ${line.slice(2)}`;
+      }
+
+      return `# ${line}`;
+    }),
+  );
+};
+
+const setAssistantBusy = (busy, label = "") => {
+  state.assistantBusy = busy;
+  elements.toolButtons.forEach((button) => {
+    button.disabled = busy;
+    button.classList.toggle("canvas-main__marker--busy", busy);
+  });
+
+  if (busy && label) {
+    setToolStatus(label);
+  } else if (!busy) {
+    setToolStatus("Selecciona texto o usa las ayudas para seguir escribiendo.");
+  }
+};
+
+const requestAiTool = async (mensaje, instrucciones, loadingText) => {
+  setAssistantBusy(true, loadingText);
+
+  try {
+    const { ok, data } = await fetchJson("/api/v1/generar-historias", {
+      method: "POST",
+      auth: true,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mensaje,
+        instrucciones,
+      }),
+    });
+
+    if (!ok || !data?.AI) {
+      showToast(data?.Mensaje || "No fue posible obtener ayuda de la IA");
+      return null;
+    }
+
+    return String(data.AI).trim();
+  } catch (error) {
+    showToast("Error de conexión al consultar la IA");
+    return null;
+  } finally {
+    setAssistantBusy(false);
+  }
+};
+
+const runCorrector = async () => {
+  const { selectedText, value, hasSelection } = getSelectionInfo();
+  const source = (hasSelection ? selectedText : value).trim();
+
+  if (!source) {
+    showToast("Escribe o selecciona texto para corregir");
+    return;
+  }
+
+  const result = await requestAiTool(
+    `Corrige este texto:\n\n${source}`,
+    "Corrige ortografía, gramática y puntuación. Conserva el idioma, la intención y el sentido. Devuelve solo el texto corregido, sin comentarios ni títulos.",
+    "Corrigiendo texto...",
+  );
+
+  if (!result) {
+    return;
+  }
+
+  if (hasSelection) {
+    replaceCurrentSelection(result, "select");
+  } else {
+    elements.body.value = result;
+    syncBodyState();
+  }
+
+  showToast("Texto corregido", "green");
+};
+
+const runStyleImprover = async () => {
+  const { selectedText, value, hasSelection } = getSelectionInfo();
+  const source = (hasSelection ? selectedText : value).trim();
+
+  if (!source) {
+    showToast("Escribe o selecciona texto para mejorar");
+    return;
+  }
+
+  const result = await requestAiTool(
+    `Mejora el estilo del siguiente fragmento:\n\n${source}`,
+    "Mejora el estilo narrativo del texto, haciéndolo más claro, fluido y literario. Conserva la idea original. Devuelve solo el texto mejorado, sin explicaciones.",
+    "Mejorando estilo...",
+  );
+
+  if (!result) {
+    return;
+  }
+
+  if (hasSelection) {
+    replaceCurrentSelection(result, "select");
+  } else {
+    elements.body.value = result;
+    syncBodyState();
+  }
+
+  showToast("Estilo mejorado", "green");
+};
+
+const runContinueAssistant = async () => {
+  const { value, start } = getSelectionInfo();
+  const title = elements.title?.textContent?.trim() || DEFAULT_TITLE;
+  const context = value.slice(Math.max(0, start - 1800), start).trim();
+
+  const prompt = context
+    ? `Título: ${title}\n\nContinúa este relato a partir de este contexto:\n${context}`
+    : `Título: ${title}\n\nEscribe un primer párrafo atractivo para comenzar este relato.`;
+
+  const result = await requestAiTool(
+    prompt,
+    "Redacta un único fragmento nuevo en español, coherente con el contexto dado. No expliques lo que haces, no uses títulos y no repitas literalmente el texto previo.",
+    "Pidiendo continuación...",
+  );
+
+  if (!result) {
+    return;
+  }
+
+  const prefix = value.trim() ? "\n\n" : "";
+  insertAtCursor(`${prefix}${result}`);
+  showToast("Continuación añadida", "green");
+};
+
+const handleToolAction = async (action) => {
+  if (!elements.body) {
+    return;
+  }
+
+  switch (action) {
+    case "undo":
+      focusBody();
+      document.execCommand?.("undo");
+      break;
+    case "redo":
+      focusBody();
+      document.execCommand?.("redo");
+      break;
+    case "heading":
+      cycleHeading();
+      break;
+    case "bold":
+      toggleInlineWrap("**");
+      break;
+    case "italic":
+      toggleInlineWrap("*");
+      break;
+    case "underline":
+      toggleInlineWrap("__");
+      break;
+    case "list":
+      toggleList();
+      break;
+    case "quote":
+      toggleQuote();
+      break;
+    case "separator":
+      insertAtCursor("\n---\n");
+      break;
+    case "emdash":
+      insertAtCursor(" — ");
+      break;
+    case "scene":
+      insertAtCursor("\n● ● ●\n");
+      break;
+    case "correct":
+      await runCorrector();
+      break;
+    case "style":
+      await runStyleImprover();
+      break;
+    case "continue":
+      await runContinueAssistant();
+      break;
+    default:
+      break;
+  }
 };
 
 const loadStories = async () => {
@@ -118,6 +488,7 @@ const selectStory = async (storyId) => {
   elements.exportTitle.value = story.titulo || DEFAULT_TITLE;
   elements.body.value = story.descripcion || "";
   updateCounter();
+  setToolStatus("Selecciona texto o usa las ayudas para seguir escribiendo.");
 };
 
 const persistStory = async () => {
@@ -148,7 +519,12 @@ const persistStory = async () => {
   }
 
   elements.exportTitle.value = payload.titulo;
-  showToast(data.Mensaje || "Borrador guardado", "green");
+  showToast(
+    data.version
+      ? `${data.Mensaje || "Borrador guardado"} · Versión ${data.version}`
+      : data.Mensaje || "Borrador guardado",
+    "green",
+  );
   state.stories = await loadStories();
   renderStoryList();
   return true;
@@ -299,34 +675,46 @@ const exportStory = async (event) => {
 
   const title = elements.exportTitle.value.trim() || elements.title.textContent?.trim() || DEFAULT_TITLE;
   const content = elements.body.value.trim();
+  const format = elements.exportFormat?.value === "pdf" ? "pdf" : "word";
+
   if (!content) {
     showToast("Todavia no hay contenido para exportar");
     return;
   }
 
-  const wordBlob = buildWordBlob(title, content);
-  const { ok, data } = await fetchJson(`/api/v1/stories/${state.storyId}/export`, {
-    method: "POST",
-    auth: true,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      titulo: title,
-      contenido: content,
-      formato: "word",
-      nombreArchivo: `${title.replace(/[^\w\-]+/g, "_")}.doc`,
-      tipoArchivo: "DOC",
-      archivoBase64: await blobToBase64(wordBlob),
-    }),
-  });
+  try {
+    const exportBlob = format === "pdf"
+      ? buildPdfBlob(title, content)
+      : buildWordBlob(title, content);
+    const safeName = title.replace(/[^\w\-]+/g, "_");
+    const fileName = `${safeName}.${format === "pdf" ? "pdf" : "doc"}`;
+    const fileType = format === "pdf" ? "PDF" : "DOC";
 
-  if (!ok) {
-    showToast(data.Mensaje || "No fue posible exportar el libro");
-    return;
+    const { ok, data } = await fetchJson(`/api/v1/stories/${state.storyId}/export`, {
+      method: "POST",
+      auth: true,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        titulo: title,
+        contenido: content,
+        formato: format,
+        nombreArchivo: fileName,
+        tipoArchivo: fileType,
+        archivoBase64: await blobToBase64(exportBlob),
+      }),
+    });
+
+    if (!ok) {
+      showToast(data.Mensaje || "No fue posible exportar el libro");
+      return;
+    }
+
+    downloadBlob(exportBlob, fileName);
+    showToast(data.Mensaje || "Libro exportado", "green");
+    window.location.hash = "#canvasBookSuccess";
+  } catch (error) {
+    showToast(error.message || "No fue posible preparar la exportación");
   }
-
-  downloadBlob(wordBlob, `${title.replace(/[^\w\-]+/g, "_")}.doc`);
-  showToast(data.Mensaje || "Libro exportado", "green");
-  window.location.hash = "#canvasBookSuccess";
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -337,6 +725,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   elements.saveButton?.addEventListener("click", persistStory);
   elements.exportForm?.addEventListener("submit", exportStory);
   elements.newButton?.addEventListener("click", createStory);
+  elements.toolButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      await handleToolAction(button.dataset.tool || "");
+    });
+  });
 
   state.stories = await loadStories();
   renderStoryList();

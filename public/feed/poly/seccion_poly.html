@@ -280,7 +280,7 @@
             />
           </button>
           <a class="canvas__action-convert" href="#bookModal">
-            <span class="canvas__action-label">Convertir a libro</span>
+            <span class="canvas__action-label">Guardar en biblioteca</span>
           </a>
           <div class="canvas__footer-line"></div>
         </footer>
@@ -298,15 +298,15 @@
         <a
           href="#canvasAI"
           class="book-modal__close"
-          aria-label="Cerrar conversión a libro"
+          aria-label="Cerrar guardado en biblioteca"
         ></a>
         <header class="book-modal__header">
           <h2 class="book-modal__title" id="book-modal-title">
-            Convertir historia a libro
+            Guardar relato en biblioteca
           </h2>
           <div class="book-modal__divider"></div>
         </header>
-        <form class="book-modal__form">
+        <form class="book-modal__form" id="book-form">
           <label class="book-modal__label" for="book-title"
             >Título del libro:</label
           >
@@ -316,19 +316,21 @@
             type="text"
             value="Mi historia con Poly-AI"
           />
-          <label class="book-modal__label" for="book-format">Formato de salida:</label>
-          <select class="book-modal__input" id="book-format">
-            <option value="word">Word (.doc)</option>
-            <option value="pdf">PDF</option>
+          <label class="book-modal__label" for="book-shelf">Guardar en estantería:</label>
+          <select class="book-modal__input" id="book-shelf">
+            <option value="">Biblioteca general</option>
           </select>
-          <a class="book-modal__submit" href="#bookSuccess" id="book-submit">
+          <p class="book-modal__hint">
+            Guarda primero el relato en biblioteca. La exportación a Word o PDF la harás desde allí.
+          </p>
+          <button class="book-modal__submit" type="submit" id="book-submit">
             <img
               src="/assets/icons/addLibro.png"
               alt=""
               class="book-modal__submit-icon"
             />
-            Generar documento
-          </a>
+            Guardar en biblioteca
+          </button>
         </form>
       </article>
     </section>
@@ -342,14 +344,22 @@
         aria-labelledby="book-success-message"
       >
         <p class="book-success__message" id="book-success-message">
-          Documento generado con éxito.<br />Tu relato quedó actualizado y exportado.
+          Relato guardado con éxito.<br />Ahora puedes exportarlo desde la biblioteca.
         </p>
-        <a
-          href="#canvasAI"
-          class="book-success__close"
-          aria-label="Cerrar mensaje de éxito"
-          >Entendido</a
-        >
+        <div class="book-success__actions">
+          <a
+            href="../biblioteca/library.html"
+            class="book-success__link"
+            id="book-library-link"
+            >Abrir biblioteca</a
+          >
+          <a
+            href="#canvasAI"
+            class="book-success__close"
+            aria-label="Cerrar mensaje de éxito"
+            >Entendido</a
+          >
+        </div>
       </article>
     </section>
 
@@ -399,7 +409,4 @@
     <script type="module" src="/src/scripts/pages/poly/seccion_poly.js"></script>
   </body>
 </html>
-
-
-
 

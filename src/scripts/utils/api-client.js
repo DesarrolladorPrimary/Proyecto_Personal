@@ -1,4 +1,8 @@
-import { buildApiUrl } from "./api-config.js";
+import {
+  buildApiUrl,
+  getApiBaseCandidates,
+  rememberApiBaseUrl,
+} from "./api-config.js";
 import {
   getAuthHeaders,
   getLoginRouteForPath,
@@ -58,21 +62,45 @@ export const fetchJson = async (
 
   const requestHeaders = auth ? getAuthHeaders(headers) : { ...headers };
 
-  const response = await fetch(buildApiUrl(path, params), {
-    method,
-    headers: requestHeaders,
-    body,
-  });
+  const candidateBaseUrls = getApiBaseCandidates();
+  let networkError = null;
 
-  const data = await parseJsonSafely(response);
+  for (let index = 0; index < candidateBaseUrls.length; index += 1) {
+    const baseUrl = candidateBaseUrls[index];
 
-  if (response.status === 401 && redirectOnUnauthorized) {
-    logoutAndRedirect(getLoginRouteForPath(), getUnauthorizedNotice(data));
+    try {
+      const response = await fetch(buildApiUrl(path, params, baseUrl), {
+        method,
+        headers: requestHeaders,
+        body,
+      });
+
+      const data = await parseJsonSafely(response);
+      const contentType = response.headers.get("content-type") || "";
+      const htmlLike404 =
+        path.startsWith("/api/") &&
+        response.status === 404 &&
+        contentType.includes("text/html");
+
+      if (htmlLike404 && index < candidateBaseUrls.length - 1) {
+        continue;
+      }
+
+      rememberApiBaseUrl(baseUrl);
+
+      if (response.status === 401 && redirectOnUnauthorized) {
+        logoutAndRedirect(getLoginRouteForPath(), getUnauthorizedNotice(data));
+      }
+
+      return {
+        ok: response.ok,
+        status: response.status,
+        data,
+      };
+    } catch (error) {
+      networkError = error;
+    }
   }
 
-  return {
-    ok: response.ok,
-    status: response.status,
-    data,
-  };
+  throw networkError || new Error("No fue posible conectar con la API");
 };
