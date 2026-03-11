@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const exportModalMeta = document.getElementById("export-modal-meta");
   const exportForm = document.getElementById("export-form");
   const exportTitleInput = document.getElementById("export-title");
+  const exportShelfInput = document.getElementById("export-shelf");
   const exportFormatInput = document.getElementById("export-format");
   const exportSubmitButton = document.getElementById("export-submit");
   const userId = getCurrentUserId();
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const state = {
     stories: [],
     documents: [],
+    shelves: [],
     selectedStory: null,
     selectedDocument: null,
     selectedShelfId: "",
@@ -172,6 +174,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     return parts.join(" · ");
   };
 
+  const getShelfName = (story) =>
+    story?.nombreEstanteria
+    || state.shelves.find((shelf) => String(shelf.id) === String(story?.estanteriaId))?.nombre
+    || "";
+
   const buildStoryMeta = (story) => {
     const parts = [];
     parts.push(story.modoOrigen === "Seccion_Artificial" ? "Poly" : "Creativo");
@@ -187,11 +194,45 @@ document.addEventListener("DOMContentLoaded", async () => {
       parts.push(updatedAt);
     }
 
-    if (story.estanteriaId && inputLibrary.value.trim()) {
-      parts.push(inputLibrary.value.trim());
+    const shelfName = getShelfName(story);
+    if (story.estanteriaId && shelfName) {
+      parts.push(shelfName);
     }
 
     return parts.join(" · ");
+  };
+
+  const renderExportShelfOptions = (story) => {
+    if (!exportShelfInput) {
+      return;
+    }
+
+    exportShelfInput.innerHTML = "";
+
+    if (!state.shelves.length) {
+      const option = document.createElement("option");
+      option.value = "";
+      option.textContent = "Primero crea una estantería";
+      exportShelfInput.appendChild(option);
+      exportShelfInput.disabled = true;
+      return;
+    }
+
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Selecciona una estantería";
+    exportShelfInput.appendChild(placeholder);
+
+    state.shelves.forEach((shelf) => {
+      const option = document.createElement("option");
+      option.value = String(shelf.id);
+      option.textContent = shelf.nombre || `Estantería ${shelf.id}`;
+      exportShelfInput.appendChild(option);
+    });
+
+    exportShelfInput.disabled = false;
+    const suggestedShelfId = story?.estanteriaId || state.selectedShelfId || "";
+    exportShelfInput.value = suggestedShelfId ? String(suggestedShelfId) : "";
   };
 
   const setSelectedDocument = (document) => {
@@ -213,7 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const setSelectedStory = (story) => {
     state.selectedStory = story;
-    const enabled = Boolean(story);
+    const enabled = Boolean(story) && state.shelves.length > 0;
 
     if (exportSubmitButton) {
       exportSubmitButton.disabled = !enabled;
@@ -223,12 +264,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       exportModalTitle.textContent = "Convertir en libro";
       exportModalMeta.textContent = "";
       exportTitleInput.value = "";
+      renderExportShelfOptions(null);
       exportFormatInput.value = "word";
       return;
     }
 
+    renderExportShelfOptions(story);
     exportModalTitle.textContent = story.titulo || "Libro";
-    exportModalMeta.textContent = `Borrador listo para convertir · ${buildStoryMeta(story)}`;
+    exportModalMeta.textContent = story.estanteriaId
+      ? `Borrador listo para convertirse en libro · ${buildStoryMeta(story)}`
+      : `Borrador editable pendiente de estantería · ${buildStoryMeta(story)}`;
     exportTitleInput.value = story.titulo || "Libro final";
     exportFormatInput.value = "word";
   };
@@ -390,6 +435,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const content = document.createElement("div");
     content.className = "document-list__content";
 
+    const headline = document.createElement("div");
+    headline.className = "document-list__headline";
+
     const title = document.createElement("button");
     title.type = "button";
     title.className = "document-list__title";
@@ -397,17 +445,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     title.title = story.titulo || "Relato sin título";
     title.addEventListener("click", () => openStoryEditor(story));
 
+    const badge = document.createElement("span");
+    badge.className = `document-list__badge document-list__badge--${story.modoOrigen === "Seccion_Artificial" ? "poly" : "creative"}`;
+    badge.textContent = story.modoOrigen === "Seccion_Artificial" ? "Borrador Poly" : "Borrador Creativo";
+
     const type = document.createElement("p");
     type.className = "document-list__story";
-    type.textContent = story.modoOrigen === "Seccion_Artificial"
-      ? "Borrador narrativo de Poly"
-      : "Borrador manual de Creativo";
+    type.textContent = story.estanteriaId
+      ? "Editable y listo para convertirse en libro desde esta biblioteca"
+      : "Editable, pero todavía necesita una estantería antes de convertirse en libro";
 
     const meta = document.createElement("p");
     meta.className = "document-list__meta";
     meta.textContent = buildStoryMeta(story);
 
-    content.append(title, type, meta);
+    headline.append(title, badge);
+    content.append(headline, type, meta);
 
     const actions = document.createElement("div");
     actions.className = "document-list__actions";
@@ -416,7 +469,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
 
     actions.append(
-      createListActionButton("Convertir a libro", "", () => openStoryExportModal(story)),
+      createListActionButton(
+        story.estanteriaId ? "Convertir a libro" : "Asignar y convertir",
+        "",
+        () => openStoryExportModal(story),
+      ),
     );
 
     item.append(content, actions);
@@ -426,7 +483,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const createStoriesPanel = () => {
     const panel = document.createElement("section");
     panel.className = "library-panel library-panel--list";
-    panel.append(createPanelHeader("Borradores guardados", "Edita tus relatos y, cuando estén listos, conviértelos en libro"));
+    panel.append(
+      createPanelHeader(
+        "Borradores guardados",
+        "Aquí solo editas y organizas borradores. Los libros finales aparecen abajo, cuando conviertes uno desde esta biblioteca.",
+      ),
+    );
 
     const list = document.createElement("div");
     list.className = "document-list";
@@ -482,6 +544,29 @@ document.addEventListener("DOMContentLoaded", async () => {
           : `${formatMb(used)}/${formatMb(limit)} MB`;
       }
     } catch (error) {
+    }
+  };
+
+  const loadShelves = async () => {
+    try {
+      const { ok, data } = await fetchJson("/api/v1/estanterias", {
+        params: { id: userId },
+        auth: true,
+      });
+
+      if (!ok) {
+        state.shelves = [];
+        return;
+      }
+
+      state.shelves = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.estanterias)
+          ? data.estanterias
+          : [];
+    } catch (error) {
+      state.shelves = [];
+      console.error("Error cargando estanterías para biblioteca:", error);
     }
   };
 
@@ -556,8 +641,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    if (!story.estanteriaId) {
+    const selectedShelfId = Number(exportShelfInput?.value || story.estanteriaId || 0);
+    if (!selectedShelfId) {
       showToast("Debes asignar una estantería antes de convertir este relato en libro");
+      exportShelfInput?.focus();
       return;
     }
 
@@ -583,7 +670,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           titulo: title,
           contenido: story.descripcion || "",
           formato: format,
-          estanteriaId: story.estanteriaId ?? null,
+          estanteriaId: selectedShelfId,
         }),
       });
 
@@ -595,7 +682,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       showToast(data.Mensaje || "Libro generado correctamente", "green");
       clearExportModalHash();
       setSelectedStory(null);
-      await Promise.all([loadDocuments(), loadSubscription()]);
+      await Promise.all([loadStories(), loadDocuments(), loadSubscription()]);
     } catch (error) {
       console.error("Error convirtiendo libro desde biblioteca:", error);
       showToast("No fue posible convertir el libro");
@@ -695,7 +782,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   refreshButton?.addEventListener("click", async () => {
-    await Promise.all([loadStories(), loadDocuments(), loadSubscription()]);
+    await Promise.all([loadShelves(), loadStories(), loadDocuments(), loadSubscription()]);
   });
 
   clearFilterButton?.addEventListener("click", async () => {
@@ -705,7 +792,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     sessionStorage.removeItem(storageIdKey);
     history.replaceState(null, "", window.location.pathname);
     syncShelfFilterUi();
-    await Promise.all([loadStories(), loadDocuments()]);
+    await Promise.all([loadShelves(), loadStories(), loadDocuments()]);
   });
 
   modalDownloadButton?.addEventListener("click", () => downloadDocument());
@@ -766,5 +853,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   syncShelfFilterUi();
   setSelectedDocument(null);
   setSelectedStory(null);
-  await Promise.all([loadStories(), loadDocuments(), loadSubscription()]);
+  await Promise.all([loadShelves(), loadStories(), loadDocuments(), loadSubscription()]);
 });

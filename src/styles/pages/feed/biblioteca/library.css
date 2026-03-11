@@ -342,6 +342,13 @@ body {
   gap: 6px;
 }
 
+.document-list__headline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .document-list__title {
   margin: 0;
   padding: 0;
@@ -358,6 +365,31 @@ body {
   -webkit-line-clamp: 2;
   overflow: hidden;
   line-height: 1.35;
+}
+
+.document-list__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-family: var(--font-family-main);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--color-text-light);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.document-list__badge--poly {
+  background-color: rgba(127, 199, 184, 0.12);
+  border-color: rgba(127, 199, 184, 0.34);
+}
+
+.document-list__badge--creative {
+  background-color: rgba(216, 141, 141, 0.12);
+  border-color: rgba(216, 141, 141, 0.34);
 }
 
 .document-list__story,

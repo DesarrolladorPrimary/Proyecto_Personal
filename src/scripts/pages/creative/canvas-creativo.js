@@ -11,7 +11,6 @@ const elements = {
   saveButton: document.getElementById("creative-save-draft"),
   exportForm: document.getElementById("creative-export-form"),
   exportTitle: document.getElementById("canvas-book-title"),
-  exportFormat: document.getElementById("canvas-book-format"),
   newButton: document.getElementById("creative-canvas-new"),
   storyList: document.getElementById("creative-canvas-story-list"),
   toolButtons: Array.from(document.querySelectorAll(".canvas-main__marker")),
@@ -80,69 +79,6 @@ const formatDate = (value) => {
 
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("es-CO");
-};
-
-const blobToBase64 = (blob) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const result = String(reader.result || "");
-      resolve(result.includes(",") ? result.split(",")[1] : result);
-    };
-    reader.onerror = () => reject(new Error("No fue posible preparar el documento"));
-    reader.readAsDataURL(blob);
-  });
-
-const buildWordBlob = (title, content) => {
-  const html = `<!doctype html><html><head><meta charset="utf-8"></head><body><h1>${title}</h1><p>${content.replace(/\n/g, "</p><p>")}</p></body></html>`;
-  return new Blob(["\ufeff", html], {
-    type: "application/msword",
-  });
-};
-
-const buildPdfBlob = (title, content) => {
-  const jsPDF = window.jspdf?.jsPDF;
-  if (!jsPDF) {
-    throw new Error("No fue posible cargar el exportador PDF");
-  }
-
-  const pdf = new jsPDF({ unit: "pt", format: "a4" });
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-  const margin = 40;
-  const lineHeight = 18;
-
-  pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(18);
-  pdf.text(title, margin, 55);
-
-  pdf.setFont("helvetica", "normal");
-  pdf.setFontSize(12);
-  const lines = pdf.splitTextToSize(content, pageWidth - margin * 2);
-  let y = 85;
-
-  lines.forEach((line) => {
-    if (y > pageHeight - margin) {
-      pdf.addPage();
-      y = 55;
-    }
-
-    pdf.text(line, margin, y);
-    y += lineHeight;
-  });
-
-  return pdf.output("blob");
-};
-
-const downloadBlob = (blob, fileName) => {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
 };
 
 const getSelectionInfo = () => {
@@ -669,52 +605,23 @@ const renderStoryList = () => {
 const exportStory = async (event) => {
   event.preventDefault();
 
+  const title = elements.exportTitle.value.trim() || elements.title.textContent?.trim() || DEFAULT_TITLE;
+  const content = elements.body.value.trim();
+
+  if (!content) {
+    showToast("Todavia no hay contenido para guardar en biblioteca");
+    return;
+  }
+
+  elements.title.textContent = title;
+  elements.exportTitle.value = title;
+
   if (!(await persistStory())) {
     return;
   }
 
-  const title = elements.exportTitle.value.trim() || elements.title.textContent?.trim() || DEFAULT_TITLE;
-  const content = elements.body.value.trim();
-  const format = elements.exportFormat?.value === "pdf" ? "pdf" : "word";
-
-  if (!content) {
-    showToast("Todavia no hay contenido para exportar");
-    return;
-  }
-
-  try {
-    const exportBlob = format === "pdf"
-      ? buildPdfBlob(title, content)
-      : buildWordBlob(title, content);
-    const safeName = title.replace(/[^\w\-]+/g, "_");
-    const fileName = `${safeName}.${format === "pdf" ? "pdf" : "doc"}`;
-    const fileType = format === "pdf" ? "PDF" : "DOC";
-
-    const { ok, data } = await fetchJson(`/api/v1/stories/${state.storyId}/export`, {
-      method: "POST",
-      auth: true,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        titulo: title,
-        contenido: content,
-        formato: format,
-        nombreArchivo: fileName,
-        tipoArchivo: fileType,
-        archivoBase64: await blobToBase64(exportBlob),
-      }),
-    });
-
-    if (!ok) {
-      showToast(data.Mensaje || "No fue posible exportar el libro");
-      return;
-    }
-
-    downloadBlob(exportBlob, fileName);
-    showToast(data.Mensaje || "Libro exportado", "green");
-    window.location.hash = "#canvasBookSuccess";
-  } catch (error) {
-    showToast(error.message || "No fue posible preparar la exportación");
-  }
+  showToast("Borrador listo en biblioteca", "green");
+  window.location.href = new URL("../biblioteca/library.html", window.location.href).toString();
 };
 
 document.addEventListener("DOMContentLoaded", async () => {

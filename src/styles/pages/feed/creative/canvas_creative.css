@@ -285,6 +285,13 @@ body {
   font-size: 14px;
 }
 
+.canvas-book-modal__help {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
+}
+
 .canvas-book-modal__input {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
