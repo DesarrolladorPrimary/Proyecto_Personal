@@ -1,5 +1,6 @@
 import { fetchJson } from "../../utils/api-client.js";
 import { getCurrentUserRole } from "../../utils/auth-session.js";
+import { showConfirm } from "../../utils/dialog-service.js";
 
 const usersContainer = document.getElementById("admin-users-list");
 const searchInput = document.getElementById("admin-users-search");
@@ -162,11 +163,14 @@ const buildUserCard = (user) => {
     }
   });
 
-  deleteButton.addEventListener("click", async () => {
-    const confirmed = window.confirm(`Eliminar a ${user.Nombre || "este usuario"}?`);
-    if (!confirmed) {
-      return;
-    }
+    deleteButton.addEventListener("click", async () => {
+      const confirmed = await showConfirm({
+        title: "Eliminar usuario",
+        text: `¿Eliminar a ${user.Nombre || "este usuario"}?`,
+      });
+      if (!confirmed) {
+        return;
+      }
 
     try {
       const { ok, data } = await fetchJson("/api/v1/usuarios/id", {

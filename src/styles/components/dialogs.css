@@ -1,0 +1,136 @@
+:root {
+  --dialog-overlay: rgba(15, 12, 12, 0.58);
+  --dialog-surface: #f4ede1;
+  --dialog-surface-strong: #fffaf1;
+  --dialog-border: rgba(62, 48, 33, 0.12);
+  --dialog-shadow: 0 22px 60px rgba(17, 12, 10, 0.28);
+  --dialog-text: #2a211b;
+  --dialog-muted: #6f6258;
+  --dialog-confirm: #d9a441;
+  --dialog-confirm-hover: #c58d22;
+  --dialog-cancel: #ded6c9;
+  --dialog-cancel-hover: #cfc4b4;
+  --dialog-danger: #b7483b;
+  --dialog-danger-hover: #9d372c;
+  --dialog-input-border: rgba(91, 71, 54, 0.18);
+  --dialog-input-focus: rgba(202, 143, 58, 0.28);
+}
+
+.swal2-container.swal2-backdrop-show.libraryai-dialog-container {
+  background: radial-gradient(circle at top, rgba(255, 247, 230, 0.1), transparent 42%),
+    var(--dialog-overlay);
+  backdrop-filter: blur(4px);
+}
+
+.swal2-popup.libraryai-dialog-popup {
+  width: min(30rem, calc(100vw - 32px));
+  padding: 1.65rem 1.4rem 1.25rem;
+  border: 1px solid var(--dialog-border);
+  border-radius: 26px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.45), transparent 40%),
+    linear-gradient(180deg, var(--dialog-surface-strong), var(--dialog-surface));
+  box-shadow: var(--dialog-shadow);
+  color: var(--dialog-text);
+}
+
+.swal2-title.libraryai-dialog-title {
+  margin: 0;
+  font-family: var(--font-family-main, "Inter", sans-serif);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--dialog-text);
+}
+
+.swal2-html-container.libraryai-dialog-text {
+  margin: 0.7rem 0 0;
+  font-family: var(--font-family-main, "Inter", sans-serif);
+  font-size: 0.97rem;
+  line-height: 1.55;
+  color: var(--dialog-muted);
+}
+
+.swal2-actions.libraryai-dialog-actions {
+  gap: 0.7rem;
+  width: 100%;
+  margin: 1.35rem 0 0;
+}
+
+.libraryai-dialog-button {
+  min-width: 132px;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  padding: 0.82rem 1.15rem !important;
+  font-family: var(--font-family-main, "Inter", sans-serif) !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+  transition: transform 120ms ease, background-color 120ms ease, color 120ms ease;
+}
+
+.libraryai-dialog-button:focus-visible {
+  outline: 3px solid rgba(201, 144, 60, 0.24);
+  outline-offset: 3px;
+}
+
+.libraryai-dialog-confirm {
+  background: var(--dialog-confirm) !important;
+  color: #2a1d0f !important;
+}
+
+.libraryai-dialog-confirm:hover {
+  background: var(--dialog-confirm-hover) !important;
+  transform: translateY(-1px);
+}
+
+.libraryai-dialog-cancel {
+  background: var(--dialog-cancel) !important;
+  color: var(--dialog-text) !important;
+}
+
+.libraryai-dialog-cancel:hover {
+  background: var(--dialog-cancel-hover) !important;
+  transform: translateY(-1px);
+}
+
+.swal2-icon.swal2-warning.libraryai-dialog-icon,
+.swal2-icon.swal2-question.libraryai-dialog-icon,
+.swal2-icon.swal2-info.libraryai-dialog-icon {
+  border-color: rgba(196, 142, 39, 0.24);
+  color: var(--dialog-confirm-hover);
+}
+
+.swal2-icon.swal2-error.libraryai-dialog-icon {
+  border-color: rgba(183, 72, 59, 0.18);
+  color: var(--dialog-danger);
+}
+
+.swal2-input.libraryai-dialog-input,
+.swal2-textarea.libraryai-dialog-input {
+  width: 100%;
+  margin: 1rem 0 0;
+  border: 1px solid var(--dialog-input-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--dialog-text);
+  font-family: var(--font-family-main, "Inter", sans-serif);
+  font-size: 0.96rem;
+  box-shadow: none;
+}
+
+.swal2-input.libraryai-dialog-input:focus,
+.swal2-textarea.libraryai-dialog-input:focus {
+  border-color: rgba(201, 144, 60, 0.5);
+  box-shadow: 0 0 0 4px var(--dialog-input-focus);
+}
+
+.swal2-validation-message {
+  margin-top: 0.7rem;
+  border-radius: 12px;
+  background: rgba(183, 72, 59, 0.1);
+  color: var(--dialog-danger);
+  font-family: var(--font-family-main, "Inter", sans-serif);
+}

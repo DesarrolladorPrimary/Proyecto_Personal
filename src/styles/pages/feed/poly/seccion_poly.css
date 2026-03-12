@@ -1547,8 +1547,6 @@ body {
   padding-right: 8px;
 }
 
-.poly-aside__chat:hover .poly-aside__options,
-.poly-aside__chat:focus-within .poly-aside__options,
 .poly-aside__chat--menu-open .poly-aside__options {
   visibility: visible;
   opacity: 1;

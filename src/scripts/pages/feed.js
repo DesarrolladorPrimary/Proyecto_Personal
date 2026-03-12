@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const buttonLogout = document.getElementById("logout");
   const fieldName = document.getElementById("nombre_usuario");
   const fieldEmail = document.getElementById("correo_usuario");
+  const fieldAiModel = document.getElementById("menu-user-ai-model");
   const userId = getCurrentUserId();
   const token = getToken();
 
@@ -87,6 +88,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
+  const applyAiModelData = (versionData = {}) => {
+    if (!fieldAiModel) {
+      return;
+    }
+
+    const modelLabel = [versionData.nombre, versionData.version]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+
+    fieldAiModel.textContent = modelLabel || "No disponible";
+    fieldAiModel.title = versionData.changelog || fieldAiModel.textContent;
+  };
+
   const loadUser = async () => {
     try {
       const { ok, status, data } = await fetchJson("/api/v1/usuarios/id", {
@@ -106,6 +121,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
       showToast("Error de conexión");
       return null;
+    }
+  };
+
+  const loadAiModel = async () => {
+    if (!fieldAiModel) {
+      return;
+    }
+
+    try {
+      const { ok, data } = await fetchJson("/api/v1/settings/version-ia", {
+        params: { id: userId },
+        auth: true,
+      });
+
+      if (!ok) {
+        fieldAiModel.textContent = "No disponible";
+        return;
+      }
+
+      applyAiModelData(data);
+    } catch (error) {
+      fieldAiModel.textContent = "No disponible";
     }
   };
 
@@ -204,5 +241,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   await loadUser();
+  await loadAiModel();
   setupProfilePhotoUpload();
 });

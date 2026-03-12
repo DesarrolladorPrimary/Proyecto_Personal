@@ -1,5 +1,6 @@
 import { fetchJson } from "../../utils/api-client.js";
 import { getCurrentUserId } from "../../utils/auth-session.js";
+import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.querySelector(".shelves-main");
@@ -82,8 +83,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         actions.className = "shelf-card__actions";
         actions.append(
           createActionButton(t("shelves.open"), "open", () => goToShelf(shelf)),
-          createActionButton(t("shelves.rename"), "", async () => {
-            const nuevoNombre = window.prompt(t("shelves.rename_prompt"), shelf.nombre);
+            createActionButton(t("shelves.rename"), "", async () => {
+              const nuevoNombre = await showPrompt({
+                title: t("shelves.rename"),
+                inputLabel: t("shelves.rename_prompt"),
+                inputValue: shelf.nombre,
+              });
 
             if (!nuevoNombre || !nuevoNombre.trim()) {
               return;
@@ -105,11 +110,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             showToast(updateData.Mensaje || "Estanteria actualizada", "green");
             await renderShelves();
           }),
-          createActionButton(t("shelves.delete"), "danger", async () => {
-            const confirmed = window.confirm(t("shelves.delete_confirm"));
-            if (!confirmed) {
-              return;
-            }
+            createActionButton(t("shelves.delete"), "danger", async () => {
+              const confirmed = await showConfirm({
+                title: t("shelves.delete"),
+                text: t("shelves.delete_confirm"),
+              });
+              if (!confirmed) {
+                return;
+              }
 
             const { ok: removed, data: removeData } = await fetchJson("/api/v1/estanterias", {
               method: "DELETE",

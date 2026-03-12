@@ -15,8 +15,8 @@
     />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
-    <script src="/src/scripts/utils/theme-manager.js"></script>
-    <script src="/src/scripts/utils/language-manager.js"></script>
+    <script type="module" src="/src/scripts/utils/theme-manager.js"></script>
+    <script type="module" src="/src/scripts/utils/language-manager.js"></script>
   </head>
   <body>
     <!-- Encabezado de la página -->
@@ -117,7 +117,7 @@
 
         <!-- ELEMENTO: Un item específico dentro del grupo -->
         <div class="menu-user__Model">
-          <p class="menu-user__Model-text">Modelo-AI</p>
+          <p class="menu-user__Model-text" id="menu-user-ai-model">Cargando...</p>
           <img
             class="menu-user__setting-icon"
             src="/assets/icons/icono_model.png"

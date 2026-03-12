@@ -1,5 +1,6 @@
 import { fetchJson } from "../../utils/api-client.js";
 import { buildUploadedAssetUrl } from "../../utils/api-config.js";
+import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
 import {
   getCurrentUserId,
   getToken,
@@ -24,7 +25,7 @@ const CREATIVITY_OPTIONS = {
   high: "Alto",
 };
 const DEFAULT_INPUT_PLACEHOLDER = "Escribe tu mensaje...";
-const DEFAULT_CANVAS_PLACEHOLDER = "Aqui aparecera el borrador final de la historia cuando Poly empiece a desarrollarlo.";
+const DEFAULT_CANVAS_PLACEHOLDER = "Aquí aparecerá el borrador final de la historia cuando Poly empiece a desarrollarlo.";
 const WAITING_STATUS_STAGES = [
   {
     afterMs: 0,
@@ -65,6 +66,8 @@ const state = {
   sourceFilesExpanded: false,
   aiSettings: { ...DEFAULT_AI_SETTINGS },
   aiSettingsDraft: { ...DEFAULT_AI_SETTINGS },
+  canvasDirty: false,
+  lastSavedCanvasSnapshot: null,
 };
 
 const elements = {
@@ -640,6 +643,45 @@ const arrayBufferToBase64 = (buffer) => {
   return window.btoa(binary);
 };
 
+const buildCanvasSnapshot = () => ({
+  title: (elements.canvasTitle?.textContent || "").trim(),
+  body: getCanvasText(),
+});
+
+const setCanvasSavedSnapshot = (snapshot = buildCanvasSnapshot()) => {
+  state.lastSavedCanvasSnapshot = {
+    title: String(snapshot?.title || "").trim(),
+    body: String(snapshot?.body || "").trim(),
+  };
+  state.canvasDirty = false;
+};
+
+const syncCanvasDirtyState = () => {
+  const current = buildCanvasSnapshot();
+  const saved = state.lastSavedCanvasSnapshot || { title: "", body: "" };
+  state.canvasDirty = current.title !== saved.title || current.body !== saved.body;
+};
+
+const ensureCanvasChangesHandled = async (contextLabel = "continuar") => {
+  if (!state.canvasDirty) {
+    return true;
+  }
+
+  const shouldSave = await showConfirm({
+    title: "Cambios sin guardar",
+    text: `Hay cambios sin guardar en el canvas. ¿Deseas guardarlos antes de ${contextLabel}?`,
+  });
+
+  if (shouldSave) {
+    return saveCanvasDraft({ silentIfEmpty: true });
+  }
+
+  return showConfirm({
+    title: "Descartar cambios",
+    text: "Se perderán los cambios no guardados. ¿Deseas descartarlos?",
+  });
+};
+
 const updateCanvas = () => {
   if (!elements.canvasTitle || !elements.canvasBody || !elements.canvasCounter) {
     return;
@@ -653,6 +695,10 @@ const updateCanvas = () => {
 
   if (!draft) {
     setCanvasPlaceholder();
+    setCanvasSavedSnapshot({
+      title: activeStory?.titulo || "Título",
+      body: "",
+    });
     return;
   }
 
@@ -660,20 +706,28 @@ const updateCanvas = () => {
     .map((paragraph) => `<p>${paragraph}</p>`)
     .join("");
   updateCanvasCounter(draft);
+  setCanvasSavedSnapshot({
+    title: activeStory?.titulo || "Título",
+    body: draft,
+  });
 };
 
-const saveCanvasDraft = async () => {
+const saveCanvasDraft = async ({ silentIfEmpty = false } = {}) => {
   if (!state.activeStoryId) {
     showToast("Primero crea o selecciona un chat");
-    return;
+    return false;
   }
 
+  const activeStory = getActiveStory();
   const titulo = elements.canvasTitle?.textContent?.trim() || "Nuevo chat Poly";
   const descripcion = getCanvasText();
+  const hasTitleChange = titulo !== (activeStory?.titulo || "Título");
 
-  if (!descripcion) {
-    showToast("Todavia no hay borrador para guardar");
-    return;
+  if (!descripcion && !hasTitleChange) {
+    if (!silentIfEmpty) {
+      showToast("Todavía no hay borrador para guardar");
+    }
+    return false;
   }
 
   if (elements.canvasSaveButton) {
@@ -696,7 +750,7 @@ const saveCanvasDraft = async () => {
 
   if (!ok) {
     showToast(data.Mensaje || "No fue posible guardar el canvas");
-    return;
+    return false;
   }
 
   showToast(
@@ -707,6 +761,11 @@ const saveCanvasDraft = async () => {
   );
   await loadStories(state.activeStoryId);
   await loadStoryDetails(state.activeStoryId);
+  setCanvasSavedSnapshot({
+    title: titulo,
+    body: descripcion,
+  });
+  return true;
 };
 
 const renderMessages = () => {
@@ -801,8 +860,13 @@ const renderStories = () => {
     titleButton.type = "button";
     titleButton.className = "poly-aside__chat-title poly-aside__chat-title--button";
     titleButton.textContent = truncate(story.titulo || "Chat sin título");
-    titleButton.addEventListener("click", () => {
-      selectStory(story.id);
+    titleButton.addEventListener("click", async () => {
+      const canContinue = await ensureCanvasChangesHandled("cambiar de chat");
+      if (!canContinue) {
+        return;
+      }
+
+      await selectStory(story.id);
       setAsideOpen(false);
     });
 
@@ -814,9 +878,22 @@ const renderStories = () => {
     toggleButton.className = "poly-aside__chat-opciones";
     toggleButton.textContent = "⋮";
     toggleButton.setAttribute("aria-label", "Opciones del chat");
+    toggleButton.setAttribute("aria-expanded", "false");
     toggleButton.addEventListener("click", (event) => {
       event.stopPropagation();
-      row.classList.toggle("poly-aside__chat--menu-open");
+      const willOpen = !row.classList.contains("poly-aside__chat--menu-open");
+
+      elements.storyList
+        ?.querySelectorAll(".poly-aside__chat--menu-open")
+        .forEach((chat) => {
+          chat.classList.remove("poly-aside__chat--menu-open");
+          chat
+            .querySelector(".poly-aside__chat-opciones")
+            ?.setAttribute("aria-expanded", "false");
+        });
+
+      row.classList.toggle("poly-aside__chat--menu-open", willOpen);
+      toggleButton.setAttribute("aria-expanded", String(willOpen));
     });
 
     const renameButton = document.createElement("button");
@@ -824,7 +901,11 @@ const renderStories = () => {
     renameButton.className = "poly-aside__option poly-aside__option--rename";
     renameButton.textContent = "Renombrar";
     renameButton.addEventListener("click", async () => {
-      const nextTitle = window.prompt("Nuevo nombre del chat", story.titulo || "");
+      const nextTitle = await showPrompt({
+        title: "Renombrar chat",
+        inputLabel: "Nuevo nombre del chat",
+        inputValue: story.titulo || "",
+      });
       if (!nextTitle || !nextTitle.trim()) {
         return;
       }
@@ -844,6 +925,7 @@ const renderStories = () => {
       showToast(data.Mensaje || "Chat actualizado", "green");
       await loadStories(story.id);
       row.classList.remove("poly-aside__chat--menu-open");
+      toggleButton.setAttribute("aria-expanded", "false");
     });
 
     const deleteButton = document.createElement("button");
@@ -851,7 +933,11 @@ const renderStories = () => {
     deleteButton.className = "poly-aside__option poly-aside__option--delete";
     deleteButton.textContent = "Eliminar";
     deleteButton.addEventListener("click", async () => {
-      if (!window.confirm("¿Eliminar este chat?")) {
+      const confirmed = await showConfirm({
+        title: "Eliminar chat",
+        text: "¿Eliminar este chat?",
+      });
+      if (!confirmed) {
         return;
       }
 
@@ -874,6 +960,7 @@ const renderStories = () => {
       await loadStories();
       await selectStory(state.activeStoryId);
       row.classList.remove("poly-aside__chat--menu-open");
+      toggleButton.setAttribute("aria-expanded", "false");
     });
 
     options.append(renameButton, deleteButton);
@@ -1196,6 +1283,11 @@ const handleSubmit = async (event) => {
 };
 
 const handleCreateNewChat = async () => {
+  const canContinue = await ensureCanvasChangesHandled("crear un chat nuevo");
+  if (!canContinue) {
+    return;
+  }
+
   const storyId = await createStory("Nuevo chat Poly");
   if (!storyId) {
     return;
@@ -1306,12 +1398,14 @@ const setupCanvasBindings = () => {
     if (elements.bookTitle) {
       elements.bookTitle.value = nextTitle || "Mi historia con Poly-AI";
     }
+    syncCanvasDirtyState();
   });
 
   elements.canvasBody?.addEventListener("focus", () => {
     if (isCanvasPlaceholder(elements.canvasBody.innerText)) {
       elements.canvasBody.innerHTML = "";
       updateCanvasCounter("");
+      syncCanvasDirtyState();
     }
   });
 
@@ -1319,10 +1413,12 @@ const setupCanvasBindings = () => {
     if (!getCanvasBodyText()) {
       setCanvasPlaceholder();
     }
+    syncCanvasDirtyState();
   });
 
   elements.canvasBody?.addEventListener("input", () => {
     updateCanvasCounter(getCanvasBodyText());
+    syncCanvasDirtyState();
   });
 
   elements.canvasSaveButton?.addEventListener("click", async () => {
@@ -1549,6 +1645,9 @@ const setupAsideBehavior = () => {
       .forEach((chat) => {
         if (!chat.contains(event.target)) {
           chat.classList.remove("poly-aside__chat--menu-open");
+          chat
+            .querySelector(".poly-aside__chat-opciones")
+            ?.setAttribute("aria-expanded", "false");
         }
       });
   });
@@ -1570,6 +1669,17 @@ const setupUserMenu = () => {
   });
 };
 
+const setupUnsavedChangesProtection = () => {
+  window.addEventListener("beforeunload", (event) => {
+    if (!state.canvasDirty) {
+      return;
+    }
+
+    event.preventDefault();
+    event.returnValue = "";
+  });
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   if (!state.userId) {
     return;
@@ -1586,6 +1696,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupAiParameters();
   setupAsideBehavior();
   setupUserMenu();
+  setupUnsavedChangesProtection();
   elements.bookShelf?.addEventListener("change", () => {
     syncLibraryLink(elements.bookShelf.value);
   });

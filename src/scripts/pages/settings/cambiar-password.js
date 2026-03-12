@@ -1,5 +1,5 @@
 import { fetchJson } from "../../utils/api-client.js";
-import { getCurrentUserId } from "../../utils/auth-session.js";
+import { getCurrentUserId, logoutAndRedirect } from "../../utils/auth-session.js";
 
 const PASSWORD_COMPLEXITY = /[\d\W_]/;
 
@@ -86,6 +86,12 @@ btnGuardar?.addEventListener("click", async () => {
 
     showToast(data.Mensaje || "Contraseña actualizada correctamente", "green");
     closeModal();
+    window.setTimeout(() => {
+      logoutAndRedirect(undefined, {
+        text: "Tu contraseÃ±a fue actualizada. Inicia sesiÃ³n de nuevo.",
+        background: "green",
+      });
+    }, 900);
   } catch (error) {
     showToast("Error de conexión");
   }

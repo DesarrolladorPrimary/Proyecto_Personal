@@ -60,11 +60,6 @@ body {
   grid-row: 2/4;
 }
 
-.canvas-layout:nth-last-child {
-  display: flex;
-  justify-content: center;
-}
-
 .canvas-main {
   display: flex;
   flex-direction: column;

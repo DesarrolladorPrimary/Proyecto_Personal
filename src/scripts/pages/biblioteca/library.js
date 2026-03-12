@@ -1,5 +1,6 @@
 import { buildApiUrl } from "../../utils/api-config.js";
 import { fetchJson } from "../../utils/api-client.js";
+import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
 import {
   getAuthHeaders,
   getCurrentUserId,
@@ -751,7 +752,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const confirmed = window.confirm(`Eliminar "${libraryDocument.nombreArchivo || "documento"}" de la biblioteca?`);
+    const confirmed = await showConfirm({
+      title: "Eliminar documento",
+      text: `¿Eliminar "${libraryDocument.nombreArchivo || "documento"}" de la biblioteca?`,
+    });
     if (!confirmed) {
       return;
     }
@@ -814,7 +818,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   createButton?.addEventListener("click", async () => {
     const suggestedName = state.selectedShelfId ? "" : inputLibrary.value.trim();
-    const nombre = window.prompt("Nombre de la nueva estantería", suggestedName)?.trim();
+    const nombre = (await showPrompt({
+      title: "Nueva estantería",
+      inputLabel: "Nombre de la estantería",
+      inputValue: suggestedName,
+      inputPlaceholder: "Mi estantería",
+    }))?.trim();
 
     if (!nombre) {
       return;

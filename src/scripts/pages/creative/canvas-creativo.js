@@ -1,4 +1,5 @@
 import { fetchJson } from "../../utils/api-client.js";
+import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
 
 const STORY_MODE = "Seccion_Creativa";
 const STORY_QUERY_KEY = "creativeStoryId";
@@ -492,7 +493,11 @@ const createStory = async () => {
 };
 
 const renameStory = async (story) => {
-  const nextTitle = window.prompt("Nuevo titulo", story.titulo || DEFAULT_TITLE)?.trim();
+  const nextTitle = (await showPrompt({
+    title: "Renombrar lienzo",
+    inputLabel: "Nuevo título",
+    inputValue: story.titulo || DEFAULT_TITLE,
+  }))?.trim();
   if (!nextTitle || nextTitle === story.titulo) {
     return;
   }
@@ -527,7 +532,10 @@ const renameStory = async (story) => {
 };
 
 const deleteStory = async (story) => {
-  const confirmed = window.confirm(`Eliminar "${story.titulo || "este lienzo"}"?`);
+  const confirmed = await showConfirm({
+    title: "Eliminar lienzo",
+    text: `¿Eliminar "${story.titulo || "este lienzo"}"?`,
+  });
   if (!confirmed) {
     return;
   }

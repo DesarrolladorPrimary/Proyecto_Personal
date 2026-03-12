@@ -1,4 +1,5 @@
 import { fetchJson } from "../../utils/api-client.js";
+import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
 
 const STORY_MODE = "Seccion_Creativa";
 const STORY_QUERY_KEY = "creativeStoryId";
@@ -39,8 +40,12 @@ const goToCanvas = (storyId) => {
   window.location.href = url.toString();
 };
 
-const promptStoryTitle = (currentValue = "") => {
-  const value = window.prompt("Titulo del lienzo", currentValue || "Mi historia creativa");
+const promptStoryTitle = async (currentValue = "") => {
+  const value = await showPrompt({
+    title: "Nuevo lienzo",
+    inputLabel: "Título del lienzo",
+    inputValue: currentValue || "Mi historia creativa",
+  });
   return value ? value.trim() : "";
 };
 
@@ -57,7 +62,7 @@ const loadStories = async () => {
 };
 
 const createStory = async () => {
-  const title = promptStoryTitle();
+  const title = await promptStoryTitle();
   if (!title) {
     return;
   }
@@ -85,7 +90,7 @@ const createStory = async () => {
 };
 
 const renameStory = async (story) => {
-  const nextTitle = promptStoryTitle(story.titulo);
+  const nextTitle = await promptStoryTitle(story.titulo);
   if (!nextTitle || nextTitle === story.titulo) {
     return;
   }
@@ -113,7 +118,10 @@ const renameStory = async (story) => {
 };
 
 const deleteStory = async (story) => {
-  const confirmed = window.confirm(`Eliminar "${story.titulo || "este lienzo"}"?`);
+  const confirmed = await showConfirm({
+    title: "Eliminar lienzo",
+    text: `¿Eliminar "${story.titulo || "este lienzo"}"?`,
+  });
   if (!confirmed) {
     return;
   }
