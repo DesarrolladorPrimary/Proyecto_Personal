@@ -94,43 +94,51 @@
 
     <!-- BLOQUE: menu-user-->
     <div class="menu-user" id="user">
-
-      <!-- ELEMENTO: menu-user__avatar -->
-      
+      <div class="menu-user__avatar-shell">
         <img
           class="menu-user__avatar"
           src="/assets/icons/image.png"
           alt="Avatar del usuario"
           id="profile_photo_user"
         />
-      
+      </div>
+
+      <div class="menu-user__identity">
+        <p class="menu-user__eyebrow">Cuenta</p>
+        <p class="menu-user__headline">Informacion de usuario</p>
+      </div>
 
       <div class="menu-user__separador"></div>
 
-      <!-- ELEMENTOS: Párrafos de información -->
-      <p class="menu-user__text"><span data-i18n="feed.user">Usuario:</span> <span id="nombre_usuario"></span></p>
-      <p class="menu-user__text"><span data-i18n="feed.email">Correo:</span> <span id="correo_usuario"></span> </p>
-
-      <!-- ELEMENTO: Un grupo de opciones o información -->
-      <div class="menu-user__group">
-        <p class="menu-user__group-title" data-i18n="feed.models">Modelos:</p>
-
-        <!-- ELEMENTO: Un item específico dentro del grupo -->
-        <div class="menu-user__Model">
-          <p class="menu-user__Model-text" id="menu-user-ai-model">Cargando...</p>
-          <img
-            class="menu-user__setting-icon"
-            src="/assets/icons/icono_model.png"
-            alt="Icono de ajuste"
-          />
+      <div class="menu-user__info-list">
+        <div class="menu-user__item">
+          <span class="menu-user__item-label" data-i18n="feed.user">Usuario:</span>
+          <span class="menu-user__item-value" id="nombre_usuario"></span>
+        </div>
+        <div class="menu-user__item">
+          <span class="menu-user__item-label" data-i18n="feed.email">Correo:</span>
+          <span class="menu-user__item-value" id="correo_usuario"></span>
         </div>
       </div>
 
-      <!-- ELEMENTO: Botón de acción principal -->
-      <button class="menu-user__button" id="logout">
-        <p class="menu-user__link" data-i18n="feed.logout">Cerrar Sesión</p>
-      </button>
+      <details class="menu-user__accordion">
+        <summary class="menu-user__accordion-trigger">
+          <span class="menu-user__accordion-copy">
+            <span class="menu-user__accordion-kicker">Model</span>
+            <span class="menu-user__accordion-label">Modelo AI</span>
+          </span>
+          <span class="menu-user__accordion-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="menu-user__accordion-panel">
+          <p class="menu-user__accordion-value" id="menu-user-ai-model">Cargando...</p>
+        </div>
+      </details>
 
+      <div class="menu-user__actions">
+        <button class="menu-user__button" id="logout" type="button">
+          <span class="menu-user__link" data-i18n="feed.logout">Cerrar Sesión</span>
+        </button>
+      </div>
     </div>
     <script type="module" src="/src/scripts/pages/feed.js"></script>
 

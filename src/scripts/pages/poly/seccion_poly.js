@@ -25,6 +25,10 @@ const CREATIVITY_OPTIONS = {
   high: "Alto",
 };
 const DEFAULT_INPUT_PLACEHOLDER = "Escribe tu mensaje...";
+const TITLE_MAX_LENGTH = 255;
+const CANVAS_MAX_LENGTH = 20000;
+const SHELF_NAME_MAX_LENGTH = 150;
+const CHAT_INPUT_MAX_LENGTH = 20000;
 const DEFAULT_CANVAS_PLACEHOLDER = "Aquí aparecerá el borrador final de la historia cuando Poly empiece a desarrollarlo.";
 const WAITING_STATUS_STAGES = [
   {
@@ -80,6 +84,7 @@ const elements = {
   userMenu: document.getElementById("user"),
   userName: document.getElementById("nombre_usuario"),
   userEmail: document.getElementById("correo_usuario"),
+  userAiModel: document.getElementById("menu-user-ai-model"),
   userMenuPhoto: document.getElementById("profile_photo_user"),
   logoutButton: document.getElementById("logout"),
   form: document.getElementById("poly-form"),
@@ -116,6 +121,7 @@ const elements = {
   bookForm: document.getElementById("book-form"),
   bookTitle: document.getElementById("book-title"),
   bookShelf: document.getElementById("book-shelf"),
+  bookCreateShelfButton: document.getElementById("book-create-shelf"),
   bookSubmit: document.getElementById("book-submit"),
   bookSuccessMessage: document.getElementById("book-success-message"),
   bookLibraryLink: document.getElementById("book-library-link"),
@@ -200,20 +206,24 @@ const syncLibraryLink = (shelfId = "") => {
     : "Abrir biblioteca";
 };
 
-const syncBookShelfSelection = () => {
+const syncBookShelfSelection = (preferredShelfId = null) => {
   if (!elements.bookShelf) {
     return;
   }
 
   const activeStory = getActiveStory();
-  const nextValue = activeStory?.estanteriaId != null ? String(activeStory.estanteriaId) : "";
+  const nextValue = preferredShelfId != null
+    ? String(preferredShelfId)
+    : activeStory?.estanteriaId != null
+      ? String(activeStory.estanteriaId)
+      : "";
   const optionExists = Array.from(elements.bookShelf.options).some((option) => option.value === nextValue);
 
   elements.bookShelf.value = optionExists ? nextValue : "";
   syncLibraryLink(elements.bookShelf.value);
 };
 
-const renderShelfOptions = () => {
+const renderShelfOptions = (preferredShelfId = null) => {
   if (!elements.bookShelf) {
     return;
   }
@@ -234,8 +244,10 @@ const renderShelfOptions = () => {
   });
 
   const activeStory = getActiveStory();
-  const preferredValue = currentValue
-    || (activeStory?.estanteriaId != null ? String(activeStory.estanteriaId) : "");
+  const preferredValue = preferredShelfId != null
+    ? String(preferredShelfId)
+    : currentValue
+      || (activeStory?.estanteriaId != null ? String(activeStory.estanteriaId) : "");
   const optionExists = Array.from(elements.bookShelf.options).some((option) => option.value === preferredValue);
 
   elements.bookShelf.value = optionExists ? preferredValue : "";
@@ -469,10 +481,11 @@ const splitIntoParagraphs = (text) =>
     .filter(Boolean);
 
 const isCanvasPlaceholder = (text) => String(text || "").trim() === DEFAULT_CANVAS_PLACEHOLDER;
+const clampText = (value, maxLength) => String(value || "").slice(0, maxLength);
 
 const getCanvasBodyText = () => {
   const currentText = elements.canvasBody?.innerText?.trim() || "";
-  return isCanvasPlaceholder(currentText) ? "" : currentText;
+  return isCanvasPlaceholder(currentText) ? "" : clampText(currentText, CANVAS_MAX_LENGTH);
 };
 
 const updateCanvasCounter = (text) => {
@@ -905,6 +918,9 @@ const renderStories = () => {
         title: "Renombrar chat",
         inputLabel: "Nuevo nombre del chat",
         inputValue: story.titulo || "",
+        inputAttributes: {
+          maxlength: String(TITLE_MAX_LENGTH),
+        },
       });
       if (!nextTitle || !nextTitle.trim()) {
         return;
@@ -992,6 +1008,20 @@ const applyUserData = (user) => {
   }
 };
 
+const applyAiModelData = (versionData = {}) => {
+  if (!elements.userAiModel) {
+    return;
+  }
+
+  const modelLabel = [versionData.nombre, versionData.version]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+
+  elements.userAiModel.textContent = modelLabel || "No disponible";
+  elements.userAiModel.title = versionData.changelog || elements.userAiModel.textContent;
+};
+
 const loadUser = async () => {
   const token = getToken();
 
@@ -1016,6 +1046,24 @@ const loadUser = async () => {
   }
 
   applyUserData(data);
+};
+
+const loadAiModel = async () => {
+  if (!elements.userAiModel || !state.userId) {
+    return;
+  }
+
+  const { ok, data } = await fetchJson("/api/v1/settings/version-ia", {
+    params: { id: state.userId },
+    auth: true,
+  });
+
+  if (!ok) {
+    elements.userAiModel.textContent = "No disponible";
+    return;
+  }
+
+  applyAiModelData(data);
 };
 
 const loadMessages = async (storyId, { showLoadingStatus = true } = {}) => {
@@ -1187,7 +1235,7 @@ const loadStories = async (preferredStoryId = null) => {
   syncBookShelfSelection();
 };
 
-const loadShelves = async () => {
+const loadShelves = async (preferredShelfId = null) => {
   const { ok, status, data } = await fetchJson("/api/v1/estanterias", {
     params: { id: state.userId },
     auth: true,
@@ -1200,7 +1248,7 @@ const loadShelves = async () => {
     }
 
     state.shelves = [];
-    renderShelfOptions();
+    renderShelfOptions(preferredShelfId);
     showToast(data.Mensaje || "No fue posible cargar las estanterías");
     return;
   }
@@ -1208,7 +1256,63 @@ const loadShelves = async () => {
   state.shelves = Array.isArray(data)
     ? data.filter((item) => item && typeof item === "object" && item.id)
     : [];
-  renderShelfOptions();
+  renderShelfOptions(preferredShelfId);
+};
+
+const createShelfFromBookFlow = async () => {
+  if (!state.userId) {
+    return null;
+  }
+
+  const suggestedName = clampText(elements.bookTitle?.value.trim() || "", SHELF_NAME_MAX_LENGTH);
+  const shelfName = (await showPrompt({
+    title: "Nueva estanteria",
+    inputLabel: "Nombre de la estanteria",
+    inputValue: suggestedName,
+    inputPlaceholder: "Mi estanteria",
+    inputAttributes: {
+      maxlength: String(SHELF_NAME_MAX_LENGTH),
+    },
+  }))?.trim();
+
+  if (!shelfName) {
+    return null;
+  }
+
+  const { ok, data } = await fetchJson("/api/v1/estanterias", {
+    method: "POST",
+    auth: true,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      usuarioId: state.userId,
+      nombre: shelfName,
+    }),
+  });
+
+  if (!ok) {
+    showToast(data.Mensaje || "No fue posible crear la estanteria");
+    return null;
+  }
+
+  const createdShelfId = Number(data.id || 0);
+
+  if (createdShelfId > 0) {
+    state.shelves = [
+      ...state.shelves.filter((shelf) => Number(shelf.id) !== createdShelfId),
+      { id: createdShelfId, nombre: shelfName },
+    ];
+    renderShelfOptions(createdShelfId);
+  } else {
+    await loadShelves();
+    const createdShelf = state.shelves.find((shelf) => shelf.nombre === shelfName);
+    if (createdShelf) {
+      renderShelfOptions(createdShelf.id);
+    }
+  }
+
+  showToast(data.Mensaje || "Estanteria creada", "green");
+  elements.bookShelf?.focus();
+  return createdShelfId || null;
 };
 
 const sendMessage = async (content) => {
@@ -1239,7 +1343,7 @@ const handleSubmit = async (event) => {
     return;
   }
 
-  const typedContent = elements.input?.value.trim() || "";
+  const typedContent = clampText(elements.input?.value.trim() || "", CHAT_INPUT_MAX_LENGTH);
   const content = typedContent || (
     state.sourceFiles.length
       ? "Usa los archivos fuente asociados como contexto para continuar y desarrollar el relato."
@@ -1305,13 +1409,13 @@ const handleAttachClick = () => {
 const handleBookSubmit = async (event) => {
   event.preventDefault();
 
-  const storyId = await ensureActiveStory(elements.bookTitle?.value.trim() || "Mi historia con Poly-AI");
+  const storyId = await ensureActiveStory(clampText(elements.bookTitle?.value.trim() || "Mi historia con Poly-AI", TITLE_MAX_LENGTH));
   if (!storyId) {
     showToast("Primero crea o selecciona un chat");
     return;
   }
 
-  const nextTitle = elements.bookTitle?.value.trim();
+  const nextTitle = clampText(elements.bookTitle?.value.trim(), TITLE_MAX_LENGTH);
   if (!nextTitle) {
     showToast("Ingresa un título para el libro");
     return;
@@ -1321,6 +1425,27 @@ const handleBookSubmit = async (event) => {
     ? Number(elements.bookShelf.value)
     : null;
   const selectedShelf = selectedShelfId ? getShelfById(selectedShelfId) : null;
+
+  if (!selectedShelfId || !selectedShelf) {
+    const shouldCreateShelf = await showConfirm({
+      title: "Falta una estanteria",
+      text: "Aun no has seleccionado una estanteria. Quieres crear una ahora mismo?",
+    });
+
+    if (!shouldCreateShelf) {
+      elements.bookShelf?.focus();
+      return;
+    }
+
+    const createdShelfId = await createShelfFromBookFlow();
+    if (createdShelfId) {
+      elements.bookForm?.requestSubmit();
+      return;
+    }
+
+    elements.bookShelf?.focus();
+    return;
+  }
 
   if (!selectedShelfId || !selectedShelf) {
     showToast("Debes seleccionar una estantería antes de guardar el relato");
@@ -1394,7 +1519,13 @@ const setupInputAutoResize = () => {
 
 const setupCanvasBindings = () => {
   elements.canvasTitle?.addEventListener("input", () => {
-    const nextTitle = elements.canvasTitle.textContent?.trim();
+    const nextTitle = clampText(elements.canvasTitle.textContent?.trim(), TITLE_MAX_LENGTH);
+    if (elements.canvasTitle.textContent !== nextTitle) {
+      elements.canvasTitle.textContent = nextTitle;
+      const selection = window.getSelection();
+      selection?.selectAllChildren(elements.canvasTitle);
+      selection?.collapseToEnd();
+    }
     if (elements.bookTitle) {
       elements.bookTitle.value = nextTitle || "Mi historia con Poly-AI";
     }
@@ -1417,6 +1548,10 @@ const setupCanvasBindings = () => {
   });
 
   elements.canvasBody?.addEventListener("input", () => {
+    const nextText = clampText(getCanvasBodyText(), CANVAS_MAX_LENGTH);
+    if (getCanvasBodyText() !== nextText) {
+      elements.canvasBody.innerText = nextText;
+    }
     updateCanvasCounter(getCanvasBodyText());
     syncCanvasDirtyState();
   });
@@ -1700,6 +1835,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   elements.bookShelf?.addEventListener("change", () => {
     syncLibraryLink(elements.bookShelf.value);
   });
+  elements.bookCreateShelfButton?.addEventListener("click", async () => {
+    await createShelfFromBookFlow();
+  });
   syncFormState();
   syncAsideState();
   syncAttachedFile();
@@ -1707,6 +1845,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   focusInput();
 
   await loadUser();
+  await loadAiModel();
   await loadShelves();
   await loadStories();
   await selectStory(state.activeStoryId);

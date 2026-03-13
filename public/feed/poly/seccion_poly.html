@@ -98,6 +98,7 @@
           rows="1"
           placeholder="Escribe tu mensaje..."
           id="poly-message-input"
+          maxlength="20000"
         ></textarea>
         <a
           href="#modalAI"
@@ -317,11 +318,15 @@
             id="book-title"
             type="text"
             value="Mi historia con Poly-AI"
+            maxlength="255"
           />
           <label class="book-modal__label" for="book-shelf">Guardar en estantería:</label>
           <select class="book-modal__input" id="book-shelf">
             <option value="">Biblioteca general</option>
           </select>
+          <button class="book-modal__secondary" type="button" id="book-create-shelf">
+            Crear estantería ahora
+          </button>
           <p class="book-modal__hint">
             Guarda primero el relato en biblioteca. La exportación a Word o PDF la harás desde allí.
           </p>
@@ -384,17 +389,45 @@
     </aside>
 
     <div class="menu-user" id="user">
-      <img
-        class="menu-user__avatar"
-        src="/assets/icons/image.png"
-        alt="Avatar del usuario"
-        id="profile_photo_user"
-      />
+      <div class="menu-user__avatar-shell">
+        <img
+          class="menu-user__avatar"
+          src="/assets/icons/image.png"
+          alt="Avatar del usuario"
+          id="profile_photo_user"
+        />
+      </div>
+
+      <div class="menu-user__identity">
+        <p class="menu-user__eyebrow">Cuenta</p>
+        <p class="menu-user__headline">Informacion de usuario</p>
+      </div>
 
       <div class="menu-user__separador"></div>
 
-      <p class="menu-user__text"><span>Usuario:</span> <span id="nombre_usuario"></span></p>
-      <p class="menu-user__text"><span>Correo:</span> <span id="correo_usuario"></span></p>
+      <div class="menu-user__info-list">
+        <div class="menu-user__item">
+          <span class="menu-user__item-label">Usuario:</span>
+          <span class="menu-user__item-value" id="nombre_usuario"></span>
+        </div>
+        <div class="menu-user__item">
+          <span class="menu-user__item-label">Correo:</span>
+          <span class="menu-user__item-value" id="correo_usuario"></span>
+        </div>
+      </div>
+
+      <details class="menu-user__accordion">
+        <summary class="menu-user__accordion-trigger">
+          <span class="menu-user__accordion-copy">
+            <span class="menu-user__accordion-kicker">Model</span>
+            <span class="menu-user__accordion-label">Modelo AI</span>
+          </span>
+          <span class="menu-user__accordion-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="menu-user__accordion-panel">
+          <p class="menu-user__accordion-value" id="menu-user-ai-model">Cargando...</p>
+        </div>
+      </details>
 
       <div class="menu-user__actions">
         <a class="menu-user__secondary" href="../settings/settings-user.html">Ver perfil</a>
