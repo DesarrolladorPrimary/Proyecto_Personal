@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambiar contraseña</title>
     <link rel="stylesheet" href="/src/styles/components/base.css">
+    <link rel="stylesheet" href="/src/styles/components/form-feedback.css">
     <link rel="stylesheet" href="/src/styles/pages/auth/recovery_passwd.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,8 +21,8 @@
             <h1 class="recovery-password__title" data-i18n="recovery.title">¿Olvidó su contraseña?</h1>
             <p class="recovery-password__description" data-i18n="recovery.description">Ingrese el correo electrónico asociado a su cuenta y le enviaremos un enlace para restablecer su contraseña.</p>
             <form action="" class="recovery-password__form" id="form">
-                <div class="recovery-password__form-group">
-                    <input type="text" id="correo" name="" placeholder="Correo" data-i18n-placeholder="recovery.email_placeholder" class="recovery-password__input" maxlength="255">
+                <div class="recovery-password__form-group" data-field>
+                    <input type="text" id="correo" name="" placeholder="Correo" data-i18n-placeholder="recovery.email_placeholder" class="recovery-password__input" maxlength="120">
                     <button type="submit" class="recovery-password__button" data-i18n="recovery.submit">Enviar</button>
                 </div>
             </form>

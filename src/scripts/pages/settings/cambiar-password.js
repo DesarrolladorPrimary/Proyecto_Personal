@@ -1,5 +1,6 @@
 import { fetchJson } from "../../utils/api-client.js";
 import { getCurrentUserId, logoutAndRedirect } from "../../utils/auth-session.js";
+import { bindFieldValidation, resetFieldState, setFieldState, validateFields } from "../../utils/form-feedback.js";
 
 const PASSWORD_COMPLEXITY = /[\d\W_]/;
 
@@ -10,16 +11,6 @@ const btnGuardar = document.getElementById("save-password");
 const inputNuevaPassword = document.getElementById("nueva-password");
 const inputConfirmarPassword = document.getElementById("confirmar-password");
 
-const resetForm = () => {
-  inputNuevaPassword.value = "";
-  inputConfirmarPassword.value = "";
-};
-
-const closeModal = () => {
-  modalPassword.classList.remove("modal--active");
-  resetForm();
-};
-
 const showToast = (text, background = "red") => {
   Toastify({
     text,
@@ -29,6 +20,67 @@ const showToast = (text, background = "red") => {
     style: { background },
   }).showToast();
 };
+
+const fieldBindings = [
+  {
+    input: inputNuevaPassword,
+    ...bindFieldValidation(
+      inputNuevaPassword,
+      (value) => {
+        if (!value) {
+          return { valid: false, message: "Ingresa la nueva contraseña." };
+        }
+
+        if (value.length < 8) {
+          return { valid: false, message: "Debe tener al menos 8 caracteres." };
+        }
+
+        if (!PASSWORD_COMPLEXITY.test(value)) {
+          return { valid: false, message: "Incluye al menos un numero o simbolo." };
+        }
+
+        return { valid: true, message: "Contraseña valida." };
+      },
+      { validateOnInput: true },
+    ),
+  },
+  {
+    input: inputConfirmarPassword,
+    ...bindFieldValidation(
+      inputConfirmarPassword,
+      (value) => {
+        if (!value) {
+          return { valid: false, message: "Confirma la nueva contraseña." };
+        }
+
+        if (value !== inputNuevaPassword.value) {
+          return { valid: false, message: "La confirmacion debe coincidir." };
+        }
+
+        return { valid: true, message: "Las contraseñas coinciden." };
+      },
+      { validateOnInput: true },
+    ),
+  },
+];
+
+const resetForm = () => {
+  inputNuevaPassword.value = "";
+  inputConfirmarPassword.value = "";
+  resetFieldState(inputNuevaPassword);
+  resetFieldState(inputConfirmarPassword);
+};
+
+const closeModal = () => {
+  modalPassword.classList.remove("modal--active");
+  resetForm();
+};
+
+inputNuevaPassword?.addEventListener("input", () => {
+  if (inputConfirmarPassword.value) {
+    fieldBindings[1].validate();
+  }
+});
 
 btnCambiarPassword?.addEventListener("click", () => {
   modalPassword.classList.add("modal--active");
@@ -41,29 +93,13 @@ modalPassword?.querySelector(".modal__overlay")?.addEventListener("click", close
 btnGuardar?.addEventListener("click", async () => {
   const id = getCurrentUserId();
   const nuevaPassword = inputNuevaPassword.value;
-  const confirmarPassword = inputConfirmarPassword.value;
 
   if (!id) {
     return;
   }
 
-  if (!nuevaPassword || !confirmarPassword) {
-    showToast("Por favor completa todos los campos");
-    return;
-  }
-
-  if (nuevaPassword.length < 8) {
-    showToast("La contraseña debe tener al menos 8 caracteres");
-    return;
-  }
-
-  if (!PASSWORD_COMPLEXITY.test(nuevaPassword)) {
-    showToast("La contraseña debe incluir un número o símbolo");
-    return;
-  }
-
-  if (nuevaPassword !== confirmarPassword) {
-    showToast("Las contraseñas no coinciden");
+  if (!validateFields(fieldBindings)) {
+    showToast("Revisa los campos marcados antes de continuar.");
     return;
   }
 
@@ -80,6 +116,10 @@ btnGuardar?.addEventListener("click", async () => {
     });
 
     if (!ok) {
+      setFieldState(inputNuevaPassword, {
+        state: "error",
+        message: data.Mensaje || "No fue posible actualizar la contraseña.",
+      });
       showToast(data.Mensaje || "No fue posible actualizar la contraseña");
       return;
     }
@@ -88,11 +128,11 @@ btnGuardar?.addEventListener("click", async () => {
     closeModal();
     window.setTimeout(() => {
       logoutAndRedirect(undefined, {
-        text: "Tu contraseÃ±a fue actualizada. Inicia sesiÃ³n de nuevo.",
+        text: "Tu contraseña fue actualizada. Inicia sesion de nuevo.",
         background: "green",
       });
     }, 900);
   } catch (error) {
-    showToast("Error de conexión");
+    showToast("Error de conexion");
   }
 });

@@ -57,7 +57,7 @@ body {
 /* Icono dentro del input */
 .form__input-icon {
   position: absolute;
-  top: 50%;
+  top: calc(var(--auth-input-height) / 2);
   left: 15px;
   transform: translateY(-50%); /* Centra verticalmente */
   width: 20px;

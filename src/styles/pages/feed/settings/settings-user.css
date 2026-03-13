@@ -311,6 +311,10 @@ body {
   margin-bottom: 20px;
 }
 
+.modal__field {
+  width: 100%;
+}
+
 .modal__input {
   padding: 12px;
   border: 1px solid #ccc;
@@ -323,6 +327,18 @@ body {
 .modal__input:focus {
   outline: none;
   border-color: #4CAF50;
+}
+
+.modal__field .field-feedback__message {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.modal__field.is-invalid .field-feedback__message {
+  color: #ffd0d0;
+}
+
+.modal__field.is-valid .field-feedback__message {
+  color: #d2f1dc;
 }
 
 #cambiar-password {

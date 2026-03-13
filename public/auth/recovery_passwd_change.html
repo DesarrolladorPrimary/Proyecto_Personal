@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambiar contraseña</title>
     <link rel="stylesheet" href="/src/styles/components/base.css">
+    <link rel="stylesheet" href="/src/styles/components/form-feedback.css">
     <link rel="stylesheet" href="/src/styles/pages/auth/recovery_passwd_change.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,17 +21,17 @@
             <h1 class="recovery-password__title" data-i18n="reset.title">¿Olvidó su contraseña?</h1>
             <p class="recovery-password__description" data-i18n="reset.description">Por favor, ingrese su nueva contraseña.</p>
             <form action="" class="recovery-password__form" id="form">
-                <div class="recovery-password__form-group">
-                    <input type="password" id="contraseña" name="" placeholder="Contraseña" data-i18n-placeholder="reset.password_placeholder" class="recovery-password__input" maxlength="128">
+                <div class="recovery-password__form-group" data-field>
+                    <input type="password" id="contraseña" name="" placeholder="Contraseña" data-i18n-placeholder="reset.password_placeholder" class="recovery-password__input" maxlength="64">
                 </div>
                 <div class="recovery-password__form-requirements-list">
-                    <p class="recovery-password__form-requirement" data-i18n="reset.requirement_1">Debe tener al menos 8 caracteres.</p>
-                    <p class="recovery-password__form-requirement" data-i18n="reset.requirement_2">Debe incluir una letra mayúscula (A-Z).</p>
-                    <p class="recovery-password__form-requirement" data-i18n="reset.requirement_3">Debe incluir una letra minúscula (a-z).</p>
-                    <p class="recovery-password__form-requirement" data-i18n="reset.requirement_4">Debe incluir un número (0-9).</p>
+                    <p class="recovery-password__form-requirement" id="password-rule-length">Debe tener al menos 8 caracteres.</p>
+                    <p class="recovery-password__form-requirement" id="password-rule-complexity">Debe incluir un número o símbolo.</p>
+                    <p class="recovery-password__form-requirement" id="password-rule-max">No debe superar los 64 caracteres.</p>
+                    <p class="recovery-password__form-requirement" id="password-rule-match">La confirmación debe coincidir.</p>
                 </div>
-                <div class="recovery-password__form-group">
-                    <input type="password" id="confirmar_contraseña" name="" placeholder="Confirmar Contraseña" data-i18n-placeholder="reset.confirm_placeholder" class="recovery-password__input recovery-password__input--confirm" maxlength="128">
+                <div class="recovery-password__form-group" data-field>
+                    <input type="password" id="confirmar_contraseña" name="" placeholder="Confirmar Contraseña" data-i18n-placeholder="reset.confirm_placeholder" class="recovery-password__input recovery-password__input--confirm" maxlength="64">
                     <button type="submit" class="recovery-password__button" data-i18n="reset.submit">Enviar</button>
                 </div>
                 <p class="recovery-password__back-login">

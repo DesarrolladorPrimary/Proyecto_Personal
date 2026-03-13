@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/src/styles/components/base.css" />
+  <link rel="stylesheet" href="/src/styles/components/form-feedback.css" />
   <link rel="stylesheet" href="/src/styles/components/settings-header.css" />
   <link rel="stylesheet" href="/src/styles/components/settings-option.css" />
   <link rel="stylesheet" href="/src/styles/pages/feed/settings/settings-user.css" />
@@ -100,8 +101,12 @@
     <div class="modal__content">
       <h2 class="modal__title">Cambiar Contraseña</h2>
       <div class="modal__form">
-        <input type="password" id="nueva-password" class="modal__input" placeholder="Nueva contraseña" maxlength="128">
-        <input type="password" id="confirmar-password" class="modal__input" placeholder="Confirmar contraseña" maxlength="128">
+        <div class="modal__field" data-field>
+          <input type="password" id="nueva-password" class="modal__input" placeholder="Nueva contraseña" maxlength="64">
+        </div>
+        <div class="modal__field" data-field>
+          <input type="password" id="confirmar-password" class="modal__input" placeholder="Confirmar contraseña" maxlength="64">
+        </div>
       </div>
       <div class="modal__actions">
         <button class="modal__button modal__button--secondary" id="cancel-password">Cancelar</button>

@@ -6,6 +6,7 @@
     <title>Login</title>
     <link rel ="stylesheet" type =" text/css " href =" https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css " >
     <link rel="stylesheet" href="/src/styles/components/base.css">
+    <link rel="stylesheet" href="/src/styles/components/form-feedback.css">
     <link rel="stylesheet" href="/src/styles/layout.css">
     <link rel="stylesheet" href="/src/styles/pages/auth/login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,15 +23,15 @@
     <main class="main">
         <form method="POST" class="form" id="form">
 
-            <div class="form__input-container">
+            <div class="form__input-container" data-field>
                 <img src="/assets/icons/email.png" class="form__input-icon" alt="Icono">
-            <input type="email" id="login_email" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="login.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com" maxlength="255">
+            <input type="email" id="login_email" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="login.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com" maxlength="120">
             </div>
 
 
-            <div class="form__input-container">
+            <div class="form__input-container" data-field>
                 <img src="/assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
-                <input type="password" id="login_password" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="login.password_placeholder" maxlength="128">
+                <input type="password" id="login_password" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="login.password_placeholder" maxlength="64">
             </div>
 
             <p class="form__contrasena"><span data-i18n="login.forgot">¿Olvidó la contraseña?</span> <a href="recovery_passwd.html" class="recover-link" data-i18n="login.here">aquí</a></p>

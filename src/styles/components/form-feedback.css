@@ -1,0 +1,50 @@
+[data-field] {
+  position: relative;
+}
+
+[data-field] .form__input,
+[data-field] .recovery-password__input,
+[data-field] .modal__input {
+  border: 1px solid transparent;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
+}
+
+[data-field].is-invalid .form__input,
+[data-field].is-invalid .recovery-password__input,
+[data-field].is-invalid .modal__input {
+  border-color: rgba(208, 95, 95, 0.95);
+  background-color: rgba(255, 238, 238, 0.96);
+  box-shadow: 0 0 0 3px rgba(208, 95, 95, 0.14);
+}
+
+[data-field].is-valid .form__input,
+[data-field].is-valid .recovery-password__input,
+[data-field].is-valid .modal__input {
+  border-color: rgba(111, 170, 131, 0.92);
+  background-color: rgba(238, 248, 242, 0.98);
+  box-shadow: 0 0 0 3px rgba(111, 170, 131, 0.12);
+}
+
+[data-field] .field-feedback__message {
+  min-height: 18px;
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(28, 28, 28, 0.7);
+}
+
+[data-field].is-invalid .field-feedback__message {
+  color: #8e2d37;
+}
+
+[data-field].is-valid .field-feedback__message {
+  color: #2f6a47;
+}
+
+[data-field].is-invalid .form__input-icon {
+  opacity: 0.9;
+}

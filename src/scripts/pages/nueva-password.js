@@ -1,4 +1,5 @@
 import { fetchJson } from "../utils/api-client.js";
+import { bindFieldValidation, setFieldState, validateFields } from "../utils/form-feedback.js";
 
 const PASSWORD_COMPLEXITY = /[\d\W_]/;
 
@@ -7,6 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordInput = document.getElementById("contraseña");
   const confirmInput = document.getElementById("confirmar_contraseña");
   const token = new URLSearchParams(window.location.search).get("token");
+  const passwordRuleLength = document.getElementById("password-rule-length");
+  const passwordRuleComplexity = document.getElementById("password-rule-complexity");
+  const passwordRuleMax = document.getElementById("password-rule-max");
+  const passwordRuleMatch = document.getElementById("password-rule-match");
 
   const showToast = (text, background = "red", callback) => {
     Toastify({
@@ -20,9 +25,81 @@ document.addEventListener("DOMContentLoaded", () => {
     }).showToast();
   };
 
+  const syncPasswordRules = () => {
+    const password = passwordInput.value;
+    const confirmation = confirmInput.value;
+
+    passwordRuleLength?.classList.toggle("recovery-password__form-requirement--met", password.length >= 8);
+    passwordRuleComplexity?.classList.toggle("recovery-password__form-requirement--met", PASSWORD_COMPLEXITY.test(password));
+    passwordRuleMax?.classList.toggle(
+      "recovery-password__form-requirement--met",
+      password.length > 0 && password.length <= 128,
+    );
+    passwordRuleMatch?.classList.toggle(
+      "recovery-password__form-requirement--met",
+      Boolean(password) && Boolean(confirmation) && password === confirmation,
+    );
+  };
+
+  const fieldBindings = [
+    {
+      input: passwordInput,
+      ...bindFieldValidation(
+        passwordInput,
+        (value) => {
+          if (!value) {
+            return { valid: false, message: "Ingresa tu nueva contraseña." };
+          }
+
+          if (value.length < 8) {
+            return { valid: false, message: "Debe tener al menos 8 caracteres." };
+          }
+
+          if (!PASSWORD_COMPLEXITY.test(value)) {
+            return { valid: false, message: "Incluye al menos un numero o simbolo." };
+          }
+
+          return { valid: true, message: "Contraseña valida." };
+        },
+        { validateOnInput: true },
+      ),
+    },
+    {
+      input: confirmInput,
+      ...bindFieldValidation(
+        confirmInput,
+        (value) => {
+          if (!value) {
+            return { valid: false, message: "Confirma tu nueva contraseña." };
+          }
+
+          if (value !== passwordInput.value) {
+            return { valid: false, message: "La confirmacion debe coincidir." };
+          }
+
+          return { valid: true, message: "Las contraseñas coinciden." };
+        },
+        { validateOnInput: true },
+      ),
+    },
+  ];
+
+  passwordInput?.addEventListener("input", () => {
+    syncPasswordRules();
+    if (confirmInput.value) {
+      fieldBindings[1].validate();
+    }
+  });
+
+  confirmInput?.addEventListener("input", syncPasswordRules);
+
   if (!token) {
-    showToast("Token no válido. Solicita un nuevo enlace.");
+    showToast("Token no valido. Solicita un nuevo enlace.");
     form.querySelector("button").disabled = true;
+    setFieldState(passwordInput, {
+      state: "error",
+      message: "El enlace de recuperacion no es valido o ya expiro.",
+    });
     return;
   }
 
@@ -30,28 +107,11 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
 
     const contraseña = passwordInput.value;
-    const confirmacion = confirmInput.value;
 
-    if (!contraseña || !confirmacion) {
-      showToast("Completa todos los campos");
-      return;
-    }
+    syncPasswordRules();
 
-    if (contraseña.length < 8) {
-      showToast("La contraseña debe tener al menos 8 caracteres");
-      passwordInput.focus();
-      return;
-    }
-
-    if (!PASSWORD_COMPLEXITY.test(contraseña)) {
-      showToast("La contraseña debe incluir un número o símbolo");
-      passwordInput.focus();
-      return;
-    }
-
-    if (contraseña !== confirmacion) {
-      showToast("Las contraseñas no coinciden");
-      confirmInput.focus();
+    if (!validateFields(fieldBindings)) {
+      showToast("Revisa los campos marcados antes de continuar.");
       return;
     }
 
@@ -73,9 +133,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      setFieldState(passwordInput, {
+        state: "error",
+        message: data.Mensaje || "No fue posible actualizar la contraseña.",
+      });
       showToast(data.Mensaje || "No fue posible actualizar la contraseña");
     } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
     }
   });
 });

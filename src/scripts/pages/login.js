@@ -4,6 +4,7 @@ import {
   getDefaultRouteForRole,
   parseTokenSafely,
 } from "../utils/auth-session.js";
+import { bindFieldValidation, setFieldState, validateFields } from "../utils/form-feedback.js";
 
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
 
@@ -29,21 +30,50 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(authNotice.text, authNotice.background || "orange");
   }
 
+  const fieldBindings = [
+    {
+      input: emailInput,
+      ...bindFieldValidation(
+        emailInput,
+        (value) => {
+          const correo = value.trim();
+          if (!correo) {
+            return { valid: false, message: "Ingresa tu correo." };
+          }
+
+          if (!EMAIL_PATTERN.test(correo)) {
+            return { valid: false, message: "Usa un correo con formato valido." };
+          }
+
+          return { valid: true, message: "Correo valido." };
+        },
+        { validateOnInput: true },
+      ),
+    },
+    {
+      input: passwordInput,
+      ...bindFieldValidation(
+        passwordInput,
+        (value) => {
+          if (!value) {
+            return { valid: false, message: "Ingresa tu contraseña." };
+          }
+
+          return { valid: true, message: "Campo completo." };
+        },
+        { validateOnInput: true },
+      ),
+    },
+  ];
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const correo = emailInput.value.trim();
     const contrasena = passwordInput.value;
 
-    if (!EMAIL_PATTERN.test(correo)) {
-      showToast("Ingresa un correo valido");
-      emailInput.focus();
-      return;
-    }
-
-    if (!contrasena) {
-      showToast("Ingresa tu contrasena");
-      passwordInput.focus();
+    if (!validateFields(fieldBindings)) {
+      showToast("Revisa los campos marcados antes de continuar.");
       return;
     }
 
@@ -65,10 +95,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (status === 403) {
+        setFieldState(emailInput, {
+          state: "error",
+          message: "Tu correo existe, pero aun no ha sido verificado.",
+        });
         showToast(data.Mensaje || "Debes verificar tu correo", "orange");
         return;
       }
 
+      setFieldState(passwordInput, {
+        state: "error",
+        message: "Verifica tus credenciales e intentalo otra vez.",
+      });
       showToast(data.Mensaje || "No fue posible iniciar sesion");
     } catch (error) {
       showToast("Error de conexion");

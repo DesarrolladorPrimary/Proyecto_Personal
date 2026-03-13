@@ -1,4 +1,5 @@
 import { fetchJson } from "../utils/api-client.js";
+import { bindFieldValidation, setFieldState, validateFields } from "../utils/form-feedback.js";
 
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
 
@@ -18,14 +19,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }).showToast();
   };
 
+  const fieldBindings = [
+    {
+      input: emailInput,
+      ...bindFieldValidation(
+        emailInput,
+        (value) => {
+          const correo = value.trim();
+          if (!correo) {
+            return { valid: false, message: "Ingresa el correo asociado a tu cuenta." };
+          }
+
+          if (!EMAIL_PATTERN.test(correo)) {
+            return { valid: false, message: "Usa un correo con formato valido." };
+          }
+
+          return { valid: true, message: "Correo listo para enviar." };
+        },
+        { validateOnInput: true },
+      ),
+    },
+  ];
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const correo = emailInput.value.trim();
 
-    if (!EMAIL_PATTERN.test(correo)) {
-      showToast("Ingresa un correo válido");
-      emailInput.focus();
+    if (!validateFields(fieldBindings)) {
+      showToast("Revisa el correo antes de continuar.");
       return;
     }
 
@@ -47,9 +69,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      setFieldState(emailInput, {
+        state: "error",
+        message: data.Mensaje || "No fue posible procesar el correo ingresado.",
+      });
       showToast(data.Mensaje || "No fue posible procesar la solicitud");
     } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
     }
   });
 });
