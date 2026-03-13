@@ -1,0 +1,28 @@
+{
+  "name": "proyecto_personal",
+  "version": "1.0.0",
+  "main": "vite.config.js",
+  "type": "module",
+  
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DesarrolladorPrimary/Proyecto_Personal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DesarrolladorPrimary/Proyecto_Personal/issues"
+  },
+  "homepage": "https://github.com/DesarrolladorPrimary/Proyecto_Personal#readme",
+  "description": "",
+  "devDependencies": {
+    "vite": "^8.0.0"
+  }
+}
