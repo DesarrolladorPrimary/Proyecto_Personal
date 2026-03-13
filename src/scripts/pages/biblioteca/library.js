@@ -12,7 +12,6 @@ import {
 document.addEventListener("DOMContentLoaded", async () => {
   const inputLibrary = document.getElementById("input_library");
   const createButton = document.getElementById("create-shelf");
-  const refreshButton = document.getElementById("refresh-library");
   const clearFilterButton = document.getElementById("clear-shelf-filter");
   const activeShelfChip = document.getElementById("active-shelf-chip");
   const libraryMain = document.getElementById("library-main");
@@ -784,10 +783,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       showToast("No fue posible eliminar el documento");
     }
   };
-
-  refreshButton?.addEventListener("click", async () => {
-    await Promise.all([loadShelves(), loadStories(), loadDocuments(), loadSubscription()]);
-  });
 
   clearFilterButton?.addEventListener("click", async () => {
     state.selectedShelfId = "";

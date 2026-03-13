@@ -37,8 +37,7 @@ body {
   height: 22px;
 }
 
-.library-header__link,
-.library-header__action {
+.library-header__link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,8 +52,7 @@ body {
   transition: transform 0.18s ease, background-color 0.18s ease;
 }
 
-.library-header__link:hover,
-.library-header__action:hover {
+.library-header__link:hover {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.12);
 }
@@ -462,6 +460,17 @@ body {
   backdrop-filter: blur(14px);
 }
 
+.library-footer__logo {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-bg-light);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .library-footer__buttons {
   display: flex;
   flex-wrap: wrap;
@@ -482,27 +491,8 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.library-footer__icon-container {
-  width: 50px;
-  height: 50px;
-  background-color: var(--color-bg-light);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .library-footer__link {
   text-decoration: none;
-}
-
-.library-footer__icon-container:hover {
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
 }
 
 .library-footer__icon {
