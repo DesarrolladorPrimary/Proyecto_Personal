@@ -18,23 +18,38 @@
       rel="stylesheet"
       href="/src/styles/pages/feed/creative/seccion_creativa.css"
     />
+    <link rel="stylesheet" href="/src/styles/components/user-menu.css" />
     <link rel="stylesheet" href="/src/styles/components/dialogs.css" />
     <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <header class="header">
       <div class="header__nav">
-        <div class="header__nav-line">
-          <a
-            href="#sidebar"
-            class="header__nav-link header__nav-link--action"
-          ></a>
-        </div>
+        <button
+          type="button"
+          class="header__nav-line header__nav-toggle"
+          id="creative-aside-toggle"
+          aria-label="Mostrar lienzos"
+          aria-controls="sidebar"
+          aria-expanded="false"
+        >
+          <span class="header__nav-link header__nav-link--action"></span>
+        </button>
       </div>
 
-      <a href="#user" class="header__logo">
-        <img src="/assets/icons/image.png" alt="Perfil de usuario" />
-      </a>
+      <button
+        type="button"
+        class="header__logo header__logo-button"
+        id="logo_user_button"
+        aria-label="Abrir perfil de usuario"
+      >
+        <img
+          src="/assets/icons/image.png"
+          class="header__logo"
+          alt="Perfil de usuario"
+          id="logo_user"
+        />
+      </button>
     </header>
 
     <main class="creative-main">
@@ -44,17 +59,39 @@
           src="/assets/image/pergamino_creative.png"
           alt="Inspiración creativa"
         />
-        <p class="creative-main__text">¿Qué haras hoy?</p>
+        <p class="creative-main__text">¿Qué harás hoy?</p>
+        <section class="creative-main__summary">
+          <p class="creative-main__summary-eyebrow">Tus lienzos</p>
+          <h2 class="creative-main__summary-title" id="creative-summary-title">Crea tu primer lienzo</h2>
+          <p class="creative-main__summary-text" id="creative-summary-text">
+            Empieza un borrador manual y vuelve a editarlo cuando quieras.
+          </p>
+          <div class="creative-main__metrics">
+            <article class="creative-main__metric">
+              <span class="creative-main__metric-value" id="creative-story-count">0</span>
+              <span class="creative-main__metric-label">lienzos</span>
+            </article>
+            <article class="creative-main__metric">
+              <span class="creative-main__metric-value creative-main__metric-value--small" id="creative-last-update">
+                Sin actividad
+              </span>
+              <span class="creative-main__metric-label">última edición</span>
+            </article>
+          </div>
+        </section>
       </div>
 
-      <form class="creative-input">
+      <div class="creative-input">
         <button type="button" class="creative-input__link creative-input__button" id="creative-new-story">
           Nuevo lienzo
         </button>
-      </form>
+        <button type="button" class="creative-input__link creative-input__button creative-input__button--secondary" id="creative-open-latest">
+          Continuar último
+        </button>
+      </div>
     </main>
 
-    <aside class="creative-aside" id="sidebar">
+    <aside class="creative-aside" id="sidebar" aria-hidden="true">
       <div class="creative-aside__header">
         <p class="creative-aside__title">Relatos</p>
         <button class="creative-aside__button" type="button" id="creative-sidebar-new">Nuevo lienzo</button>
@@ -62,8 +99,62 @@
 
       <div class="creative-aside__separator"></div>
       <div id="creative-story-list"></div>
-      <a href="#" class="creative-aside__close"></a>
+      <button
+        type="button"
+        class="creative-aside__close"
+        id="creative-aside-close"
+        aria-label="Ocultar relatos"
+      ></button>
     </aside>
+
+    <div class="menu-user" id="user">
+      <div class="menu-user__avatar-shell">
+        <img
+          class="menu-user__avatar"
+          src="/assets/icons/image.png"
+          alt="Avatar del usuario"
+          id="profile_photo_user"
+        />
+      </div>
+
+      <div class="menu-user__identity">
+        <p class="menu-user__eyebrow">Cuenta</p>
+        <p class="menu-user__headline">Informacion de usuario</p>
+      </div>
+
+      <div class="menu-user__separador"></div>
+
+      <div class="menu-user__info-list">
+        <div class="menu-user__item">
+          <span class="menu-user__item-label">Usuario:</span>
+          <span class="menu-user__item-value" id="nombre_usuario"></span>
+        </div>
+        <div class="menu-user__item">
+          <span class="menu-user__item-label">Correo:</span>
+          <span class="menu-user__item-value" id="correo_usuario"></span>
+        </div>
+      </div>
+
+      <details class="menu-user__accordion">
+        <summary class="menu-user__accordion-trigger">
+          <span class="menu-user__accordion-copy">
+            <span class="menu-user__accordion-kicker">Model</span>
+            <span class="menu-user__accordion-label">Modelo AI</span>
+          </span>
+          <span class="menu-user__accordion-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="menu-user__accordion-panel">
+          <p class="menu-user__accordion-value" id="menu-user-ai-model">Cargando...</p>
+        </div>
+      </details>
+
+      <div class="menu-user__actions">
+        <a class="menu-user__secondary" href="../settings/settings-user.html">Ver perfil</a>
+        <button class="menu-user__button" id="logout" type="button">
+          <span class="menu-user__link">Cerrar Sesion</span>
+        </button>
+      </div>
+    </div>
 
     <footer class="footer-nav">
       <a class="footer-nav__line" href="../feed-main.html"></a>
@@ -73,8 +164,3 @@
     <script type="module" src="/src/scripts/pages/creative/seccion-creativa.js"></script>
   </body>
 </html>
-
-
-
-
-

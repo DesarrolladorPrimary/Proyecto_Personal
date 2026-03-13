@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     if (!ok || !Array.isArray(data)) {
-      showToast("No fue posible cargar el historial de pagos");
+      showToast("No fue posible cargar el historial de suscripciones");
       return;
     }
 

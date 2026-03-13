@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,30 +12,45 @@
       rel="stylesheet"
       href="/src/styles/pages/feed/creative/canvas_creative.css"
     />
+    <link rel="stylesheet" href="/src/styles/components/user-menu.css" />
     <link rel="stylesheet" href="/src/styles/components/dialogs.css" />
-    <title>Canvas Creative</title>
+    <title>Canvas Creativo</title>
       <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <header class="header">
       <div class="header__nav">
-        <div class="header__nav-line">
-          <a
-            href="#sidebar"
-            class="header__nav-link header__nav-link--action"
-          ></a>
-        </div>
+        <button
+          type="button"
+          class="header__nav-line header__nav-toggle"
+          id="creative-aside-toggle"
+          aria-label="Mostrar lienzos"
+          aria-controls="sidebar"
+          aria-expanded="false"
+        >
+          <span class="header__nav-link header__nav-link--action"></span>
+        </button>
       </div>
 
-      <a href="#user" class="header__logo">
-        <img src="/assets/icons/image.png" alt="Perfil de usuario" />
-      </a>
+      <button
+        type="button"
+        class="header__logo header__logo-button"
+        id="logo_user_button"
+        aria-label="Abrir perfil de usuario"
+      >
+        <img
+          src="/assets/icons/image.png"
+          class="header__logo"
+          alt="Perfil de usuario"
+          id="logo_user"
+        />
+      </button>
     </header>
 
     <main class="canvas-layout" id="canvasLayout">
       <section class="canvas-main">
         <header class="canvas-main__header">
-          <h1 class="canvas-main__title" contenteditable="true" id="creative-canvas-title">Titulo</h1>
+          <h1 class="canvas-main__title" contenteditable="true" id="creative-canvas-title">Título</h1>
           <span class="canvas-main__counter" id="creative-canvas-counter">0 palabras</span>
         </header>
         <div class="canvas-main__divider"></div>
@@ -45,7 +60,15 @@
           placeholder="Inspírate aquí..."
         ></textarea>
         <footer class="canvas-main__footer">
-          <div class="canvas-main__markers" id="herramientas">
+          <div class="canvas-main__markers" id="herramientas" aria-hidden="true">
+            <button
+              type="button"
+              class="canvas-main__markers-close"
+              id="creative-tools-close"
+              aria-label="Cerrar herramientas"
+            >
+              ×
+            </button>
             <button type="button" class="canvas-main__marker" data-tool="undo" title="Deshacer">↶</button>
             <button type="button" class="canvas-main__marker" data-tool="redo" title="Rehacer">↷</button>
             <button type="button" class="canvas-main__marker" data-tool="heading" title="Encabezado">H1/H2</button>
@@ -64,19 +87,30 @@
           <p class="canvas-main__tool-status" id="creative-tool-status">
             Selecciona texto o usa las ayudas para seguir escribiendo.
           </p>
-          <button class="canvas-main__action" type="button" id="creative-save-draft">Guardar borrador</button>
-          <button class="canvas-main__quill" type="button">
-            <a
-              href="#herramientas"
-              class="canvas-main__quill-link"
-              aria-label="Abrir opciones de pluma"
-            >
+          <div class="canvas-main__actions">
+            <span class="canvas-main__save-state" id="creative-save-state">Sin cambios</span>
+            <div class="canvas-main__button-group">
+              <button class="canvas-main__action" type="button" id="creative-save-draft">Guardar borrador</button>
+              <button class="canvas-main__action canvas-main__action--secondary" type="button" id="creative-open-library">
+                Preparar biblioteca
+              </button>
+            </div>
+          </div>
+          <button
+            class="canvas-main__quill"
+            type="button"
+            id="creative-tools-toggle"
+            aria-label="Abrir opciones de pluma"
+            aria-controls="herramientas"
+            aria-expanded="false"
+          >
+            <span class="canvas-main__quill-link">
               <img
                 class="canvas-main__quill--img"
                 src="/assets/icons/pluma.png"
                 alt=""
               />
-            </a>
+            </span>
           </button>
         </footer>
         <div class="canvas-main__divider canvas-main__divider--bottom"></div>
@@ -91,11 +125,6 @@
         aria-modal="true"
         aria-labelledby="canvas-book-modal-title"
       >
-        <a
-          href="#canvasLayout"
-          class="canvas-book-modal__close"
-          aria-label="Cerrar conversin a libro"
-        ></a>
         <header class="canvas-book-modal__header">
           <h2 class="canvas-book-modal__title" id="canvas-book-modal-title">
             Preparar borrador para biblioteca
@@ -113,15 +142,22 @@
             value="Mi historia creativa"
             maxlength="255"
           />
+          <label class="canvas-book-modal__label" for="canvas-book-shelf"
+            >Guardar en estanteria:</label
+          >
+          <select class="canvas-book-modal__input" id="canvas-book-shelf">
+            <option value="">Selecciona una estanteria</option>
+          </select>
+          <button class="canvas-book-modal__secondary" type="button" id="canvas-book-create-shelf">
+            Crear estanteria ahora
+          </button>
+          <p class="canvas-book-modal__hint" id="canvas-book-shelf-hint">
+            Debes asignar el borrador a una estanteria existente para guardarlo en biblioteca.
+          </p>
           <p class="canvas-book-modal__help">
             La conversión a libro y la exportación final se hacen desde Biblioteca.
           </p>
-          <button class="canvas-book-modal__submit" type="submit">
-            <img
-              src="/assets/icons/addLibro.png"
-              alt=""
-              class="canvas-book-modal__submit-icon"
-            />
+          <button class="canvas-book-modal__submit" type="submit" id="canvas-book-submit">
             Guardar e ir a biblioteca
           </button>
         </form>
@@ -146,16 +182,26 @@
         >
           Borrador guardado con éxito.<br />Ahora puedes convertirlo en libro desde tu Biblioteca.
         </p>
-        <a
-          href="../biblioteca/library.html"
-          class="canvas-book-success__close"
-          aria-label="Cerrar mensaje de xito"
-          >Ir a biblioteca</a
-        >
+        <div class="canvas-book-success__actions">
+          <a
+            href="../biblioteca/library.html"
+            class="canvas-book-success__link"
+            id="canvas-book-library-link"
+            >Ir a biblioteca</a
+          >
+          <button
+            type="button"
+            class="canvas-book-success__close"
+            id="canvas-book-success-close"
+            aria-label="Cerrar mensaje de éxito"
+          >
+            Entendido
+          </button>
+        </div>
       </article>
     </section>
 
-    <aside class="canvas-sidebar" id="sidebar">
+    <aside class="canvas-sidebar" id="sidebar" aria-hidden="true">
       <div class="canvas-sidebar__header">
         <p class="canvas-sidebar__title">Lienzos</p>
         <button class="canvas-sidebar__button" type="button" id="creative-canvas-new">Nuevo lienzo</button>
@@ -163,8 +209,62 @@
 
       <div class="canvas-sidebar__separator"></div>
       <div id="creative-canvas-story-list"></div>
-      <a href="#" class="canvas-sidebar__close"></a>
+      <button
+        type="button"
+        class="canvas-sidebar__close"
+        id="creative-aside-close"
+        aria-label="Ocultar lienzos"
+      ></button>
     </aside>
+
+    <div class="menu-user" id="user">
+      <div class="menu-user__avatar-shell">
+        <img
+          class="menu-user__avatar"
+          src="/assets/icons/image.png"
+          alt="Avatar del usuario"
+          id="profile_photo_user"
+        />
+      </div>
+
+      <div class="menu-user__identity">
+        <p class="menu-user__eyebrow">Cuenta</p>
+        <p class="menu-user__headline">Informacion de usuario</p>
+      </div>
+
+      <div class="menu-user__separador"></div>
+
+      <div class="menu-user__info-list">
+        <div class="menu-user__item">
+          <span class="menu-user__item-label">Usuario:</span>
+          <span class="menu-user__item-value" id="nombre_usuario"></span>
+        </div>
+        <div class="menu-user__item">
+          <span class="menu-user__item-label">Correo:</span>
+          <span class="menu-user__item-value" id="correo_usuario"></span>
+        </div>
+      </div>
+
+      <details class="menu-user__accordion">
+        <summary class="menu-user__accordion-trigger">
+          <span class="menu-user__accordion-copy">
+            <span class="menu-user__accordion-kicker">Model</span>
+            <span class="menu-user__accordion-label">Modelo AI</span>
+          </span>
+          <span class="menu-user__accordion-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="menu-user__accordion-panel">
+          <p class="menu-user__accordion-value" id="menu-user-ai-model">Cargando...</p>
+        </div>
+      </details>
+
+      <div class="menu-user__actions">
+        <a class="menu-user__secondary" href="../settings/settings-user.html">Ver perfil</a>
+        <button class="menu-user__button" id="logout" type="button">
+          <span class="menu-user__link">Cerrar Sesion</span>
+        </button>
+      </div>
+    </div>
 
     <footer class="canvas-footer">
       <a class="canvas-footer__line" href="../feed-main.html"></a>
@@ -174,6 +274,3 @@
     <script type="module" src="/src/scripts/pages/creative/canvas-creativo.js"></script>
   </body>
 </html>
-
-
-
