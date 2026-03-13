@@ -56,6 +56,7 @@ const WAITING_STATUS_STAGES = [
 
 const state = {
   userId: getCurrentUserId(),
+  userDisplayName: "Usuario",
   stories: [],
   shelves: [],
   activeStoryId: null,
@@ -129,6 +130,15 @@ const elements = {
 
 const getStorageKey = (suffix) => `poly:${state.userId}:${suffix}`;
 const getActiveStory = () => state.stories.find((story) => story.id === state.activeStoryId) || null;
+const getMessageAuthorLabel = (emisor = "") => {
+  const normalizedSender = String(emisor || "").trim().toLowerCase();
+
+  if (normalizedSender === "usuario") {
+    return state.userDisplayName || "Usuario";
+  }
+
+  return emisor || "Sistema";
+};
 
 const showToast = (text, background = "red") => {
   if (!window.Toastify) {
@@ -811,7 +821,7 @@ const renderMessages = () => {
 
     const author = document.createElement("p");
     author.className = "poly-message__author";
-    author.textContent = message.emisor || "Sistema";
+    author.textContent = getMessageAuthorLabel(message.emisor);
 
     let content;
     if (message.typing) {
@@ -990,6 +1000,7 @@ const applyUserData = (user) => {
   const photoSrc = user.FotoPerfil
     ? buildUploadedAssetUrl(user.FotoPerfil)
     : defaultPhoto;
+  state.userDisplayName = String(user.Nombre || "").trim() || "Usuario";
 
   if (elements.userName) {
     elements.userName.textContent = user.Nombre || "—";
