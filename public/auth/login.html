@@ -24,13 +24,13 @@
 
             <div class="form__input-container">
                 <img src="/assets/icons/email.png" class="form__input-icon" alt="Icono">
-            <input type="email" id="login_email" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="login.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com">
+            <input type="email" id="login_email" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="login.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com" maxlength="255">
             </div>
 
 
             <div class="form__input-container">
                 <img src="/assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
-                <input type="password" id="login_password" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="login.password_placeholder">
+                <input type="password" id="login_password" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="login.password_placeholder" maxlength="128">
             </div>
 
             <p class="form__contrasena"><span data-i18n="login.forgot">¿Olvidó la contraseña?</span> <a href="recovery_passwd.html" class="recover-link" data-i18n="login.here">aquí</a></p>

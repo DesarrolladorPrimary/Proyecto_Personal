@@ -73,6 +73,7 @@ export const showPrompt = async ({
   inputLabel = "",
   inputValue = "",
   inputPlaceholder = "",
+  inputAttributes = {},
   inputValidator = null,
 } = {}) => {
   if (!hasSwal()) {
@@ -86,6 +87,7 @@ export const showPrompt = async ({
     inputLabel,
     inputValue,
     inputPlaceholder,
+    inputAttributes,
     inputValidator,
   });
 

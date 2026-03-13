@@ -24,24 +24,24 @@
 
              <div class="form__input-container">
                 <img src="/assets/icons/user.png" class="form__input-icon" alt="Icono de usuario">
-                <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario" data-i18n-placeholder="register.user_placeholder">
+                <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario" data-i18n-placeholder="register.user_placeholder" maxlength="120">
             </div>
 
             
             <div class="form__input-container">
                 <img src="/assets/icons/email.png" class="form__input-icon" alt="Icono">
-                <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="register.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com">
+                <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="register.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com" maxlength="255">
             </div>
 
 
             <div class="form__input-container">
                 <img src="/assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
-                <input type="password" id="password_regist" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="register.password_placeholder">
+                <input type="password" id="password_regist" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="register.password_placeholder" maxlength="128">
             </div>
 
              <div class="form__input-container">
                 <img src="/assets/icons/padlock.png" class="form__input-icon" alt="Icono">
-                <input type="password" id="password_registVery" name="username" required class="form__input" placeholder="Confirme Contraseña" data-i18n-placeholder="register.confirm_placeholder">
+                <input type="password" id="password_registVery" name="username" required class="form__input" placeholder="Confirme Contraseña" data-i18n-placeholder="register.confirm_placeholder" maxlength="128">
             </div>
 
             

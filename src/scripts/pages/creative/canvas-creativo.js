@@ -4,6 +4,8 @@ import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
 const STORY_MODE = "Seccion_Creativa";
 const STORY_QUERY_KEY = "creativeStoryId";
 const DEFAULT_TITLE = "Mi historia creativa";
+const TITLE_MAX_LENGTH = 255;
+const BODY_MAX_LENGTH = 20000;
 
 const elements = {
   title: document.getElementById("creative-canvas-title"),
@@ -34,6 +36,8 @@ const showToast = (text, background = "red") => {
     style: { background },
   }).showToast();
 };
+
+const clampText = (value, maxLength) => String(value || "").slice(0, maxLength);
 
 const setToolStatus = (text) => {
   if (elements.toolStatus) {
@@ -613,8 +617,8 @@ const renderStoryList = () => {
 const exportStory = async (event) => {
   event.preventDefault();
 
-  const title = elements.exportTitle.value.trim() || elements.title.textContent?.trim() || DEFAULT_TITLE;
-  const content = elements.body.value.trim();
+  const title = clampText(elements.exportTitle.value.trim() || elements.title.textContent?.trim() || DEFAULT_TITLE, TITLE_MAX_LENGTH);
+  const content = clampText(elements.body.value.trim(), BODY_MAX_LENGTH);
 
   if (!content) {
     showToast("Todavia no hay contenido para guardar en biblioteca");
@@ -633,9 +637,23 @@ const exportStory = async (event) => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  elements.body?.addEventListener("input", updateCounter);
+  elements.body?.setAttribute("maxlength", String(BODY_MAX_LENGTH));
+  elements.exportTitle?.setAttribute("maxlength", String(TITLE_MAX_LENGTH));
+  elements.body?.addEventListener("input", () => {
+    if (elements.body.value.length > BODY_MAX_LENGTH) {
+      elements.body.value = clampText(elements.body.value, BODY_MAX_LENGTH);
+    }
+    updateCounter();
+  });
   elements.title?.addEventListener("input", () => {
-    elements.exportTitle.value = elements.title.textContent?.trim() || DEFAULT_TITLE;
+    const nextTitle = clampText(elements.title.textContent?.trim() || DEFAULT_TITLE, TITLE_MAX_LENGTH);
+    if (elements.title.textContent !== nextTitle) {
+      elements.title.textContent = nextTitle;
+      const selection = window.getSelection();
+      selection?.selectAllChildren(elements.title);
+      selection?.collapseToEnd();
+    }
+    elements.exportTitle.value = nextTitle;
   });
   elements.saveButton?.addEventListener("click", persistStory);
   elements.exportForm?.addEventListener("submit", exportStory);
