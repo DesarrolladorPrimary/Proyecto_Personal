@@ -1,6 +1,7 @@
 import { fetchJson } from "../../utils/api-client.js";
 import { getCurrentUserId } from "../../utils/auth-session.js";
 import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
+import { loadPlanSnapshot } from "../../utils/subscription-plan.js";
 import { createCreativeUserMenu } from "./creative-user-menu.js";
 
 const STORY_MODE = "Seccion_Creativa";
@@ -20,6 +21,10 @@ const elements = {
   asideClose: document.getElementById("creative-aside-close"),
   title: document.getElementById("creative-canvas-title"),
   counter: document.getElementById("creative-canvas-counter"),
+  planBadge: document.getElementById("creative-canvas-plan-badge"),
+  planStorage: document.getElementById("creative-canvas-plan-storage"),
+  planCopy: document.getElementById("creative-canvas-plan-copy"),
+  planModels: document.getElementById("creative-canvas-plan-models"),
   body: document.getElementById("creative-canvas-body"),
   saveButton: document.getElementById("creative-save-draft"),
   saveState: document.getElementById("creative-save-state"),
@@ -87,7 +92,7 @@ const normalizeTitle = (value) =>
 const buildStoryExcerpt = (value, maxLength = 88) => {
   const normalized = String(value || "").replace(/\s+/g, " ").trim();
   if (!normalized) {
-    return "Sin texto todavia.";
+    return "Sin texto todavía.";
   }
 
   return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}…` : normalized;
@@ -257,6 +262,44 @@ const formatDate = (value) => {
   return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("es-CO");
 };
 
+const renderPlanState = (snapshot) => {
+  if (elements.planBadge) {
+    elements.planBadge.textContent = `Plan ${snapshot.plan}`;
+    elements.planBadge.classList.toggle("canvas-main__plan-badge--premium", snapshot.isPremium);
+  }
+
+  if (elements.planStorage) {
+    elements.planStorage.textContent = snapshot.storageLabel;
+  }
+
+  if (elements.planCopy) {
+    elements.planCopy.textContent = snapshot.isPremium
+      ? "Ayudas AI activas en modo amplio para tu plan Premium."
+      : "Ayudas AI activas en modo compacto para tu plan gratuito.";
+  }
+
+  if (elements.planModels) {
+    elements.planModels.textContent = `Modelos disponibles: ${snapshot.availableModelsLabel}.`;
+  }
+};
+
+const loadPlanState = async () => {
+  const snapshot = await loadPlanSnapshot(state.userId, { includeModels: true });
+
+  if (!snapshot.ok) {
+    if (elements.planStorage) {
+      elements.planStorage.textContent = "Sin datos";
+    }
+
+    if (elements.planModels) {
+      elements.planModels.textContent = "No fue posible cargar los modelos del plan.";
+    }
+    return;
+  }
+
+  renderPlanState(snapshot);
+};
+
 const renderExportShelfOptions = (preferredShelfId = null) => {
   if (!elements.exportShelf) {
     return;
@@ -270,8 +313,8 @@ const renderExportShelfOptions = (preferredShelfId = null) => {
   const placeholder = document.createElement("option");
   placeholder.value = "";
   placeholder.textContent = hasShelves
-    ? "Selecciona una estanteria"
-    : "No tienes estanterias creadas";
+    ? "Selecciona una estantería"
+    : "No tienes estanterías creadas";
   elements.exportShelf.appendChild(placeholder);
 
   state.shelves.forEach((shelf) => {
@@ -293,13 +336,13 @@ const renderExportShelfOptions = (preferredShelfId = null) => {
   if (elements.exportShelfHint) {
     if (!hasShelves) {
       elements.exportShelfHint.textContent =
-        "No tienes estanterias creadas. Crea una ahora para poder guardar este borrador en biblioteca.";
+        "No tienes estanterías creadas. Crea una ahora para poder guardar este borrador en biblioteca.";
     } else if (!selectedShelf) {
       elements.exportShelfHint.textContent =
-        "Selecciona una estanteria existente para continuar.";
+        "Selecciona una estantería existente para continuar.";
     } else {
       elements.exportShelfHint.textContent =
-        `Este borrador se guardara en la estanteria ${selectedShelf.nombre}.`;
+        `Este borrador se guardará en la estantería ${selectedShelf.nombre}.`;
     }
   }
 };
@@ -320,7 +363,7 @@ const loadShelves = async (preferredShelfId = null) => {
     state.shelves = [];
     renderExportShelfOptions(preferredShelfId);
     if (status !== 401) {
-      showToast(data.Mensaje || "No fue posible cargar las estanterias");
+      showToast(data.Mensaje || "No fue posible cargar las estanterías");
     }
     return;
   }
@@ -341,10 +384,10 @@ const createShelfFromExportFlow = async () => {
     SHELF_NAME_MAX_LENGTH,
   );
   const shelfName = (await showPrompt({
-    title: "Nueva estanteria",
-    inputLabel: "Nombre de la estanteria",
+    title: "Nueva estantería",
+    inputLabel: "Nombre de la estantería",
     inputValue: suggestedName,
-    inputPlaceholder: "Mi estanteria",
+    inputPlaceholder: "Mi estantería",
     inputAttributes: {
       maxlength: String(SHELF_NAME_MAX_LENGTH),
     },
@@ -365,7 +408,7 @@ const createShelfFromExportFlow = async () => {
   });
 
   if (!ok) {
-    showToast(data.Mensaje || "No fue posible crear la estanteria");
+    showToast(data.Mensaje || "No fue posible crear la estantería");
     return null;
   }
 
@@ -383,7 +426,7 @@ const createShelfFromExportFlow = async () => {
     renderExportShelfOptions(createdShelf?.id ?? null);
   }
 
-  showToast(data.Mensaje || "Estanteria creada", "green");
+  showToast(data.Mensaje || "Estantería creada", "green");
   elements.exportShelf?.focus();
   return createdShelfId || null;
 };
@@ -655,7 +698,7 @@ const requestAiTool = async (mensaje, instrucciones, loadingText) => {
 
     return String(data.AI).trim();
   } catch (error) {
-    showToast("Error de conexion al consultar la IA");
+    showToast("Error de conexión al consultar la IA");
     return null;
   } finally {
     setAssistantBusy(false);
@@ -673,7 +716,7 @@ const runCorrector = async () => {
 
   const result = await requestAiTool(
     `Corrige este texto:\n\n${source}`,
-    "Corrige ortografia, gramatica y puntuacion. Conserva el idioma, la intencion y el sentido. Devuelve solo el texto corregido, sin comentarios ni titulos.",
+    "Corrige ortografía, gramática y puntuación. Conserva el idioma, la intención y el sentido. Devuelve solo el texto corregido, sin comentarios ni títulos.",
     "Corrigiendo texto...",
   );
 
@@ -702,7 +745,7 @@ const runStyleImprover = async () => {
 
   const result = await requestAiTool(
     `Mejora el estilo del siguiente fragmento:\n\n${source}`,
-    "Mejora el estilo narrativo del texto, haciendolo mas claro, fluido y literario. Conserva la idea original. Devuelve solo el texto mejorado, sin explicaciones.",
+    "Mejora el estilo narrativo del texto, haciéndolo más claro, fluido y literario. Conserva la idea original. Devuelve solo el texto mejorado, sin explicaciones.",
     "Mejorando estilo...",
   );
 
@@ -726,13 +769,13 @@ const runContinueAssistant = async () => {
   const context = value.slice(Math.max(0, start - 1800), start).trim();
 
   const prompt = context
-    ? `Titulo: ${title}\n\nContinua este relato a partir de este contexto:\n${context}`
-    : `Titulo: ${title}\n\nEscribe un primer parrafo atractivo para comenzar este relato.`;
+    ? `Título: ${title}\n\nContinúa este relato a partir de este contexto:\n${context}`
+    : `Título: ${title}\n\nEscribe un primer párrafo atractivo para comenzar este relato.`;
 
   const result = await requestAiTool(
     prompt,
-    "Redacta un unico fragmento nuevo en espanol, coherente con el contexto dado. No expliques lo que haces, no uses titulos y no repitas literalmente el texto previo.",
-    "Pidiendo continuacion...",
+    "Redacta un único fragmento nuevo en español, coherente con el contexto dado. No expliques lo que haces, no uses títulos y no repitas literalmente el texto previo.",
+    "Pidiendo continuación...",
   );
 
   if (!result) {
@@ -741,7 +784,7 @@ const runContinueAssistant = async () => {
 
   const prefix = value.trim() ? "\n\n" : "";
   insertAtCursor(`${prefix}${result}`);
-  showToast("Continuacion anadida", "green");
+  showToast("Continuación añadida", "green");
 };
 
 const stepHistory = (direction) => {
@@ -966,7 +1009,7 @@ const persistStory = async ({ silent = false, overrides = {} } = {}) => {
     if (!silent) {
       showToast(
         data.version
-          ? `${data.Mensaje || "Borrador guardado"} · Version ${data.version}`
+          ? `${data.Mensaje || "Borrador guardado"} · Versión ${data.version}`
           : data.Mensaje || "Borrador guardado",
         "green",
       );
@@ -999,7 +1042,7 @@ const ensureStoryTransition = async (actionLabel) => {
 
   return showConfirm({
     title: "Hay cambios sin guardar",
-    text: `No se pudieron guardar automaticamente. ¿Quieres ${actionLabel} y descartar los cambios pendientes?`,
+    text: `No se pudieron guardar automáticamente. ¿Quieres ${actionLabel} y descartar los cambios pendientes?`,
   });
 };
 
@@ -1037,7 +1080,7 @@ const createStory = async ({ skipGuard = false } = {}) => {
 const renameStory = async (story) => {
   const nextTitle = (await showPrompt({
     title: "Renombrar lienzo",
-    inputLabel: "Nuevo titulo",
+    inputLabel: "Nuevo título",
     inputValue: story.titulo || DEFAULT_TITLE,
   }))?.trim();
 
@@ -1171,7 +1214,7 @@ const renderStoryList = () => {
   if (!state.stories.length) {
     const empty = document.createElement("p");
     empty.className = "canvas-sidebar__item-title";
-    empty.textContent = "Todavia no tienes lienzos.";
+    empty.textContent = "Todavía no tienes lienzos.";
     elements.storyList.appendChild(empty);
     return;
   }
@@ -1213,12 +1256,12 @@ const exportStory = async (event) => {
   const selectedShelf = getShelfById(selectedShelfId);
 
   if (!content) {
-    showToast("Todavia no hay contenido para guardar en biblioteca");
+    showToast("Todavía no hay contenido para guardar en biblioteca");
     return;
   }
 
   if (!selectedShelfId || !selectedShelf) {
-    showToast("Debes seleccionar una estanteria existente antes de guardar este borrador");
+    showToast("Debes seleccionar una estantería existente antes de guardar este borrador");
     elements.exportShelf?.focus();
     renderExportShelfOptions();
     return;
@@ -1233,6 +1276,7 @@ const exportStory = async (event) => {
     return;
   }
 
+  await loadPlanState();
   showToast("Borrador listo en biblioteca", "green");
   syncLibraryLink(selectedShelfId);
   setExportModalOpen(false);
@@ -1399,6 +1443,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   await userMenu.init();
+  await loadPlanState();
   state.stories = await loadStories();
   renderStoryList();
 

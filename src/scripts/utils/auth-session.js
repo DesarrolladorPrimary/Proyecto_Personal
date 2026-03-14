@@ -1,7 +1,7 @@
 const TOKEN_KEY = "Token";
 const AUTH_NOTICE_KEY = "AuthRedirectNotice";
-const DEFAULT_EXPIRED_MESSAGE = "Tu sesion expiro. Inicia sesion de nuevo.";
-const DEFAULT_INVALID_MESSAGE = "Tu sesion ya no es valida. Inicia sesion de nuevo.";
+const DEFAULT_EXPIRED_MESSAGE = "Tu sesión expiró. Inicia sesión de nuevo.";
+const DEFAULT_INVALID_MESSAGE = "Tu sesión ya no es válida. Inicia sesión de nuevo.";
 const ROUTES = {
   login: "/public/auth/login.html",
   register: "/public/auth/regist.html",

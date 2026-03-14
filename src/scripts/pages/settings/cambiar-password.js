@@ -36,10 +36,10 @@ const fieldBindings = [
         }
 
         if (!PASSWORD_COMPLEXITY.test(value)) {
-          return { valid: false, message: "Incluye al menos un numero o simbolo." };
+          return { valid: false, message: "Incluye al menos un número o símbolo." };
         }
 
-        return { valid: true, message: "Contraseña valida." };
+        return { valid: true, message: "Contraseña válida." };
       },
       { validateOnInput: true },
     ),
@@ -54,7 +54,7 @@ const fieldBindings = [
         }
 
         if (value !== inputNuevaPassword.value) {
-          return { valid: false, message: "La confirmacion debe coincidir." };
+          return { valid: false, message: "La confirmación debe coincidir." };
         }
 
         return { valid: true, message: "Las contraseñas coinciden." };
@@ -128,11 +128,11 @@ btnGuardar?.addEventListener("click", async () => {
     closeModal();
     window.setTimeout(() => {
       logoutAndRedirect(undefined, {
-        text: "Tu contraseña fue actualizada. Inicia sesion de nuevo.",
+        text: "Tu contraseña fue actualizada. Inicia sesión de nuevo.",
         background: "green",
       });
     }, 900);
   } catch (error) {
-    showToast("Error de conexion");
+    showToast("Error de conexión");
   }
 });

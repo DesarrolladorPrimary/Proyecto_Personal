@@ -144,7 +144,7 @@ export const createCreativeUserMenu = ({ onOpen } = {}) => {
     });
 
     elements.logoutButton?.addEventListener("click", () => {
-      showToast("Sesion cerrada", "red");
+      showToast("Sesión cerrada", "red");
       window.setTimeout(() => {
         logoutAndRedirect();
       }, 450);

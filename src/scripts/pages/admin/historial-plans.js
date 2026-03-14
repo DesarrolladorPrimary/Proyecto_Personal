@@ -68,6 +68,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       paymentsContainer.appendChild(row);
     });
   } catch (error) {
-    showToast("Error de conexion");
+    showToast("Error de conexión");
   }
 });

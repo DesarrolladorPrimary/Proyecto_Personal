@@ -1,23 +1,30 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/src/styles/components/base.css">
-    <link rel="stylesheet" href="/src/styles/components/settings-header.css">
-    <link rel="stylesheet" href="/src/styles/components/settings-option.css">
-    <link rel="stylesheet" href="/src/styles/pages/admin/settings-admin.css">
-    <link rel="stylesheet" href="/src/styles/components/settings-footer.css">
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/components/form-feedback.css" />
+    <link rel="stylesheet" href="/src/styles/components/settings-header.css" />
+    <link rel="stylesheet" href="/src/styles/components/settings-option.css" />
+    <link rel="stylesheet" href="/src/styles/pages/admin/settings-admin.css" />
+    <link rel="stylesheet" href="/src/styles/pages/feed/settings/settings-user.css" />
+    <link rel="stylesheet" href="/src/styles/components/settings-footer.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <title>Configuraciones del Admin</title>
     <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
-<body>
+  <body>
     <header class="settings-header">
       <div class="settings-header__top">
         <a href="../dashboard-admin.html" class="settings-header__back">
@@ -52,11 +59,11 @@
 
     <main class="settings-main">
       <section class="settings-section">
-        <h2 class="settings-section__title">Usuario</h2>
+        <h2 class="settings-section__title">Administrador</h2>
 
         <div class="settings-option">
-          <span class="settings-option__label">Rol:</span>
-          <span class="settings-option__value">Administrador</span>
+          <span class="settings-option__label">Plan:</span>
+          <span class="settings-option__value" id="value_plan">Cargando...</span>
         </div>
 
         <div class="settings-accordion">
@@ -67,30 +74,30 @@
           />
           <label for="perfil" class="settings-accordion__trigger">
             <span class="settings-option__label">Perfil</span>
-            <span class="settings-option__value">Keyner Arismendy</span>
+            <span class="settings-option__value" id="perfilUser">—</span>
           </label>
 
           <div class="settings-accordion__content">
             <div class="settings-accordion__field">
               <span class="settings-accordion__label">Nombre Usuario:</span>
-              <span class="settings-accordion__value">Keyner Arismendy</span>
+              <span class="settings-accordion__value" id="usuario">—</span>
             </div>
             <div class="settings-accordion__field">
               <span class="settings-accordion__label">Correo:</span>
-              <span class="settings-accordion__value">correo@micorreo.com</span>
+              <span class="settings-accordion__value" id="correo">—</span>
             </div>
             <div class="settings-accordion__field">
               <span class="settings-accordion__label">Fecha de unión:</span>
-              <span class="settings-accordion__value">00/00/0000</span>
+              <span class="settings-accordion__value" id="fechaRegistro">—</span>
             </div>
             <div class="settings-accordion__field">
               <span class="settings-accordion__label">Funciones:</span>
-              <span class="settings-accordion__value">Administrativas</span>
+              <span class="settings-accordion__value" id="funciones">—</span>
             </div>
           </div>
         </div>
 
-        <div class="settings-option">
+        <div class="settings-option" id="cambiar-password">
           <span class="settings-option__label">Contraseña</span>
           <span class="settings-option__value">Cambiar Contraseña</span>
         </div>
@@ -98,13 +105,80 @@
     </main>
 
     <footer class="settings-footer">
-      <div class="settings-footer__container">
-        <button class="settings-footer__delete-btn">Eliminar Cuenta</button>
-      </div>
+      <button class="settings-footer__container" id="button-del" type="button">
+        <span class="settings-footer__delete-btn">Eliminar Cuenta</span>
+      </button>
     </footer>
+
+    <div class="modal" id="modal-password">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <h2 class="modal__title">Cambiar Contraseña</h2>
+        <div class="modal__form">
+          <div class="modal__field" data-field>
+            <input
+              type="password"
+              id="nueva-password"
+              class="modal__input"
+              placeholder="Nueva contraseña"
+              maxlength="64"
+            />
+          </div>
+          <div class="modal__field" data-field>
+            <input
+              type="password"
+              id="confirmar-password"
+              class="modal__input"
+              placeholder="Confirmar contraseña"
+              maxlength="64"
+            />
+          </div>
+        </div>
+        <div class="modal__actions">
+          <button class="modal__button modal__button--secondary" id="cancel-password" type="button">
+            Cancelar
+          </button>
+          <button class="modal__button" id="save-password" type="button">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-confirm">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <h2 class="modal__title modal__title--danger">Eliminar cuenta</h2>
+        <p class="modal__message">
+          Está seguro que desea eliminar su cuenta. Esta acción no se puede revertir.
+        </p>
+        <div class="modal__actions">
+          <button class="modal__button modal__button--secondary" type="button">No estoy seguro</button>
+          <button class="modal__button modal__button--danger" id="confirm_delete" type="button">
+            Sí, estoy seguro
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-processing">
+      <div class="modal__overlay"></div>
+      <div class="modal__content modal__content--processing">
+        <p class="modal__message">Su cuenta se está eliminando, espere por favor.</p>
+      </div>
+    </div>
+
+    <div class="modal modal--success" id="modal-success">
+      <div class="modal__overlay"></div>
+      <div class="modal__content modal__content--success">
+        <p class="modal__message">
+          <span class="modal__icon">✓</span> Su cuenta fue eliminada con éxito.
+        </p>
+        <button class="modal__button" type="button">Cerrar</button>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/settings/data_user.js"></script>
+    <script type="module" src="/src/scripts/pages/settings/cambiar-password.js"></script>
+    <script type="module" src="/src/scripts/pages/settings/setting-user.js"></script>
   </body>
 </html>
-
-
-
-

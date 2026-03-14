@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return { valid: false, message: "Debe tener al menos 3 caracteres." };
           }
 
-          return { valid: true, message: "Nombre valido." };
+          return { valid: true, message: "Nombre válido." };
         },
         { validateOnInput: true },
       ),
@@ -54,10 +54,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (!EMAIL_PATTERN.test(correo)) {
-            return { valid: false, message: "Usa un correo con formato valido." };
+            return { valid: false, message: "Usa un correo con formato válido." };
           }
 
-          return { valid: true, message: "Correo valido." };
+          return { valid: true, message: "Correo válido." };
         },
         { validateOnInput: true },
       ),
@@ -72,14 +72,14 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (value.length < 8) {
-            return { valid: false, message: "Debe tener minimo 8 caracteres." };
+            return { valid: false, message: "Debe tener mínimo 8 caracteres." };
           }
 
           if (!PASSWORD_COMPLEXITY.test(value)) {
-            return { valid: false, message: "Incluye al menos un numero o simbolo." };
+            return { valid: false, message: "Incluye al menos un número o símbolo." };
           }
 
-          return { valid: true, message: "Contraseña valida." };
+          return { valid: true, message: "Contraseña válida." };
         },
         { validateOnInput: true },
       ),
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showToast(data.Mensaje || "No fue posible registrar el usuario");
     } catch (error) {
-      showToast("Error de conexion");
+      showToast("Error de conexión");
     }
   });
 });

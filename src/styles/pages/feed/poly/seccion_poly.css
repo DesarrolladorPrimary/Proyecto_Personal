@@ -192,6 +192,59 @@ body {
   line-height: 1.45;
 }
 
+.poly-plan {
+  width: 100%;
+  max-width: var(--poly-shell-width);
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+.poly-plan__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+}
+
+.poly-plan__badge,
+.poly-plan__storage {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.poly-plan__badge--premium {
+  color: #cbffbe;
+  border-color: rgba(203, 255, 190, 0.28);
+  background-color: rgba(203, 255, 190, 0.1);
+}
+
+.poly-plan__copy,
+.poly-plan__models {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.poly-plan__models {
+  color: rgba(255, 255, 255, 0.64);
+}
+
 .poly-hidden {
   display: none;
 }

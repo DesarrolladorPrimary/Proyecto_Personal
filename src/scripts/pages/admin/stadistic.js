@@ -18,7 +18,7 @@ const renderStats = async () => {
     });
 
     if (!ok) {
-      showToast(data.Mensaje || "No fue posible cargar estadisticas");
+      showToast(data.Mensaje || "No fue posible cargar estadísticas");
       return;
     }
 
@@ -36,7 +36,7 @@ const renderStats = async () => {
     document.getElementById("stats_last_update").textContent =
       `Actualizado: ${new Date().toLocaleString("es-CO")}`;
   } catch (error) {
-    showToast("Error de conexion");
+    showToast("Error de conexión");
   }
 };
 

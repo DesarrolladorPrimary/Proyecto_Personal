@@ -1,517 +1,423 @@
-/* ============================================
-   DASHBOARD-ADMIN.CSS - Panel Admin Principal
-   ============================================
-   Layout principal del dashboard de admin.
-   Similar a feed-main.css pero para admins.
-   ============================================ */
-
 body {
   display: grid;
-  /* Habilita CSS Grid para el layout principal */
-  background-color: var(--background-color-body-feed);
-  /* Establece el color de fondo del cuerpo de la página */
   grid-template-columns: repeat(3, 1fr);
-  /* Crea 3 columnas de fracción igual */
-  grid-template-rows: repeat(3, 200px);
-
+  grid-template-rows: auto 1fr;
+  background-color: var(--background-color-body-feed);
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
   min-height: 100vh;
-  /* Crea 3 filas de 200px de alto cada una */
-  position: relative;
-  /* Establece un contexto de posicionamiento para elementos hijos absolutos */
+  overflow-x: hidden;
 }
 
-/* Estilos para la cabecera */
+:root {
+  --dashboard-shell-width: min(1120px, calc(100% - 32px));
+}
+
 .header {
-  display: flex;
-  /* Usa flexbox para alinear los elementos hijos */
-  justify-content: space-between;
-  /* Distribuye el espacio entre los elementos hijos */
-  margin: var(--spacing-large);
-  /* Añade un margen general */
+  display: grid;
+  grid-template-columns: auto 1fr 34px;
+  width: var(--dashboard-shell-width);
+  min-height: 92px;
+  margin: 0 auto;
+  padding: 16px 0 12px;
   align-items: center;
-  /* Centra verticalmente los elementos hijos */
-  grid-column: 1/4;
-  /* Hace que la cabecera ocupe desde la columna 1 hasta la 4 */
-  align-self: flex-start;
-  /* Alinea la cabecera al inicio de su área de grid */
+  grid-column: 1 / 4;
+  grid-row: 1 / 1;
+  column-gap: 18px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Estilos para la navegación de la cabecera */
-.header__nav {
+.header__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  background-color: var(--color-background-container);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.header__summary {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.header__eyebrow,
+.dashboard-panel__eyebrow,
+.dashboard-hero__eyebrow,
+.dashboard-shortcut__kicker {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.header__title {
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.header__logo-button {
+  justify-self: end;
+}
+
+.dashboard {
+  grid-column: 1 / 4;
+  grid-row: 2 / 3;
+  width: var(--dashboard-shell-width);
+  margin: 0 auto;
+  padding: 8px 0 28px;
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.dashboard-hero {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard-hero__copy,
+.dashboard-hero__panel,
+.dashboard-card,
+.dashboard-panel {
+  border-radius: 28px;
+  background-color: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+.dashboard-hero__copy {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+}
+
+.dashboard-hero__title {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.02;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.dashboard-hero__text,
+.dashboard-shortcut__copy,
+.dashboard-card__hint,
+.dashboard-panel__note {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.dashboard-hero__actions {
   display: flex;
-  /* Usa flexbox para alinear los elementos hijos */
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dashboard-button {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  /* Centra horizontalmente los elementos hijos */
-  align-items: center;
-  /* Centra verticalmente los elementos hijos */
-  height: 41px;
-  /* Establece la altura del elemento */
-  width: 52px;
-  /* Establece el ancho del elemento */
-  border-radius: var(--aside-border-radius);
-  /* Redondea las esquinas del elemento */
-  background-color: var(--color-background-container);
-  /* Establece el color de fondo del elemento */
-}
-
-/* Línea dentro de la navegación */
-.header__nav-line {
-  display: flex;
-  /* Usa flexbox para alinear los elementos hijos */
-  justify-content: end;
-  /* Alinea los elementos hijos al final del contenedor */
-  border: var(--color-text) var(--line-width-thin) solid;
-  /* Añade un borde con el color de texto principal */
-  border-radius: var(--border-radius-small);
-  /* Redondea las esquinas del elemento */
-  background-color: transparent;
-  /* Hace que el fondo sea transparente */
-  width: 30px;
-  /* Establece el ancho del elemento */
-  height: 17px;
-  /* Establece la altura del elemento */
-  padding: 2px;
-}
-
-/* Sublínea dentro de la navegación (el botón clickeable) */
-.header__nav-link {
-  width: var(--size-icon-tiny);
-  /* Establece el ancho del elemento */
-  height: 15px;
-  /* Establece la altura del elemento */
-  border-radius: 2px;
-  /* Redondea las esquinas del elemento */
-  background-color: var(--background-color-nav-subline);
-  /* Establece el color de fondo del elemento */
-}
-
-/* Logo en la cabecera */
-.header__logo {
-  width: 34px;
-  /* Establece el ancho del logo */
-}
-
-/* Contenedor principal del menú lateral */
-.aside {
-  display: none;
-  /* Por defecto, el menú está oculto */
-  position: absolute;
-  /* Se saca del flujo normal para superponerse */
-  grid-template-rows: repeat(4, 1fr);
-  /* Crea 4 filas de igual tamaño */
-  background-color: var(--color-background-container);
-  /* Color de fondo reutilizado */
-  width: var(--aside-width);
-  /* Ancho definido por una variable */
-  height: var(--aside-height);
-  /* Altura definida por una variable */
-  top: var(--aside-position-top);
-  /* Posición desde arriba definida por una variable */
-  border-radius: var(--aside-border-radius);
-  /* Bordes redondeados definidos por una variable */
-}
-
-/* Estilo para el botón de cerrar del menú lateral (temporal) */
-.aside__close {
-  position: absolute;
-  /* Lo posiciona de forma absoluta dentro del aside */
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
   text-decoration: none;
-  /* Quita el subrayado */
-  color: var(--color-text);
-  /* Usa el color de texto principal */
-  z-index: var(--z-index);
-  /* Se asegura que esté visible sobre otros elementos */
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.18s ease, background-color 0.18s ease;
 }
 
-.aside__icon {
+.dashboard-button:hover,
+.dashboard-panel__link:hover,
+.dashboard-shortcut:hover {
+  transform: translateY(-1px);
+}
+
+.dashboard-button--primary {
+  color: var(--color-text-light);
+  background-color: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dashboard-button--secondary {
+  color: var(--color-text-light);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dashboard-hero__panel {
+  min-height: 220px;
+  padding: 18px;
+  display: grid;
+  justify-items: center;
+  align-content: space-between;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 55%),
+    rgba(255, 255, 255, 0.045);
+}
+
+.dashboard-hero__badge {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dashboard-hero__image {
+  width: min(220px, 100%);
   object-fit: contain;
 }
 
-/* Alineación para todos los iconos dentro de las celdas del grid del aside */
-.aside__link {
-  justify-self: center;
-  /* Centra el icono horizontalmente en su celda */
-  align-self: center;
-  /* Centra el icono verticalmente en su celda */
-}
-
-/* Modificadores de tamaño para cada icono específico del menú lateral */
-.aside__icon--users {
-  width: 56px;
-  /* Ancho para el icono 'users' */
-}
-
-.aside__icon--content {
-  width: 74px;
-  /* Ancho para el icono 'content' */
-}
-
-.aside__icon--library {
-  width: 91px;
-  /* Ancho para el icono 'library' */
-  height: 52px;
-  /* Altura para el icono 'library' */
-}
-
-.aside__icon--reports {
-  width: 31px;
-  /* Ancho para el icono 'reports' */
-}
-
-/* Muestra el menú lateral cuando es el objetivo de la URL (ej: al visitar #sidebar) */
-.aside:target {
+.dashboard-metrics {
   display: grid;
-  /* Cambia el display a grid para que sea visible */
+  gap: 12px;
 }
 
-/* Panel base: aplica estilos comunes para todas las celdas descriptivas del aside */
-.aside__panel {
+.dashboard-card {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+}
+
+.dashboard-card__label,
+.dashboard-plan__name,
+.dashboard-activity__label {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dashboard-card__value {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.dashboard-panel {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+}
+
+.dashboard-panel__header {
   display: flex;
-  visibility: visible;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.dashboard-panel__title,
+.dashboard-shortcut__title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.dashboard-panel__link {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  position: absolute;
-  border-radius: 4px;
-  background-color: var(--color-background-container);
-  border: var(--line-width-thin) solid transparent;
-  width: var(--aside-panel-width);
-  height: var(--aside-panel-height);
-}
-
-/* Enlaces dentro de los paneles del aside */
-.aside__panel-link {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-light);
   text-decoration: none;
-  color: var(--color-text-light);
+  font-size: 13px;
+  font-weight: 600;
+  transition: transform 0.18s ease, background-color 0.18s ease;
 }
 
-/* Posición del panel asociado a Usuarios */
-.aside__panel--users {
-  top: 25px;
-  left: var(--aside-panel-left);
+.dashboard-panel__link--button {
+  cursor: pointer;
 }
 
-/* Posición del panel de gestión de contenido */
-.aside__panel--content {
-  top: 134px;
-  left: var(--aside-panel-left);
-}
-
-/* Posición del panel de bibliotecas */
-.aside__panel--library {
-  top: 244px;
-  left: var(--aside-panel-left);
-}
-
-/* Posición del panel de reportes */
-.aside__panel--reports {
-  top: 350px;
-  left: var(--aside-panel-left);
-}
-
-/* --- Estilos para la sección de feed --- */
-.feed {
+.dashboard-plan {
   display: grid;
-  /* Habilita grid para el layout del feed */
-  grid-column: 2/3;
-  /* El feed ocupa la segunda columna del grid principal */
-  grid-row: 2/3;
-  /* El feed ocupa la segunda fila del grid principal */
-  align-self: self-start;
-  /* Se alinea al inicio de su área de grid */
+  gap: 8px;
 }
 
-/* Contenido del feed */
-.feed__content {
+.dashboard-plan__meta {
   display: flex;
-  /* Usa flexbox para alinear los elementos hijos */
-  flex-direction: column;
-  /* Apila los elementos hijos verticalmente */
-  align-items: center;
-  /* Centra horizontalmente los elementos hijos */
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
 }
 
-/* Texto del feed */
-.feed__text {
-  font-family: var(--font-family-main);
-  /* Establece la fuente del texto */
-  font-optical-sizing: auto;
-  /* Permite que el navegador ajuste el tamaño óptico de la fuente */
-  font-weight: var(--font-weight-light);
-  /* Establece el grosor de la fuente */
-  font-style: normal;
-  /* Establece el estilo de la fuente a normal */
-  color: var(--color-text-light);
-  /* Establece el color del texto */
-  font-size: var(--font-size-body);
-  /* Establece el tamaño de la fuente */
+.dashboard-plan__value,
+.dashboard-activity__value {
+  font-size: 18px;
+  font-weight: 700;
 }
 
-/* Imagen del feed */
-.feed__image {
-  width: 256px;
-  /* Establece el ancho de la imagen */
-}
-
-/* --- Estilos para el menú de usuario --- */
-
-/* Botón para cerrar el menú de usuario */
-.menu-user__close {
-  position: absolute;
-  /* Posicionamiento absoluto respecto al contenedor 'menu-user' */
-  text-decoration: none;
-  /* Quita el subrayado del enlace */
-  color: var(--color-text);
-  /* Color del icono de cierre */
-  z-index: var(--z-index);
-  /* Se asegura que esté por encima de otros elementos del menú */
-  margin: var(--spacing-medium);
-  /* Espaciado interior */
-  right: 0;
-  /* Lo posiciona a la derecha del contenedor */
-}
-
-/* Contenedor principal del menú de usuario */
-.menu-user {
-  visibility: hidden;
-  /* Por defecto, el menú no es visible */
-  display: grid;
-  /* Usa CSS Grid para su layout interno */
-  position: absolute;
-  /* Se superpone al contenido normal de la página */
-  z-index: var(--z-index);
-  /* Se apila por encima del contenido base */
-
-  grid-column: 2/2;
-
-  grid-row: 2/2;
-
-  justify-self: center;
-  /* Se centra horizontalmente en su contenedor grid padre */
-  border-radius: var(--border-radius-medium);
-  /* Bordes redondeados */
-  background-color: var(--color-background-container);
-  /* Color de fondo */
-  width: 285px;
-  /* Ancho del menú */
-  height: 450px;
-  /* Altura del menú */
-
-  /* Define las filas del grid interno del menú */
-  grid-template-rows:
-    100px
-    /* Fila 1 (Para el ícono de avatar) */
-    30px
-    /* Fila 2 (Para la línea separadora) */
-    40px
-    /* Fila 3 (Administrador) */
-    40px
-    /* Fila 4 (ID) */
-    40px
-    /* Fila 5 (Correo) */
-    40px
-    /* Fila 6 (Permisos) */
-    170px;
-  /* Fila 7 (Botón de cierre de sesión) */
-}
-
-/* Avatar dentro del menú de usuario */
-.menu-user__avatar {
-  margin-top: var(--spacing-xsmall);
-  /*
-    width: 60px;
-    /* Ancho del avatar */
-  justify-self: center;
-  /* Centrado horizontal en su fila */
-  align-self: center;
-  /* Centrado vertical en su fila */
-}
-
-/* Línea separadora horizontal */
-.menu-user__separador {
-  width: 247px;
-  /* Ancho de la línea */
-  height: var(--line-width-thin);
-  /* Grosor de la línea */
-  background-color: var(--color-separator);
-  /* Color de la línea */
-  justify-self: center;
-  /* Centrado horizontal */
-  align-self: center;
-  /* Centrado vertical */
-}
-
-/* Estilo de texto genérico para los elementos del menú */
-.menu-user__text {
-  justify-self: start;
-  /* Alineado a la izquierda de su celda */
-  align-self: center;
-  /* Centrado verticalmente */
-  margin-left: var(--spacing-xlarge);
-  /* Margen izquierdo para no pegarse al borde */
-  font-family: var(--font-family-main);
-  /* Fuente principal */
-  font-optical-sizing: auto;
-  /* Ajuste óptico de la fuente */
-  font-weight: var(--font-weight-light);
-  /* Grosor de fuente ligero */
-  font-style: normal;
-  /* Estilo de fuente normal */
-  color: var(--color-text-light);
-  /* Color de texto claro (blanco) */
-  font-size: var(--font-size-body);
-  /* Tamaño de la fuente */
-}
-
-/* Muestra el menú de usuario cuando es el objetivo de la URL */
-.menu-user--hidden:target {
-  visibility: visible;
-  /* Hace que el menú sea visible */
-}
-
-/* Contenedor para agrupar un icono y un texto */
-.menu-user__group {
-  display: flex;
-  /* Usa flexbox para alinear icono y texto */
-  gap: var(--spacing-small);
-  /* Espacio entre el icono y el texto */
-  justify-content: start;
-  /* Alinea los elementos al inicio */
-  margin-left: var(--spacing-xlarge);
-  /* Margen izquierdo para todo el grupo */
-  height: var(--menu-row-height);
-  /* Altura del grupo */
-}
-
-/* Título dentro de un grupo (ej. "Permisos:") */
-.menu-user__group-title {
-  color: var(--color-text-light);
-  /* Color del texto */
-}
-
-/* Estilo para el botón de "Modelo" */
-.menu-user__Model {
-  display: flex;
-  /* Usa flexbox */
-  gap: var(--spacing-xsmall);
-  /* Espacio entre icono y texto del modelo */
-  width: 110px;
-  /* Ancho del botón */
-  height: var(--menu-row-height);
-  /* Altura del botón */
-  background-color: var(--background-color-nav-subline);
-  /* Color de fondo */
-  justify-content: center;
-  /* Centra el contenido horizontalmente */
-  align-items: center;
-  /* Centra el contenido verticalmente */
-  border-radius: var(--border-radius-small);
-  /* Bordes redondeados */
-  color: var(--color-text-light);
-  /* Color del texto */
-  font-weight: var(--font-weight-thin);
-  /* Grosor de la fuente */
-  transform: translateY(-6px);
-  /* Mueve el botón 6px hacia arriba */
-}
-
-/* Icono de configuración (engranaje) dentro del botón de modelo */
-.menu-user__setting-icon {
-  width: var(--size-icon-tiny);
-  /* Ancho del icono */
+.dashboard-plan__bar {
+  width: 100%;
   height: 10px;
-  /* Altura del icono */
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
 }
 
-/* Botón de cerrar sesión */
-.menu-user__button {
-  width: 178px;
-  /* Ancho del botón */
-  height: 44px;
-  /* Altura del botón */
-  border-radius: var(--border-radius-pill);
-  /* Bordes muy redondeados para hacerlo ovalado */
-  justify-self: center;
-  /* Centrado horizontal en su celda */
-  align-self: center;
-  /* Centrado vertical en su celda */
+.dashboard-plan__fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  transition: width 0.24s ease;
 }
 
-/* Enlace dentro del botón de cerrar sesión */
-.menu-user__link {
+.dashboard-plan__fill--premium {
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.35), rgba(255, 215, 0, 0.85));
+}
+
+.dashboard-plan__fill--free {
+  background: linear-gradient(90deg, rgba(78, 205, 196, 0.35), rgba(78, 205, 196, 0.9));
+}
+
+.dashboard-activity {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-activity__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  min-height: 52px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-activity__value--small {
+  font-size: 14px;
+  text-align: right;
+}
+
+.dashboard-panel--wide {
+  gap: 18px;
+}
+
+.dashboard-shortcuts {
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-shortcut {
+  display: grid;
+  gap: 6px;
+  padding: 16px;
   text-decoration: none;
-  /* Quita el subrayado del enlace */
-  color: var(--color-text-buton);
-  /* Usa el color rojo definido en las variables */
+  color: var(--color-text-light);
+  border-radius: 22px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
 }
 
-/* ===========================
-   SISTEMA DE BREAKPOINTS
-   =========================== */
+.dashboard-shortcut:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+}
 
-/* Tablets (768px - 1023px) */
+.dashboard-shortcut__copy {
+  max-width: 30ch;
+}
+
 @media (min-width: 768px) {
-  .feed__image {
-    width: 300px;
+  .dashboard-hero {
+    grid-template-columns: 1.2fr 0.8fr;
   }
 
-  .feed__text {
-    font-size: 15px;
+  .dashboard-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .menu-user {
-    width: 320px;
-    height: 480px;
+  .dashboard-shortcuts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Desktop (1024px - 1279px) */
 @media (min-width: 1024px) {
-  .aside__panel {
-    visibility: hidden;
+  .dashboard-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .aside__panel:hover,
-  .aside__link--navi:hover + .aside__panel {
-    visibility: visible;
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
   }
 
-  .aside__panel--users {
-    top: 25px;
-  }
-
-  .aside__panel--content {
-    top: 149px;
-  }
-
-  .aside__panel--library {
-    top: 268px;
-  }
-
-  .aside__panel--reports {
-    top: 387px;
+  .dashboard-panel--wide {
+    grid-column: 1 / 3;
   }
 }
 
-/* Desktop Grande (1280px+) */
-@media (min-width: 1280px) {
-  .feed__image {
-    width: 350px;
+@media (max-width: 767px) {
+  .header {
+    grid-template-columns: 1fr 34px;
+    row-gap: 10px;
   }
 
-  .feed__text {
-    font-size: 18px;
+  .header__badge {
+    grid-column: 1 / 2;
+    width: fit-content;
   }
 
-  .menu-user {
-    width: 350px;
-    height: 520px;
+  .header__summary {
+    grid-column: 1 / 2;
   }
 
-  .aside {
-    width: 130px;
+  .header__logo-button {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    align-self: start;
   }
 
-  .aside__panel {
-    width: 260px;
+  .dashboard {
+    padding-bottom: 22px;
+  }
+
+  .dashboard-hero__copy,
+  .dashboard-hero__panel,
+  .dashboard-card,
+  .dashboard-panel {
+    border-radius: 24px;
+  }
+
+  .dashboard-panel__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-panel__link {
+    width: fit-content;
   }
 }

@@ -1,5 +1,7 @@
 import { fetchJson } from "../../utils/api-client.js";
+import { getCurrentUserId } from "../../utils/auth-session.js";
 import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
+import { loadPlanSnapshot } from "../../utils/subscription-plan.js";
 import { createCreativeUserMenu } from "./creative-user-menu.js";
 
 const STORY_MODE = "Seccion_Creativa";
@@ -17,12 +19,17 @@ const elements = {
   openLatest: document.getElementById("creative-open-latest"),
   summaryTitle: document.getElementById("creative-summary-title"),
   summaryText: document.getElementById("creative-summary-text"),
+  planBadge: document.getElementById("creative-plan-badge"),
+  planStorage: document.getElementById("creative-plan-storage"),
+  planCopy: document.getElementById("creative-plan-copy"),
+  planModels: document.getElementById("creative-plan-models"),
   storyCount: document.getElementById("creative-story-count"),
   lastUpdate: document.getElementById("creative-last-update"),
 };
 
 const state = {
   asideOpen: false,
+  userId: getCurrentUserId(),
 };
 
 const userMenu = createCreativeUserMenu({
@@ -65,10 +72,48 @@ const sortStoriesByRecency = (stories) =>
 const buildStoryExcerpt = (value, maxLength = 90) => {
   const normalized = String(value || "").replace(/\s+/g, " ").trim();
   if (!normalized) {
-    return "Sin texto todavia.";
+    return "Sin texto todavía.";
   }
 
   return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}…` : normalized;
+};
+
+const renderPlanState = (snapshot) => {
+  if (elements.planBadge) {
+    elements.planBadge.textContent = `Plan ${snapshot.plan}`;
+    elements.planBadge.classList.toggle("creative-main__plan-badge--premium", snapshot.isPremium);
+  }
+
+  if (elements.planStorage) {
+    elements.planStorage.textContent = snapshot.storageLabel;
+  }
+
+  if (elements.planCopy) {
+    elements.planCopy.textContent = snapshot.isPremium
+      ? "Las ayudas AI del canvas trabajan en modo amplio y con los modelos disponibles para tu plan Premium."
+      : "Las ayudas AI del canvas trabajan en modo compacto y solo con los modelos disponibles para tu plan gratuito.";
+  }
+
+  if (elements.planModels) {
+    elements.planModels.textContent = `Modelos disponibles: ${snapshot.availableModelsLabel}.`;
+  }
+};
+
+const loadPlanState = async () => {
+  const snapshot = await loadPlanSnapshot(state.userId, { includeModels: true });
+
+  if (!snapshot.ok) {
+    if (elements.planStorage) {
+      elements.planStorage.textContent = "Sin datos";
+    }
+
+    if (elements.planModels) {
+      elements.planModels.textContent = "No fue posible cargar los modelos de tu plan.";
+    }
+    return;
+  }
+
+  renderPlanState(snapshot);
 };
 
 const goToCanvas = (storyId) => {
@@ -97,7 +142,7 @@ const setAsideOpen = (nextValue) => {
 const promptStoryTitle = async (currentValue = "") => {
   const value = await showPrompt({
     title: "Nuevo lienzo",
-    inputLabel: "Titulo del lienzo",
+    inputLabel: "Título del lienzo",
     inputValue: currentValue || DEFAULT_TITLE,
   });
   return value ? value.trim() : "";
@@ -217,7 +262,7 @@ const updateSummary = (stories) => {
   if (elements.summaryText) {
     elements.summaryText.textContent = latest
       ? buildStoryExcerpt(latest.descripcion)
-      : "Empieza un borrador manual y vuelve a el cuando quieras.";
+      : "Empieza un borrador manual y vuelve a él cuando quieras.";
   }
 
   if (elements.openLatest) {
@@ -230,7 +275,7 @@ const buildStoryCard = (story) => {
   card.className = "creative-aside__chat";
   card.innerHTML = `
     <div class="creative-story-card__content">
-      <button type="button" class="creative-aside__chat-title creative-story-card__open">${story.titulo || "Sin titulo"}</button>
+      <button type="button" class="creative-aside__chat-title creative-story-card__open">${story.titulo || "Sin título"}</button>
       <p class="creative-story-card__excerpt">${buildStoryExcerpt(story.descripcion)}</p>
     </div>
     <div class="creative-story-card__actions">
@@ -261,7 +306,7 @@ const renderStories = async () => {
   if (!stories.length) {
     const empty = document.createElement("p");
     empty.className = "creative-aside__chat-title";
-    empty.textContent = "Todavia no tienes lienzos manuales.";
+    empty.textContent = "Todavía no tienes lienzos manuales.";
     elements.list.appendChild(empty);
     return stories;
   }
@@ -313,5 +358,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   await userMenu.init();
+  await loadPlanState();
   await renderStories();
 });

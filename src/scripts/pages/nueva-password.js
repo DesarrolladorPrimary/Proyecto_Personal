@@ -56,10 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (!PASSWORD_COMPLEXITY.test(value)) {
-            return { valid: false, message: "Incluye al menos un numero o simbolo." };
+            return { valid: false, message: "Incluye al menos un número o símbolo." };
           }
 
-          return { valid: true, message: "Contraseña valida." };
+          return { valid: true, message: "Contraseña válida." };
         },
         { validateOnInput: true },
       ),
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (value !== passwordInput.value) {
-            return { valid: false, message: "La confirmacion debe coincidir." };
+            return { valid: false, message: "La confirmación debe coincidir." };
           }
 
           return { valid: true, message: "Las contraseñas coinciden." };
@@ -94,11 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
   confirmInput?.addEventListener("input", syncPasswordRules);
 
   if (!token) {
-    showToast("Token no valido. Solicita un nuevo enlace.");
+    showToast("Token no válido. Solicita un nuevo enlace.");
     form.querySelector("button").disabled = true;
     setFieldState(passwordInput, {
       state: "error",
-      message: "El enlace de recuperacion no es valido o ya expiro.",
+      message: "El enlace de recuperación no es válido o ya expiró.",
     });
     return;
   }
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       showToast(data.Mensaje || "No fue posible actualizar la contraseña");
     } catch (error) {
-      showToast("Error de conexion");
+      showToast("Error de conexión");
     }
   });
 });

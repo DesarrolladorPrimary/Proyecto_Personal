@@ -124,6 +124,56 @@ body {
   gap: 10px 16px;
 }
 
+.canvas-main__plan {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.canvas-main__plan-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+}
+
+.canvas-main__plan-badge,
+.canvas-main__plan-storage {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.canvas-main__plan-badge--premium {
+  color: #cbffbe;
+  border-color: rgba(203, 255, 190, 0.28);
+  background-color: rgba(203, 255, 190, 0.1);
+}
+
+.canvas-main__plan-copy,
+.canvas-main__plan-models {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.canvas-main__plan-models {
+  color: rgba(255, 255, 255, 0.64);
+}
+
 .canvas-main__title {
   flex: 1 1 100%;
   font-size: 24px;

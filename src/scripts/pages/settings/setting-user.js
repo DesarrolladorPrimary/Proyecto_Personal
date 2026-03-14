@@ -76,13 +76,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         () => {
           toggleModal(modalSuccess, false);
-          logoutAndRedirect("../../index.html");
+          logoutAndRedirect();
         },
         { once: true },
       );
 
       setTimeout(() => {
-        logoutAndRedirect("../../index.html");
+        logoutAndRedirect();
       }, 3000);
     } catch (error) {
       toggleModal(modalProcessing, false);

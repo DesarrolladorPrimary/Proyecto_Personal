@@ -2,12 +2,34 @@ import { fetchJson } from "../../utils/api-client.js";
 import { getCurrentUserRole } from "../../utils/auth-session.js";
 import { showConfirm } from "../../utils/dialog-service.js";
 
-const usersContainer = document.getElementById("admin-users-list");
-const searchInput = document.getElementById("admin-users-search");
 const ROLE_OPTIONS = ["Gratuito", "Premium", "Admin"];
+const ROLE_ORDER = ["Admin", "Premium", "Gratuito", "Otros"];
+
+const elements = {
+  usersContainer: document.getElementById("admin-users-list"),
+  searchForm: document.getElementById("admin-users-search-form"),
+  searchInput: document.getElementById("admin-users-search"),
+  roleFilters: document.getElementById("admin-users-role-filters"),
+  statusFilters: document.getElementById("admin-users-status-filters"),
+  resultsLabel: document.getElementById("admin-users-results-label"),
+  total: document.getElementById("admin-users-total"),
+  active: document.getElementById("admin-users-active"),
+  suspended: document.getElementById("admin-users-suspended"),
+  admin: document.getElementById("admin-users-admin"),
+  premium: document.getElementById("admin-users-premium"),
+  free: document.getElementById("admin-users-free"),
+};
+
+const state = {
+  users: [],
+  query: "",
+  role: "Todos",
+  status: "Todos",
+  openGroups: new Set(),
+};
 
 const showToast = (text, background = "red") => {
-  Toastify({
+  window.Toastify?.({
     text,
     duration: 2500,
     gravity: "top",
@@ -30,84 +52,223 @@ const formatJoinDate = (value) => {
   return date.toLocaleDateString("es-CO");
 };
 
+const normalizeRole = (role = "") => {
+  const normalized = role.trim();
+  return ROLE_OPTIONS.includes(normalized) ? normalized : "Otros";
+};
+
+const getRoleTitle = (role) => {
+  if (role === "Admin") {
+    return "Administradores";
+  }
+
+  if (role === "Premium") {
+    return "Usuarios Premium";
+  }
+
+  if (role === "Gratuito") {
+    return "Usuarios Gratuitos";
+  }
+
+  return "Otros roles";
+};
+
+const getUserInitials = (name = "") => {
+  const words = String(name)
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (!words.length) {
+    return "US";
+  }
+
+  return words
+    .slice(0, 2)
+    .map((word) => word[0]?.toUpperCase() || "")
+    .join("");
+};
+
 const buildRoleOptions = (role) =>
   ROLE_OPTIONS.map((option) => {
     const selected = option.toLowerCase() === (role || "").toLowerCase() ? "selected" : "";
     return `<option value="${option}" ${selected}>${option}</option>`;
   }).join("");
 
+const sortUsers = (users) =>
+  [...users].sort((left, right) => {
+    const activeDiff = Number(Boolean(right.Activo)) - Number(Boolean(left.Activo));
+    if (activeDiff !== 0) {
+      return activeDiff;
+    }
+
+    return String(left.Nombre || "").localeCompare(String(right.Nombre || ""), "es", {
+      sensitivity: "base",
+    });
+  });
+
+const getCounts = (users) => {
+  const counts = {
+    total: users.length,
+    active: 0,
+    suspended: 0,
+    admin: 0,
+    premium: 0,
+    free: 0,
+  };
+
+  users.forEach((user) => {
+    const role = normalizeRole(user.Rol);
+
+    if (Boolean(user.Activo)) {
+      counts.active += 1;
+    } else {
+      counts.suspended += 1;
+    }
+
+    if (role === "Admin") {
+      counts.admin += 1;
+    } else if (role === "Premium") {
+      counts.premium += 1;
+    } else if (role === "Gratuito") {
+      counts.free += 1;
+    }
+  });
+
+  return counts;
+};
+
+const updateSummary = (users) => {
+  const counts = getCounts(users);
+  elements.total.textContent = String(counts.total);
+  elements.active.textContent = String(counts.active);
+  elements.suspended.textContent = String(counts.suspended);
+  elements.admin.textContent = String(counts.admin);
+  elements.premium.textContent = String(counts.premium);
+  elements.free.textContent = String(counts.free);
+};
+
+const getFilteredUsers = () => {
+  const query = state.query.trim().toLowerCase();
+
+  return state.users.filter((user) => {
+    const matchesQuery =
+      !query ||
+      String(user.Nombre || "").toLowerCase().includes(query) ||
+      String(user.Correo || "").toLowerCase().includes(query);
+
+    const userRole = normalizeRole(user.Rol);
+    const matchesRole = state.role === "Todos" || userRole === state.role;
+
+    const userStatus = user.Activo ? "Activo" : "Suspendido";
+    const matchesStatus = state.status === "Todos" || userStatus === state.status;
+
+    return matchesQuery && matchesRole && matchesStatus;
+  });
+};
+
+const updateResultsLabel = (filteredUsers) => {
+  const roleLabel = state.role === "Todos" ? "todos los roles" : state.role;
+  const statusLabel = state.status === "Todos" ? "todos los estados" : state.status.toLowerCase();
+  const queryLabel = state.query.trim() ? ` con busqueda "${state.query.trim()}"` : "";
+
+  elements.resultsLabel.textContent = `${filteredUsers.length} usuarios visibles en ${roleLabel}, ${statusLabel}${queryLabel}.`;
+};
+
+const ensureOpenGroups = (groups) => {
+  const visibleRoles = new Set(groups.map(([role]) => role));
+  state.openGroups = new Set([...state.openGroups].filter((role) => visibleRoles.has(role)));
+
+  if (state.openGroups.size > 0 || groups.length === 0) {
+    return;
+  }
+
+  const hasFilters = state.role !== "Todos" || state.status !== "Todos" || Boolean(state.query.trim());
+
+  if (hasFilters) {
+    groups.forEach(([role]) => state.openGroups.add(role));
+    return;
+  }
+
+  state.openGroups.add(groups[0][0]);
+};
+
 const buildUserCard = (user) => {
-  const role = user.Rol || "Sin rol";
+  const role = normalizeRole(user.Rol);
   const isActive = Boolean(user.Activo);
   const statusText = isActive ? "Activo" : "Suspendido";
-  const statusColor = isActive ? "#00ff7f" : "#ff595e";
+  const plan = user.NombrePlan || "Sin plan";
+  const subscription = user.EstadoSuscripcion || "Sin suscripcion";
+  const isProtectedAdmin = role === "Admin";
 
-  const card = document.createElement("article");
+  const card = document.createElement("details");
   card.className = "user-card";
   card.innerHTML = `
-    <div class="user-card__separator"></div>
-    <div class="user-card__content">
-      <div class="user-card__row">
-        <img src="/assets/icons/user.png" class="user-card__icon" alt="User" />
-        <span class="user-card__text">${user.Nombre || "Sin nombre"}</span>
+    <summary class="user-card__summary">
+      <div class="user-card__identity">
+        <span class="user-card__avatar">${getUserInitials(user.Nombre)}</span>
+        <div class="user-card__identity-copy">
+          <strong class="user-card__name">${user.Nombre || "Sin nombre"}</strong>
+          <span class="user-card__email">${user.Correo || "Sin correo"}</span>
+        </div>
       </div>
-      <div class="user-card__row">
-        <img src="/assets/icons/email.png" class="user-card__icon" alt="Email" />
-        <span class="user-card__text">${user.Correo || "Sin correo"}</span>
+
+      <div class="user-card__meta">
+        <span class="user-card__pill">${role}</span>
+        <span class="user-card__pill ${isActive ? "user-card__pill--active" : "user-card__pill--suspended"}">${statusText}</span>
       </div>
-      <div class="user-card__row">
-        <span class="user-card__icon">ID</span>
-        <span class="user-card__text">Registrado: ${formatJoinDate(user.FechaRegistro)}</span>
+    </summary>
+
+    <div class="user-card__body">
+      <div class="user-card__grid">
+        <div class="user-card__row">
+          <span class="user-card__label">Registro</span>
+          <span class="user-card__value">${formatJoinDate(user.FechaRegistro)}</span>
+        </div>
+        <div class="user-card__row">
+          <span class="user-card__label">Plan actual</span>
+          <span class="user-card__value">${plan}</span>
+        </div>
+        <div class="user-card__row">
+          <span class="user-card__label">Suscripcion</span>
+          <span class="user-card__value">${subscription}</span>
+        </div>
+        <div class="user-card__row">
+          <span class="user-card__label">ID usuario</span>
+          <span class="user-card__value">${user.PK_UsuarioID || "—"}</span>
+        </div>
       </div>
-      <div class="user-card__row">
-        <span class="user-card__icon">RL</span>
-        <span class="user-card__text">Rol actual: ${role}</span>
-      </div>
-      <div class="user-card__row">
-        <span class="user-card__icon">PL</span>
-        <span class="user-card__text">Plan: ${user.NombrePlan || "Sin plan"}</span>
-      </div>
-      <div class="user-card__row">
-        <span class="user-card__icon">ST</span>
-        <span class="user-card__text">Suscripcion: ${user.EstadoSuscripcion || "Sin suscripcion"}</span>
-      </div>
-      <div class="user-card__row">
-        <div class="user-card__status-dot" style="background-color:${statusColor};box-shadow:0 0 5px ${statusColor};"></div>
-        <span class="user-card__text">Estado: ${statusText}</span>
-      </div>
+
       <div class="user-card__role-editor">
         <label class="user-card__label" for="role-${user.PK_UsuarioID}">Cambiar rol</label>
         <select class="user-card__select" id="role-${user.PK_UsuarioID}">
           ${buildRoleOptions(role)}
         </select>
       </div>
+
+      <div class="user-card__actions">
+        <button type="button" class="user-card__button user-card__button--role">Guardar rol</button>
+        <button type="button" class="user-card__button user-card__button--status">
+          ${isActive ? "Suspender" : "Reactivar"}
+        </button>
+        <button type="button" class="user-card__button user-card__button--danger user-card__button--delete">
+          Eliminar
+        </button>
+      </div>
+
+      ${isProtectedAdmin ? '<p class="user-card__notice">Las cuentas con rol Admin quedan protegidas desde este panel.</p>' : ""}
     </div>
-    <div class="user-card__actions">
-      <button class="user-card__button user-card__button--role">
-        <span>Guardar rol</span>
-      </button>
-      <button class="user-card__button user-card__button--suspend">
-        <span>${isActive ? "Suspender" : "Reactivar"}</span>
-      </button>
-      <button class="user-card__button user-card__button--delete">
-        <span>Eliminar</span>
-      </button>
-    </div>
-    <div class="user-card__separator"></div>
   `;
 
   const deleteButton = card.querySelector(".user-card__button--delete");
-  const statusButton = card.querySelector(".user-card__button--suspend");
+  const statusButton = card.querySelector(".user-card__button--status");
   const roleButton = card.querySelector(".user-card__button--role");
   const roleSelect = card.querySelector(".user-card__select");
 
-  if ((role || "").toLowerCase() === "admin") {
+  if (isProtectedAdmin) {
     deleteButton.disabled = true;
-    deleteButton.textContent = "Cuenta protegida";
     statusButton.disabled = true;
-    statusButton.textContent = "Cuenta protegida";
     roleButton.disabled = true;
-    roleButton.textContent = "Cuenta protegida";
     roleSelect.disabled = true;
     return card;
   }
@@ -135,9 +296,9 @@ const buildUserCard = (user) => {
       }
 
       showToast(data.Mensaje || "Rol actualizado", "green");
-      setTimeout(() => window.location.reload(), 500);
+      await loadUsers();
     } catch (error) {
-      showToast("Error de conexion");
+      showToast("Error de conexión");
     }
   });
 
@@ -157,20 +318,21 @@ const buildUserCard = (user) => {
       }
 
       showToast(data.Mensaje || "Estado actualizado", "green");
-      window.location.reload();
+      await loadUsers();
     } catch (error) {
-      showToast("Error de conexion");
+      showToast("Error de conexión");
     }
   });
 
-    deleteButton.addEventListener("click", async () => {
-      const confirmed = await showConfirm({
-        title: "Eliminar usuario",
-        text: `¿Eliminar a ${user.Nombre || "este usuario"}?`,
-      });
-      if (!confirmed) {
-        return;
-      }
+  deleteButton.addEventListener("click", async () => {
+    const confirmed = await showConfirm({
+      title: "Eliminar usuario",
+      text: `¿Eliminar a ${user.Nombre || "este usuario"}?`,
+    });
+
+    if (!confirmed) {
+      return;
+    }
 
     try {
       const { ok, data } = await fetchJson("/api/v1/usuarios/id", {
@@ -184,48 +346,88 @@ const buildUserCard = (user) => {
         return;
       }
 
-      card.remove();
       showToast(data.Mensaje || "Usuario eliminado correctamente", "green");
+      await loadUsers();
     } catch (error) {
-      showToast("Error de conexion");
+      showToast("Error de conexión");
     }
   });
 
   return card;
 };
 
-const renderUsers = (users, query = "") => {
-  const normalizedQuery = query.trim().toLowerCase();
-  const filteredUsers = users.filter((user) => {
-    if (!normalizedQuery) {
-      return true;
-    }
+const buildGroup = (role, users) => {
+  const sortedUsers = sortUsers(users);
+  const activeCount = sortedUsers.filter((user) => user.Activo).length;
+  const suspendedCount = sortedUsers.length - activeCount;
+  const group = document.createElement("section");
+  const isOpen = state.openGroups.has(role);
 
-    const name = (user.Nombre || "").toLowerCase();
-    const email = (user.Correo || "").toLowerCase();
-    return name.includes(normalizedQuery) || email.includes(normalizedQuery);
+  group.className = `user-group${isOpen ? " user-group--open" : ""}`;
+  group.dataset.role = role;
+  group.innerHTML = `
+    <button type="button" class="user-group__trigger" aria-expanded="${String(isOpen)}">
+      <div class="user-group__copy-block">
+        <span class="user-group__eyebrow">Rol</span>
+        <div class="user-group__title-row">
+          <h2 class="user-group__title">${getRoleTitle(role)}</h2>
+          <span class="user-group__count">${sortedUsers.length}</span>
+        </div>
+        <p class="user-group__copy">${activeCount} activos y ${suspendedCount} suspendidos en esta vista.</p>
+      </div>
+    </button>
+      <div class="user-group__body">
+        <div class="user-group__grid"></div>
+      </div>
+  `;
+
+  const grid = group.querySelector(".user-group__grid");
+  sortedUsers.forEach((user) => {
+    grid.appendChild(buildUserCard(user));
   });
 
-  usersContainer.innerHTML = "";
+  return group;
+};
+
+const renderUsers = () => {
+  const filteredUsers = getFilteredUsers();
+  const groups =
+    state.role === "Todos"
+      ? ROLE_ORDER.map((role) => [role, filteredUsers.filter((user) => normalizeRole(user.Rol) === role)])
+          .filter(([, users]) => users.length > 0)
+      : [[state.role, filteredUsers]];
+
+  ensureOpenGroups(groups);
+  updateResultsLabel(filteredUsers);
+  elements.usersContainer.innerHTML = "";
 
   if (!filteredUsers.length) {
-    const emptyCard = document.createElement("article");
-    emptyCard.className = "user-card user-card--empty";
-    emptyCard.innerHTML = "<p>No hay usuarios para mostrar.</p>";
-    usersContainer.appendChild(emptyCard);
+    const emptyState = document.createElement("article");
+    emptyState.className = "users-empty";
+    emptyState.innerHTML = `
+      <strong>No hay usuarios para mostrar.</strong>
+      <p>Prueba otro rol, estado o termino de busqueda.</p>
+    `;
+    elements.usersContainer.appendChild(emptyState);
     return;
   }
 
-  filteredUsers.forEach((user) => {
-    usersContainer.appendChild(buildUserCard(user));
+  groups.forEach(([role, users]) => {
+    elements.usersContainer.appendChild(buildGroup(role, users));
   });
 };
 
-document.addEventListener("DOMContentLoaded", async () => {
-  if (getCurrentUserRole().toLowerCase() !== "admin") {
-    return;
-  }
+const syncFilterButtons = () => {
+  document.querySelectorAll("[data-filter-group='role']").forEach((button) => {
+    button.classList.toggle("users-filter--active", button.dataset.value === state.role);
+  });
 
+  document.querySelectorAll("[data-filter-group='status']").forEach((button) => {
+    button.classList.toggle("users-filter--active", button.dataset.value === state.status);
+  });
+};
+
+async function loadUsers() {
   try {
     const { ok, data } = await fetchJson("/api/v1/admin/users", {
       auth: true,
@@ -236,13 +438,79 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const users = data.filter((item) => !item.Mensaje);
-    renderUsers(users);
-
-    searchInput?.addEventListener("input", () => {
-      renderUsers(users, searchInput.value);
-    });
+    state.users = data.filter((item) => !item.Mensaje);
+    updateSummary(state.users);
+    syncFilterButtons();
+    renderUsers();
   } catch (error) {
-    showToast("Error de conexion");
+    showToast("Error de conexión");
   }
+}
+
+const initFilters = () => {
+  elements.searchForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+
+  elements.searchInput?.addEventListener("input", () => {
+    state.query = elements.searchInput.value;
+    renderUsers();
+  });
+
+  const handleFilterClick = (event) => {
+    const button = event.target.closest(".users-filter");
+    if (!button) {
+      return;
+    }
+
+    const group = button.dataset.filterGroup;
+    const value = button.dataset.value || "Todos";
+
+    if (group === "role") {
+      state.role = value;
+    }
+
+    if (group === "status") {
+      state.status = value;
+    }
+
+    state.openGroups.clear();
+    syncFilterButtons();
+    renderUsers();
+  };
+
+  elements.roleFilters?.addEventListener("click", handleFilterClick);
+  elements.statusFilters?.addEventListener("click", handleFilterClick);
+
+  elements.usersContainer?.addEventListener("click", (event) => {
+    const trigger = event.target.closest(".user-group__trigger");
+    if (!trigger) {
+      return;
+    }
+
+    const group = trigger.closest(".user-group");
+    const role = group?.dataset.role;
+    if (!role) {
+      return;
+    }
+
+    const nextOpen = !group.classList.contains("user-group--open");
+    group.classList.toggle("user-group--open", nextOpen);
+    trigger.setAttribute("aria-expanded", String(nextOpen));
+
+    if (nextOpen) {
+      state.openGroups.add(role);
+    } else {
+      state.openGroups.delete(role);
+    }
+  });
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  if (getCurrentUserRole().toLowerCase() !== "admin") {
+    return;
+  }
+
+  initFilters();
+  await loadUsers();
 });

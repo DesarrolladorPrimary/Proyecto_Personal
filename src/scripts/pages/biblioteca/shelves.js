@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (!ok) {
-        showToast(data.Mensaje || "No fue posible cargar las estanterias");
+        showToast(data.Mensaje || "No fue posible cargar las estanterías");
         return;
       }
 
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               return;
             }
 
-            showToast(updateData.Mensaje || "Estanteria actualizada", "green");
+              showToast(updateData.Mensaje || "Estantería actualizada", "green");
             await renderShelves();
           }),
             createActionButton(t("shelves.delete"), "danger", async () => {
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               return;
             }
 
-            showToast(removeData.Mensaje || "Estanteria eliminada", "green");
+            showToast(removeData.Mensaje || "Estantería eliminada", "green");
             await renderShelves();
           }),
         );

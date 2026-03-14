@@ -6,6 +6,7 @@
     <title>Login Admin</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/components/form-feedback.css" />
     <link rel="stylesheet" href="/src/styles/layout.css" />
     <link rel="stylesheet" href="/src/styles/pages/admin/login-admin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,7 +23,7 @@
     </header>
     <main class="main">
       <form method="POST" class="form" id="admin-login-form">
-        <div class="form__input-container">
+        <div class="form__input-container" data-field>
           <img src="/assets/icons/email.png" class="form__input-icon" alt="Icono" />
           <input
             type="email"
@@ -31,10 +32,13 @@
             required
             class="form__input"
             placeholder="Correo"
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}"
+            title="El correo debe tener la estructura correo@dominio.com"
+            maxlength="120"
           />
         </div>
 
-        <div class="form__input-container">
+        <div class="form__input-container" data-field>
           <img
             src="/assets/icons/padlock.png"
             class="form__input-icon"
@@ -47,6 +51,7 @@
             required
             class="form__input"
             placeholder="Contrasena"
+            maxlength="64"
           />
         </div>
 

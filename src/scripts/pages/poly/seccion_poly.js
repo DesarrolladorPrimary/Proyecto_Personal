@@ -6,6 +6,7 @@ import {
   getToken,
   logoutAndRedirect,
 } from "../../utils/auth-session.js";
+import { loadPlanSnapshot } from "../../utils/subscription-plan.js";
 
 const STORY_MODE = "Seccion_Artificial";
 const DEFAULT_AI_SETTINGS = {
@@ -75,6 +76,8 @@ const state = {
   lastSavedCanvasSnapshot: null,
 };
 
+// Este mapa evita buscar nodos repetidamente en un archivo que orquesta buena
+// parte de Poly: chat, canvas, archivos, perfil y exportación.
 const elements = {
   aside: document.getElementById("sidebar"),
   asideNav: document.querySelector(".header__nav"),
@@ -91,6 +94,10 @@ const elements = {
   form: document.getElementById("poly-form"),
   input: document.getElementById("poly-message-input"),
   emptyState: document.getElementById("poly-empty-state"),
+  planBadge: document.getElementById("poly-plan-badge"),
+  planStorage: document.getElementById("poly-plan-storage"),
+  planCopy: document.getElementById("poly-plan-copy"),
+  planModels: document.getElementById("poly-plan-models"),
   messageList: document.getElementById("poly-messages"),
   status: document.getElementById("poly-chat-status"),
   storyList: document.getElementById("poly-story-list"),
@@ -163,6 +170,46 @@ const setStatus = (text = "") => {
   elements.status.textContent = text;
   elements.status.classList.toggle("poly-chat__status--visible", Boolean(text));
   elements.status.classList.toggle("poly-chat__status--loading", state.awaitingPolyResponse && Boolean(text));
+};
+
+const renderPlanState = (snapshot) => {
+  if (elements.planBadge) {
+    elements.planBadge.textContent = `Plan ${snapshot.plan}`;
+    elements.planBadge.classList.toggle("poly-plan__badge--premium", snapshot.isPremium);
+  }
+
+  if (elements.planStorage) {
+    elements.planStorage.textContent = snapshot.storageLabel;
+  }
+
+  if (elements.planCopy) {
+    elements.planCopy.textContent = snapshot.isPremium
+      ? "Poly responde en modo amplio y usa los modelos disponibles para tu plan Premium."
+      : "Poly responde en modo compacto y usa solo los modelos disponibles para tu plan gratuito.";
+  }
+
+  if (elements.planModels) {
+    elements.planModels.textContent = `Modelos disponibles: ${snapshot.availableModelsLabel}.`;
+  }
+};
+
+const loadPlanState = async () => {
+  const snapshot = await loadPlanSnapshot(state.userId, { includeModels: true });
+
+  if (!snapshot.ok) {
+    if (elements.planStorage) {
+      elements.planStorage.textContent = "Sin datos";
+    }
+
+    if (elements.planModels) {
+      elements.planModels.textContent = "No fue posible cargar los modelos del plan.";
+    }
+    return;
+  }
+
+  // Poly consume este snapshot como fuente de verdad visual del plan para no
+  // duplicar lógica de suscripción dentro de la página.
+  renderPlanState(snapshot);
 };
 
 const syncAsideState = () => {
@@ -287,6 +334,8 @@ const syncSourceFilesAccordion = () => {
   const hasFiles = state.sourceFiles.length > 0;
   const isExpanded = hasFiles && state.sourceFilesExpanded;
 
+  // El acordeón depende de estado local para evitar inconsistencias entre el
+  // archivo adjunto principal y la lista completa de documentos fuente.
   elements.sourceFilesPanel?.classList.toggle("poly-hidden", !isExpanded);
   elements.fileAttachmentToggle?.setAttribute("aria-expanded", String(isExpanded));
   elements.fileAttachmentChevron?.classList.toggle("poly-input__attachment-chevron--expanded", isExpanded);
@@ -333,6 +382,9 @@ const removeSourceFile = async (fileId) => {
 
   showToast(data.Mensaje || "Archivo eliminado", "green");
   await loadStoryDetails(state.activeStoryId);
+  // La cuota visible cambia al subir o quitar archivos, por eso se recarga
+  // también el estado del plan después de tocar documentos fuente.
+  await loadPlanState();
 };
 
 const renderSourceFilesList = () => {
@@ -429,6 +481,8 @@ const syncAiSettingsUI = () => {
 const syncFormState = () => {
   const disabled = state.sending;
 
+  // Un único flag controla input, adjuntos y acciones para que el usuario no
+  // dispare solicitudes paralelas mientras Poly sigue respondiendo.
   if (elements.input) {
     elements.input.disabled = disabled;
     elements.input.placeholder = disabled ? "Poly esta respondiendo..." : DEFAULT_INPUT_PLACEHOLDER;
@@ -1277,10 +1331,10 @@ const createShelfFromBookFlow = async () => {
 
   const suggestedName = clampText(elements.bookTitle?.value.trim() || "", SHELF_NAME_MAX_LENGTH);
   const shelfName = (await showPrompt({
-    title: "Nueva estanteria",
-    inputLabel: "Nombre de la estanteria",
+    title: "Nueva estantería",
+    inputLabel: "Nombre de la estantería",
     inputValue: suggestedName,
-    inputPlaceholder: "Mi estanteria",
+    inputPlaceholder: "Mi estantería",
     inputAttributes: {
       maxlength: String(SHELF_NAME_MAX_LENGTH),
     },
@@ -1301,7 +1355,7 @@ const createShelfFromBookFlow = async () => {
   });
 
   if (!ok) {
-    showToast(data.Mensaje || "No fue posible crear la estanteria");
+    showToast(data.Mensaje || "No fue posible crear la estantería");
     return null;
   }
 
@@ -1439,8 +1493,8 @@ const handleBookSubmit = async (event) => {
 
   if (!selectedShelfId || !selectedShelf) {
     const shouldCreateShelf = await showConfirm({
-      title: "Falta una estanteria",
-      text: "Aun no has seleccionado una estanteria. Quieres crear una ahora mismo?",
+      title: "Falta una estantería",
+      text: "Aún no has seleccionado una estantería. ¿Quieres crear una ahora mismo?",
     });
 
     if (!shouldCreateShelf) {
@@ -1501,6 +1555,7 @@ const handleBookSubmit = async (event) => {
       : data.Mensaje || "Relato guardado en biblioteca",
     "green",
   );
+  await loadPlanState();
   await loadStories(storyId);
   await selectStory(storyId);
 
@@ -1657,6 +1712,7 @@ const setupFileAttachment = () => {
 
       showToast(data.Mensaje || "Archivo fuente vinculado", "green");
       await loadStoryDetails(storyId);
+      await loadPlanState();
     } catch (error) {
       showToast("No fue posible procesar el archivo");
     } finally {
@@ -1857,6 +1913,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await loadUser();
   await loadAiModel();
+  await loadPlanState();
   await loadShelves();
   await loadStories();
   await selectStory(state.activeStoryId);

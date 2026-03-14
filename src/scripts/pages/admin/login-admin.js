@@ -5,6 +5,7 @@ import {
   isAdminRole,
   parseTokenSafely,
 } from "../../utils/auth-session.js";
+import { bindFieldValidation, setFieldState, validateFields } from "../../utils/form-feedback.js";
 
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
 
@@ -30,50 +31,96 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(authNotice.text, authNotice.background || "orange");
   }
 
+  const fieldBindings = [
+    {
+      input: emailInput,
+      ...bindFieldValidation(
+        emailInput,
+        (value) => {
+          const correo = value.trim();
+          if (!correo) {
+            return { valid: false, message: "Ingresa tu correo." };
+          }
+
+          if (!EMAIL_PATTERN.test(correo)) {
+            return { valid: false, message: "Usa un correo con formato válido." };
+          }
+
+          return { valid: true, message: "Correo válido." };
+        },
+        { validateOnInput: true },
+      ),
+    },
+    {
+      input: passwordInput,
+      ...bindFieldValidation(
+        passwordInput,
+        (value) => {
+          if (!value) {
+            return { valid: false, message: "Ingresa tu contraseña." };
+          }
+
+          return { valid: true, message: "Campo completo." };
+        },
+        { validateOnInput: true },
+      ),
+    },
+  ];
+
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const correo = emailInput.value.trim();
     const contrasena = passwordInput.value;
 
-    if (!EMAIL_PATTERN.test(correo)) {
-      showToast("Ingresa un correo valido");
-      emailInput.focus();
-      return;
-    }
-
-    if (!contrasena) {
-      showToast("Ingresa la contrasena");
-      passwordInput.focus();
+    if (!validateFields(fieldBindings)) {
+      showToast("Revisa los campos marcados antes de continuar.");
       return;
     }
 
     try {
-      const { ok, data } = await fetchJson("/api/v1/login", {
+      const { ok, status, data } = await fetchJson("/api/v1/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ correo, contraseña: contrasena }),
       });
 
-      if (!ok || !data.Token) {
-        showToast(data.Mensaje || "No fue posible iniciar sesion");
+      if (ok && data.Token) {
+        localStorage.setItem("Token", data.Token);
+        const payload = parseTokenSafely(data.Token);
+
+        if (!isAdminRole(payload?.role)) {
+          clearToken();
+          setFieldState(passwordInput, {
+            state: "error",
+            message: "La cuenta existe, pero no tiene permisos de administrador.",
+          });
+          showToast("La cuenta no tiene permisos de administrador");
+          return;
+        }
+
+        showToast("Acceso administrador correcto", "green", () => {
+          window.location.href = "/public/admin/dashboard-admin.html";
+        });
         return;
       }
 
-      localStorage.setItem("Token", data.Token);
-      const payload = parseTokenSafely(data.Token);
-
-      if (!isAdminRole(payload?.role)) {
-        clearToken();
-        showToast("La cuenta no tiene permisos de administrador");
+      if (status === 403) {
+        setFieldState(emailInput, {
+          state: "error",
+          message: "Tu correo existe, pero aún no ha sido verificado.",
+        });
+        showToast(data.Mensaje || "Debes verificar tu correo", "orange");
         return;
       }
 
-      showToast("Acceso administrador correcto", "green", () => {
-        window.location.href = "/public/admin/dashboard-admin.html";
+      setFieldState(passwordInput, {
+        state: "error",
+        message: "Verifica tus credenciales e inténtalo otra vez.",
       });
+      showToast(data.Mensaje || "No fue posible iniciar sesión");
     } catch (error) {
-      showToast("Error de conexion");
+      showToast("Error de conexión");
     }
   });
 });

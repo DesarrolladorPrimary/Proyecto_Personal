@@ -44,7 +44,7 @@ export const fetchJson = async (
 
     if (token && tokenPayload && isTokenExpired(tokenPayload)) {
       const data = {
-        Mensaje: "Tu sesion expiro. Inicia sesion de nuevo.",
+        Mensaje: "Tu sesión expiró. Inicia sesión de nuevo.",
         code: "TOKEN_EXPIRED",
       };
 

@@ -529,9 +529,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
+      const planName = String(data.plan || "").trim().toLowerCase();
       const used = Number(data.almacenamientoUsadoMb ?? 0);
-      const limit = Number(data.limiteAlmacenamientoMb ?? data.almacenamiento ?? 500);
-      const unlimited = Boolean(data.almacenamientoIlimitado);
+      let limit = Number(data.limiteAlmacenamientoMb ?? data.almacenamiento ?? 500);
+      let unlimited = Boolean(data.almacenamientoIlimitado);
+
+      if (planName === "premium" && (!Number.isFinite(limit) || limit <= 0 || unlimited)) {
+        limit = 2048;
+        unlimited = false;
+      }
+
       const percentage = !unlimited && limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 100;
 
       storageBar?.classList.toggle("storage-bar--unlimited", unlimited);
@@ -836,7 +843,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (!ok) {
-        showToast(data.Mensaje || "No fue posible crear la estanteria");
+        showToast(data.Mensaje || "No fue posible crear la estantería");
         return;
       }
 
@@ -845,7 +852,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         sessionStorage.setItem(storageIdKey, String(data.id));
       }
 
-      showToast(data.Mensaje || "Estanteria creada correctamente", "green");
+      showToast(data.Mensaje || "Estantería creada correctamente", "green");
       window.location.href = `shelves.html?selected=${encodeURIComponent(data.id || "")}`;
     } catch (error) {
       console.error("Error creando estantería desde biblioteca:", error);

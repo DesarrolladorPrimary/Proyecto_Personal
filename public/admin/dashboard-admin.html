@@ -6,111 +6,233 @@
     <title>Dashboard Admin</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/components/user-menu.css" />
     <link rel="stylesheet" href="/src/styles/pages/admin/dashboard-admin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
     <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
     <header class="header">
-      <div class="header__nav">
-        <div class="header__nav-line">
-          <a href="#sidebar" class="header__nav-link header__nav-link--action"></a>
-        </div>
+      <div class="header__badge">Admin Hub</div>
+
+      <div class="header__summary">
+        <p class="header__eyebrow">Panel central</p>
+        <h1 class="header__title">Dashboard Admin</h1>
       </div>
-      <a href="#user" class="header__logo">
-        <img
-          src="/assets/icons/image.png"
-          class="header__logo"
-          alt="logo_admin"
-          id="admin_logo"
-        />
-      </a>
+
+      <button
+        type="button"
+        class="header__logo header__logo-button"
+        id="logo_user_button"
+        aria-label="Abrir perfil de administrador"
+        aria-controls="user"
+        aria-expanded="false"
+      >
+        <img src="/assets/icons/image.png" class="header__logo" alt="Perfil del administrador" id="admin_logo" />
+      </button>
     </header>
 
-    <aside class="aside" id="sidebar">
-      <a href="#" class="aside__close">X</a>
+    <main class="dashboard">
+      <section class="dashboard-hero">
+        <div class="dashboard-hero__copy">
+          <span class="dashboard-hero__eyebrow">Vista general</span>
+          <h2 class="dashboard-hero__title">
+            Hola, <span id="dashboard-admin-name">Administrador</span>
+          </h2>
+          <p class="dashboard-hero__text">
+            Supervisa el estado de la beta y entra a cada modulo sin salir del panel principal.
+          </p>
 
-      <a href="#" class="aside__link aside__link--navi">
-        <img class="aside__icon aside__icon--users" src="/assets/icons/usuarios.png" alt="users_icon" />
-      </a>
-      <div class="aside__panel aside__panel--users" id="users">
-        <a href="/public/admin/users/gest-user.html" class="aside__panel-link">Gestion de Usuarios</a>
-      </div>
+          <div class="dashboard-hero__actions">
+            <a href="/public/admin/users/gest-user.html" class="dashboard-button dashboard-button--primary">
+              Gestionar usuarios
+            </a>
+            <a href="/public/admin/plans/gest-plans.html" class="dashboard-button dashboard-button--secondary">
+              Gestionar planes
+            </a>
+          </div>
+        </div>
 
-      <a href="#" class="aside__link aside__link--navi">
-        <img
-          class="aside__icon aside__icon--content"
-          src="/assets/icons/gestionPlanes.png"
-          alt="content_icon"
-        />
-      </a>
-      <div class="aside__panel aside__panel--content">
-        <a href="/public/admin/plans/gest-plans.html" class="aside__panel-link">Gestion de Planes</a>
-      </div>
+        <article class="dashboard-hero__panel">
+          <span class="dashboard-hero__badge" id="dashboard-last-update">Actualizado: --</span>
+          <img class="dashboard-hero__image" src="/assets/image/admin.png" alt="Vista del panel admin" />
+        </article>
+      </section>
 
-      <a href="#" class="aside__link aside__link--navi">
-        <img
-          class="aside__icon aside__icon--library"
-          src="/assets/icons/estadisticas.png"
-          alt="library_icon"
-        />
-      </a>
-      <div class="aside__panel aside__panel--library">
-        <a href="/public/admin/stadistics/stadistic.html" class="aside__panel-link">Estadisticas</a>
-      </div>
+      <section class="dashboard-metrics">
+        <article class="dashboard-card">
+          <span class="dashboard-card__label">Usuarios totales</span>
+          <strong class="dashboard-card__value" id="dashboard-total-users">0</strong>
+          <p class="dashboard-card__hint">Base registrada dentro de la beta.</p>
+        </article>
 
-      <a href="#" class="aside__link aside__link--navi">
-        <img class="aside__icon aside__icon--reports" src="/assets/icons/setting.png" alt="reports_icon" />
-      </a>
-      <div class="aside__panel aside__panel--reports">
-        <a href="/public/admin/settings/settings-admin.html" class="aside__panel-link">Configuraciones</a>
-      </div>
-    </aside>
+        <article class="dashboard-card">
+          <span class="dashboard-card__label">Activos</span>
+          <strong class="dashboard-card__value" id="dashboard-active-users">0</strong>
+          <p class="dashboard-card__hint" id="dashboard-active-share">0% del total</p>
+        </article>
 
-    <main class="feed">
-      <div class="feed__content">
-        <img class="feed__image" src="/assets/image/admin.png" alt="Panel admin" />
-        <p class="feed__text">Que administraremos hoy?</p>
-      </div>
+        <article class="dashboard-card">
+          <span class="dashboard-card__label">Suspendidos</span>
+          <strong class="dashboard-card__value" id="dashboard-suspended-users">0</strong>
+          <p class="dashboard-card__hint">Control rapido de cuentas bloqueadas.</p>
+        </article>
+
+        <article class="dashboard-card">
+          <span class="dashboard-card__label">Solicitudes IA</span>
+          <strong class="dashboard-card__value" id="dashboard-ai-requests">0</strong>
+          <p class="dashboard-card__hint">Consumo acumulado del mes actual.</p>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="dashboard-panel">
+          <div class="dashboard-panel__header">
+            <div>
+              <span class="dashboard-panel__eyebrow">Distribucion</span>
+              <h3 class="dashboard-panel__title">Planes simulados</h3>
+            </div>
+            <a href="/public/admin/plans/gest-plans.html" class="dashboard-panel__link">Abrir</a>
+          </div>
+
+          <div class="dashboard-plan">
+            <div class="dashboard-plan__meta">
+              <span class="dashboard-plan__name">Premium</span>
+              <strong class="dashboard-plan__value" id="dashboard-premium-users">0</strong>
+            </div>
+            <div class="dashboard-plan__bar">
+              <span class="dashboard-plan__fill dashboard-plan__fill--premium" id="dashboard-premium-bar"></span>
+            </div>
+          </div>
+
+          <div class="dashboard-plan">
+            <div class="dashboard-plan__meta">
+              <span class="dashboard-plan__name">Gratuito</span>
+              <strong class="dashboard-plan__value" id="dashboard-free-users">0</strong>
+            </div>
+            <div class="dashboard-plan__bar">
+              <span class="dashboard-plan__fill dashboard-plan__fill--free" id="dashboard-free-bar"></span>
+            </div>
+          </div>
+
+          <p class="dashboard-panel__note" id="dashboard-plan-note">
+            Sin datos de planes por ahora.
+          </p>
+        </article>
+
+        <article class="dashboard-panel">
+          <div class="dashboard-panel__header">
+            <div>
+              <span class="dashboard-panel__eyebrow">Actividad</span>
+              <h3 class="dashboard-panel__title">Estado operativo</h3>
+            </div>
+            <button type="button" class="dashboard-panel__link dashboard-panel__link--button" id="dashboard-refresh">
+              Actualizar
+            </button>
+          </div>
+
+          <div class="dashboard-activity">
+            <div class="dashboard-activity__item">
+              <span class="dashboard-activity__label">Relatos creados</span>
+              <strong class="dashboard-activity__value" id="dashboard-total-stories">0</strong>
+            </div>
+            <div class="dashboard-activity__item">
+              <span class="dashboard-activity__label">Usuarios premium</span>
+              <strong class="dashboard-activity__value" id="dashboard-premium-share">0%</strong>
+            </div>
+            <div class="dashboard-activity__item">
+              <span class="dashboard-activity__label">Última sincronización</span>
+              <strong class="dashboard-activity__value dashboard-activity__value--small" id="dashboard-sync-text">--</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="dashboard-panel dashboard-panel--wide">
+          <div class="dashboard-panel__header">
+            <div>
+              <span class="dashboard-panel__eyebrow">Accesos</span>
+              <h3 class="dashboard-panel__title">Módulos administrativos</h3>
+            </div>
+          </div>
+
+          <div class="dashboard-shortcuts">
+            <a href="/public/admin/users/gest-user.html" class="dashboard-shortcut">
+              <span class="dashboard-shortcut__kicker">Usuarios</span>
+              <strong class="dashboard-shortcut__title">Roles y estados</strong>
+              <span class="dashboard-shortcut__copy">Gestiona acceso, suspensión y roles del sistema.</span>
+            </a>
+            <a href="/public/admin/plans/gest-plans.html" class="dashboard-shortcut">
+              <span class="dashboard-shortcut__kicker">Planes</span>
+              <strong class="dashboard-shortcut__title">Suscripciones beta</strong>
+              <span class="dashboard-shortcut__copy">Consulta premium, gratuito e historial simulado.</span>
+            </a>
+            <a href="/public/admin/stadistics/stadistic.html" class="dashboard-shortcut">
+              <span class="dashboard-shortcut__kicker">Métricas</span>
+              <strong class="dashboard-shortcut__title">Estadísticas del sistema</strong>
+              <span class="dashboard-shortcut__copy">Profundiza en solicitudes IA, usuarios y relatos.</span>
+            </a>
+            <a href="/public/admin/settings/settings-admin.html" class="dashboard-shortcut">
+              <span class="dashboard-shortcut__kicker">Configuración</span>
+              <strong class="dashboard-shortcut__title">Preferencias del admin</strong>
+              <span class="dashboard-shortcut__copy">Controla perfil, modelos IA y ajustes generales.</span>
+            </a>
+          </div>
+        </article>
+      </section>
     </main>
 
-    <div class="menu-user menu-user--hidden" id="user">
-      <a href="#" class="menu-user__close">X</a>
+    <div class="menu-user" id="user" aria-hidden="true">
+      <div class="menu-user__avatar-shell">
+        <img
+          class="menu-user__avatar"
+          src="/assets/icons/image.png"
+          alt="Avatar del administrador"
+          id="admin_profile_photo"
+        />
+      </div>
 
-      <img
-        class="menu-user__avatar"
-        src="/assets/icons/image.png"
-        alt="Avatar del administrador"
-        id="admin_profile_photo"
-      />
+      <div class="menu-user__identity">
+        <p class="menu-user__eyebrow">Administrador</p>
+        <h2 class="menu-user__headline" id="admin_name">—</h2>
+      </div>
 
       <div class="menu-user__separador"></div>
 
-      <p class="menu-user__text">Administrador: <span id="admin_name"></span></p>
-      <p class="menu-user__text">ID: <span id="admin_id"></span></p>
-      <p class="menu-user__text">Correo: <span id="admin_email"></span></p>
-
-      <div class="menu-user__group">
-        <p class="menu-user__group-title">Permisos:</p>
-
-        <div class="menu-user__Model">
-          <p class="menu-user__Model-text" id="admin_role">Admin</p>
-          <img
-            class="menu-user__setting-icon"
-            src="/assets/icons/icono_model.png"
-            alt="Icono de ajuste"
-          />
+      <div class="menu-user__info-list">
+        <div class="menu-user__item">
+          <span class="menu-user__item-label">ID</span>
+          <span class="menu-user__item-value" id="admin_id">—</span>
+        </div>
+        <div class="menu-user__item">
+          <span class="menu-user__item-label">Correo</span>
+          <span class="menu-user__item-value" id="admin_email">—</span>
         </div>
       </div>
 
-      <button class="menu-user__button" id="admin_logout">
-        <span class="menu-user__link">Cerrar sesion</span>
-      </button>
+      <details class="menu-user__accordion">
+        <summary class="menu-user__accordion-trigger">
+          <span class="menu-user__accordion-copy">
+            <span class="menu-user__accordion-kicker">Permisos</span>
+            <span class="menu-user__accordion-label">Rol y acceso actual</span>
+          </span>
+          <span class="menu-user__accordion-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="menu-user__accordion-panel">
+          <p class="menu-user__accordion-value" id="admin_role">Admin</p>
+        </div>
+      </details>
+
+      <div class="menu-user__actions">
+        <a href="/public/admin/settings/settings-admin.html" class="menu-user__secondary">Configuraciones</a>
+        <button class="menu-user__button" id="admin_logout" type="button">
+          <span class="menu-user__link">Cerrar sesión</span>
+        </button>
+      </div>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

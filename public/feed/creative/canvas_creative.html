@@ -53,6 +53,16 @@
           <h1 class="canvas-main__title" contenteditable="true" id="creative-canvas-title">Título</h1>
           <span class="canvas-main__counter" id="creative-canvas-counter">0 palabras</span>
         </header>
+        <section class="canvas-main__plan" id="creative-canvas-plan" aria-live="polite">
+          <div class="canvas-main__plan-head">
+            <span class="canvas-main__plan-badge" id="creative-canvas-plan-badge">Plan Gratuito</span>
+            <span class="canvas-main__plan-storage" id="creative-canvas-plan-storage">0 MB / 500 MB</span>
+          </div>
+          <p class="canvas-main__plan-copy" id="creative-canvas-plan-copy">
+            Las ayudas AI usan los modelos disponibles para tu plan actual.
+          </p>
+          <p class="canvas-main__plan-models" id="creative-canvas-plan-models">Modelos disponibles: Cargando...</p>
+        </section>
         <div class="canvas-main__divider"></div>
         <textarea
           class="canvas-main__body"
@@ -133,7 +143,7 @@
         </header>
         <form class="canvas-book-modal__form" id="creative-export-form">
           <label class="canvas-book-modal__label" for="canvas-book-title"
-            >Titulo del borrador:</label
+            >Título del borrador:</label
           >
           <input
             class="canvas-book-modal__input"
@@ -143,16 +153,16 @@
             maxlength="255"
           />
           <label class="canvas-book-modal__label" for="canvas-book-shelf"
-            >Guardar en estanteria:</label
+            >Guardar en estantería:</label
           >
           <select class="canvas-book-modal__input" id="canvas-book-shelf">
-            <option value="">Selecciona una estanteria</option>
+            <option value="">Selecciona una estantería</option>
           </select>
           <button class="canvas-book-modal__secondary" type="button" id="canvas-book-create-shelf">
-            Crear estanteria ahora
+            Crear estantería ahora
           </button>
           <p class="canvas-book-modal__hint" id="canvas-book-shelf-hint">
-            Debes asignar el borrador a una estanteria existente para guardarlo en biblioteca.
+            Debes asignar el borrador a una estantería existente para guardarlo en biblioteca.
           </p>
           <p class="canvas-book-modal__help">
             La conversión a libro y la exportación final se hacen desde Biblioteca.
@@ -229,7 +239,7 @@
 
       <div class="menu-user__identity">
         <p class="menu-user__eyebrow">Cuenta</p>
-        <p class="menu-user__headline">Informacion de usuario</p>
+        <p class="menu-user__headline">Información de usuario</p>
       </div>
 
       <div class="menu-user__separador"></div>
@@ -261,7 +271,7 @@
       <div class="menu-user__actions">
         <a class="menu-user__secondary" href="../settings/settings-user.html">Ver perfil</a>
         <button class="menu-user__button" id="logout" type="button">
-          <span class="menu-user__link">Cerrar Sesion</span>
+          <span class="menu-user__link">Cerrar sesión</span>
         </button>
       </div>
     </div>

@@ -157,6 +157,57 @@ body {
   color: rgba(255, 255, 255, 0.72);
 }
 
+.creative-main__plan {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 18px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+}
+
+.creative-main__plan-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+}
+
+.creative-main__plan-badge,
+.creative-main__plan-storage {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.06);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.creative-main__plan-badge--premium {
+  color: #cbffbe;
+  border-color: rgba(203, 255, 190, 0.28);
+  background-color: rgba(203, 255, 190, 0.1);
+}
+
+.creative-main__plan-copy,
+.creative-main__plan-models {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.creative-main__plan-models {
+  color: rgba(255, 255, 255, 0.64);
+}
+
 .creative-main__metrics {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

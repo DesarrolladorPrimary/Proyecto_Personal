@@ -42,10 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (!EMAIL_PATTERN.test(correo)) {
-            return { valid: false, message: "Usa un correo con formato valido." };
+            return { valid: false, message: "Usa un correo con formato válido." };
           }
 
-          return { valid: true, message: "Correo valido." };
+          return { valid: true, message: "Correo válido." };
         },
         { validateOnInput: true },
       ),
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("Token", data.Token);
         const payload = parseTokenSafely(data.Token);
 
-        showToast(data.Mensaje || "Inicio de sesion correcto", "green", () => {
+        showToast(data.Mensaje || "Inicio de sesión correcto", "green", () => {
           window.location.href = getDefaultRouteForRole(payload?.role);
         });
         return;
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (status === 403) {
         setFieldState(emailInput, {
           state: "error",
-          message: "Tu correo existe, pero aun no ha sido verificado.",
+          message: "Tu correo existe, pero aún no ha sido verificado.",
         });
         showToast(data.Mensaje || "Debes verificar tu correo", "orange");
         return;
@@ -105,11 +105,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setFieldState(passwordInput, {
         state: "error",
-        message: "Verifica tus credenciales e intentalo otra vez.",
+        message: "Verifica tus credenciales e inténtalo otra vez.",
       });
-      showToast(data.Mensaje || "No fue posible iniciar sesion");
+      showToast(data.Mensaje || "No fue posible iniciar sesión");
     } catch (error) {
-      showToast("Error de conexion");
+      showToast("Error de conexión");
     }
   });
 });

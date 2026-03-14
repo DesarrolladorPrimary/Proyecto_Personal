@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (!EMAIL_PATTERN.test(correo)) {
-            return { valid: false, message: "Usa un correo con formato valido." };
+            return { valid: false, message: "Usa un correo con formato válido." };
           }
 
           return { valid: true, message: "Correo listo para enviar." };
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       showToast(data.Mensaje || "No fue posible procesar la solicitud");
     } catch (error) {
-      showToast("Error de conexion");
+      showToast("Error de conexión");
     }
   });
 });

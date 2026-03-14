@@ -3,36 +3,120 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion de Usuarios</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
-    <link rel="stylesheet" href="/src/styles/components/layout.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
-    <link rel="stylesheet" href="/src/styles/layout.css" />
-    <link rel="stylesheet" href="/src/styles/pages/admin/gest-user.css" />
     <link rel="stylesheet" href="/src/styles/components/dialogs.css" />
-    <title>Gestion de Usuarios</title>
+    <link rel="stylesheet" href="/src/styles/pages/admin/gest-user.css" />
     <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
   </head>
   <body>
-    <header class="header">
-      <h1 class="header__title">Usuarios Registrados</h1>
-      <form class="header__search-form" id="admin-users-search-form">
+    <header class="users-header">
+      <div class="users-header__top">
+        <a href="/public/admin/dashboard-admin.html" class="users-header__back" aria-label="Volver al dashboard">
+          <img
+            src="/assets/icons/arrow-90deg-left.svg"
+            alt="Volver"
+            class="users-header__back-icon"
+          />
+        </a>
+
+        <div class="users-header__copy">
+          <span class="users-header__eyebrow">Administración</span>
+          <h1 class="users-header__title">Usuarios y roles</h1>
+          <p class="users-header__text">
+            Filtra por rol y estado para revisar la base sin depender de una lista larga.
+          </p>
+        </div>
+      </div>
+
+      <form class="users-search" id="admin-users-search-form">
         <input
-          class="header__search-input"
+          class="users-search__input"
           type="text"
           id="admin-users-search"
-          placeholder="Por nombre o correo"
+          placeholder="Busca por nombre o correo"
         />
-        <img class="header__search-icon" src="/assets/icons/lupa.png" alt="" />
+        <img class="users-search__icon" src="/assets/icons/lupa.png" alt="" />
       </form>
-      <div class="header__separator"></div>
     </header>
 
-    <main class="main" id="admin-users-list"></main>
+    <section class="users-summary">
+      <article class="users-summary__card">
+        <span class="users-summary__label">Total</span>
+        <strong class="users-summary__value" id="admin-users-total">0</strong>
+      </article>
+      <article class="users-summary__card">
+        <span class="users-summary__label">Activos</span>
+        <strong class="users-summary__value" id="admin-users-active">0</strong>
+      </article>
+      <article class="users-summary__card">
+        <span class="users-summary__label">Suspendidos</span>
+        <strong class="users-summary__value" id="admin-users-suspended">0</strong>
+      </article>
+      <article class="users-summary__card">
+        <span class="users-summary__label">Admins</span>
+        <strong class="users-summary__value" id="admin-users-admin">0</strong>
+      </article>
+      <article class="users-summary__card">
+        <span class="users-summary__label">Premium</span>
+        <strong class="users-summary__value" id="admin-users-premium">0</strong>
+      </article>
+      <article class="users-summary__card">
+        <span class="users-summary__label">Gratuito</span>
+        <strong class="users-summary__value" id="admin-users-free">0</strong>
+      </article>
+    </section>
 
-    <footer class="footer-nav">
-      <a href="/public/admin/dashboard-admin.html" class="footer-nav__line"></a>
-    </footer>
+    <section class="users-controls">
+      <div class="users-filter-group" id="admin-users-role-filters">
+        <span class="users-filter-group__label">Rol</span>
+        <div class="users-filter-group__actions">
+          <button type="button" class="users-filter users-filter--active" data-filter-group="role" data-value="Todos">
+            Todos
+          </button>
+          <button type="button" class="users-filter" data-filter-group="role" data-value="Admin">
+            Admin
+          </button>
+          <button type="button" class="users-filter" data-filter-group="role" data-value="Premium">
+            Premium
+          </button>
+          <button type="button" class="users-filter" data-filter-group="role" data-value="Gratuito">
+            Gratuito
+          </button>
+        </div>
+      </div>
+
+      <div class="users-filter-group" id="admin-users-status-filters">
+        <span class="users-filter-group__label">Estado</span>
+        <div class="users-filter-group__actions">
+          <button type="button" class="users-filter users-filter--active" data-filter-group="status" data-value="Todos">
+            Todos
+          </button>
+          <button type="button" class="users-filter" data-filter-group="status" data-value="Activo">
+            Activos
+          </button>
+          <button type="button" class="users-filter" data-filter-group="status" data-value="Suspendido">
+            Suspendidos
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <main class="users-main">
+      <div class="users-main__meta">
+        <p class="users-main__results" id="admin-users-results-label">Cargando usuarios...</p>
+      </div>
+
+      <section class="users-groups" id="admin-users-list"></section>
+    </main>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
