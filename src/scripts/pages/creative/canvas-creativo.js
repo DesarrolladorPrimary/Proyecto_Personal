@@ -11,7 +11,6 @@ const DEFAULT_TOOL_STATUS = "Selecciona texto o usa las ayudas para seguir escri
 const TITLE_MAX_LENGTH = 255;
 const BODY_MAX_LENGTH = 20000;
 const SHELF_NAME_MAX_LENGTH = 150;
-const AUTOSAVE_DELAY_MS = 1400;
 const HISTORY_LIMIT = 100;
 
 const elements = {
@@ -62,8 +61,6 @@ const state = {
   assistantBusy: false,
   isDirty: false,
   isSaving: false,
-  saveQueued: false,
-  autosaveTimer: null,
   history: [],
   historyIndex: -1,
   applyingHistory: false,
@@ -633,30 +630,13 @@ const applySnapshot = (snapshot) => {
   setSelection(snapshot.selectionStart, snapshot.selectionEnd);
 };
 
-const queueAutosave = () => {
-  if (!state.storyId) {
-    return;
-  }
-
-  window.clearTimeout(state.autosaveTimer);
-  state.autosaveTimer = window.setTimeout(() => {
-    if (state.isSaving) {
-      state.saveQueued = true;
-      return;
-    }
-
-    void persistStory({ silent: true });
-  }, AUTOSAVE_DELAY_MS);
-};
-
 const flagUnsavedChanges = () => {
-  if (!state.storyId || state.applyingHistory) {
+  if (state.applyingHistory) {
     return;
   }
 
   state.isDirty = true;
   setSaveState("Cambios sin guardar", "dirty");
-  queueAutosave();
 };
 
 const setAssistantBusy = (busy, label = "") => {
@@ -877,6 +857,25 @@ const buildStoryPayload = (story = getStoryFromState(state.storyId), overrides =
   };
 };
 
+const hasStoryPayloadChanges = (payload) => {
+  if (!state.storyId) {
+    return payload.titulo !== DEFAULT_TITLE
+      || Boolean(String(payload.descripcion || "").trim())
+      || payload.estanteriaId != null
+      || payload.modeloUsadoId != null;
+  }
+
+  const currentStory = getStoryFromState(state.storyId);
+  if (!currentStory) {
+    return true;
+  }
+
+  return normalizeTitle(currentStory.titulo) !== payload.titulo
+    || String(currentStory.descripcion || "") !== String(payload.descripcion || "")
+    || Number(currentStory.estanteriaId || 0) !== Number(payload.estanteriaId || 0)
+    || Number(currentStory.modeloUsadoId || 0) !== Number(payload.modeloUsadoId || 0);
+};
+
 const upsertStoryInState = (storyPatch) => {
   const nextStories = state.stories.filter((story) => story.id !== storyPatch.id);
   nextStories.push(storyPatch);
@@ -926,36 +925,28 @@ const selectStory = async (storyId, { skipGuard = false } = {}) => {
 };
 
 const persistStory = async ({ silent = false, overrides = {} } = {}) => {
-  if (!state.storyId) {
-    if (!silent) {
-      showToast("Primero crea o selecciona un lienzo");
-    }
-    return false;
-  }
-
   if (state.isSaving) {
-    state.saveQueued = true;
     return false;
   }
 
-  if (silent && !state.isDirty) {
+  const payload = buildStoryPayload(undefined, overrides);
+  const hasPayloadChanges = hasStoryPayloadChanges(payload);
+
+  if (silent && !state.isDirty && !hasPayloadChanges) {
     return true;
   }
 
-  if (!silent && !state.isDirty) {
+  if (!silent && !state.isDirty && !hasPayloadChanges) {
     setSaveState("Todo guardado", "saved");
     showToast("No hay cambios pendientes por guardar", "green");
     return true;
   }
 
-  const payload = buildStoryPayload(undefined, overrides);
   const snapshotAtSaveStart = createSnapshot();
   let saveCompleted = false;
   let changedDuringSave = false;
+  const isCreatingNewStory = !state.storyId;
 
-  window.clearTimeout(state.autosaveTimer);
-  state.autosaveTimer = null;
-  state.saveQueued = false;
   state.isSaving = true;
   elements.saveButton.disabled = true;
   if (elements.openLibraryButton) {
@@ -967,8 +958,10 @@ const persistStory = async ({ silent = false, overrides = {} } = {}) => {
   setSaveState("Guardando...", "saving");
 
   try {
-    const { ok, data } = await fetchJson(`/api/v1/stories/${state.storyId}`, {
-      method: "PUT",
+    const requestUrl = isCreatingNewStory ? "/api/v1/stories" : `/api/v1/stories/${state.storyId}`;
+    const requestMethod = isCreatingNewStory ? "POST" : "PUT";
+    const { ok, data } = await fetchJson(requestUrl, {
+      method: requestMethod,
       auth: true,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -983,13 +976,25 @@ const persistStory = async ({ silent = false, overrides = {} } = {}) => {
       return false;
     }
 
-    const currentStory = getStoryFromState(state.storyId);
+    const persistedStoryId = isCreatingNewStory ? Number(data.id || 0) : state.storyId;
+    if (!persistedStoryId) {
+      setSaveState("No se pudo guardar", "error");
+      if (!silent) {
+        showToast("El servidor no devolvió el identificador del borrador");
+      }
+      state.isDirty = true;
+      return false;
+    }
+
+    state.storyId = persistedStoryId;
+    replaceStoryInUrl(persistedStoryId);
+    const currentStory = getStoryFromState(persistedStoryId);
     const now = getCurrentTimestamp();
     upsertStoryInState({
       ...currentStory,
       ...payload,
-      id: state.storyId,
-      usuarioId: currentStory?.usuarioId,
+      id: persistedStoryId,
+      usuarioId: currentStory?.usuarioId || state.userId,
       fechaCreacion: currentStory?.fechaCreacion || now,
       fechaModificacion: now,
     });
@@ -1023,10 +1028,6 @@ const persistStory = async ({ silent = false, overrides = {} } = {}) => {
       elements.openLibraryButton.disabled = false;
     }
     renderExportShelfOptions(payload.estanteriaId ?? null);
-
-    if (state.saveQueued || (saveCompleted && changedDuringSave && state.isDirty)) {
-      queueAutosave();
-    }
   }
 };
 
@@ -1035,18 +1036,13 @@ const ensureStoryTransition = async (actionLabel) => {
     return true;
   }
 
-  const saved = await persistStory({ silent: true });
-  if (saved && !state.isDirty) {
-    return true;
-  }
-
   return showConfirm({
     title: "Hay cambios sin guardar",
-    text: `No se pudieron guardar automáticamente. ¿Quieres ${actionLabel} y descartar los cambios pendientes?`,
+    text: `Tienes cambios pendientes. ¿Quieres ${actionLabel} y descartar lo que no has guardado?`,
   });
 };
 
-const createStory = async ({ skipGuard = false } = {}) => {
+const prepareNewDraft = async ({ skipGuard = false } = {}) => {
   if (!skipGuard) {
     const canContinue = await ensureStoryTransition("crear un lienzo nuevo");
     if (!canContinue) {
@@ -1054,27 +1050,19 @@ const createStory = async ({ skipGuard = false } = {}) => {
     }
   }
 
-  const { ok, data } = await fetchJson("/api/v1/stories", {
-    method: "POST",
-    auth: true,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      titulo: DEFAULT_TITLE,
-      modoOrigen: STORY_MODE,
-      descripcion: "",
-    }),
-  });
-
-  if (!ok || !data.id) {
-    showToast(data.Mensaje || "No fue posible crear el lienzo");
-    return;
-  }
-
-  state.stories = await loadStories();
-  renderStoryList();
-  await selectStory(data.id, { skipGuard: true });
+  state.storyId = null;
+  replaceStoryInUrl("new");
+  elements.title.textContent = DEFAULT_TITLE;
+  elements.exportTitle.value = DEFAULT_TITLE;
+  elements.body.value = "";
+  updateCounter();
+  setToolStatus(DEFAULT_TOOL_STATUS);
+  state.isDirty = false;
+  setSaveState("Sin cambios", "neutral");
+  resetHistory();
   setAsideOpen(false);
-  showToast(data.Mensaje || "Lienzo creado", "green");
+  renderStoryList();
+  focusBody();
 };
 
 const renameStory = async (story) => {
@@ -1231,8 +1219,8 @@ const openLibraryModal = async () => {
     return;
   }
 
-  if (state.isDirty && !(await persistStory({ silent: true }))) {
-    showToast("Primero guarda el borrador para abrir la biblioteca");
+  if (!state.storyId || state.isDirty) {
+    showToast("Guarda el borrador manualmente antes de abrir la biblioteca");
     return;
   }
 
@@ -1269,8 +1257,10 @@ const exportStory = async (event) => {
 
   elements.title.textContent = title;
   elements.exportTitle.value = title;
-  recordHistorySnapshot();
-  flagUnsavedChanges();
+  if (state.isDirty || !state.storyId) {
+    showToast("Guarda el borrador antes de enviarlo a biblioteca");
+    return;
+  }
 
   if (!(await persistStory({ overrides: { titulo: title, estanteriaId: selectedShelfId } }))) {
     return;
@@ -1355,7 +1345,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     setSuccessModalOpen(false);
   });
   elements.newButton?.addEventListener("click", async () => {
-    await createStory();
+    await prepareNewDraft();
   });
   elements.asideToggle?.addEventListener("click", () => {
     userMenu.close();
@@ -1458,5 +1448,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  await createStory({ skipGuard: true });
+  await prepareNewDraft({ skipGuard: true });
 });

@@ -354,6 +354,14 @@ body {
   text-overflow: ellipsis;
 }
 
+.user-card__id {
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .user-card__meta {
   display: flex;
   align-items: center;

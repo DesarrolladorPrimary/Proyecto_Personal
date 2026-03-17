@@ -210,6 +210,7 @@ const buildUserCard = (user) => {
         <div class="user-card__identity-copy">
           <strong class="user-card__name">${user.Nombre || "Sin nombre"}</strong>
           <span class="user-card__email">${user.Correo || "Sin correo"}</span>
+          <span class="user-card__id">ID ${user.PK_UsuarioID || "—"}</span>
         </div>
       </div>
 
@@ -232,10 +233,6 @@ const buildUserCard = (user) => {
         <div class="user-card__row">
           <span class="user-card__label">Suscripcion</span>
           <span class="user-card__value">${subscription}</span>
-        </div>
-        <div class="user-card__row">
-          <span class="user-card__label">ID usuario</span>
-          <span class="user-card__value">${user.PK_UsuarioID || "—"}</span>
         </div>
       </div>
 

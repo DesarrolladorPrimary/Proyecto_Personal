@@ -41,6 +41,23 @@ const getPlanHighlights = (isPremium) =>
         "Uso inicial de Poly y herramientas esenciales.",
       ];
 
+const countActiveUsersByPlan = (users, planName) => {
+  const normalizedPlanName = String(planName || "").toLowerCase();
+  const expectedRole = normalizedPlanName.includes("premium") ? "Premium" : "Gratuito";
+
+  return users.filter(
+    (user) => user
+      && user.Activo === true
+      && String(user.Rol || "").trim().toLowerCase() === expectedRole.toLowerCase(),
+  ).length;
+};
+
+const mergePlanUsage = (plans, users) =>
+  plans.map((plan) => ({
+    ...plan,
+    UsuariosActivos: countActiveUsersByPlan(users, plan.NombrePlan),
+  }));
+
 const buildPlanCard = (plan) => {
   const card = document.createElement("article");
   const isPremium = (plan.NombrePlan || "").toLowerCase().includes("premium");
@@ -102,17 +119,36 @@ const buildPlanCard = (plan) => {
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const { ok, data } = await fetchJson("/api/v1/admin/plans", {
-      auth: true,
-    });
+    const [{ ok: plansOk, data: plansData }, { ok: usersOk, data: usersData }] = await Promise.all([
+      fetchJson("/api/v1/admin/plans", {
+        auth: true,
+      }),
+      fetchJson("/api/v1/admin/users", {
+        auth: true,
+      }),
+    ]);
 
-    if (!ok || !Array.isArray(data)) {
+    if (!plansOk || !Array.isArray(plansData)) {
       showToast("No fue posible cargar los planes");
       return;
     }
 
+    const users = usersOk && Array.isArray(usersData)
+      ? usersData.filter((item) => !item.Mensaje)
+      : [];
+
+    const plans = mergePlanUsage(
+      plansData.filter((item) => !item.Mensaje),
+      users,
+    );
+
+    if (!plans.length) {
+      showToast("No hay planes disponibles para mostrar");
+      return;
+    }
+
     plansContainer.innerHTML = "";
-    data.filter((item) => !item.Mensaje).forEach((plan) => {
+    plans.forEach((plan) => {
       plansContainer.appendChild(buildPlanCard(plan));
     });
   } catch (error) {

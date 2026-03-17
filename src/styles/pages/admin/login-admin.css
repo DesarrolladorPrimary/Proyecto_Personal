@@ -48,16 +48,21 @@ body {
 .form__input-container {
   position: relative;
   width: var(--auth-input-width);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .form__input-icon {
   position: absolute;
-  top: 50%;
+  top: calc(var(--auth-input-height) / 2);
   left: 15px;
   transform: translateY(-50%);
   width: 20px;
   height: auto;
   opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .form__contrasena {

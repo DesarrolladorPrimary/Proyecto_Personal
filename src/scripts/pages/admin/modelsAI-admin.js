@@ -1,5 +1,5 @@
 import { fetchJson } from "../../utils/api-client.js";
-import { getCurrentUserId, getCurrentUserRole } from "../../utils/auth-session.js";
+import { getCurrentUserRole } from "../../utils/auth-session.js";
 
 const elements = {
   title: document.getElementById("admin-model-title"),
@@ -58,73 +58,59 @@ const renderAvailableModels = (models = [], currentModelId = null) => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const userId = getCurrentUserId();
   const role = getCurrentUserRole();
 
-  if (!userId || role.toLowerCase() !== "admin") {
+  if (role.toLowerCase() !== "admin") {
     return;
   }
 
   try {
-    const [versionResult, modelsResult, subscriptionResult] = await Promise.all([
-      fetchJson("/api/v1/settings/version-ia", {
-        params: { id: userId },
-        auth: true,
-      }),
-      fetchJson("/api/v1/settings/modelo-disponible", {
-        params: { id: userId },
-        auth: true,
-      }),
-      fetchJson("/api/v1/settings/suscripcion", {
-        params: { id: userId },
-        auth: true,
-      }),
-    ]);
+    const { ok, data } = await fetchJson("/api/v1/admin/models", {
+      auth: true,
+    });
 
-    if (!versionResult.ok) {
-      showToast(versionResult.data?.Mensaje || "No fue posible cargar el modelo actual");
+    if (!ok) {
+      showToast(data?.Mensaje || "No fue posible cargar el catálogo de modelos");
       return;
     }
 
-    const versionData = versionResult.data || {};
-    const modelsData = modelsResult.ok ? modelsResult.data : {};
-    const subscriptionData = subscriptionResult.ok ? subscriptionResult.data : {};
-    const models = Array.isArray(modelsData.modelos) ? modelsData.modelos : [];
-    const plan = subscriptionData.plan || "Gratuito";
+    const freeModel = data?.modeloGratuito || {};
+    const premiumModel = data?.modeloPremium || {};
+    const models = Array.isArray(data?.modelos) ? data.modelos : [];
 
     if (elements.title) {
-      elements.title.textContent = [versionData.nombre, versionData.version].filter(Boolean).join(" ") || "Modelo no disponible";
+      elements.title.textContent = [premiumModel.nombre, premiumModel.version].filter(Boolean).join(" ") || "Modelo no disponible";
     }
 
     if (elements.status) {
-      elements.status.textContent = versionData.activo ? "Activo" : "No disponible";
+      elements.status.textContent = `${models.length} modelo(s) activos`;
     }
 
     if (elements.plan) {
-      elements.plan.textContent = plan;
+      elements.plan.textContent = "Catálogo global";
     }
 
     if (elements.description) {
-      elements.description.textContent = versionData.descripcion || "No hay descripción registrada para el modelo actual.";
+      elements.description.textContent = premiumModel.descripcion || "No hay descripción registrada para el modelo premium preferido.";
     }
 
     if (elements.planNote) {
       elements.planNote.textContent = models.length
-        ? `Esta cuenta puede usar ${models.length} modelo(s) según su plan actual.`
-        : "No hay modelos habilitados para el plan actual.";
+        ? `Modelo base: ${buildModelLabel(freeModel)}. Modelo avanzado: ${buildModelLabel(premiumModel)}.`
+        : "No hay modelos activos registrados en el sistema.";
     }
 
     if (elements.changelog) {
-      elements.changelog.textContent = versionData.changelog || "Sin notas de versión registradas.";
+      elements.changelog.textContent = premiumModel.changelog || "Sin notas de versión registradas.";
     }
 
     if (elements.access) {
       elements.access.textContent = models.length
-        ? `Acceso disponible: ${models.map((model) => buildModelLabel(model)).join(", ")}.`
-        : "No fue posible obtener la disponibilidad de modelos.";
+        ? `Catálogo administrable: ${models.map((model) => buildModelLabel(model)).join(", ")}.`
+        : "No fue posible obtener el catálogo de modelos.";
     }
 
-    renderAvailableModels(models, versionData.id ?? null);
+    renderAvailableModels(models, premiumModel.id ?? null);
   } catch (error) {
     showToast("Error de conexión");
   }
