@@ -249,12 +249,16 @@ body {
 .creative-input__button {
   width: 100%;
   min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   background-color: var(--background-color-nav-subline);
   color: var(--color-text-light);
   font-family: inherit;
   font-size: 14px;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 0.18s ease, background-color 0.18s ease;
 }
@@ -462,12 +466,6 @@ body {
 
 .creative-aside__close:hover {
   background-color: rgba(255, 255, 255, 0.86);
-}
-
-.footer-nav {
-  grid-column: 1/2;
-  grid-row: 3/4;
-  padding-bottom: 12px;
 }
 
 @media (min-width: 768px) {

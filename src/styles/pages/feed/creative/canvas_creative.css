@@ -279,11 +279,15 @@ body {
 .canvas-main__action {
   min-height: 44px;
   padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background-color: var(--background-color-nav-subline);
   color: var(--color-text-light);
   font-size: 14px;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 0.18s ease, background-color 0.18s ease;
 }
@@ -779,21 +783,6 @@ body {
 
 .canvas-sidebar__close:hover {
   background-color: rgba(255, 255, 255, 0.86);
-}
-
-.canvas-footer {
-  grid-column: 1/2;
-  grid-row: 3/4;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-bottom: 12px;
-}
-
-.canvas-footer__line {
-  border: 2px solid var(--color-text-light);
-  width: 223px;
-  height: 0;
 }
 
 @media (min-width: 768px) {
