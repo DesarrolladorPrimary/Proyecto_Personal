@@ -1,181 +1,168 @@
-/* ============================================
-   REGIST.CSS - Página de Registro
-   ============================================
-   Estilos para el formulario de registro
-   Fondo: beige claro (#e1ded5)
-   ============================================ */
-
-/* Configuración del body para registro */
 body {
   font-family: Arial, sans-serif;
-  background-color: var(--auth-register-background); /* Beige claro */
-  min-height: 100vh; /* Ocupa toda la pantalla */
+  background-color: var(--auth-register-background);
+  min-height: 100vh;
   display: flex;
-  flex-direction: column; /* Apila header, main, footer */
+  flex-direction: column;
 }
 
-/* Título del header "Registrarse" */
+.header {
+  justify-content: center;
+  padding-top: 52px;
+}
+
+.auth-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.auth-copy__eyebrow {
+  font-family: var(--font-family-main);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(53, 43, 32, 0.55);
+}
+
 .header__title {
-  font-family: var(--font-family-main); /* Fuente Inter */
+  font-family: var(--font-family-main);
   font-optical-sizing: auto;
-  font-weight: var(--font-weight-regular); /* Peso 400 */
+  font-weight: 500;
   font-style: normal;
-  margin-top: var(--auth-spacing-large); /* Separación del top */
+  color: #352b20;
+  font-size: 34px;
 }
 
-/* Contenedor del formulario de registro */
+.auth-copy__subtitle {
+  max-width: 30ch;
+  font-family: var(--font-family-main);
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(53, 43, 32, 0.7);
+}
+
+.main {
+  flex: 1;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 .form {
   display: flex;
-  flex-direction: column; /* Inputs apilados verticalmente */
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px; /* Mantiene los campos compactos incluso con ayuda visual */
-  margin: var(--auth-spacing-medium);
-}
-
-/* Campos de entrada (nombre, email, contraseña) */
-.form__input {
-  height: var(--auth-input-height); /* Alto del input */
+  gap: 16px;
   width: 100%;
-  padding-left: 45px; /* Espacio para el icono */
-  border: none;
-  border-radius: 5px;
+  max-width: 360px;
 }
 
-/* Estado de focus del input */
-.form__input:focus {
-  outline: none; /* Quita outline por defecto */
-  border: 1px solid var(--auth-input-focus-border); /* Borde azul al enfocar */
-}
-
-/* Contenedor relativo para el icono */
 .form__input-container {
   position: relative;
-  width: var(--auth-input-width); /* Ancho definido en variables */
+  width: 100%;
+}
+
+.form__input {
+  min-height: 48px;
+  width: 100%;
+  padding-left: 46px;
+  padding-right: 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.94);
+}
+
+.form__input:focus {
+  outline: none;
+  border: 1px solid var(--auth-input-focus-border);
+}
+
+.form__input-icon {
+  position: absolute;
+  top: 24px;
+  left: 15px;
+  transform: translateY(-50%);
+  width: 18px;
+  height: auto;
+  opacity: 0.5;
 }
 
 .form__helper {
-  margin-top: 4px;
-  color: rgba(0, 0, 0, 0.64);
+  margin: 8px 2px 0;
   font-size: 12px;
-  line-height: 1.35;
+  line-height: 1.45;
+  color: rgba(53, 43, 32, 0.68);
 }
 
-.form__input-container .field-feedback__message {
-  min-height: 0;
-  margin-top: 4px;
-}
-
-/* Icono dentro del input */
-.form__input-icon {
-  position: absolute;
-  top: calc(var(--auth-input-height) / 2);
-  left: 15px;
-  transform: translateY(-50%); /* Centra verticalmente */
-  width: 20px;
-  height: auto;
-  opacity: 0.5; /* Semi-transparente */
-}
-
-/* Texto de ayuda sobre contraseña */
-.form_contrasena {
-  transform: translateX(-70px); /* Alinea a la izquierda */
-  font-size: var(--font-size-small);
-}
-
-/* Enlace de recuperación */
 .recover-link {
   text-decoration: none;
-  color: var(--color-link); /* Azul como link */
+  color: var(--color-link);
+  font-weight: 600;
 }
 
-/* Botón de registrarse */
+.recover-link:hover {
+  text-decoration: underline;
+}
+
 .button {
-  border-radius: 9px;
-  transform: translateY(40px); 
+  width: 100%;
+  min-height: 48px;
+  border-radius: 10px;
+  margin-top: 4px;
 }
 
-/* Enlace dentro del botón */
 .button-link {
   text-decoration: none;
   color: black !important;
 }
 
-/* Contenedor principal */
-.main {
-  flex: 1; /* Ocupa espacio disponible */
-}
-
-/* Footer con enlace a login */
 .footer {
   text-align: center;
-  padding: 20px;
+  padding: 16px 20px 28px;
 }
 
 .footer__text {
   font-family: var(--font-family-main);
+  color: rgba(53, 43, 32, 0.82);
 }
 
-/* ===========================
-   SISTEMA DE BREAKPOINTS
-   =========================== */
-
-/* Tablets (768px - 1023px): Ajustes de tamaño */
 @media (min-width: 768px) {
+  .header {
+    padding-top: 60px;
+  }
+
   .header__title {
-    font-size: 24px;
-    margin-top: 55px;
+    font-size: 36px;
   }
 
-  .form {
-    gap: 10px;
-    margin: 45px;
-  }
-
-  .button {
-    /* transform: translateY(110px); */
+  .auth-copy__subtitle {
     font-size: 16px;
-    padding: 9px 18px;
-    cursor: pointer;
+  }
+
+  .form {
+    max-width: 390px;
+    gap: 18px;
   }
 }
 
-/* Desktop (1024px - 1279px): Tamaño escritorio */
 @media (min-width: 1024px) {
+  .header {
+    padding-top: 68px;
+  }
+
   .header__title {
-    font-size: 28px;
-    margin-top: 60px;
+    font-size: 40px;
   }
 
   .form {
-    gap: 12px;
-    margin: 50px;
+    max-width: 420px;
   }
 
   .button {
-    /* transform: translateY(120px); */
-    font-size: 18px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-}
-
-/* Desktop Grande (1280px+): Máximo tamaño */
-@media (min-width: 1280px) {
-  .header__title {
-    font-size: 32px;
-    margin-top: 70px;
-  }
-
-  .form {
-    gap: 12px;
-    margin: 60px;
-  }
-
-  .button {
-    transform: translateY(130px);
-    font-size: 20px;
-    padding: 12px 24px;
     cursor: pointer;
   }
 }

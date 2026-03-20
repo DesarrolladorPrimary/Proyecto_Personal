@@ -1,173 +1,168 @@
-/* ============================================
-   LOGIN.CSS - Página de Inicio de Sesión
-   ============================================
-   Estilos para el formulario de login
-   Fondo: verde grisáceo (#98a59b)
-   ============================================ */
-
-/* Configuración del body para login */
 body {
   font-family: Arial, sans-serif;
-  background-color: var(--auth-login-background); /* Verde grisáceo */
-  min-height: 100vh; /* Ocupa toda la pantalla */
+  background-color: var(--auth-login-background);
+  min-height: 100vh;
   display: flex;
-  flex-direction: column; /* Apila header, main, footer */
+  flex-direction: column;
 }
 
-/* Título del header "Iniciar Sesión" */
+.header {
+  justify-content: center;
+  padding-top: 52px;
+}
+
+.auth-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.auth-copy__eyebrow {
+  font-family: var(--font-family-main);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(29, 36, 31, 0.56);
+}
+
 .header__title {
-  font-family: var(--font-family-main); /* Fuente Inter */
+  font-family: var(--font-family-main);
   font-optical-sizing: auto;
-  font-weight: var(--font-weight-regular); /* Peso 400 */
+  font-weight: 500;
   font-style: normal;
-  margin-top: var(--auth-spacing-large); /* Separación del top */
+  color: #1d2420;
+  font-size: 34px;
 }
 
-/* Contenedor del formulario de login */
+.auth-copy__subtitle {
+  max-width: 28ch;
+  font-family: var(--font-family-main);
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(29, 36, 31, 0.7);
+}
+
+.main {
+  flex: 1;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 .form {
   display: flex;
-  flex-direction: column; /* Inputs apilados verticalmente */
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px; /* Mantiene los campos compactos incluso con ayuda visual */
-  margin: var(--auth-spacing-medium);
-}
-
-/* Campos de entrada (email, contraseña) */
-.form__input {
-  height: var(--auth-input-height); /* Alto del input */
+  gap: 16px;
   width: 100%;
-  padding-left: 45px; /* Espacio para el icono */
-  border: none;
-  border-radius: 5px;
+  max-width: 360px;
 }
 
-/* Estado de focus del input */
-.form__input:focus {
-  outline: none; /* Quita outline por defecto */
-  border: 1px solid var(--auth-input-focus-border); /* Borde azul al enfocar */
-}
-
-/* Contenedor relativo para posicionar el icono dentro del input */
 .form__input-container {
   position: relative;
-  width: var(--auth-input-width); /* Ancho definido en variables */
+  width: 100%;
 }
 
-.form__input-container .field-feedback__message {
-  min-height: 0;
+.form__input {
+  min-height: 48px;
+  width: 100%;
+  padding-left: 46px;
+  padding-right: 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.94);
+}
+
+.form__input:focus {
+  outline: none;
+  border: 1px solid var(--auth-input-focus-border);
+}
+
+.form__input-icon {
+  position: absolute;
+  top: 24px;
+  left: 15px;
+  transform: translateY(-50%);
+  width: 18px;
+  height: auto;
+  opacity: 0.5;
+}
+
+.form__contrasena {
+  width: 100%;
+  text-align: left;
+  font-size: 13px;
+  color: rgba(29, 36, 31, 0.74);
+}
+
+.recover-link {
+  text-decoration: none;
+  color: var(--color-link);
+  font-weight: 600;
+}
+
+.recover-link:hover {
+  text-decoration: underline;
+}
+
+.button {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 10px;
   margin-top: 4px;
 }
 
-/* Icono dentro del input (usuario, candado) */
-.form__input-icon {
-  position: absolute;
-  top: calc(var(--auth-input-height) / 2);
-  left: 15px;
-  transform: translateY(-50%); /* Centra verticalmente */
-  width: 20px;
-  height: auto;
-  opacity: 0.5; /* Semi-transparente */
-}
-
-/* Texto "¿Olvidaste tu contraseña?" */
-.form__contrasena {
-  transform: translateX(-70px); /* Alinea a la izquierda */
-  font-size: var(--font-size-small);
-}
-
-/* Enlace de recuperar contraseña */
-.recover-link {
-  text-decoration: none; /* Sin subrayado */
-  color: var(--color-link); /* Azul como link */
-}
-
-/* Botón de envío (override del button global) */
-.button {
-  border-radius: 9px;
-  transform: translateY(100px); /* Posición hacia abajo */
-}
-
-/* Enlace dentro del botón */
 .button-link {
   text-decoration: none;
   color: black !important;
 }
 
-/* Contenedor principal */
-.main {
-  flex: 1; /* Ocupa espacio disponible */
-}
-
-/* Footer con texto de registro */
 .footer {
   text-align: center;
-  padding: 20px;
+  padding: 16px 20px 28px;
 }
 
 .footer__text {
   font-family: var(--font-family-main);
+  color: rgba(29, 36, 31, 0.82);
 }
 
-/* ===========================
-   SISTEMA DE BREAKPOINTS
-   =========================== */
-
-/* Tablets (768px - 1023px): Ajustes de tamaño */
 @media (min-width: 768px) {
+  .header {
+    padding-top: 60px;
+  }
+
   .header__title {
-    font-size: 24px;
-    margin-top: 55px;
+    font-size: 36px;
   }
 
-  .form {
-    gap: 10px;
-    margin: 45px;
-  }
-
-  .button {
-    transform: translateY(110px);
+  .auth-copy__subtitle {
     font-size: 16px;
-    padding: 9px 18px;
+  }
+
+  .form {
+    max-width: 390px;
+    gap: 18px;
   }
 }
 
-/* Desktop (1024px - 1279px): Tamaño escritorio */
 @media (min-width: 1024px) {
+  .header {
+    padding-top: 68px;
+  }
+
   .header__title {
-    font-size: 28px;
-    margin-top: 60px;
+    font-size: 40px;
   }
 
   .form {
-    gap: 12px;
-    margin: 50px;
+    max-width: 420px;
   }
 
   .button {
-    transform: translateY(120px);
-    font-size: 18px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-}
-
-/* Desktop Grande (1280px+): Máximo tamaño */
-@media (min-width: 1280px) {
-  .header__title {
-    font-size: 32px;
-    margin-top: 70px;
-  }
-
-  .form {
-    gap: 12px;
-    margin: 60px;
-  }
-
-  .button {
-    transform: translateY(130px);
-    font-size: 20px;
-    padding: 12px 24px;
     cursor: pointer;
   }
 }

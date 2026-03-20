@@ -127,6 +127,13 @@ export const getUnauthorizedNotice = (data = {}) => {
     };
   }
 
+  if (data?.code === "USER_DISABLED") {
+    return {
+      text: data.Mensaje || "Tu cuenta fue desactivada por un administrador.",
+      background: "red",
+    };
+  }
+
   return {
     text: data?.Mensaje || DEFAULT_INVALID_MESSAGE,
     background: "red",

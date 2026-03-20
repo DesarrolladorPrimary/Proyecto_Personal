@@ -1,6 +1,5 @@
 import { fetchJson } from "../../utils/api-client.js";
 import { getCurrentUserRole } from "../../utils/auth-session.js";
-import { showConfirm } from "../../utils/dialog-service.js";
 
 const ROLE_OPTIONS = ["Gratuito", "Premium", "Admin"];
 const ROLE_ORDER = ["Admin", "Premium", "Gratuito", "Otros"];
@@ -196,7 +195,7 @@ const ensureOpenGroups = (groups) => {
 const buildUserCard = (user) => {
   const role = normalizeRole(user.Rol);
   const isActive = Boolean(user.Activo);
-  const statusText = isActive ? "Activo" : "Suspendido";
+  const statusText = isActive ? "Activo" : "Desactivado";
   const plan = user.NombrePlan || "Sin plan";
   const subscription = user.EstadoSuscripcion || "Sin suscripcion";
   const isProtectedAdmin = role === "Admin";
@@ -210,7 +209,7 @@ const buildUserCard = (user) => {
         <div class="user-card__identity-copy">
           <strong class="user-card__name">${user.Nombre || "Sin nombre"}</strong>
           <span class="user-card__email">${user.Correo || "Sin correo"}</span>
-          <span class="user-card__id">ID ${user.PK_UsuarioID || "—"}</span>
+          <span class="user-card__id">ID ${user.PK_UsuarioID || "-"}</span>
         </div>
       </div>
 
@@ -246,24 +245,19 @@ const buildUserCard = (user) => {
       <div class="user-card__actions">
         <button type="button" class="user-card__button user-card__button--role">Guardar rol</button>
         <button type="button" class="user-card__button user-card__button--status">
-          ${isActive ? "Suspender" : "Reactivar"}
-        </button>
-        <button type="button" class="user-card__button user-card__button--danger user-card__button--delete">
-          Eliminar
+          ${isActive ? "Desactivar" : "Reactivar"}
         </button>
       </div>
 
-      ${isProtectedAdmin ? '<p class="user-card__notice">Las cuentas con rol Admin quedan protegidas desde este panel.</p>' : ""}
+      ${isProtectedAdmin ? '<p class="user-card__notice">Las cuentas con rol Admin quedan protegidas desde este panel y no se pueden desactivar aqui.</p>' : ""}
     </div>
   `;
 
-  const deleteButton = card.querySelector(".user-card__button--delete");
   const statusButton = card.querySelector(".user-card__button--status");
   const roleButton = card.querySelector(".user-card__button--role");
   const roleSelect = card.querySelector(".user-card__select");
 
   if (isProtectedAdmin) {
-    deleteButton.disabled = true;
     statusButton.disabled = true;
     roleButton.disabled = true;
     roleSelect.disabled = true;
@@ -295,7 +289,7 @@ const buildUserCard = (user) => {
       showToast(data.Mensaje || "Rol actualizado", "green");
       await loadUsers();
     } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
     }
   });
 
@@ -317,36 +311,7 @@ const buildUserCard = (user) => {
       showToast(data.Mensaje || "Estado actualizado", "green");
       await loadUsers();
     } catch (error) {
-      showToast("Error de conexión");
-    }
-  });
-
-  deleteButton.addEventListener("click", async () => {
-    const confirmed = await showConfirm({
-      title: "Eliminar usuario",
-      text: `¿Eliminar a ${user.Nombre || "este usuario"}?`,
-    });
-
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      const { ok, data } = await fetchJson("/api/v1/usuarios/id", {
-        method: "DELETE",
-        params: { id: user.PK_UsuarioID },
-        auth: true,
-      });
-
-      if (!ok) {
-        showToast(data.Mensaje || "No fue posible eliminar el usuario");
-        return;
-      }
-
-      showToast(data.Mensaje || "Usuario eliminado correctamente", "green");
-      await loadUsers();
-    } catch (error) {
-      showToast("Error de conexión");
+      showToast("Error de conexion");
     }
   });
 
@@ -370,7 +335,7 @@ const buildGroup = (role, users) => {
           <h2 class="user-group__title">${getRoleTitle(role)}</h2>
           <span class="user-group__count">${sortedUsers.length}</span>
         </div>
-        <p class="user-group__copy">${activeCount} activos y ${suspendedCount} suspendidos en esta vista.</p>
+        <p class="user-group__copy">${activeCount} activos y ${suspendedCount} desactivados en esta vista.</p>
       </div>
     </button>
       <div class="user-group__body">
@@ -440,7 +405,7 @@ async function loadUsers() {
     syncFilterButtons();
     renderUsers();
   } catch (error) {
-    showToast("Error de conexión");
+    showToast("Error de conexion");
   }
 }
 

@@ -18,43 +18,42 @@
 </head>
 <body>
     <header class="header">
-        <h1 class="header__title" data-i18n="register.title">Registro</h1>
+        <div class="auth-copy auth-copy--register">
+            <p class="auth-copy__eyebrow">LibraryAI</p>
+            <h1 class="header__title" data-i18n="register.title">Registro</h1>
+            <p class="auth-copy__subtitle">Crea tu cuenta y empieza a guardar tus historias.</p>
+        </div>
     </header>
     <main class="main">
         <form id="form" method="POST" class="form">
-
-             <div class="form__input-container" data-field>
+            <div class="form__input-container" data-field>
                 <img src="/assets/icons/user.png" class="form__input-icon" alt="Icono de usuario">
                 <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario" data-i18n-placeholder="register.user_placeholder" maxlength="25" autocomplete="name" title="Usa solo letras, espacios, apóstrofes o guiones. Máximo 25 caracteres.">
             </div>
 
-            
             <div class="form__input-container" data-field>
                 <img src="/assets/icons/email.png" class="form__input-icon" alt="Icono">
                 <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="register.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com. Usa un correo real porque allí llegará la verificación." maxlength="120">
                 <p class="form__helper">Usa un correo real, porque allí recibirás el enlace de verificación.</p>
             </div>
 
-
             <div class="form__input-container" data-field>
                 <img src="/assets/icons/padlock.png" class="form__input-icon" alt="Icono de contraseña">
                 <input type="password" id="password_regist" name="password" required class="form__input" placeholder="Contraseña" data-i18n-placeholder="register.password_placeholder" maxlength="64">
             </div>
 
-             <div class="form__input-container" data-field>
+            <div class="form__input-container" data-field>
                 <img src="/assets/icons/padlock.png" class="form__input-icon" alt="Icono">
                 <input type="password" id="password_registVery" name="username" required class="form__input" placeholder="Confirme Contraseña" data-i18n-placeholder="register.confirm_placeholder" maxlength="64">
             </div>
 
-            
-            <button type="submit"  class="button">
-               <p class="button-link" data-i18n="register.submit">Registrarse</p>
+            <button type="submit" class="button">
+               <span class="button-link" data-i18n="register.submit">Registrarse</span>
             </button>
         </form>
-
     </main>
-    <footer class="footer"> 
-            <p class="footer__text"><span data-i18n="register.has_account">¿Ya tiene cuenta?</span> <a href="login.html" class="recover-link" data-i18n="register.login">Inicie sesión</a></p>
+    <footer class="footer">
+        <p class="footer__text"><span data-i18n="register.has_account">¿Ya tiene cuenta?</span> <a href="login.html" class="recover-link" data-i18n="register.login">Inicie sesión</a></p>
     </footer>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

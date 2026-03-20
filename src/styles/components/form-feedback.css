@@ -30,11 +30,15 @@
 }
 
 [data-field] .field-feedback__message {
-  min-height: 18px;
+  display: none;
   margin: 8px 0 0;
   font-size: 12px;
   line-height: 1.35;
   color: rgba(28, 28, 28, 0.7);
+}
+
+[data-field] .field-feedback__message:not(:empty) {
+  display: block;
 }
 
 [data-field].is-invalid .field-feedback__message {

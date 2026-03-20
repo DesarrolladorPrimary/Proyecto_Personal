@@ -99,12 +99,21 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if (status === 403) {
+      if (status === 403 && data.correoEnviado) {
         setFieldState(emailInput, {
           state: "error",
           message: "Tu cuenta existe, pero primero debes verificar el correo que registraste.",
         });
         showToast(data.Mensaje || "Debes verificar tu correo", "orange");
+        return;
+      }
+
+      if (status === 403) {
+        setFieldState(emailInput, {
+          state: "error",
+          message: data.Mensaje || "La cuenta no esta disponible para iniciar sesion.",
+        });
+        showToast(data.Mensaje || "No fue posible iniciar sesion", "orange");
         return;
       }
 

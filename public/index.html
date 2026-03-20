@@ -15,13 +15,38 @@
 </head>
 <body>
     <header class="header">
-        <img src="/assets/image/open-book-vector-icon-removebg-preview.png" alt="Logotipo de Library Creator" class="header__logo">
+        <div class="header__brand">
+            <img src="/assets/image/open-book-vector-icon-removebg-preview.png" alt="Logotipo de Library Creator" class="header__logo">
+            <span class="header__brand-tag" data-i18n="home.brand">Escritura asistida</span>
+        </div>
     </header>
 
     <main class="main">
-        <h1 class="main__title">Library Creator</h1>
-        <a href="/public/auth/login.html" class="button main__login" data-i18n="home.start">Iniciar</a>
-        <a href="/public/auth/regist.html" class="button main__regist" data-i18n="home.register">Registrar</a>
+        <section class="hero">
+            <div class="hero__copy">
+                <span class="hero__eyebrow" data-i18n="home.eyebrow">Escribe, organiza y crea</span>
+                <h1 class="main__title">Library Creator</h1>
+                <p class="hero__description" data-i18n="home.description">
+                    Tu espacio para desarrollar historias con ayuda de IA, guardar versiones y mantener tu biblioteca siempre ordenada.
+                </p>
+            </div>
+
+            <div class="hero__actions">
+                <a href="/public/auth/login.html" class="button main__login" data-i18n="home.start">Iniciar</a>
+                <a href="/public/auth/regist.html" class="button button--ghost main__regist" data-i18n="home.register">Registrar</a>
+            </div>
+
+            <div class="hero__highlights">
+                <article class="hero__highlight">
+                    <strong data-i18n="home.highlight_1_title">Poly AI</strong>
+                    <p data-i18n="home.highlight_1_text">Genera ideas, estructura escenas y avanza más rápido.</p>
+                </article>
+                <article class="hero__highlight">
+                    <strong data-i18n="home.highlight_2_title">Biblioteca viva</strong>
+                    <p data-i18n="home.highlight_2_text">Guarda relatos, estanterías y versiones sin perder contexto.</p>
+                </article>
+            </div>
+        </section>
     </main>
 </body>
 </html>
