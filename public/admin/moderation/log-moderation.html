@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Historial de Moderación</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+    <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/layout.css" />
+    <link rel="stylesheet" href="/src/styles/pages/admin/log-moderation.css" />
+    <script type="module" src="/src/scripts/utils/accesoAuth.js"></script>
+  </head>
+  <body>
+    <header class="moderation-header">
+      <div class="moderation-header__top">
+        <a href="/public/admin/dashboard-admin.html" class="moderation-header__back" aria-label="Volver al dashboard">
+          <img
+            src="/assets/icons/arrow-90deg-left.svg"
+            alt="Volver"
+            class="moderation-header__back-icon"
+          />
+        </a>
+
+        <div class="moderation-header__copy">
+          <p class="moderation-header__eyebrow">Auditoría</p>
+          <h1 class="moderation-header__title">Historial de Moderación</h1>
+          <p class="moderation-header__text">
+            Revisa intentos de contenido bloqueado sin exponer el texto original.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <main class="moderation-layout">
+      <section class="moderation-summary">
+        <article class="moderation-card">
+          <span class="moderation-card__label">Incidentes</span>
+          <strong class="moderation-card__value" id="moderation-total">0</strong>
+        </article>
+        <article class="moderation-card">
+          <span class="moderation-card__label">Usuarios implicados</span>
+          <strong class="moderation-card__value" id="moderation-users">0</strong>
+        </article>
+        <article class="moderation-card">
+          <span class="moderation-card__label">Último evento</span>
+          <strong class="moderation-card__value moderation-card__value--small" id="moderation-latest">Sin datos</strong>
+        </article>
+      </section>
+
+      <section class="moderation-panel">
+        <div class="moderation-panel__header">
+          <div>
+            <p class="moderation-panel__eyebrow">Filtro</p>
+            <h2 class="moderation-panel__title">Eventos registrados</h2>
+          </div>
+
+          <input
+            type="search"
+            id="moderation-search"
+            class="moderation-search"
+            placeholder="Busca por usuario, correo, motivo o hash"
+          />
+        </div>
+
+        <div class="moderation-table">
+          <div class="moderation-table__head">
+            <div>Fecha</div>
+            <div>Usuario</div>
+            <div>Motivo</div>
+            <div>Hash</div>
+          </div>
+          <div class="moderation-table__body" id="moderation-log-list"></div>
+        </div>
+
+        <p class="moderation-empty moderation-empty--hidden" id="moderation-empty">
+          No hay coincidencias para ese filtro.
+        </p>
+      </section>
+    </main>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module" src="/src/scripts/pages/admin/log-moderation.js"></script>
+  </body>
+</html>

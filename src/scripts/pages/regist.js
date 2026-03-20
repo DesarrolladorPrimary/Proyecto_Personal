@@ -3,6 +3,11 @@ import { bindFieldValidation, validateFields } from "../utils/form-feedback.js";
 
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
 const PASSWORD_COMPLEXITY = /[\d\W_]/;
+const NAME_PATTERN = /^[\p{L}][\p{L}' -]*$/u;
+const NAME_SANITIZE_PATTERN = /[^\p{L}' -]+/gu;
+const EMAIL_MAX_LENGTH = 120;
+const NAME_MIN_LENGTH = 3;
+const NAME_MAX_LENGTH = 25;
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("form");
@@ -31,14 +36,22 @@ document.addEventListener("DOMContentLoaded", () => {
         (value) => {
           const nombre = value.trim();
           if (!nombre) {
-            return { valid: false, message: "Escribe tu nombre de usuario." };
+            return { valid: false, message: "Escribe el nombre que quieres mostrar en tu cuenta." };
           }
 
-          if (nombre.length < 3) {
-            return { valid: false, message: "Debe tener al menos 3 caracteres." };
+          if (nombre.length < NAME_MIN_LENGTH) {
+            return { valid: false, message: "Usa al menos 3 letras para que podamos identificar tu cuenta." };
           }
 
-          return { valid: true, message: "Nombre válido." };
+          if (nombre.length > NAME_MAX_LENGTH) {
+            return { valid: false, message: "Hazlo más corto: el nombre puede tener hasta 25 caracteres." };
+          }
+
+          if (!NAME_PATTERN.test(nombre)) {
+            return { valid: false, message: "Usa solo letras, espacios, apóstrofes o guiones." };
+          }
+
+          return { valid: true, message: "Perfecto, ese nombre se puede usar." };
         },
         { validateOnInput: true },
       ),
@@ -50,14 +63,18 @@ document.addEventListener("DOMContentLoaded", () => {
         (value) => {
           const correo = value.trim();
           if (!correo) {
-            return { valid: false, message: "Ingresa tu correo." };
+            return { valid: false, message: "Ingresa un correo al que sí tengas acceso." };
+          }
+
+          if (correo.length > EMAIL_MAX_LENGTH) {
+            return { valid: false, message: "Hazlo más corto: el correo puede tener hasta 120 caracteres." };
           }
 
           if (!EMAIL_PATTERN.test(correo)) {
-            return { valid: false, message: "Usa un correo con formato válido." };
+            return { valid: false, message: "Escríbelo con formato correo@dominio.com." };
           }
 
-          return { valid: true, message: "Correo válido." };
+          return { valid: true, message: "Bien. Te enviaremos la verificación a ese correo." };
         },
         { validateOnInput: true },
       ),
@@ -68,18 +85,18 @@ document.addEventListener("DOMContentLoaded", () => {
         passwordInput,
         (value) => {
           if (!value) {
-            return { valid: false, message: "Crea una contraseña." };
+            return { valid: false, message: "Crea una contraseña para proteger tu cuenta." };
           }
 
           if (value.length < 8) {
-            return { valid: false, message: "Debe tener mínimo 8 caracteres." };
+            return { valid: false, message: "Hazla un poco más fuerte: usa mínimo 8 caracteres." };
           }
 
           if (!PASSWORD_COMPLEXITY.test(value)) {
-            return { valid: false, message: "Incluye al menos un número o símbolo." };
+            return { valid: false, message: "Agrega al menos un número o símbolo para que sea más segura." };
           }
 
-          return { valid: true, message: "Contraseña válida." };
+          return { valid: true, message: "Contraseña lista." };
         },
         { validateOnInput: true },
       ),
@@ -90,14 +107,14 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmInput,
         (value) => {
           if (!value) {
-            return { valid: false, message: "Confirma tu contraseña." };
+            return { valid: false, message: "Repite tu contraseña para confirmar que quedó bien escrita." };
           }
 
           if (value !== passwordInput.value) {
-            return { valid: false, message: "Debe coincidir con la contraseña." };
+            return { valid: false, message: "No coincide todavía. Revisa ambas contraseñas." };
           }
 
-          return { valid: true, message: "Las contraseñas coinciden." };
+          return { valid: true, message: "Listo, ambas contraseñas coinciden." };
         },
         { validateOnInput: true },
       ),
@@ -110,6 +127,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  userInput.addEventListener("input", () => {
+    const sanitized = userInput.value.replace(NAME_SANITIZE_PATTERN, "");
+    const trimmedToMax = sanitized.slice(0, NAME_MAX_LENGTH);
+    if (trimmedToMax !== userInput.value) {
+      userInput.value = trimmedToMax;
+    }
+  });
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -118,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const contraseña = passwordInput.value;
 
     if (!validateFields(fieldBindings)) {
-      showToast("Revisa los campos marcados antes de continuar.");
+      showToast("Revisa los campos marcados y corrige lo necesario antes de continuar.");
       return;
     }
 

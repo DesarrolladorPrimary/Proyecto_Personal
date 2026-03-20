@@ -25,13 +25,14 @@
 
              <div class="form__input-container" data-field>
                 <img src="/assets/icons/user.png" class="form__input-icon" alt="Icono de usuario">
-                <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario" data-i18n-placeholder="register.user_placeholder" maxlength="80">
+                <input type="text" id="user_regist" name="username" required class="form__input" placeholder="Usuario" data-i18n-placeholder="register.user_placeholder" maxlength="25" autocomplete="name" title="Usa solo letras, espacios, apóstrofes o guiones. Máximo 25 caracteres.">
             </div>
 
             
             <div class="form__input-container" data-field>
                 <img src="/assets/icons/email.png" class="form__input-icon" alt="Icono">
-                <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="register.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com" maxlength="120">
+                <input type="email" id="correo_regist" name="username" required class="form__input" placeholder="Correo" data-i18n-placeholder="register.email_placeholder" pattern="[a-zA-Z0-9._%\+\-]+@[a-zA-Z0-9._%\+\-]+\.[a-zA-Z]{2,100}"  title="El correo debe tener la siguiente estructura: correo@dominio.com. Usa un correo real porque allí llegará la verificación." maxlength="120">
+                <p class="form__helper">Usa un correo real, porque allí recibirás el enlace de verificación.</p>
             </div>
 
 
@@ -60,6 +61,3 @@
     <script type="module" src="/src/scripts/pages/regist.js"></script>
 </body>
 </html>
-
-
-

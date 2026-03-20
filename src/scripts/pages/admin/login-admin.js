@@ -8,6 +8,7 @@ import {
 import { bindFieldValidation, setFieldState, validateFields } from "../../utils/form-feedback.js";
 
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]+\.[a-zA-Z]{2,100}$/;
+const EMAIL_MAX_LENGTH = 120;
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("admin-login-form");
@@ -39,14 +40,18 @@ document.addEventListener("DOMContentLoaded", () => {
         (value) => {
           const correo = value.trim();
           if (!correo) {
-            return { valid: false, message: "Ingresa tu correo." };
+            return { valid: false, message: "Ingresa el correo de tu cuenta administradora." };
+          }
+
+          if (correo.length > EMAIL_MAX_LENGTH) {
+            return { valid: false, message: "Hazlo más corto: el correo puede tener hasta 120 caracteres." };
           }
 
           if (!EMAIL_PATTERN.test(correo)) {
-            return { valid: false, message: "Usa un correo con formato válido." };
+            return { valid: false, message: "Escríbelo con formato correo@dominio.com." };
           }
 
-          return { valid: true, message: "Correo válido." };
+          return { valid: true, message: "Correo listo para validar acceso admin." };
         },
         { validateOnInput: true },
       ),
@@ -57,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
         passwordInput,
         (value) => {
           if (!value) {
-            return { valid: false, message: "Ingresa tu contraseña." };
+            return { valid: false, message: "Ingresa la contraseña de tu cuenta administradora." };
           }
 
-          return { valid: true, message: "Campo completo." };
+          return { valid: true, message: "Contraseña ingresada." };
         },
         { validateOnInput: true },
       ),
@@ -108,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (status === 403) {
         setFieldState(emailInput, {
           state: "error",
-          message: "Tu correo existe, pero aún no ha sido verificado.",
+          message: "La cuenta existe, pero primero debes verificar el correo registrado.",
         });
         showToast(data.Mensaje || "Debes verificar tu correo", "orange");
         return;
@@ -116,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setFieldState(passwordInput, {
         state: "error",
-        message: "Verifica tus credenciales e inténtalo otra vez.",
+        message: "Revisa las credenciales o confirma que tu cuenta sí sea administradora.",
       });
       showToast(data.Mensaje || "No fue posible iniciar sesión");
     } catch (error) {

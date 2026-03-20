@@ -29,7 +29,7 @@ body {
   flex-direction: column; /* Inputs apilados verticalmente */
   align-items: center;
   justify-content: center;
-  gap: var(--auth-spacing-small); /* Espacio entre inputs */
+  gap: 8px; /* Mantiene los campos compactos incluso con ayuda visual */
   margin: var(--auth-spacing-medium);
 }
 
@@ -52,6 +52,11 @@ body {
 .form__input-container {
   position: relative;
   width: var(--auth-input-width); /* Ancho definido en variables */
+}
+
+.form__input-container .field-feedback__message {
+  min-height: 0;
+  margin-top: 4px;
 }
 
 /* Icono dentro del input (usuario, candado) */
@@ -116,7 +121,7 @@ body {
   }
 
   .form {
-    gap: 25px;
+    gap: 10px;
     margin: 45px;
   }
 
@@ -135,7 +140,7 @@ body {
   }
 
   .form {
-    gap: 30px;
+    gap: 12px;
     margin: 50px;
   }
 
@@ -155,7 +160,7 @@ body {
   }
 
   .form {
-    gap: 35px;
+    gap: 12px;
     margin: 60px;
   }
 
