@@ -22,10 +22,16 @@
     <!-- Encabezado de la página -->
     <header class="header">
       <div class="header__nav">
-        <div 
-        class="header__nav-line"  
-        id="header__nav"
-        ></div>
+        <button
+          class="header__nav-line"
+          id="header__nav"
+          type="button"
+          aria-label="Abrir navegación"
+          aria-controls="sidebar"
+          aria-expanded="false"
+        >
+          <span class="header__nav-link" aria-hidden="true"></span>
+        </button>
       </div>
       
         <img
@@ -37,47 +43,56 @@
     </header>
 
     <!-- Menú lateral -->
-    <aside class="aside" id="sidebar">
-      
-      <a href="#" class="aside__link aside__link--navi"
-        ><img
-          class="aside__icon aside__icon--mind"
-          src="/assets/icons/mind.png"
-          alt="mind_icon"
-      /></a>
-      <div class="aside__panel aside__panel--poly" id="polyAI">
-        <a href="poly/seccion_poly.html" class="aside__panel-link" data-i18n="feed.poly">Seccion Artificial/Poly</a>
+    <div class="aside__backdrop" id="sidebar-backdrop" hidden></div>
+    <aside class="aside" id="sidebar" aria-hidden="true">
+      <div class="aside__header">
+        <div class="aside__copy">
+          <p class="aside__eyebrow">Navegacion</p>
+          <p class="aside__title">Explora tu espacio</p>
+        </div>
       </div>
 
-      <a href="#" class="aside__link aside__link--navi"
-        ><img
-          class="aside__icon aside__icon--paper"
-          src="/assets/icons/papel.png"
-          alt="papel_icon"
-      /></a>
-      <div class="aside__panel aside__panel--creative">
-        <a href="creative/seccion_creativa.html" class="aside__panel-link" data-i18n="feed.creative">Seccion Creativa</a>
-      </div>
+      <nav class="aside__nav" aria-label="Secciones principales">
+        <a href="poly/seccion_poly.html" class="aside__item aside__item--poly">
+          <span class="aside__item-icon-wrap">
+            <img class="aside__icon aside__icon--poly" src="/assets/icons/light-bulb-brain.png" alt="" />
+          </span>
+          <span class="aside__item-copy">
+            <span class="aside__item-title" data-i18n="feed.poly">Seccion Artificial/Poly</span>
+            <span class="aside__item-description">Chatea con Poly y desarrolla ideas guiadas.</span>
+          </span>
+        </a>
 
-      <a href="#" class="aside__link aside__link--navi"
-        ><img
-          class="aside__icon aside__icon--libros"
-          src="/assets/icons/libros.png"
-          alt="libros_icon"
-      /></a>
-      <div class="aside__panel aside__panel--library">
-        <a href="biblioteca/library.html" class="aside__panel-link" data-i18n="feed.library">Biblioteca</a>
-      </div>
+        <a href="creative/seccion_creativa.html" class="aside__item aside__item--creative">
+          <span class="aside__item-icon-wrap">
+            <img class="aside__icon aside__icon--creative" src="/assets/icons/pluma.png" alt="" />
+          </span>
+          <span class="aside__item-copy">
+            <span class="aside__item-title" data-i18n="feed.creative">Seccion Creativa</span>
+            <span class="aside__item-description">Escribe libremente y organiza tus lienzos.</span>
+          </span>
+        </a>
 
-      <a href="#" class="aside__link aside__link--navi"
-        ><img
-          class="aside__icon aside__icon--setting"
-          src="/assets/icons/setting.png"
-          alt="setting"
-      /></a>
-      <div class="aside__panel aside__panel--settings">
-        <a href="settings/settings-user.html" class="aside__panel-link" data-i18n="feed.settings">Configuraciones</a>
-      </div>
+        <a href="biblioteca/library.html" class="aside__item aside__item--library">
+          <span class="aside__item-icon-wrap">
+            <img class="aside__icon aside__icon--library" src="/assets/icons/book.svg" alt="" />
+          </span>
+          <span class="aside__item-copy">
+            <span class="aside__item-title" data-i18n="feed.library">Biblioteca</span>
+            <span class="aside__item-description">Consulta relatos, estanterias y exportaciones.</span>
+          </span>
+        </a>
+
+        <a href="settings/settings-user.html" class="aside__item aside__item--settings">
+          <span class="aside__item-icon-wrap">
+            <img class="aside__icon aside__icon--settings" src="/assets/icons/sliders.svg" alt="" />
+          </span>
+          <span class="aside__item-copy">
+            <span class="aside__item-title" data-i18n="feed.settings">Configuraciones</span>
+            <span class="aside__item-description">Ajusta tu cuenta, modelo y preferencias.</span>
+          </span>
+        </a>
+      </nav>
     </aside>
 
     <!-- Contenido principal -->

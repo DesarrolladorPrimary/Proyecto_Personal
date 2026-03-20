@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const logoUser = document.getElementById("logo_user");
   const menuUser = document.getElementById("user");
   const aside = document.getElementById("sidebar");
+  const asideBackdrop = document.getElementById("sidebar-backdrop");
   const headerAside = document.getElementById("header__nav");
   const buttonLogout = document.getElementById("logout");
   const fieldName = document.getElementById("nombre_usuario");
@@ -30,6 +31,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).showToast();
   };
 
+  const setAsideOpen = (isOpen) => {
+    aside?.classList.toggle("aside--active", isOpen);
+    if (aside) {
+      aside.setAttribute("aria-hidden", String(!isOpen));
+    }
+    if (headerAside) {
+      headerAside.setAttribute("aria-expanded", String(isOpen));
+    }
+    if (asideBackdrop) {
+      asideBackdrop.hidden = !isOpen;
+    }
+  };
+
   if (!userId || !token) {
     logoutAndRedirect();
     return;
@@ -40,7 +54,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   headerAside?.addEventListener("click", () => {
-    aside?.classList.toggle("aside--active");
+    const isOpen = aside?.classList.contains("aside--active");
+    setAsideOpen(!isOpen);
+  });
+
+  asideBackdrop?.addEventListener("click", () => {
+    setAsideOpen(false);
   });
 
   buttonLogout?.addEventListener("click", () => {
@@ -60,7 +79,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       !headerAside.contains(event.target) &&
       !aside.contains(event.target)
     ) {
-      aside.classList.remove("aside--active");
+      setAsideOpen(false);
+    }
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      menuUser?.classList.remove("menu-user--visible");
+      setAsideOpen(false);
     }
   });
 
