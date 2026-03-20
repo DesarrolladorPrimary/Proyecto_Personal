@@ -1,97 +1,132 @@
 body {
-  background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100vh;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(28, 23, 23, 0.2) 0%, rgba(34, 28, 28, 0.65) 100%),
+    url("../../../../assets/image/upscalemedia-transformed.jpeg") center / cover no-repeat;
 }
 
 .recovery-password {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  height: 100vh;
   align-items: center;
+  justify-content: center;
+  padding: 28px 18px;
 }
 
 .recovery-password__container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  border-radius: 12px;
-  background-color: var(--color-background-container);
-  width: 286px;
-  height: 311px;
-  transform: translateY(-150px);
+  width: min(100%, 420px);
+  display: grid;
+  gap: 16px;
+  padding: 32px 22px 28px;
+  border-radius: 28px;
+  background: rgba(81, 72, 72, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
+  color: var(--color-text-light);
+}
+
+.recovery-password__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 191, 0, 0.16);
+  color: #ffe29a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .recovery-password__title {
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  font-style: 200;
+  font-family: var(--font-family-poppins);
+  font-size: 28px;
+  line-height: 1.05;
+  font-weight: 700;
   color: var(--color-text-light);
-  font-size: var(--recovery-font-size-title);
 }
 
 .recovery-password__description {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  font-family: "Inter", sans-serif;
-  font-weight: 300;
-  font-style: normal;
-  color: var(--color-text-light);
-  text-align: center;
+  font-family: var(--font-family-main);
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.recovery-password__form {
+  display: grid;
+  gap: 16px;
 }
 
 .recovery-password__form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-}
-
-.recovery-password__form-group[data-field] {
+  display: grid;
   gap: 10px;
 }
 
 .recovery-password__input {
-  height: var(--recovery-input-height);
-  width: var(--recovery-input-width);
-  border: none;
-  border-radius: 5px;
-  padding-left: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  color: #2f2727;
+  font-family: var(--font-family-main);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.recovery-password__input:focus {
+  border-color: rgba(255, 191, 0, 0.9);
+  box-shadow: 0 0 0 4px rgba(255, 191, 0, 0.14);
 }
 
 .recovery-password__button {
+  width: 100%;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffcf40 0%, #ffbf00 100%);
+  color: #2b2323;
+  font-family: var(--font-family-main);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
-  text-decoration: var(--decoration-text);
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
-  border: 0 solid black;
-  border-radius: 9px;
-  background-color: var(--recovery-button-bg);
-  font-size: var(--recovery-text-size);
-  padding: 7px;
-  width: 89px;
-  height: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+}
+
+.recovery-password__button:hover {
+  transform: translateY(-1px);
+}
+
+.recovery-password__support {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.recovery-password__back-login {
+  text-align: center;
 }
 
 .recovery-password__link {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+  color: #f6deb0;
   text-decoration: none;
-  color: var(--color-text);
+  font-size: 14px;
+}
+
+.recovery-password__link:hover {
+  text-decoration: underline;
 }
 
 .recovery-password__form-group .field-feedback__message {
-  width: var(--recovery-input-width);
+  width: 100%;
   color: rgba(255, 255, 255, 0.78);
 }
 
@@ -104,64 +139,30 @@ body {
 }
 
 @media (min-width: 768px) {
+  .recovery-password {
+    padding: 36px 24px;
+  }
+
   .recovery-password__container {
-    width: 330px;
-    height: 340px;
+    padding: 38px 30px 30px;
   }
 
   .recovery-password__title {
-    font-size: 18px;
+    font-size: 32px;
   }
 
-  .recovery-password__description {
-    font-size: 14px;
-  }
-
-  .recovery-password__button {
-    width: 100px;
-    height: 27px;
+  .recovery-password__description,
+  .recovery-password__support {
+    font-size: 15px;
   }
 }
 
 @media (min-width: 1024px) {
   .recovery-password__container {
-    width: 380px;
-    height: 380px;
+    width: min(100%, 460px);
   }
 
   .recovery-password__title {
-    font-size: 20px;
-  }
-
-  .recovery-password__description {
-    font-size: 15px;
-  }
-
-  .recovery-password__button {
-    width: 110px;
-    height: 30px;
-    font-size: 12px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .recovery-password__container {
-    width: 420px;
-    height: 420px;
-    gap: 35px;
-  }
-
-  .recovery-password__title {
-    font-size: 22px;
-  }
-
-  .recovery-password__description {
-    font-size: 16px;
-  }
-
-  .recovery-password__button {
-    width: 130px;
-    height: 34px;
-    font-size: 14px;
+    font-size: 36px;
   }
 }

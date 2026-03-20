@@ -18,14 +18,19 @@
 <body>
     <main class="recovery-password">
         <div class="recovery-password__container">
+            <span class="recovery-password__eyebrow">Recuperacion</span>
             <h1 class="recovery-password__title" data-i18n="recovery.title">¿Olvidó su contraseña?</h1>
             <p class="recovery-password__description" data-i18n="recovery.description">Ingrese el correo electrónico asociado a su cuenta y le enviaremos un enlace para restablecer su contraseña.</p>
             <form action="" class="recovery-password__form" id="form">
                 <div class="recovery-password__form-group" data-field>
                     <input type="text" id="correo" name="" placeholder="Correo" data-i18n-placeholder="recovery.email_placeholder" class="recovery-password__input" maxlength="120" title="Máximo 120 caracteres.">
-                    <button type="submit" class="recovery-password__button" data-i18n="recovery.submit">Enviar</button>
                 </div>
+                <button type="submit" class="recovery-password__button" data-i18n="recovery.submit">Enviar</button>
             </form>
+            <p class="recovery-password__support">Te enviaremos un enlace seguro para crear una nueva contraseña.</p>
+            <p class="recovery-password__back-login">
+                <a href="login.html" class="recovery-password__link">Volver al login</a>
+            </p>
         </div>
     </main>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

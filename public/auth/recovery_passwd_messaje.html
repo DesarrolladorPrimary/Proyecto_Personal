@@ -17,12 +17,15 @@
 <body>
 
     <main class="recovery-password">
-        <div class="recovery-password__container">
-            <h1 class="recovery-password__title">Correo enviado</h1>
-            <p class="recovery-password__description">Le enviamos un enlace de <br> recuperación. Si no lo ve en  <br> unos minutos, por favor <br> revise su carpeta de correo <br> no deseado (spam).</p>
-            <p class="recovery-password__back-login">
-                <a href="login.html" class="recovery-password__link">Volver al login</a>
-            </p>
+        <div class="recovery-password__container recovery-password__container--status recovery-password__container--success">
+            <span class="recovery-password__icon" aria-hidden="true">✓</span>
+            <span class="recovery-password__eyebrow">Correo enviado</span>
+            <h1 class="recovery-password__title">Revisa tu bandeja</h1>
+            <p class="recovery-password__description">Te enviamos un enlace de recuperación. Si no lo ves en unos minutos, revisa spam o correo no deseado.</p>
+            <div class="recovery-password__actions">
+                <a href="login.html" class="recovery-password__button recovery-password__button--link">Volver al login</a>
+                <a href="recovery_passwd.html" class="recovery-password__secondary-link">Enviar de nuevo</a>
+            </div>
         </div>
     </main>
 </body>

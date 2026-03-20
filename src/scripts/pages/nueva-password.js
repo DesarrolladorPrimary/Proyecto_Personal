@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     passwordRuleComplexity?.classList.toggle("recovery-password__form-requirement--met", PASSWORD_COMPLEXITY.test(password));
     passwordRuleMax?.classList.toggle(
       "recovery-password__form-requirement--met",
-      password.length > 0 && password.length <= 128,
+      password.length > 0 && password.length <= 64,
     );
     passwordRuleMatch?.classList.toggle(
       "recovery-password__form-requirement--met",

@@ -1,124 +1,144 @@
-/* ============================================
-   RECOVERY_PASSWD_MESSAJE.CSS - Mensaje de Éxito
-   ============================================
-   Página de confirmación de recuperación
-   Muestra mensaje de "correo enviado" al usuario
-   ============================================ */
-
-/* Body con imagen de fondo */
 body {
-  background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
-  background-size: cover; /* Cubre toda la pantalla */
-  background-position: center;
-  background-repeat: no-repeat;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(28, 23, 23, 0.2) 0%, rgba(34, 28, 28, 0.66) 100%),
+    url("../../../../assets/image/upscalemedia-transformed.jpeg") center / cover no-repeat;
 }
 
-/* Contenedor principal - centra la tarjeta */
 .recovery-password {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  height: 100vh;
   align-items: center;
+  justify-content: center;
+  padding: 28px 18px;
 }
 
-/* Tarjeta de mensaje de confirmación */
 .recovery-password__container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  border-radius: 12px; /* Esquinas redondeadas */
-  background-color: var(--color-background-container);
-  width: 286px;
-  height: 311px;
-  transform: translateY(-150px); /* Sube la tarjeta */
-}
-
-/* Título "Correo Enviado" */
-.recovery-password__title {
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  font-style: 200;
+  width: min(100%, 430px);
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 34px 24px 30px;
+  border-radius: 28px;
+  background: rgba(81, 72, 72, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
   color: var(--color-text-light);
-  font-size: var(--recovery-font-size-title);
-}
-
-/* Descripción del mensaje de éxito */
-.recovery-password__description {
-  font-family: "Inter", sans-serif;
-  font-weight: 300;
-  font-style: normal;
-  color: var(--color-text-light);
-  text-align: center; /* Centra el texto */
-}
-
-/* Enlace volver al login */
-.recovery-password__back-login {
   text-align: center;
 }
 
+.recovery-password__container--status {
+  gap: 18px;
+}
+
+.recovery-password__container--success .recovery-password__icon {
+  background: rgba(58, 124, 77, 0.22);
+  color: #d6ffe0;
+}
+
+.recovery-password__container--error .recovery-password__icon {
+  background: rgba(215, 71, 71, 0.22);
+  color: #ffdada;
+}
+
+.recovery-password__icon {
+  width: 66px;
+  height: 66px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 191, 0, 0.2);
+  color: #ffe29a;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.recovery-password__icon--loading {
+  letter-spacing: 0.14em;
+}
+
+.recovery-password__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.recovery-password__title {
+  font-family: var(--font-family-poppins);
+  font-size: 29px;
+  line-height: 1.08;
+  font-weight: 700;
+}
+
+.recovery-password__description {
+  font-family: var(--font-family-main);
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.recovery-password__actions {
+  width: 100%;
+  display: grid;
+  gap: 12px;
+}
+
+.recovery-password__button--link {
+  width: 100%;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffcf40 0%, #ffbf00 100%);
+  color: #2b2323;
+  font-family: var(--font-family-main);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+}
+
+.recovery-password__secondary-link,
 .recovery-password__link {
-  color: var(--color-link);
+  color: #f3e3bb;
   font-size: 14px;
   text-decoration: none;
 }
 
+.recovery-password__secondary-link:hover,
 .recovery-password__link:hover {
   text-decoration: underline;
 }
 
-/* ===========================
-   SISTEMA DE BREAKPOINTS
-   =========================== */
-
-/* Tablets (768px - 1023px): Tarjeta más grande */
-@media (min-width: 768px) {
-  .recovery-password__container {
-    width: 330px;
-    height: 340px;
-  }
-
-  .recovery-password__title {
-    font-size: 18px;
-  }
-
-  .recovery-password__description {
-    font-size: 14px;
-    padding: 0 15px; /* Padding lateral para texto */
-  }
+.recovery-password__back-login {
+  text-align: center;
 }
 
-/* Desktop (1024px - 1279px): Tamaño escritorio */
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .recovery-password__container {
-    width: 380px;
-    height: 380px;
+    padding: 40px 30px 34px;
   }
 
   .recovery-password__title {
-    font-size: 20px;
+    font-size: 34px;
   }
 
   .recovery-password__description {
     font-size: 15px;
-    padding: 0 20px;
   }
 }
 
-/* Desktop Grande (1280px+): Máximo tamaño */
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
   .recovery-password__container {
-    width: 420px;
-    height: 420px;
-  }
-
-  .recovery-password__title {
-    font-size: 22px;
-  }
-
-  .recovery-password__description {
-    font-size: 16px;
-    padding: 0 25px;
+    width: min(100%, 470px);
   }
 }

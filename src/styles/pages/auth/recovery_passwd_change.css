@@ -1,116 +1,100 @@
 body {
-  background-image: url("../../../../assets/image/upscalemedia-transformed.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100vh;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(28, 23, 23, 0.2) 0%, rgba(34, 28, 28, 0.66) 100%),
+    url("../../../../assets/image/upscalemedia-transformed.jpeg") center / cover no-repeat;
 }
 
 .recovery-password {
+  min-height: 100vh;
   display: flex;
+  align-items: center;
   justify-content: center;
-  height: 100vh;
+  padding: 28px 18px;
 }
 
 .recovery-password__container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  margin-top: var(--recovery-container-margin-top);
-  border-radius: var(--recovery-container-radius);
-  background-color: var(--color-background-container);
-  width: var(--recovery-container-width);
-  height: var(--recovery-container-height);
+  width: min(100%, 470px);
+  display: grid;
+  gap: 16px;
+  padding: 32px 22px 28px;
+  border-radius: 28px;
+  background: rgba(81, 72, 72, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
+  color: var(--color-text-light);
+}
+
+.recovery-password__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(78, 205, 196, 0.16);
+  color: #c8fff8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .recovery-password__title {
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  font-style: 200;
-  margin-top: var(--recovery-title-margin-top);
+  font-family: var(--font-family-poppins);
+  font-size: 28px;
+  line-height: 1.05;
+  font-weight: 700;
   color: var(--color-text-light);
-  font-size: var(--recovery-font-size-title);
 }
 
 .recovery-password__description {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--recovery-description-gap);
-  font-family: "Inter", sans-serif;
-  font-weight: 300;
-  font-style: normal;
-  color: var(--color-text-light);
-  text-align: center;
+  font-family: var(--font-family-main);
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.recovery-password__form {
+  display: grid;
+  gap: 14px;
 }
 
 .recovery-password__form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--recovery-form-gap);
-}
-
-.recovery-password__form-group[data-field] {
+  display: grid;
   gap: 10px;
 }
 
 .recovery-password__input {
-  height: var(--recovery-input-height);
-  width: var(--recovery-input-width);
-  border: none;
-  border-radius: var(--recovery-input-radius);
-  padding-left: var(--recovery-input-padding-left);
-}
-
-.recovery-password__button {
-  text-decoration: var(--decoration-text);
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
-  border: 0 solid black;
-  border-radius: var(--recovery-button-radius);
-  background-color: var(--recovery-button-bg);
-  font-size: var(--recovery-text-size);
-  padding: var(--recovery-button-padding);
-  width: var(--recovery-button-width);
-  height: var(--recovery-button-height);
-  transform: translateY(43px);
-}
-
-.recovery-password__link {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  text-decoration: none;
-  color: var(--color-text);
-}
-
-.recovery-password__back-login {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.recovery-password__back-login .recovery-password__link {
-  color: var(--color-link);
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  color: #2f2727;
+  font-family: var(--font-family-main);
   font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.recovery-password__back-login .recovery-password__link:hover {
-  text-decoration: underline;
+.recovery-password__input:focus {
+  border-color: rgba(78, 205, 196, 0.9);
+  box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.14);
+}
+
+.recovery-password__form-requirements-list {
+  display: grid;
+  gap: 8px;
+  padding: 14px 14px 12px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.12);
 }
 
 .recovery-password__form-requirement {
-  font-family: "Inter", sans-serif;
-  font-weight: 200;
-  font-style: normal;
-  color: var(--color-text-light);
-  font-size: 11px;
-  margin-top: var(--font-size-small);
-  opacity: 0.72;
+  font-family: var(--font-family-main);
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
   transition: color 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
 }
 
@@ -120,12 +104,46 @@ body {
   transform: translateX(2px);
 }
 
-.recovery-password__input--confirm {
-  transform: translateY(40px);
+.recovery-password__button {
+  width: 100%;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d7e6e2 0%, #bdd7d1 100%);
+  color: #2b2323;
+  font-family: var(--font-family-main);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+}
+
+.recovery-password__button:hover {
+  transform: translateY(-1px);
+}
+
+.recovery-password__back-login {
+  text-align: center;
+  margin-top: 6px;
+}
+
+.recovery-password__link {
+  color: #d5f5ee;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.recovery-password__link:hover {
+  text-decoration: underline;
 }
 
 .recovery-password__form-group .field-feedback__message {
-  width: var(--recovery-input-width);
+  width: 100%;
   color: rgba(255, 255, 255, 0.78);
 }
 
@@ -138,26 +156,16 @@ body {
 }
 
 @media (min-width: 768px) {
+  .recovery-password {
+    padding: 36px 24px;
+  }
+
+  .recovery-password__container {
+    padding: 38px 30px 30px;
+  }
+
   .recovery-password__title {
-    font-size: 18px;
-  }
-
-  .recovery-password__description {
-    font-size: 14px;
-  }
-
-  .recovery-password__form-requirement {
-    font-size: 12px;
-  }
-
-  .recovery-password__button {
-    transform: translateY(46px);
-  }
-}
-
-@media (min-width: 1024px) {
-  .recovery-password__title {
-    font-size: 20px;
+    font-size: 32px;
   }
 
   .recovery-password__description {
@@ -167,28 +175,14 @@ body {
   .recovery-password__form-requirement {
     font-size: 13px;
   }
-
-  .recovery-password__button {
-    transform: translateY(50px);
-    font-size: 12px;
-  }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
+  .recovery-password__container {
+    width: min(100%, 500px);
+  }
+
   .recovery-password__title {
-    font-size: 22px;
-  }
-
-  .recovery-password__description {
-    font-size: 16px;
-  }
-
-  .recovery-password__form-requirement {
-    font-size: 14px;
-  }
-
-  .recovery-password__button {
-    transform: translateY(55px);
-    font-size: 14px;
+    font-size: 36px;
   }
 }

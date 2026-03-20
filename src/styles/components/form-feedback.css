@@ -24,9 +24,9 @@
 [data-field].is-valid .form__input,
 [data-field].is-valid .recovery-password__input,
 [data-field].is-valid .modal__input {
-  border-color: rgba(111, 170, 131, 0.92);
-  background-color: rgba(238, 248, 242, 0.98);
-  box-shadow: 0 0 0 3px rgba(111, 170, 131, 0.12);
+  border-color: rgba(79, 163, 108, 0.98);
+  background-color: rgba(240, 252, 245, 0.99);
+  box-shadow: 0 0 0 3px rgba(79, 163, 108, 0.18);
 }
 
 [data-field] .field-feedback__message {
@@ -34,6 +34,8 @@
   margin: 8px 0 0;
   font-size: 12px;
   line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: rgba(28, 28, 28, 0.7);
 }
 
@@ -46,9 +48,15 @@
 }
 
 [data-field].is-valid .field-feedback__message {
-  color: #2f6a47;
+  color: #1f5d39;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 [data-field].is-invalid .form__input-icon {
   opacity: 0.9;
+}
+
+[data-field].is-valid .form__input-icon {
+  opacity: 1;
+  filter: saturate(1.2) hue-rotate(28deg);
 }
