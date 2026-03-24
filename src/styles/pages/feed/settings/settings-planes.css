@@ -1,312 +1,455 @@
-/* ============================================
-   SETTINGS-PLANES.CSS - Planes y Suscripciones
-   ============================================
-   Página de planes con tarjetas de precios
-   y modal de pago animado
-   ============================================ */
-
-/* Grid principal de la página */
 body {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr; /* Header + contenido */
+  grid-template-rows: auto 1fr;
 }
 
-/* Contenedor de planes */
 .plans {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
+  gap: 28px;
+  padding: 28px 18px 42px;
   color: var(--color-text-light);
 }
 
-/* Header de la sección de planes */
-.plans-header {
-  grid-column: 1/2;
-  grid-row: 1/2;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  font-family: var(--font-family-poppins);
+.plans-hero,
+.plans-board,
+.plans-current,
+.plan-card,
+.plans-empty,
+.payment-loading__container {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01)),
+    rgba(43, 39, 39, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
 }
 
-/* Título "Planes" */
+.plans-hero {
+  display: grid;
+  gap: 18px;
+}
+
+.plans-hero__copy,
+.plans-board {
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.plans-hero__copy {
+  display: grid;
+  gap: 10px;
+}
+
+.plans-hero__eyebrow,
+.plans-board__eyebrow,
+.plans-current__eyebrow,
+.plans-current__label,
+.plan-card__eyebrow,
+.plan-card__meta-label,
+.plan-card__code {
+  font-family: var(--font-family-poppins);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.58);
+}
+
 .plans__title {
-  font-size: 20px;
-  font-weight: normal;
-}
-
-/* Subtítulo descriptivo */
-.plans__subtitle {
-  font-size: 14px;
-  font-weight: lighter;
-}
-
-/* Contenedor de tarjetas de planes */
-.plans__container {
-  grid-column: 1/2;
-  grid-row: 2/3;
-  display: flex;
-  flex-direction: column; /* Tarjetas apiladas */
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-}
-
-/* =========================================
-   TARJETA DE PLAN
-   =========================================
-   Cada tarjeta muestra un plan (Free/Premium)
-   ========================================= */
-
-/* Tarjeta de plan individual */
-.plan-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 345px;
-  height: 265px;
-  background-color: var(--background-color-nav-subline);
-  border-radius: 10px;
-}
-
-/* Título del plan (ej: "Gratuito", "Premium") */
-.plan-card__title {
-  font-size: 19px;
-  font-weight: lighter;
+  margin: 0;
   font-family: var(--font-family-poppins);
+  font-size: clamp(1.65rem, 4vw, 2.2rem);
+  font-weight: 600;
 }
 
-/* Cada característica del plan */
-.plan-card__feature {
-  list-style: none; /* Sin bullets */
-}
-
-/* Lista de características */
-.plan-card__features {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Texto de cada característica */
+.plans__subtitle,
+.plans-board__text,
+.plans-current__meta,
 .plan-card__feature-text {
-  font-size: var(--font-size-small);
-  font-weight: lighter;
+  margin: 0;
   font-family: var(--font-family-poppins);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
 }
 
-/* Botón de la tarjeta */
-.plan-card__button {
-  width: 124.62px;
-  height: 34px;
-  border-radius: 3px;
-  background-color: var(--background-color-body-feed);
-  border: none;
-  color: var(--color-text-light);
-  font-weight: lighter;
-  font-family: var(--font-family-poppins);
-  font-size: 14px;
-  cursor: pointer;
+.plans-current {
+  --plan-accent: #4ecdc4;
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Label dentro del botón */
-.plan-card__button-label {
-  cursor: pointer;
-}
-
-/* Modificador: botón de upgrade más ancho */
-.plan-card__button--upgrade {
-  width: 181px;
-}
-
-/* =========================================
-   MODAL DE PAGO
-   =========================================
-   Modal que aparece al iniciar el pago
-   Controlado por checkbox
-   ========================================= */
-
-/* Modal de carga de pago (oculto por defecto) */
-.payment-loading {
-  opacity: 0; /* Invisible */
-  pointer-events: none; /* No clickeable */
-  display: flex;
+.plans-current::before {
+  content: "";
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: linear-gradient(180deg, var(--plan-accent), rgba(255, 255, 255, 0));
+}
+
+.plans-current__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.plans-current__title {
+  margin: 6px 0 0;
+  font-family: var(--font-family-poppins);
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.plans-current__badge,
+.plan-card__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-family: var(--font-family-poppins);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.plans-current__badge--premium,
+.plan-card__badge--current {
+  background: rgba(255, 215, 0, 0.18);
+  border-color: rgba(255, 215, 0, 0.34);
+}
+
+.plans-current__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.plans-current__stat {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.plans-current__value {
+  font-family: var(--font-family-poppins);
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.plans-board {
+  display: grid;
+  gap: 18px;
+}
+
+.plans-board__heading {
+  display: grid;
+  gap: 8px;
+}
+
+.plans-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.plan-card {
+  --plan-accent: #4ecdc4;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 24px;
+}
+
+.plan-card__glow {
+  position: absolute;
+  inset: -40% auto auto 55%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--plan-accent) 34%, transparent), transparent 70%);
+  pointer-events: none;
+}
+
+.plan-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: linear-gradient(180deg, var(--plan-accent), rgba(255, 255, 255, 0));
+}
+
+.plan-card--current {
+  border-color: color-mix(in srgb, var(--plan-accent) 55%, rgba(255, 255, 255, 0.12));
+}
+
+.plan-card__head,
+.plan-card__price-block,
+.plan-card__meta,
+.plan-card__features {
+  position: relative;
+  z-index: 1;
+}
+
+.plan-card__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.plan-card__identity {
+  display: grid;
+  gap: 8px;
+}
+
+.plan-card__title {
+  margin: 0;
+  font-family: var(--font-family-poppins);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.plan-card__badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.plan-card__price-block {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.plan-card__price {
+  font-family: var(--font-family-poppins);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.97);
+}
+
+.plan-card__storage {
+  font-family: var(--font-family-poppins);
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.plan-card__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.plan-card__meta-item {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.plan-card__meta-value {
+  font-family: var(--font-family-poppins);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.plan-card__features {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-card__feature {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.plan-card__feature-dot {
+  width: 10px;
+  height: 10px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--plan-accent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--plan-accent) 75%, transparent);
+}
+
+.plan-card__button {
+  position: relative;
+  z-index: 1;
+  min-height: 48px;
+  border: none;
+  border-radius: 16px;
+  padding: 0 18px;
+  font-family: var(--font-family-poppins);
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #161313;
+  background: linear-gradient(135deg, var(--plan-accent), color-mix(in srgb, var(--plan-accent) 55%, white));
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  box-shadow: 0 16px 30px color-mix(in srgb, var(--plan-accent) 24%, transparent);
+}
+
+.plan-card__button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.plan-card__button:disabled {
+  cursor: default;
+  opacity: 0.66;
+  box-shadow: none;
+}
+
+.plan-card__button--current {
+  color: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+.plans-empty {
+  display: grid;
+  gap: 8px;
+  border-radius: 22px;
+  padding: 24px;
+  text-align: center;
+}
+
+.plans-empty__title {
+  font-family: var(--font-family-poppins);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.plans-empty__text {
+  margin: 0;
+  font-family: var(--font-family-poppins);
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.payment-loading {
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  position: fixed;
+  inset: 0;
   justify-content: center;
   align-items: center;
+  padding: 18px;
+  background: rgba(11, 10, 10, 0.54);
+  backdrop-filter: blur(6px);
+  z-index: 50;
 }
 
-/* Contenedor del contenido del modal */
 .payment-loading__container {
   display: flex;
-  padding: 10px 25px 10px 25px;
+  padding: 18px 24px 20px;
   align-items: center;
   text-align: center;
   flex-direction: column;
-  width: 345px;
-  height: 265px;
-  background-color: #2a2727; /* Fondo oscuro */
-  border-radius: 11px;
+  width: min(100%, 360px);
+  border-radius: 22px;
 }
 
-/* Título del modal de pago */
 .payment-loading__title {
+  margin: 0;
   font-family: var(--font-family-poppins);
-  font-size: 27px;
-  font-weight: 500;
+  font-size: 1.85rem;
+  font-weight: 600;
   color: var(--color-text-light);
 }
 
-/* Texto descriptivo del modal */
 .payment-loading__text {
+  margin: 0;
   font-family: var(--font-family-poppins);
-  font-size: 13px;
-  font-weight: lighter;
-  color: var(--color-text-light);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
 }
 
-/* Video/GIF de carga */
 .payment-loading__video {
-  width: 128px;
-  height: 128px;
+  width: 120px;
+  height: 120px;
 }
 
-/* Checkbox oculto que controla el modal */
 #checkPay {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-/* Estado activo: muestra el modal cuando se marca */
 #checkPay:checked + .payment-loading {
-  opacity: 1; /* Visible */
-  pointer-events: auto; /* Clickeable */
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* ===========================
-   SISTEMA DE BREAKPOINTS
-   =========================== */
-
-/* Tablets (768px - 1023px): Tarjetas más grandes */
-@media (min-width: 768px) {
-  .plans__title {
-    font-size: 22px;
+@media (min-width: 860px) {
+  .plans {
+    padding: 34px 28px 54px;
   }
 
-  .plans__subtitle {
-    font-size: 15px;
+  .plans-hero {
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    align-items: stretch;
   }
 
-  .plan-card {
-    width: 400px;
-    height: 280px;
-  }
-
-  .plan-card__title {
-    font-size: 20px;
-  }
-
-  .plan-card__feature-text {
-    font-size: 14px;
-  }
-
-  .plan-card__button {
-    width: 140px;
-    height: 37px;
-    font-size: 15px;
-  }
-
-  .plan-card__button--upgrade {
-    width: 190px;
+  .plans-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Desktop (1024px - 1279px): Tamaño desktop */
-@media (min-width: 1024px) {
-  .plans__title {
-    font-size: 24px;
-  }
-
-  .plans__subtitle {
-    font-size: 16px;
-  }
-
-  .plan-card {
-    width: 450px;
-    height: 300px;
-  }
-
-  .plan-card__title {
-    font-size: 22px;
-  }
-
-  .plan-card__feature-text {
-    font-size: 15px;
-  }
-
-  .plan-card__button {
-    width: 150px;
-    height: 40px;
-    font-size: 16px;
-  }
-
-  .plan-card__button--upgrade {
-    width: 200px;
-  }
-}
-
-/* Desktop Grande (1280px+): Máximo tamaño */
 @media (min-width: 1280px) {
-  .plans__title {
-    font-size: 28px;
+  .plans {
+    padding: 40px 34px 64px;
   }
 
-  .plans__subtitle {
-    font-size: 18px;
+  .plans-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .plans {
+    padding: 22px 14px 34px;
   }
 
+  .plans-hero__copy,
+  .plans-board,
+  .plans-current,
   .plan-card {
-    width: 500px;
-    height: 330px;
-    gap: 15px;
+    border-radius: 20px;
+    padding: 18px;
   }
 
-  .plan-card__title {
-    font-size: 24px;
+  .plans-current__head,
+  .plan-card__head,
+  .plan-card__price-block {
+    grid-template-columns: 1fr;
+    display: grid;
   }
 
-  .plan-card__feature-text {
-    font-size: 16px;
-  }
-
-  .plan-card__button {
-    width: 170px;
-    height: 44px;
-    font-size: 17px;
-  }
-
-  .plan-card__button--upgrade {
-    width: 220px;
-  }
-
-  .payment-loading__container {
-    width: 400px;
-    height: 300px;
-  }
-
-  .payment-loading__title {
-    font-size: 30px;
-  }
-
-  .payment-loading__text {
-    font-size: 15px;
+  .plan-card__badges {
+    justify-content: flex-start;
   }
 }

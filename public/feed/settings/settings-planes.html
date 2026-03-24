@@ -65,84 +65,55 @@
     </header>
 
     <main class="plans">
-      <div class="plans-header">
-        <h1 class="plans__title" data-i18n="settings.plans_title">Planes de Suscripción</h1>
-        <p class="plans__subtitle">
-          <span data-i18n="settings.plans_subtitle">Elige el plan que mejor se adapte a tus necesidades</span>
-        </p>
-      </div>
-
-      <div class="plans__container">
-        <!-- Plan Gratuito -->
-        <div class="plan-card plan-card--free">
-          <h2 class="plan-card__title" data-i18n="settings.free_plan">Plan Gratuito</h2>
-          <p class="plan-card__price">
-            $0<span class="plan-card__period">/mes</span>
+      <section class="plans-hero">
+        <div class="plans-hero__copy">
+          <span class="plans-hero__eyebrow">Suscripción</span>
+          <h1 class="plans__title" data-i18n="settings.plans_title">Planes de Suscripción</h1>
+          <p class="plans__subtitle">
+            <span data-i18n="settings.plans_subtitle">Compara las opciones activas y cambia tu cuenta al plan que mejor se adapte a tu ritmo de trabajo.</span>
           </p>
-          <ul class="plan-card__features">
-            <li class="plan-card__feature">
-              <p class="plan-card__feature-text">
-                ✓ Acceso básico a la biblioteca
-              </p>
-              <p></p>
-            </li>
-
-            <li class="plan-card__feature">
-              <p class="plan-card__feature-text">✓ Crear y guardar relatos</p>
-            </li>
-            <li class="plan-card__feature">
-              <p class="plan-card__feature-text">
-                ✓ Chat con Poly limitado (respuestas cortas)
-              </p>
-            </li>
-            <li class="plan-card__feature">
-              <p class="plan-card__feature-text">⚙ Espacio: 500 MB</p>
-            </li>
-          </ul>
-          <button
-            id="plan-free-button"
-            class="plan-card__button plan-card__button--current"
-            type="button"
-          >
-            Activo
-          </button>
         </div>
 
-        <!-- Plan Premium -->
-        <div class="plan-card plan-card--premium">
-          <h2 class="plan-card__title" data-i18n="settings.premium_plan">Plan Premium</h2>
-          <p class="plan-card__price">
-            $9.99<span class="plan-card__period">/mes</span>
+        <article class="plans-current" id="plans-current-summary">
+          <div class="plans-current__head">
+            <div>
+              <span class="plans-current__eyebrow">Tu plan actual</span>
+              <h2 class="plans-current__title" id="plans-current-name">Cargando plan...</h2>
+            </div>
+            <span class="plans-current__badge" id="plans-current-badge">Gratuito</span>
+          </div>
+
+          <p class="plans-current__meta" id="plans-current-meta">
+            Estamos consultando tu suscripción activa.
           </p>
-          <ul class="plan-card__features">
-            <li class="plan-card__feature">
-              <p class="plan-card__feature-text">
-                ✨ Acceso a IA avanzada (Poly completa)
-              </p>
-            </li>
-            <li class="plan-card__feature">
-              <p class="plan-card__feature-text">
-                ✨ Más herramientas de redacción
-              </p>
-            </li>
-            <li class="plan-card__feature">
-              <p class="plan-card__feature-text">
-                ✨ Respuestas extendidas y coherentes
-              </p>
-            </li>
-            <li class="plan-card__feature">
-              <p class="plan-card__feature-text">✨ Hasta 2 GB de espacio</p>
-            </li>
-          </ul>
-          <button
-            id="plan-premium-button"
-            class="plan-card__button plan-card__button--upgrade"
-            type="button"
-          >
-            Simular Premium
-          </button>
+
+          <div class="plans-current__stats">
+            <div class="plans-current__stat">
+              <span class="plans-current__label">Espacio</span>
+              <strong class="plans-current__value" id="plans-current-storage">Cargando...</strong>
+            </div>
+            <div class="plans-current__stat">
+              <span class="plans-current__label">Modelo principal</span>
+              <strong class="plans-current__value" id="plans-current-model">Cargando...</strong>
+            </div>
+            <div class="plans-current__stat">
+              <span class="plans-current__label">Precio</span>
+              <strong class="plans-current__value" id="plans-current-price">Cargando...</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="plans-board">
+        <div class="plans-board__heading">
+          <span class="plans-board__eyebrow">Catálogo visible</span>
+          <p class="plans-board__text">
+            Los planes que cree el administrador y deje activos aparecerán aquí automáticamente.
+          </p>
         </div>
-      </div>
+
+        <div class="plans-grid" id="plans-catalog"></div>
+      </section>
     </main>
 
     <input type="checkbox" id="checkPay" />
@@ -170,5 +141,4 @@
     <script type="module" src="/src/scripts/pages/settings/settings-planes.js"></script>
   </body>
 </html>
-
 

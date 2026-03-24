@@ -1,15 +1,27 @@
 import { fetchJson } from "../../utils/api-client.js";
 import { getCurrentUserId } from "../../utils/auth-session.js";
 
-const freeBtn = document.querySelector("#plan-free-button");
-const premBtn = document.querySelector("#plan-premium-button");
-const paymentToggle = document.querySelector("#checkPay");
-const paymentTitle = document.querySelector("#payment-loading-title");
-const paymentText = document.querySelector("#payment-loading-text");
+const elements = {
+  currentName: document.getElementById("plans-current-name"),
+  currentMeta: document.getElementById("plans-current-meta"),
+  currentStorage: document.getElementById("plans-current-storage"),
+  currentModel: document.getElementById("plans-current-model"),
+  currentPrice: document.getElementById("plans-current-price"),
+  currentBadge: document.getElementById("plans-current-badge"),
+  currentPanel: document.getElementById("plans-current-summary"),
+  catalog: document.getElementById("plans-catalog"),
+  paymentToggle: document.getElementById("checkPay"),
+  paymentTitle: document.getElementById("payment-loading-title"),
+  paymentText: document.getElementById("payment-loading-text"),
+};
 
-const translate = (key, fallback) => {
-  const translated = window.languageManager?.translate(key);
-  return translated && translated !== key ? translated : fallback;
+const state = {
+  plans: [],
+  currentPlanId: 0,
+  currentPlanCode: "GRATUITO",
+  currentPlanName: "Plan Gratuito",
+  currentPlanRole: "Gratuito",
+  submittingPlanId: null,
 };
 
 const showToast = (text, background = "#2a2727") => {
@@ -17,146 +29,306 @@ const showToast = (text, background = "#2a2727") => {
     return;
   }
 
-  Toastify({
+  window.Toastify({
     text,
-    duration: 2600,
+    duration: 2800,
     gravity: "top",
     position: "center",
+    stopOnFocus: true,
     style: { background },
   }).showToast();
 };
 
-const normalizePlan = (plan) => {
-  const normalized = String(plan || "Gratuito").trim().toLowerCase();
-  return normalized.includes("premium") ? "Premium" : "Gratuito";
+const normalizeColorHex = (value, fallback = "#4ECDC4") => {
+  const normalized = String(value || "")
+    .trim()
+    .toUpperCase();
+
+  return /^#[0-9A-F]{6}$/.test(normalized) ? normalized : fallback;
 };
 
-const setButtonState = (button, { current = false, label, disabled = false } = {}) => {
-  if (!button) {
-    return;
+const normalizeRole = (role) => (String(role || "").toLowerCase().includes("premium") ? "Premium" : "Gratuito");
+
+const formatPrice = (value) => {
+  const amount = Number(value) || 0;
+  if (amount <= 0) {
+    return "Gratis";
   }
 
-  button.disabled = disabled;
-  button.textContent = label;
-  button.classList.toggle("plan-card__button--current", current);
-  button.classList.toggle("plan-card__button--upgrade", !current);
+  return `$${amount.toFixed(2)}/mes`;
+};
+
+const formatStorage = (value, unlimited = false) => {
+  const amount = Number(value) || 0;
+  if (unlimited || amount <= 0) {
+    return "Sin límite";
+  }
+
+  if (amount >= 1024) {
+    return `${(amount / 1024).toFixed(amount % 1024 === 0 ? 0 : 1)} GB`;
+  }
+
+  return `${amount} MB`;
+};
+
+const isCurrentPlan = (plan) => {
+  const planId = Number(plan.id || 0);
+  const planCode = String(plan.codigoPlan || "").trim().toUpperCase();
+
+  if (state.currentPlanId > 0) {
+    return planId === state.currentPlanId;
+  }
+
+  return planCode === state.currentPlanCode;
+};
+
+const getPlanHighlights = (plan) => {
+  const roleBase = normalizeRole(plan.rolBase);
+  const storage = formatStorage(plan.almacenamientoMaxMb, plan.almacenamientoIlimitado);
+  const preferredModel = plan.modeloPreferidoNombre
+    ? `${plan.modeloPreferidoNombre}${plan.modeloPreferidoVersion ? ` (${plan.modeloPreferidoVersion})` : ""}`
+    : roleBase === "Premium"
+      ? "Catálogo premium activo"
+      : "Catálogo gratuito activo";
+
+  const highlights = [
+    `Espacio disponible: ${storage}.`,
+    `Modelo principal: ${preferredModel}.`,
+  ];
+
+  if (roleBase === "Premium") {
+    highlights.push("Acceso ampliado para Poly, canvas y ayudas IA más completas.");
+  } else {
+    highlights.push("Acceso base para biblioteca, relatos y modelos gratuitos.");
+  }
+
+  return highlights;
 };
 
 const setLoading = (loading, title, message) => {
-  if (paymentToggle) {
-    paymentToggle.checked = loading;
+  if (elements.paymentToggle) {
+    elements.paymentToggle.checked = loading;
   }
 
-  if (paymentTitle && title) {
-    paymentTitle.innerHTML = title;
+  if (elements.paymentTitle && title) {
+    elements.paymentTitle.innerHTML = title;
   }
 
-  if (paymentText && message) {
-    paymentText.textContent = message;
-  }
-
-  if (freeBtn) {
-    freeBtn.disabled = loading;
-  }
-
-  if (premBtn) {
-    premBtn.disabled = loading;
+  if (elements.paymentText && message) {
+    elements.paymentText.textContent = message;
   }
 };
 
-let activePlan = "Gratuito";
-let isSubmitting = false;
+const renderCurrentSummary = (subscription = {}) => {
+  const name = subscription.nombrePlan || "Sin plan activo";
+  const role = normalizeRole(subscription.plan);
+  const price = formatPrice(subscription.precio);
+  const storage = formatStorage(subscription.limiteAlmacenamientoMb, subscription.almacenamientoIlimitado);
+  const usedStorage = Number(subscription.almacenamientoUsadoMb || 0).toFixed(2);
 
-const markActivePlan = (planActivo) => {
-  activePlan = normalizePlan(planActivo);
-  const isPremium = activePlan === "Premium";
+  state.currentPlanName = name;
+  state.currentPlanRole = role;
+  state.currentPlanId = Number(subscription.planId || 0);
+  state.currentPlanCode = String(subscription.codigoPlan || "GRATUITO").trim().toUpperCase();
+  const preferredModel = state.plans.find((plan) => isCurrentPlan(plan))?.modeloPreferidoNombre
+    || "Sin modelo principal";
+  const accentColor = normalizeColorHex(subscription.colorHex, role === "Premium" ? "#FFD700" : "#4ECDC4");
 
-  if (isPremium) {
-    setButtonState(premBtn, {
-      current: true,
-      label: translate("common.active", "Activo"),
-    });
-    setButtonState(freeBtn, {
-      current: false,
-      label: "Volver a Gratuito",
-    });
+  elements.currentPanel?.style.setProperty("--plan-accent", accentColor);
+  if (elements.currentBadge) {
+    elements.currentBadge.textContent = role;
+    elements.currentBadge.classList.toggle("plans-current__badge--premium", role === "Premium");
+  }
+  if (elements.currentName) {
+    elements.currentName.textContent = name;
+  }
+  if (elements.currentMeta) {
+    elements.currentMeta.textContent = subscription.estado === "Activa"
+      ? "Tu cuenta opera con este plan en este momento."
+      : "Tu cuenta no tiene una suscripción activa; se muestra el plan base.";
+  }
+  if (elements.currentStorage) {
+    elements.currentStorage.textContent = `${storage} · usado ${usedStorage} MB`;
+  }
+  if (elements.currentModel) {
+    elements.currentModel.textContent = preferredModel;
+  }
+  if (elements.currentPrice) {
+    elements.currentPrice.textContent = price;
+  }
+};
+
+const renderEmptyState = (message) => {
+  if (!elements.catalog) {
     return;
   }
 
-  setButtonState(freeBtn, {
-    current: true,
-    label: translate("common.active", "Activo"),
-  });
-  setButtonState(premBtn, {
-    current: false,
-    label: "Simular Premium",
+  elements.catalog.innerHTML = `
+    <article class="plans-empty">
+      <strong class="plans-empty__title">No pudimos cargar los planes</strong>
+      <p class="plans-empty__text">${message}</p>
+    </article>
+  `;
+};
+
+const getActionLabel = (plan) => {
+  if (isCurrentPlan(plan)) {
+    return "Tu plan actual";
+  }
+
+  const amount = Number(plan.precio) || 0;
+  return amount > 0 ? "Activar este plan" : "Cambiar a este plan";
+};
+
+const buildPlanCard = (plan) => {
+  const article = document.createElement("article");
+  const roleBase = normalizeRole(plan.rolBase);
+  const accentColor = normalizeColorHex(plan.colorHex, roleBase === "Premium" ? "#FFD700" : "#4ECDC4");
+  const current = isCurrentPlan(plan);
+  const storage = formatStorage(plan.almacenamientoMaxMb, plan.almacenamientoIlimitado);
+  const preferredModel = plan.modeloPreferidoNombre
+    ? `${plan.modeloPreferidoNombre}${plan.modeloPreferidoVersion ? ` (${plan.modeloPreferidoVersion})` : ""}`
+    : "Sin modelo principal";
+  const actionDisabled = current || state.submittingPlanId !== null || !plan.activo;
+
+  article.className = `plan-card ${roleBase === "Premium" ? "plan-card--premium" : "plan-card--basic"}${current ? " plan-card--current" : ""}`;
+  article.style.setProperty("--plan-accent", accentColor);
+  article.innerHTML = `
+    <div class="plan-card__glow"></div>
+    <div class="plan-card__head">
+      <div class="plan-card__identity">
+        <span class="plan-card__eyebrow">${roleBase === "Premium" ? "Capa ampliada" : "Capa base"}</span>
+        <h2 class="plan-card__title">${plan.nombrePlan}</h2>
+        <span class="plan-card__code">${plan.codigoPlan}</span>
+      </div>
+      <div class="plan-card__badges">
+        <span class="plan-card__badge">${roleBase}</span>
+        ${current ? '<span class="plan-card__badge plan-card__badge--current">Actual</span>' : ""}
+      </div>
+    </div>
+
+    <div class="plan-card__price-block">
+      <strong class="plan-card__price">${formatPrice(plan.precio)}</strong>
+      <span class="plan-card__storage">${storage}</span>
+    </div>
+
+    <div class="plan-card__meta">
+      <div class="plan-card__meta-item">
+        <span class="plan-card__meta-label">Modelo IA</span>
+        <strong class="plan-card__meta-value">${preferredModel}</strong>
+      </div>
+      <div class="plan-card__meta-item">
+        <span class="plan-card__meta-label">Estado</span>
+        <strong class="plan-card__meta-value">${plan.activo ? "Disponible" : "No disponible"}</strong>
+      </div>
+    </div>
+
+    <ul class="plan-card__features">
+      ${getPlanHighlights(plan)
+        .map(
+          (highlight) => `
+            <li class="plan-card__feature">
+              <span class="plan-card__feature-dot"></span>
+              <span class="plan-card__feature-text">${highlight}</span>
+            </li>
+          `,
+        )
+        .join("")}
+    </ul>
+
+    <button
+      type="button"
+      class="plan-card__button${current ? " plan-card__button--current" : ""}"
+      data-plan-id="${plan.id}"
+      ${actionDisabled ? "disabled" : ""}
+    >
+      ${getActionLabel(plan)}
+    </button>
+  `;
+
+  const button = article.querySelector(".plan-card__button");
+  button?.addEventListener("click", () => simulatePlanChange(plan));
+
+  return article;
+};
+
+const renderPlans = () => {
+  if (!elements.catalog) {
+    return;
+  }
+
+  elements.catalog.innerHTML = "";
+
+  if (!state.plans.length) {
+    renderEmptyState("Aún no hay planes visibles para tu cuenta.");
+    return;
+  }
+
+  state.plans.forEach((plan) => {
+    elements.catalog.appendChild(buildPlanCard(plan));
   });
 };
 
-const loadCurrentPlan = async () => {
-  const id = getCurrentUserId();
-
-  if (!id) {
-    markActivePlan("Gratuito");
+const loadPlansCatalog = async () => {
+  const userId = getCurrentUserId();
+  if (!userId) {
+    renderEmptyState("No pudimos identificar tu sesión actual.");
     return;
   }
 
   try {
-    const { ok, data } = await fetchJson("/api/v1/settings/suscripcion", {
-      params: { id },
+    const { ok, data } = await fetchJson("/api/v1/settings/planes", {
+      params: { id: userId },
       auth: true,
     });
 
     if (!ok) {
-      markActivePlan("Gratuito");
+      renderEmptyState(data?.Mensaje || "No fue posible cargar el catálogo de planes.");
       return;
     }
 
-    markActivePlan(data.plan);
+    state.plans = Array.isArray(data?.planes) ? data.planes : [];
+    renderCurrentSummary(data?.suscripcion || {});
+    renderPlans();
   } catch (error) {
-    markActivePlan("Gratuito");
+    renderEmptyState("Ocurrió un error de red mientras intentábamos cargar tus planes.");
   }
 };
 
-const simulatePlanChange = async (targetPlan) => {
-  if (isSubmitting) {
+const simulatePlanChange = async (plan) => {
+  if (!plan || state.submittingPlanId !== null || isCurrentPlan(plan)) {
     return;
   }
 
-  const id = getCurrentUserId();
-  if (!id) {
+  const userId = getCurrentUserId();
+  if (!userId) {
+    showToast("No pudimos identificar tu cuenta actual.", "#b42318");
     return;
   }
 
-  const normalizedTarget = normalizePlan(targetPlan);
-  if (normalizedTarget === activePlan) {
-    return;
-  }
+  state.submittingPlanId = Number(plan.id);
+  renderPlans();
 
-  isSubmitting = true;
-  const isPremium = normalizedTarget === "Premium";
+  const title = Number(plan.precio) > 0
+    ? `Activando <br />${plan.nombrePlan}...`
+    : `Cambiando a <br />${plan.nombrePlan}...`;
+  const message = Number(plan.precio) > 0
+    ? `Se registrará un pago simulado y tu cuenta adoptará el plan ${plan.nombrePlan}.`
+    : `Tu cuenta se moverá al plan ${plan.nombrePlan} sin cobro simulado.`;
 
-  setLoading(
-    true,
-    isPremium ? "Activando <br />Premium..." : "Volviendo al <br />plan gratuito...",
-    isPremium
-      ? "Se registrará un pago simulado y tu cuenta cambiará a Premium"
-      : "Se cancelará la suscripción activa y tu cuenta volverá al plan gratuito",
-  );
+  setLoading(true, title, message);
 
   try {
     const { ok, data } = await fetchJson("/api/v1/settings/suscripcion/simular", {
       method: "PUT",
-      params: { id },
+      params: { id: userId },
       auth: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ plan: normalizedTarget }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ planId: plan.id }),
     });
 
     if (!ok) {
-      showToast(data?.Mensaje || "No se pudo actualizar el plan", "#b42318");
+      showToast(data?.Mensaje || "No fue posible actualizar el plan", "#b42318");
       return;
     }
 
@@ -164,23 +336,17 @@ const simulatePlanChange = async (targetPlan) => {
       localStorage.setItem("Token", data.Token);
     }
 
-    markActivePlan(data?.plan || normalizedTarget);
     showToast(data?.Mensaje || "Plan actualizado correctamente", "#0f766e");
+    await loadPlansCatalog();
   } catch (error) {
     showToast("Error de red al actualizar el plan", "#b42318");
   } finally {
-    setLoading(false, "Actualizando <br />plan...", "Simulando el cambio de suscripción en tu cuenta");
-    isSubmitting = false;
+    state.submittingPlanId = null;
+    setLoading(false, "Actualizando <br />plan...", "Preparando el cambio de suscripción en tu cuenta.");
+    renderPlans();
   }
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  freeBtn?.addEventListener("click", () => simulatePlanChange("Gratuito"));
-  premBtn?.addEventListener("click", () => simulatePlanChange("Premium"));
-
-  window.addEventListener("languagechange", () => {
-    markActivePlan(activePlan);
-  });
-
-  await loadCurrentPlan();
+  await loadPlansCatalog();
 });
