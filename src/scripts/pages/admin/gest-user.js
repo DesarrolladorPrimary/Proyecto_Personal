@@ -21,6 +21,7 @@ const elements = {
 
 const state = {
   users: [],
+  plans: [],
   query: "",
   role: "Todos",
   status: "Todos",
@@ -93,6 +94,23 @@ const buildRoleOptions = (role) =>
     const selected = option.toLowerCase() === (role || "").toLowerCase() ? "selected" : "";
     return `<option value="${option}" ${selected}>${option}</option>`;
   }).join("");
+
+const buildPlanOptions = (user) => {
+  const selectedPlanId = Number(user.FK_PlanID || 0);
+  const planOptions = state.plans
+    .filter((plan) => Boolean(plan.Activo) || Number(plan.PK_PlanID) === selectedPlanId)
+    .map((plan) => {
+      const selected = Number(plan.PK_PlanID) === selectedPlanId ? "selected" : "";
+      const roleBase = plan.RolBase === "Premium" ? "Premium" : "Gratuito";
+      return `<option value="${plan.PK_PlanID}" ${selected}>${plan.NombrePlan} · ${roleBase}</option>`;
+    })
+    .join("");
+
+  return `
+    <option value="">Sin suscripción</option>
+    ${planOptions}
+  `;
+};
 
 const sortUsers = (users) =>
   [...users].sort((left, right) => {
@@ -242,8 +260,16 @@ const buildUserCard = (user) => {
         </select>
       </div>
 
+      <div class="user-card__role-editor user-card__subscription-editor">
+        <label class="user-card__label" for="subscription-${user.PK_UsuarioID}">Gestionar suscripción</label>
+        <select class="user-card__select" id="subscription-${user.PK_UsuarioID}">
+          ${buildPlanOptions(user)}
+        </select>
+      </div>
+
       <div class="user-card__actions">
         <button type="button" class="user-card__button user-card__button--role">Guardar rol</button>
+        <button type="button" class="user-card__button user-card__button--subscription">Guardar suscripción</button>
         <button type="button" class="user-card__button user-card__button--status">
           ${isActive ? "Desactivar" : "Reactivar"}
         </button>
@@ -255,12 +281,16 @@ const buildUserCard = (user) => {
 
   const statusButton = card.querySelector(".user-card__button--status");
   const roleButton = card.querySelector(".user-card__button--role");
+  const subscriptionButton = card.querySelector(".user-card__button--subscription");
   const roleSelect = card.querySelector(".user-card__select");
+  const subscriptionSelect = card.querySelector(`#subscription-${user.PK_UsuarioID}`);
 
   if (isProtectedAdmin) {
     statusButton.disabled = true;
     roleButton.disabled = true;
+    subscriptionButton.disabled = true;
     roleSelect.disabled = true;
+    subscriptionSelect.disabled = true;
     return card;
   }
 
@@ -309,6 +339,41 @@ const buildUserCard = (user) => {
       }
 
       showToast(data.Mensaje || "Estado actualizado", "green");
+      await loadUsers();
+    } catch (error) {
+      showToast("Error de conexion");
+    }
+  });
+
+  subscriptionButton.addEventListener("click", async () => {
+    const nextPlanId = subscriptionSelect.value ? Number(subscriptionSelect.value) : null;
+    const currentPlanId = Number(user.FK_PlanID || 0) || null;
+
+    if (nextPlanId === currentPlanId) {
+      showToast("Selecciona un cambio de suscripción", "orange");
+      return;
+    }
+
+    const payload = nextPlanId
+      ? { planId: nextPlanId }
+      : { cancelar: true };
+
+    try {
+      const { ok, data } = await fetchJson("/api/v1/admin/users/subscription", {
+        method: "PUT",
+        params: { id: user.PK_UsuarioID },
+        auth: true,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!ok) {
+        showToast(data.Mensaje || "No fue posible actualizar la suscripción");
+        return;
+      }
+
+      showToast(data.Mensaje || "Suscripción actualizada", "green");
+      await loadPlans();
       await loadUsers();
     } catch (error) {
       showToast("Error de conexion");
@@ -409,6 +474,23 @@ async function loadUsers() {
   }
 }
 
+async function loadPlans() {
+  try {
+    const { ok, data } = await fetchJson("/api/v1/admin/plans", {
+      auth: true,
+    });
+
+    if (!ok || !Array.isArray(data)) {
+      showToast("No fue posible cargar los planes");
+      return;
+    }
+
+    state.plans = data.filter((item) => !item.Mensaje);
+  } catch (error) {
+    showToast("Error de conexion");
+  }
+}
+
 const initFilters = () => {
   elements.searchForm?.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -474,5 +556,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   initFilters();
+  await loadPlans();
   await loadUsers();
 });

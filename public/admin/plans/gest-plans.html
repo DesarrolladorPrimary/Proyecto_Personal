@@ -24,6 +24,61 @@
       </div>
     </header>
 
+    <section class="plan-editor">
+      <div class="plan-editor__head">
+        <div class="plan-editor__copy">
+          <span class="plan-editor__eyebrow">Catálogo</span>
+          <h2 class="plan-editor__title" id="admin-plan-editor-title">Crear plan</h2>
+          <p class="plan-editor__text">
+            Define el código técnico, el nombre comercial, el espacio, el precio y el rol base del plan.
+          </p>
+        </div>
+
+        <button type="button" class="plan-editor__reset" id="admin-plan-reset">
+          Limpiar
+        </button>
+      </div>
+
+      <form class="plan-editor__form" id="admin-plan-form">
+        <label class="plan-editor__field">
+          <span class="plan-editor__label">Código</span>
+          <input id="admin-plan-code" name="codigo" type="text" maxlength="30" placeholder="PREMIUM_PLUS" required />
+        </label>
+
+        <label class="plan-editor__field">
+          <span class="plan-editor__label">Nombre visible</span>
+          <input id="admin-plan-name" name="nombre" type="text" maxlength="100" placeholder="Plan Premium Plus" required />
+        </label>
+
+        <label class="plan-editor__field">
+          <span class="plan-editor__label">Espacio (MB)</span>
+          <input id="admin-plan-storage" name="almacenamientoMaxMB" type="number" min="0" step="1" placeholder="2048" />
+        </label>
+
+        <label class="plan-editor__field">
+          <span class="plan-editor__label">Precio</span>
+          <input id="admin-plan-price" name="precio" type="number" min="0" step="0.01" placeholder="9.99" required />
+        </label>
+
+        <label class="plan-editor__field">
+          <span class="plan-editor__label">Rol base</span>
+          <select id="admin-plan-role" name="rolBase" required>
+            <option value="Gratuito">Gratuito</option>
+            <option value="Premium">Premium</option>
+          </select>
+        </label>
+
+        <label class="plan-editor__toggle">
+          <input id="admin-plan-active" name="activo" type="checkbox" checked />
+          <span>Plan activo</span>
+        </label>
+
+        <button type="submit" class="plan-editor__submit" id="admin-plan-submit">
+          Crear plan
+        </button>
+      </form>
+    </section>
+
     <main class="main-content" id="admin-plans-list"></main>
 
     <footer class="footer-nav">

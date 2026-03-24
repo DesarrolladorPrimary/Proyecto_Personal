@@ -7,6 +7,7 @@ body {
 }
 
 .plans-header,
+.plan-editor,
 .main-content,
 .footer-nav {
   width: min(1120px, 100%);
@@ -77,6 +78,123 @@ body {
 
 .plans-header__history-text {
   font-size: 13px;
+  font-weight: 600;
+}
+
+.plan-editor,
+.plans-empty {
+  border-radius: 28px;
+  background-color: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+.plan-editor {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  margin: 0 auto 16px;
+}
+
+.plan-editor__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.plan-editor__copy {
+  display: grid;
+  gap: 6px;
+}
+
+.plan-editor__eyebrow,
+.plan-editor__label,
+.plan-card__code {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.plan-editor__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.plan-editor__text {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.plan-editor__reset,
+.plan-editor__submit,
+.plan-card__edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-light);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.plan-editor__reset:hover,
+.plan-editor__submit:hover,
+.plan-card__edit:hover {
+  transform: translateY(-1px);
+}
+
+.plan-editor__submit {
+  background-color: rgba(255, 215, 0, 0.16);
+  border-color: rgba(255, 215, 0, 0.24);
+}
+
+.plan-editor__form {
+  display: grid;
+  gap: 14px;
+}
+
+.plan-editor__field {
+  display: grid;
+  gap: 8px;
+}
+
+.plan-editor__field input,
+.plan-editor__field select {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-light);
+  font-family: var(--font-family-main);
+  font-size: 14px;
+}
+
+.plan-editor__field select option {
+  background-color: var(--color-background-container);
+  color: var(--color-text-light);
+}
+
+.plan-editor__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -286,6 +404,13 @@ body {
   flex-wrap: wrap;
 }
 
+.plan-card__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .plan-card__status {
   color: rgba(255, 255, 255, 0.72);
   font-size: 13px;
@@ -319,6 +444,13 @@ body {
   display: flex;
   justify-content: center;
   padding-top: 8px;
+}
+
+.plans-empty {
+  display: grid;
+  gap: 8px;
+  padding: 22px;
+  text-align: center;
 }
 
 .footer-nav__link {
@@ -360,6 +492,10 @@ body {
 @media (min-width: 768px) {
   body {
     padding: 24px 20px 32px;
+  }
+
+  .plan-editor__form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .main-content {
@@ -406,7 +542,8 @@ body {
   }
 
   .plan-card__head,
-  .plan-card__footer {
+  .plan-card__footer,
+  .plan-editor__head {
     flex-direction: column;
     align-items: flex-start;
   }
