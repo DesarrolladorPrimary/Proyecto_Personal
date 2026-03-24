@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
     <link rel="stylesheet" href="/src/styles/components/base.css" />
+    <link rel="stylesheet" href="/src/styles/components/dialogs.css" />
     <link rel="stylesheet" href="/src/styles/components/layout.css" />
     <link rel="stylesheet" href="/src/styles/layout.css" />
     <link rel="stylesheet" href="/src/styles/pages/admin/gest-plans.css" />
@@ -13,7 +15,12 @@
   </head>
   <body>
     <header class="plans-header">
-      <h1 class="plans-header__title">Planes Actuales</h1>
+      <div class="plans-header__top">
+        <h1 class="plans-header__title">Planes Actuales</h1>
+        <button type="button" class="plans-header__create" id="admin-plan-open">
+          Crear plan
+        </button>
+      </div>
       <div class="plans-header__separator"></div>
       <div class="plans-header__history">
         <p class="plans-header__history-title">Historial de suscripciones simuladas</p>
@@ -24,62 +31,115 @@
       </div>
     </header>
 
-    <section class="plan-editor">
-      <div class="plan-editor__head">
-        <div class="plan-editor__copy">
-          <span class="plan-editor__eyebrow">Catálogo</span>
-          <h2 class="plan-editor__title" id="admin-plan-editor-title">Crear plan</h2>
-          <p class="plan-editor__text">
-            Define el código técnico, el nombre comercial, el espacio, el precio y el rol base del plan.
-          </p>
+    <main class="main-content" id="admin-plans-list"></main>
+
+    <section class="plan-modal" id="admin-plan-modal" aria-hidden="true">
+      <div class="plan-modal__backdrop" id="admin-plan-modal-backdrop"></div>
+
+      <div class="plan-editor" role="dialog" aria-modal="true" aria-labelledby="admin-plan-editor-title">
+        <div class="plan-editor__head">
+          <div class="plan-editor__copy">
+            <span class="plan-editor__eyebrow">Catálogo</span>
+            <h2 class="plan-editor__title" id="admin-plan-editor-title">Crear plan</h2>
+            <p class="plan-editor__text">
+              Define el código técnico, el nombre comercial, el espacio, el precio y el rol base del plan.
+            </p>
+          </div>
+
+          <button type="button" class="plan-editor__close" id="admin-plan-close" aria-label="Cerrar creador de planes">
+            Cerrar
+          </button>
         </div>
 
-        <button type="button" class="plan-editor__reset" id="admin-plan-reset">
-          Limpiar
-        </button>
+        <form class="plan-editor__form" id="admin-plan-form" novalidate>
+          <p class="plan-editor__summary" id="admin-plan-errors" hidden></p>
+
+          <label class="plan-editor__field">
+            <span class="plan-editor__label">Código</span>
+            <input id="admin-plan-code" name="codigo" type="text" maxlength="30" placeholder="PREMIUM_PLUS" required />
+            <span class="plan-editor__hint">Usa mayúsculas, números o guion bajo. Ejemplo: <code>PREMIUM_PLUS</code>.</span>
+            <span class="plan-editor__error" id="admin-plan-code-error"></span>
+          </label>
+
+          <label class="plan-editor__field">
+            <span class="plan-editor__label">Nombre visible</span>
+            <input id="admin-plan-name" name="nombre" type="text" maxlength="100" placeholder="Plan Premium Plus" required />
+            <span class="plan-editor__hint">Es el nombre que verá el usuario en la interfaz.</span>
+            <span class="plan-editor__error" id="admin-plan-name-error"></span>
+          </label>
+
+          <label class="plan-editor__field">
+            <span class="plan-editor__label">Espacio (MB)</span>
+            <input id="admin-plan-storage" name="almacenamientoMaxMB" type="number" min="0" step="1" placeholder="2048" />
+            <span class="plan-editor__hint">Déjalo vacío solo si no quieres fijar un límite.</span>
+            <span class="plan-editor__error" id="admin-plan-storage-error"></span>
+          </label>
+
+          <label class="plan-editor__field">
+            <span class="plan-editor__label">Precio</span>
+            <input id="admin-plan-price" name="precio" type="number" min="0" step="0.01" placeholder="9.99" required />
+            <span class="plan-editor__hint">Usa <code>0</code> si el plan es gratuito.</span>
+            <span class="plan-editor__error" id="admin-plan-price-error"></span>
+          </label>
+
+          <label class="plan-editor__field">
+            <span class="plan-editor__label">Color del plan</span>
+            <div class="plan-editor__color-row">
+              <input id="admin-plan-color" name="colorHex" type="color" value="#4ECDC4" />
+              <input
+                id="admin-plan-color-text"
+                type="text"
+                maxlength="7"
+                placeholder="#4ECDC4"
+                aria-label="Código hexadecimal del color del plan"
+              />
+            </div>
+            <span class="plan-editor__hint">Se usa para resaltar la tarjeta del plan y su identidad visual.</span>
+            <span class="plan-editor__error" id="admin-plan-color-error"></span>
+          </label>
+
+          <label class="plan-editor__field">
+            <span class="plan-editor__label">Rol base</span>
+            <select id="admin-plan-role" name="rolBase" required>
+              <option value="Gratuito">Gratuito</option>
+              <option value="Premium">Premium</option>
+            </select>
+            <span class="plan-editor__hint">Define la capa de acceso que heredará el usuario al activarlo.</span>
+            <span class="plan-editor__error" id="admin-plan-role-error"></span>
+          </label>
+
+          <label class="plan-editor__field">
+            <span class="plan-editor__label">Modelo IA principal</span>
+            <select id="admin-plan-model" name="modeloPreferidoId">
+              <option value="">Sin modelo principal</option>
+            </select>
+            <span class="plan-editor__hint">Este modelo se usará como preferente cuando el usuario tenga este plan.</span>
+            <span class="plan-editor__error" id="admin-plan-model-error"></span>
+          </label>
+
+          <label class="plan-editor__toggle">
+            <input id="admin-plan-active" name="activo" type="checkbox" checked />
+            <span>Plan activo</span>
+          </label>
+
+          <div class="plan-editor__actions">
+            <button
+              type="button"
+              class="plan-editor__delete plan-editor__delete--hidden"
+              id="admin-plan-delete"
+            >
+              Eliminar plan
+            </button>
+            <button type="button" class="plan-editor__reset" id="admin-plan-reset">
+              Limpiar
+            </button>
+            <button type="submit" class="plan-editor__submit" id="admin-plan-submit">
+              Crear plan
+            </button>
+          </div>
+        </form>
       </div>
-
-      <form class="plan-editor__form" id="admin-plan-form">
-        <label class="plan-editor__field">
-          <span class="plan-editor__label">Código</span>
-          <input id="admin-plan-code" name="codigo" type="text" maxlength="30" placeholder="PREMIUM_PLUS" required />
-        </label>
-
-        <label class="plan-editor__field">
-          <span class="plan-editor__label">Nombre visible</span>
-          <input id="admin-plan-name" name="nombre" type="text" maxlength="100" placeholder="Plan Premium Plus" required />
-        </label>
-
-        <label class="plan-editor__field">
-          <span class="plan-editor__label">Espacio (MB)</span>
-          <input id="admin-plan-storage" name="almacenamientoMaxMB" type="number" min="0" step="1" placeholder="2048" />
-        </label>
-
-        <label class="plan-editor__field">
-          <span class="plan-editor__label">Precio</span>
-          <input id="admin-plan-price" name="precio" type="number" min="0" step="0.01" placeholder="9.99" required />
-        </label>
-
-        <label class="plan-editor__field">
-          <span class="plan-editor__label">Rol base</span>
-          <select id="admin-plan-role" name="rolBase" required>
-            <option value="Gratuito">Gratuito</option>
-            <option value="Premium">Premium</option>
-          </select>
-        </label>
-
-        <label class="plan-editor__toggle">
-          <input id="admin-plan-active" name="activo" type="checkbox" checked />
-          <span>Plan activo</span>
-        </label>
-
-        <button type="submit" class="plan-editor__submit" id="admin-plan-submit">
-          Crear plan
-        </button>
-      </form>
     </section>
-
-    <main class="main-content" id="admin-plans-list"></main>
 
     <footer class="footer-nav">
       <a href="/public/admin/dashboard-admin.html" class="footer-nav__link">
@@ -88,6 +148,7 @@
     </footer>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="/src/scripts/pages/admin/gest-plans.js"></script>
   </body>
 </html>
