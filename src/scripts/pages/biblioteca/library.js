@@ -63,6 +63,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).showToast();
   };
 
+  const normalizeShelfIds = (value) => {
+    const source = Array.isArray(value)
+      ? value
+      : value == null || value === ""
+        ? []
+        : [value];
+
+    return [...new Set(source
+      .map((item) => Number(item))
+      .filter((item) => Number.isFinite(item) && item > 0))];
+  };
+
+  const getStoryShelfIds = (story) =>
+    normalizeShelfIds(Array.isArray(story?.estanteriaIds) && story.estanteriaIds.length
+      ? story.estanteriaIds
+      : story?.estanteriaId);
+
+  const getSelectedShelfIds = (selectElement) =>
+    normalizeShelfIds(Array.from(selectElement?.selectedOptions || []).map((option) => option.value));
+
+  const setSelectedShelfIds = (selectElement, shelfIds) => {
+    if (!selectElement) {
+      return;
+    }
+
+    const normalized = normalizeShelfIds(shelfIds).map(String);
+    Array.from(selectElement.options).forEach((option) => {
+      option.selected = normalized.includes(option.value);
+    });
+  };
+
+  const buildShelfNamesFromIds = (shelfIds) =>
+    normalizeShelfIds(shelfIds)
+      .map((shelfId) => state.shelves.find((shelf) => String(shelf.id) === String(shelfId))?.nombre)
+      .filter(Boolean)
+      .join(", ");
+
+  const getShelfNames = (entry) =>
+    String(entry?.nombresEstanterias || entry?.nombreEstanteria || buildShelfNamesFromIds(getStoryShelfIds(entry)) || "").trim();
+
   if (!userId || !libraryMain) {
     return;
   }
@@ -167,17 +207,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       parts.push(uploadedAt);
     }
 
-    if (document.nombreEstanteria) {
-      parts.push(document.nombreEstanteria);
+    const shelfNames = getShelfNames(document);
+    if (shelfNames) {
+      parts.push(shelfNames);
     }
 
     return parts.join(" · ");
   };
-
-  const getShelfName = (story) =>
-    story?.nombreEstanteria
-    || state.shelves.find((shelf) => String(shelf.id) === String(story?.estanteriaId))?.nombre
-    || "";
 
   const buildStoryMeta = (story) => {
     const parts = [];
@@ -194,9 +230,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       parts.push(updatedAt);
     }
 
-    const shelfName = getShelfName(story);
-    if (story.estanteriaId && shelfName) {
-      parts.push(shelfName);
+    const shelfNames = getShelfNames(story);
+    if (getStoryShelfIds(story).length && shelfNames) {
+      parts.push(shelfNames);
     }
 
     return parts.join(" · ");
@@ -218,11 +254,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "Selecciona una estantería";
-    exportShelfInput.appendChild(placeholder);
-
     state.shelves.forEach((shelf) => {
       const option = document.createElement("option");
       option.value = String(shelf.id);
@@ -231,8 +262,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     exportShelfInput.disabled = false;
-    const suggestedShelfId = story?.estanteriaId || state.selectedShelfId || "";
-    exportShelfInput.value = suggestedShelfId ? String(suggestedShelfId) : "";
+    const suggestedShelfIds = getStoryShelfIds(story).length
+      ? getStoryShelfIds(story)
+      : state.selectedShelfId
+        ? [state.selectedShelfId]
+        : [];
+    setSelectedShelfIds(exportShelfInput, suggestedShelfIds);
   };
 
   const setSelectedDocument = (document) => {
@@ -271,7 +306,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     renderExportShelfOptions(story);
     exportModalTitle.textContent = story.titulo || "Libro";
-    exportModalMeta.textContent = story.estanteriaId
+    exportModalMeta.textContent = getStoryShelfIds(story).length
       ? `Borrador listo para convertirse en libro · ${buildStoryMeta(story)}`
       : `Borrador editable pendiente de estantería · ${buildStoryMeta(story)}`;
     exportTitleInput.value = story.titulo || "Libro final";
@@ -451,9 +486,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const type = document.createElement("p");
     type.className = "document-list__story";
-    type.textContent = story.estanteriaId
+    type.textContent = getStoryShelfIds(story).length
       ? "Editable y listo para convertirse en libro desde esta biblioteca"
-      : "Editable, pero todavía necesita una estantería antes de convertirse en libro";
+      : "Editable, pero todavía necesita al menos una estantería antes de convertirse en libro";
 
     const meta = document.createElement("p");
     meta.className = "document-list__meta";
@@ -470,7 +505,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     actions.append(
       createListActionButton(
-        story.estanteriaId ? "Convertir a libro" : "Asignar y convertir",
+        getStoryShelfIds(story).length ? "Convertir a libro" : "Asignar y convertir",
         "",
         () => openStoryExportModal(story),
       ),
@@ -605,7 +640,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return true;
           }
 
-          return String(story.estanteriaId || "") === String(state.selectedShelfId);
+          return getStoryShelfIds(story).includes(Number(state.selectedShelfId));
         })
         : [];
 
@@ -648,9 +683,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const selectedShelfId = Number(exportShelfInput?.value || story.estanteriaId || 0);
-    if (!selectedShelfId) {
-      showToast("Debes asignar una estantería antes de convertir este relato en libro");
+    const selectedShelfIds = getSelectedShelfIds(exportShelfInput);
+    if (!selectedShelfIds.length) {
+      showToast("Debes asignar al menos una estantería antes de convertir este relato en libro");
       exportShelfInput?.focus();
       return;
     }
@@ -677,7 +712,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           titulo: title,
           contenido: story.descripcion || "",
           formato: format,
-          estanteriaId: selectedShelfId,
+          estanteriaIds: selectedShelfIds,
         }),
       });
 

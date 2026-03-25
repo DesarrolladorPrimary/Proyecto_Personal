@@ -25,11 +25,8 @@ const elements = {
   suspendedUsers: document.getElementById("dashboard-suspended-users"),
   aiRequests: document.getElementById("dashboard-ai-requests"),
   totalStories: document.getElementById("dashboard-total-stories"),
-  premiumUsers: document.getElementById("dashboard-premium-users"),
-  freeUsers: document.getElementById("dashboard-free-users"),
+  planDistribution: document.getElementById("dashboard-plan-distribution"),
   premiumShare: document.getElementById("dashboard-premium-share"),
-  premiumBar: document.getElementById("dashboard-premium-bar"),
-  freeBar: document.getElementById("dashboard-free-bar"),
   planNote: document.getElementById("dashboard-plan-note"),
   lastUpdate: document.getElementById("dashboard-last-update"),
   syncText: document.getElementById("dashboard-sync-text"),
@@ -38,6 +35,7 @@ const elements = {
 
 const state = {
   userMenuOpen: false,
+  totalUsers: 0,
 };
 
 const showToast = (text, background = "red", callback) => {
@@ -96,11 +94,10 @@ const applyStats = (stats = {}) => {
   const aiRequests = Number(stats.solicitudesIAMesActual) || 0;
   const totalStories = Number(stats.totalRelatosCreados) || 0;
   const premiumUsers = Number(stats.usuariosPremium) || 0;
-  const freeUsers = Number(stats.usuariosGratuitos) || 0;
   const activePercent = formatPercent(activeUsers, totalUsers);
   const premiumPercent = formatPercent(premiumUsers, totalUsers);
-  const freePercent = formatPercent(freeUsers, totalUsers);
   const nowLabel = getNowLabel();
+  state.totalUsers = totalUsers;
 
   elements.totalUsers.textContent = formatNumber(totalUsers);
   elements.activeUsers.textContent = formatNumber(activeUsers);
@@ -108,17 +105,73 @@ const applyStats = (stats = {}) => {
   elements.suspendedUsers.textContent = formatNumber(suspendedUsers);
   elements.aiRequests.textContent = formatNumber(aiRequests);
   elements.totalStories.textContent = formatNumber(totalStories);
-  elements.premiumUsers.textContent = formatNumber(premiumUsers);
-  elements.freeUsers.textContent = formatNumber(freeUsers);
   elements.premiumShare.textContent = `${premiumPercent}%`;
-  elements.premiumBar.style.width = `${premiumPercent}%`;
-  elements.freeBar.style.width = `${freePercent}%`;
-  elements.planNote.textContent =
-    totalUsers > 0
-      ? `${premiumPercent}% de la base usa Premium y ${freePercent}% permanece en Gratuito.`
-      : "Sin datos de planes por ahora.";
   elements.lastUpdate.textContent = `Actualizado: ${nowLabel}`;
   elements.syncText.textContent = nowLabel;
+};
+
+const normalizeColorHex = (value, fallback = "#7c7373") => {
+  const normalized = String(value || "")
+    .trim()
+    .toUpperCase();
+
+  return /^#[0-9A-F]{6}$/.test(normalized) ? normalized : fallback;
+};
+
+const renderPlanDistribution = (plans = []) => {
+  if (!elements.planDistribution) {
+    return;
+  }
+
+  const visiblePlans = plans.filter((item) => item && !item.Mensaje);
+  elements.planDistribution.innerHTML = "";
+
+  if (!visiblePlans.length) {
+    elements.planDistribution.innerHTML = `
+      <div class="dashboard-plan dashboard-plan--placeholder">
+        <div class="dashboard-plan__meta">
+          <span class="dashboard-plan__name">Sin planes visibles</span>
+          <strong class="dashboard-plan__value">0</strong>
+        </div>
+        <div class="dashboard-plan__bar">
+          <span class="dashboard-plan__fill" style="width: 0%"></span>
+        </div>
+      </div>
+    `;
+    elements.planNote.textContent = "Sin datos de planes por ahora.";
+    return;
+  }
+
+  const totalUsers = state.totalUsers || 0;
+  const totalSubscribedUsers = visiblePlans.reduce(
+    (sum, plan) => sum + (Number(plan.UsuariosActivos) || 0),
+    0,
+  );
+
+  visiblePlans.forEach((plan) => {
+    const activeUsers = Number(plan.UsuariosActivos) || 0;
+    const percent = formatPercent(activeUsers, totalUsers);
+    const accent = normalizeColorHex(plan.ColorHex, "#7c7373");
+    const planNode = document.createElement("div");
+    planNode.className = "dashboard-plan";
+    planNode.style.setProperty("--dashboard-plan-accent", accent);
+    planNode.innerHTML = `
+      <div class="dashboard-plan__meta">
+        <span class="dashboard-plan__name">${plan.NombrePlan || "Plan"}</span>
+        <strong class="dashboard-plan__value">${formatNumber(activeUsers)}</strong>
+      </div>
+      <div class="dashboard-plan__bar">
+        <span class="dashboard-plan__fill" style="width: ${percent}%"></span>
+      </div>
+    `;
+    elements.planDistribution.appendChild(planNode);
+  });
+
+  const activePlans = visiblePlans.filter((plan) => Boolean(plan.Activo)).length;
+  elements.planNote.textContent =
+    totalUsers > 0
+      ? `${activePlans} planes activos visibles y ${formatPercent(totalSubscribedUsers, totalUsers)}% de la base con alguna suscripción activa.`
+      : "Sin base de usuarios todavía para calcular la distribución.";
 };
 
 const loadProfile = async (userId) => {
@@ -156,6 +209,23 @@ const loadStats = async () => {
   applyStats(data);
 };
 
+const loadPlanDistribution = async () => {
+  const { ok, status, data } = await fetchJson("/api/v1/admin/plans", {
+    auth: true,
+  });
+
+  if (!ok) {
+    if (status === 401) {
+      logoutAndRedirect("/public/admin/login-admin.html");
+      return;
+    }
+
+    throw new Error(data.Mensaje || "No fue posible cargar la distribución de planes");
+  }
+
+  renderPlanDistribution(Array.isArray(data) ? data : []);
+};
+
 const initEvents = () => {
   elements.userButton?.addEventListener("click", (event) => {
     event.stopPropagation();
@@ -170,7 +240,7 @@ const initEvents = () => {
 
   elements.refreshButton?.addEventListener("click", async () => {
     try {
-      await loadStats();
+      await Promise.all([loadStats(), loadPlanDistribution()]);
       showToast("Dashboard actualizado", "green");
     } catch (error) {
       showToast(error.message || "No fue posible actualizar");
@@ -214,7 +284,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initEvents();
 
   try {
-    await Promise.all([loadProfile(userId), loadStats()]);
+    await Promise.all([loadProfile(userId), loadStats(), loadPlanDistribution()]);
   } catch (error) {
     showToast(error.message || "No fue posible cargar el dashboard");
   }

@@ -81,16 +81,15 @@
         <form class="book-modal__form" id="export-form">
           <label class="book-modal__label" for="export-title">Título del libro</label>
           <input class="book-modal__input" type="text" id="export-title" />
-          <label class="book-modal__label" for="export-shelf">Estantería</label>
-          <select class="book-modal__input" id="export-shelf">
-            <option value="">Selecciona una estantería</option>
+          <label class="book-modal__label" for="export-shelf">Estanterías</label>
+          <select class="book-modal__input" id="export-shelf" multiple size="6">
           </select>
           <label class="book-modal__label" for="export-format">Formato</label>
           <select class="book-modal__input" id="export-format">
             <option value="word">Word (.doc)</option>
             <option value="pdf">PDF</option>
           </select>
-          <p class="book-modal__hint">Aquí conviertes un borrador en libro. El resultado final quedará guardado en esta biblioteca para descargarlo después.</p>
+          <p class="book-modal__hint">Aquí conviertes un borrador en libro. El resultado final quedará guardado en esta biblioteca y asociado a las estanterías que selecciones.</p>
           <div class="book-modal__actions">
             <button class="book-modal__button" type="submit" id="export-submit">Convertir</button>
           </div>

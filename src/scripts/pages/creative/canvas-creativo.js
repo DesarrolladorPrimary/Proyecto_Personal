@@ -110,8 +110,48 @@ const getStoryFromState = (storyId) => state.stories.find((story) => story.id ==
 const getShelfById = (shelfId) =>
   state.shelves.find((shelf) => String(shelf.id) === String(shelfId)) || null;
 
-const buildLibraryUrl = (shelfId) => {
+const normalizeShelfIds = (value) => {
+  const source = Array.isArray(value)
+    ? value
+    : value == null || value === ""
+      ? []
+      : [value];
+
+  return [...new Set(source
+    .map((item) => Number(item))
+    .filter((item) => Number.isFinite(item) && item > 0))];
+};
+
+const getStoryShelfIds = (story) =>
+  normalizeShelfIds(Array.isArray(story?.estanteriaIds) && story.estanteriaIds.length
+    ? story.estanteriaIds
+    : story?.estanteriaId);
+
+const getPrimaryShelfId = (value) => normalizeShelfIds(value)[0] || null;
+
+const getSelectedShelfIds = (selectElement) =>
+  normalizeShelfIds(Array.from(selectElement?.selectedOptions || []).map((option) => option.value));
+
+const setSelectedShelfIds = (selectElement, shelfIds) => {
+  if (!selectElement) {
+    return;
+  }
+
+  const normalized = normalizeShelfIds(shelfIds).map(String);
+  Array.from(selectElement.options).forEach((option) => {
+    option.selected = normalized.includes(option.value);
+  });
+};
+
+const buildShelfNamesLabel = (shelfIds) =>
+  normalizeShelfIds(shelfIds)
+    .map((shelfId) => getShelfById(shelfId)?.nombre)
+    .filter(Boolean)
+    .join(", ");
+
+const buildLibraryUrl = (shelfIds) => {
   const basePath = "../biblioteca/library.html";
+  const shelfId = getPrimaryShelfId(shelfIds);
   const shelf = getShelfById(shelfId);
 
   if (!shelf) {
@@ -131,12 +171,12 @@ const setToolStatus = (text) => {
   }
 };
 
-const syncLibraryLink = (shelfId = "") => {
+const syncLibraryLink = (shelfIds = []) => {
   if (!elements.successLibraryLink) {
     return;
   }
 
-  elements.successLibraryLink.href = buildLibraryUrl(shelfId);
+  elements.successLibraryLink.href = buildLibraryUrl(shelfIds);
 };
 
 const syncAsideState = () => {
@@ -297,22 +337,26 @@ const loadPlanState = async () => {
   renderPlanState(snapshot);
 };
 
-const renderExportShelfOptions = (preferredShelfId = null) => {
+const renderExportShelfOptions = (preferredShelfIds = []) => {
   if (!elements.exportShelf) {
     return;
   }
 
-  const preferredValue = preferredShelfId != null ? String(preferredShelfId) : String(elements.exportShelf.value || "");
+  const preferredValues = normalizeShelfIds(
+    preferredShelfIds != null && (Array.isArray(preferredShelfIds) || preferredShelfIds !== "")
+      ? preferredShelfIds
+      : getSelectedShelfIds(elements.exportShelf),
+  );
   const hasShelves = state.shelves.length > 0;
 
   elements.exportShelf.innerHTML = "";
 
-  const placeholder = document.createElement("option");
-  placeholder.value = "";
-  placeholder.textContent = hasShelves
-    ? "Selecciona una estantería"
-    : "No tienes estanterías creadas";
-  elements.exportShelf.appendChild(placeholder);
+  if (!hasShelves) {
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "No tienes estanterías creadas";
+    elements.exportShelf.appendChild(placeholder);
+  }
 
   state.shelves.forEach((shelf) => {
     const option = document.createElement("option");
@@ -321,33 +365,33 @@ const renderExportShelfOptions = (preferredShelfId = null) => {
     elements.exportShelf.appendChild(option);
   });
 
-  const preferredShelf = getShelfById(preferredValue);
-  elements.exportShelf.value = preferredShelf ? String(preferredShelf.id) : "";
+  setSelectedShelfIds(elements.exportShelf, preferredValues);
   elements.exportShelf.disabled = !hasShelves;
 
-  const selectedShelf = getShelfById(elements.exportShelf.value);
+  const selectedShelfIds = getSelectedShelfIds(elements.exportShelf);
+  const selectedShelfLabel = buildShelfNamesLabel(selectedShelfIds);
   if (elements.exportSubmit) {
-    elements.exportSubmit.disabled = !selectedShelf || state.isSaving;
+    elements.exportSubmit.disabled = !selectedShelfIds.length || state.isSaving;
   }
 
   if (elements.exportShelfHint) {
     if (!hasShelves) {
       elements.exportShelfHint.textContent =
         "No tienes estanterías creadas. Crea una ahora para poder guardar este borrador en biblioteca.";
-    } else if (!selectedShelf) {
+    } else if (!selectedShelfIds.length) {
       elements.exportShelfHint.textContent =
-        "Selecciona una estantería existente para continuar.";
+        "Selecciona una o varias estanterías existentes para continuar.";
     } else {
       elements.exportShelfHint.textContent =
-        `Este borrador se guardará en la estantería ${selectedShelf.nombre}.`;
+        `Este borrador se guardará en: ${selectedShelfLabel}.`;
     }
   }
 };
 
-const loadShelves = async (preferredShelfId = null) => {
+const loadShelves = async (preferredShelfIds = []) => {
   if (!state.userId) {
     state.shelves = [];
-    renderExportShelfOptions(preferredShelfId);
+    renderExportShelfOptions(preferredShelfIds);
     return;
   }
 
@@ -358,7 +402,7 @@ const loadShelves = async (preferredShelfId = null) => {
 
   if (!ok) {
     state.shelves = [];
-    renderExportShelfOptions(preferredShelfId);
+    renderExportShelfOptions(preferredShelfIds);
     if (status !== 401) {
       showToast(data.Mensaje || "No fue posible cargar las estanterías");
     }
@@ -368,7 +412,7 @@ const loadShelves = async (preferredShelfId = null) => {
   state.shelves = Array.isArray(data)
     ? data.filter((item) => item && typeof item === "object" && item.id)
     : [];
-  renderExportShelfOptions(preferredShelfId);
+  renderExportShelfOptions(preferredShelfIds);
 };
 
 const createShelfFromExportFlow = async () => {
@@ -410,17 +454,18 @@ const createShelfFromExportFlow = async () => {
   }
 
   const createdShelfId = Number(data.id || 0);
+  const currentSelection = getSelectedShelfIds(elements.exportShelf);
 
   if (createdShelfId > 0) {
     state.shelves = [
       ...state.shelves.filter((shelf) => Number(shelf.id) !== createdShelfId),
       { id: createdShelfId, nombre: shelfName },
     ];
-    renderExportShelfOptions(createdShelfId);
+    renderExportShelfOptions([...currentSelection, createdShelfId]);
   } else {
     await loadShelves();
     const createdShelf = state.shelves.find((shelf) => shelf.nombre === shelfName);
-    renderExportShelfOptions(createdShelf?.id ?? null);
+    renderExportShelfOptions(createdShelf ? [...currentSelection, createdShelf.id] : currentSelection);
   }
 
   showToast(data.Mensaje || "Estantería creada", "green");
@@ -852,16 +897,23 @@ const buildStoryPayload = (story = getStoryFromState(state.storyId), overrides =
     titulo: overrides.titulo ?? (isCurrentStory ? normalizeTitle(elements.title?.textContent) : normalizeTitle(story?.titulo)),
     modoOrigen: STORY_MODE,
     descripcion: overrides.descripcion ?? (isCurrentStory ? clampText(elements.body?.value || "", BODY_MAX_LENGTH) : story?.descripcion ?? ""),
-    estanteriaId: overrides.estanteriaId ?? story?.estanteriaId ?? null,
+    estanteriaIds: normalizeShelfIds(overrides.estanteriaIds ?? getStoryShelfIds(story)),
     modeloUsadoId: overrides.modeloUsadoId ?? story?.modeloUsadoId ?? null,
   };
+};
+
+const areShelfCollectionsEqual = (left, right) => {
+  const normalizedLeft = normalizeShelfIds(left);
+  const normalizedRight = normalizeShelfIds(right);
+  return normalizedLeft.length === normalizedRight.length
+    && normalizedLeft.every((value, index) => value === normalizedRight[index]);
 };
 
 const hasStoryPayloadChanges = (payload) => {
   if (!state.storyId) {
     return payload.titulo !== DEFAULT_TITLE
       || Boolean(String(payload.descripcion || "").trim())
-      || payload.estanteriaId != null
+      || payload.estanteriaIds.length > 0
       || payload.modeloUsadoId != null;
   }
 
@@ -872,7 +924,7 @@ const hasStoryPayloadChanges = (payload) => {
 
   return normalizeTitle(currentStory.titulo) !== payload.titulo
     || String(currentStory.descripcion || "") !== String(payload.descripcion || "")
-    || Number(currentStory.estanteriaId || 0) !== Number(payload.estanteriaId || 0)
+    || !areShelfCollectionsEqual(getStoryShelfIds(currentStory), payload.estanteriaIds)
     || Number(currentStory.modeloUsadoId || 0) !== Number(payload.modeloUsadoId || 0);
 };
 
@@ -995,6 +1047,13 @@ const persistStory = async ({ silent = false, overrides = {} } = {}) => {
       ...payload,
       id: persistedStoryId,
       usuarioId: currentStory?.usuarioId || state.userId,
+      estanteriaId: getPrimaryShelfId(payload.estanteriaIds),
+      nombreEstanteria: getShelfById(getPrimaryShelfId(payload.estanteriaIds))?.nombre || "",
+      nombresEstanterias: buildShelfNamesLabel(payload.estanteriaIds),
+      estanterias: normalizeShelfIds(payload.estanteriaIds).map((shelfId) => ({
+        id: shelfId,
+        nombre: getShelfById(shelfId)?.nombre || `Estantería ${shelfId}`,
+      })),
       fechaCreacion: currentStory?.fechaCreacion || now,
       fechaModificacion: now,
     });
@@ -1027,7 +1086,7 @@ const persistStory = async ({ silent = false, overrides = {} } = {}) => {
     if (elements.openLibraryButton) {
       elements.openLibraryButton.disabled = false;
     }
-    renderExportShelfOptions(payload.estanteriaId ?? null);
+    renderExportShelfOptions(payload.estanteriaIds ?? []);
   }
 };
 
@@ -1226,8 +1285,8 @@ const openLibraryModal = async () => {
 
   elements.exportTitle.value = normalizeTitle(elements.title?.textContent || DEFAULT_TITLE);
   const activeStory = getStoryFromState(state.storyId);
-  await loadShelves(activeStory?.estanteriaId ?? null);
-  syncLibraryLink(activeStory?.estanteriaId ?? "");
+  await loadShelves(getStoryShelfIds(activeStory));
+  syncLibraryLink(getStoryShelfIds(activeStory));
   userMenu.close();
   closeToolPanel();
   setAsideOpen(false);
@@ -1240,16 +1299,16 @@ const exportStory = async (event) => {
 
   const title = normalizeTitle(elements.exportTitle.value.trim() || elements.title.textContent?.trim() || DEFAULT_TITLE);
   const content = clampText(elements.body.value.trim(), BODY_MAX_LENGTH);
-  const selectedShelfId = Number(elements.exportShelf?.value || 0);
-  const selectedShelf = getShelfById(selectedShelfId);
+  const selectedShelfIds = getSelectedShelfIds(elements.exportShelf);
+  const selectedShelfLabel = buildShelfNamesLabel(selectedShelfIds);
 
   if (!content) {
     showToast("Todavía no hay contenido para guardar en biblioteca");
     return;
   }
 
-  if (!selectedShelfId || !selectedShelf) {
-    showToast("Debes seleccionar una estantería existente antes de guardar este borrador");
+  if (!selectedShelfIds.length) {
+    showToast("Debes seleccionar al menos una estantería existente antes de guardar este borrador");
     elements.exportShelf?.focus();
     renderExportShelfOptions();
     return;
@@ -1262,13 +1321,16 @@ const exportStory = async (event) => {
     return;
   }
 
-  if (!(await persistStory({ overrides: { titulo: title, estanteriaId: selectedShelfId } }))) {
+  if (!(await persistStory({ overrides: { titulo: title, estanteriaIds: selectedShelfIds } }))) {
     return;
   }
 
   await loadPlanState();
   showToast("Borrador listo en biblioteca", "green");
-  syncLibraryLink(selectedShelfId);
+  syncLibraryLink(selectedShelfIds);
+  if (elements.exportShelfHint && selectedShelfLabel) {
+    elements.exportShelfHint.textContent = `Este borrador se guardó en: ${selectedShelfLabel}.`;
+  }
   setExportModalOpen(false);
   setSuccessModalOpen(true);
 };
@@ -1324,7 +1386,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   elements.exportForm?.addEventListener("submit", exportStory);
   elements.exportShelf?.addEventListener("change", () => {
-    renderExportShelfOptions(elements.exportShelf?.value || null);
+    const selectedShelfIds = getSelectedShelfIds(elements.exportShelf);
+    renderExportShelfOptions(selectedShelfIds);
+    syncLibraryLink(selectedShelfIds);
   });
   elements.exportCreateShelf?.addEventListener("click", async () => {
     await createShelfFromExportFlow();

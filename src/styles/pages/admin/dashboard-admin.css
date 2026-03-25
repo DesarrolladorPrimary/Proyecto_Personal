@@ -257,9 +257,19 @@ body {
   cursor: pointer;
 }
 
+.dashboard-plan-list {
+  display: grid;
+  gap: 12px;
+}
+
 .dashboard-plan {
+  --dashboard-plan-accent: rgba(255, 255, 255, 0.38);
   display: grid;
   gap: 8px;
+}
+
+.dashboard-plan--placeholder {
+  opacity: 0.8;
 }
 
 .dashboard-plan__meta {
@@ -289,14 +299,11 @@ body {
   width: 0;
   border-radius: inherit;
   transition: width 0.24s ease;
-}
-
-.dashboard-plan__fill--premium {
-  background: linear-gradient(90deg, rgba(255, 215, 0, 0.35), rgba(255, 215, 0, 0.85));
-}
-
-.dashboard-plan__fill--free {
-  background: linear-gradient(90deg, rgba(78, 205, 196, 0.35), rgba(78, 205, 196, 0.9));
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--dashboard-plan-accent) 35%, transparent),
+    var(--dashboard-plan-accent)
+  );
 }
 
 .dashboard-activity {

@@ -648,6 +648,17 @@ body {
   cursor: pointer;
 }
 
+.book-modal__input[multiple] {
+  min-height: 148px;
+  padding: 10px 12px;
+  background-image: none;
+}
+
+.book-modal__input[multiple] option {
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
 .book-modal__input:is(select):hover {
   background-color: rgba(16, 19, 24, 0.72);
 }

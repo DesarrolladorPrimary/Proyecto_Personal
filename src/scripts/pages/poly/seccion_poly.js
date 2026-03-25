@@ -162,6 +162,45 @@ const showToast = (text, background = "red") => {
   }).showToast();
 };
 
+const normalizeShelfIds = (value) => {
+  const source = Array.isArray(value)
+    ? value
+    : value == null || value === ""
+      ? []
+      : [value];
+
+  return [...new Set(source
+    .map((item) => Number(item))
+    .filter((item) => Number.isFinite(item) && item > 0))];
+};
+
+const getStoryShelfIds = (story) =>
+  normalizeShelfIds(Array.isArray(story?.estanteriaIds) && story.estanteriaIds.length
+    ? story.estanteriaIds
+    : story?.estanteriaId);
+
+const getPrimaryShelfId = (value) => normalizeShelfIds(value)[0] || null;
+
+const getSelectedShelfIds = (selectElement) =>
+  normalizeShelfIds(Array.from(selectElement?.selectedOptions || []).map((option) => option.value));
+
+const setSelectedShelfIds = (selectElement, shelfIds) => {
+  if (!selectElement) {
+    return;
+  }
+
+  const normalized = normalizeShelfIds(shelfIds).map(String);
+  Array.from(selectElement.options).forEach((option) => {
+    option.selected = normalized.includes(option.value);
+  });
+};
+
+const buildShelfNamesLabel = (shelfIds) =>
+  normalizeShelfIds(shelfIds)
+    .map((shelfId) => state.shelves.find((shelf) => String(shelf.id) === String(shelfId))?.nombre)
+    .filter(Boolean)
+    .join(", ");
+
 const setStatus = (text = "") => {
   if (!elements.status) {
     return;
@@ -235,8 +274,9 @@ const setUserMenuOpen = (nextValue) => {
 const getShelfById = (shelfId) =>
   state.shelves.find((shelf) => String(shelf.id) === String(shelfId)) || null;
 
-const buildLibraryUrl = (shelfId) => {
+const buildLibraryUrl = (shelfIds) => {
   const basePath = "../biblioteca/library.html";
+  const shelfId = getPrimaryShelfId(shelfIds);
   const shelf = getShelfById(shelfId);
 
   if (!shelf) {
@@ -251,47 +291,41 @@ const buildLibraryUrl = (shelfId) => {
   return `${basePath}?${params.toString()}`;
 };
 
-const syncLibraryLink = (shelfId = "") => {
+const syncLibraryLink = (shelfIds = []) => {
   if (!elements.bookLibraryLink) {
     return;
   }
 
-  const shelf = getShelfById(shelfId);
-  elements.bookLibraryLink.href = buildLibraryUrl(shelfId);
-  elements.bookLibraryLink.textContent = shelf
-    ? `Abrir biblioteca: ${shelf.nombre}`
+  const shelfLabel = buildShelfNamesLabel(shelfIds);
+  elements.bookLibraryLink.href = buildLibraryUrl(shelfIds);
+  elements.bookLibraryLink.textContent = shelfLabel
+    ? `Abrir biblioteca: ${shelfLabel}`
     : "Abrir biblioteca";
 };
 
-const syncBookShelfSelection = (preferredShelfId = null) => {
+const syncBookShelfSelection = (preferredShelfIds = []) => {
   if (!elements.bookShelf) {
     return;
   }
 
   const activeStory = getActiveStory();
-  const nextValue = preferredShelfId != null
-    ? String(preferredShelfId)
-    : activeStory?.estanteriaId != null
-      ? String(activeStory.estanteriaId)
-      : "";
-  const optionExists = Array.from(elements.bookShelf.options).some((option) => option.value === nextValue);
+  const nextValues = normalizeShelfIds(
+    preferredShelfIds != null && (Array.isArray(preferredShelfIds) || preferredShelfIds !== "")
+      ? preferredShelfIds
+      : getStoryShelfIds(activeStory),
+  );
 
-  elements.bookShelf.value = optionExists ? nextValue : "";
-  syncLibraryLink(elements.bookShelf.value);
+  setSelectedShelfIds(elements.bookShelf, nextValues);
+  syncLibraryLink(nextValues);
 };
 
-const renderShelfOptions = (preferredShelfId = null) => {
+const renderShelfOptions = (preferredShelfIds = []) => {
   if (!elements.bookShelf) {
     return;
   }
 
-  const currentValue = elements.bookShelf.value;
+  const currentValues = getSelectedShelfIds(elements.bookShelf);
   elements.bookShelf.innerHTML = "";
-
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Biblioteca general";
-  elements.bookShelf.appendChild(defaultOption);
 
   state.shelves.forEach((shelf) => {
     const option = document.createElement("option");
@@ -301,14 +335,16 @@ const renderShelfOptions = (preferredShelfId = null) => {
   });
 
   const activeStory = getActiveStory();
-  const preferredValue = preferredShelfId != null
-    ? String(preferredShelfId)
-    : currentValue
-      || (activeStory?.estanteriaId != null ? String(activeStory.estanteriaId) : "");
-  const optionExists = Array.from(elements.bookShelf.options).some((option) => option.value === preferredValue);
+  const nextValues = normalizeShelfIds(
+    preferredShelfIds != null && (Array.isArray(preferredShelfIds) || preferredShelfIds !== "")
+      ? preferredShelfIds
+      : currentValues.length
+        ? currentValues
+        : getStoryShelfIds(activeStory),
+  );
 
-  elements.bookShelf.value = optionExists ? preferredValue : "";
-  syncLibraryLink(elements.bookShelf.value);
+  setSelectedShelfIds(elements.bookShelf, nextValues);
+  syncLibraryLink(nextValues);
 };
 
 const getPrimarySourceFile = () => state.sourceFiles[0] || null;
@@ -1300,7 +1336,7 @@ const loadStories = async (preferredStoryId = null) => {
   syncBookShelfSelection();
 };
 
-const loadShelves = async (preferredShelfId = null) => {
+const loadShelves = async (preferredShelfIds = []) => {
   const { ok, status, data } = await fetchJson("/api/v1/estanterias", {
     params: { id: state.userId },
     auth: true,
@@ -1313,7 +1349,7 @@ const loadShelves = async (preferredShelfId = null) => {
     }
 
     state.shelves = [];
-    renderShelfOptions(preferredShelfId);
+    renderShelfOptions(preferredShelfIds);
     showToast(data.Mensaje || "No fue posible cargar las estanterías");
     return;
   }
@@ -1321,7 +1357,7 @@ const loadShelves = async (preferredShelfId = null) => {
   state.shelves = Array.isArray(data)
     ? data.filter((item) => item && typeof item === "object" && item.id)
     : [];
-  renderShelfOptions(preferredShelfId);
+  renderShelfOptions(preferredShelfIds);
 };
 
 const createShelfFromBookFlow = async () => {
@@ -1360,18 +1396,19 @@ const createShelfFromBookFlow = async () => {
   }
 
   const createdShelfId = Number(data.id || 0);
+  const currentSelection = getSelectedShelfIds(elements.bookShelf);
 
   if (createdShelfId > 0) {
     state.shelves = [
       ...state.shelves.filter((shelf) => Number(shelf.id) !== createdShelfId),
       { id: createdShelfId, nombre: shelfName },
     ];
-    renderShelfOptions(createdShelfId);
+    renderShelfOptions([...currentSelection, createdShelfId]);
   } else {
     await loadShelves();
     const createdShelf = state.shelves.find((shelf) => shelf.nombre === shelfName);
     if (createdShelf) {
-      renderShelfOptions(createdShelf.id);
+      renderShelfOptions([...currentSelection, createdShelf.id]);
     }
   }
 
@@ -1486,15 +1523,13 @@ const handleBookSubmit = async (event) => {
     return;
   }
 
-  const selectedShelfId = elements.bookShelf?.value
-    ? Number(elements.bookShelf.value)
-    : null;
-  const selectedShelf = selectedShelfId ? getShelfById(selectedShelfId) : null;
+  const selectedShelfIds = getSelectedShelfIds(elements.bookShelf);
+  const selectedShelfLabel = buildShelfNamesLabel(selectedShelfIds);
 
-  if (!selectedShelfId || !selectedShelf) {
+  if (!selectedShelfIds.length) {
     const shouldCreateShelf = await showConfirm({
       title: "Falta una estantería",
-      text: "Aún no has seleccionado una estantería. ¿Quieres crear una ahora mismo?",
+      text: "Aún no has seleccionado ninguna estantería. ¿Quieres crear una ahora mismo?",
     });
 
     if (!shouldCreateShelf) {
@@ -1512,8 +1547,8 @@ const handleBookSubmit = async (event) => {
     return;
   }
 
-  if (!selectedShelfId || !selectedShelf) {
-    showToast("Debes seleccionar una estantería antes de guardar el relato");
+  if (!selectedShelfIds.length) {
+    showToast("Debes seleccionar al menos una estantería antes de guardar el relato");
     elements.bookShelf?.focus();
     return;
   }
@@ -1536,7 +1571,7 @@ const handleBookSubmit = async (event) => {
     body: JSON.stringify({
       titulo: nextTitle,
       descripcion: description,
-      estanteriaId: selectedShelfId,
+      estanteriaIds: selectedShelfIds,
     }),
   });
 
@@ -1560,11 +1595,11 @@ const handleBookSubmit = async (event) => {
   await selectStory(storyId);
 
   if (elements.bookSuccessMessage) {
-    elements.bookSuccessMessage.textContent = selectedShelf
-      ? `Relato guardado con éxito. Quedó actualizado en la estantería ${selectedShelf.nombre}.`
+    elements.bookSuccessMessage.textContent = selectedShelfLabel
+      ? `Relato guardado con éxito. Quedó actualizado en: ${selectedShelfLabel}.`
       : "Relato guardado con éxito. Quedó actualizado en tu biblioteca.";
   }
-  syncLibraryLink(selectedShelfId ? String(selectedShelfId) : "");
+  syncLibraryLink(selectedShelfIds);
 
   window.location.hash = "#bookSuccess";
 };
@@ -1900,7 +1935,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupUserMenu();
   setupUnsavedChangesProtection();
   elements.bookShelf?.addEventListener("change", () => {
-    syncLibraryLink(elements.bookShelf.value);
+    syncLibraryLink(getSelectedShelfIds(elements.bookShelf));
   });
   elements.bookCreateShelfButton?.addEventListener("click", async () => {
     await createShelfFromBookFlow();
