@@ -4,6 +4,10 @@ import { showConfirm, showPrompt } from "../../utils/dialog-service.js";
 import { loadPlanSnapshot } from "../../utils/subscription-plan.js";
 import { createCreativeUserMenu } from "./creative-user-menu.js";
 
+/*
+ * Controla el canvas creativo: edición manual, historial local, ayudas de IA
+ * y exportación del borrador a biblioteca.
+ */
 const STORY_MODE = "Seccion_Creativa";
 const STORY_QUERY_KEY = "creativeStoryId";
 const DEFAULT_TITLE = "Mi historia creativa";
@@ -50,6 +54,8 @@ const elements = {
   toolStatus: document.getElementById("creative-tool-status"),
 };
 
+// Este estado concentra tanto UI como persistencia del borrador activo para
+// evitar que el canvas y el modal de exportación diverjan.
 const state = {
   storyId: null,
   stories: [],

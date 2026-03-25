@@ -8,6 +8,11 @@ import {
 } from "../../utils/auth-session.js";
 import { loadPlanSnapshot } from "../../utils/subscription-plan.js";
 
+/*
+ * Controlador principal de Poly.
+ * Coordina chat, borrador, archivos fuente, parámetros de IA y guardado
+ * del relato artificial desde una sola pantalla.
+ */
 const STORY_MODE = "Seccion_Artificial";
 const DEFAULT_AI_SETTINGS = {
   estiloEscritura: "Narrativo",

@@ -9,6 +9,8 @@ import {
   logoutAndRedirect,
 } from "../../utils/auth-session.js";
 
+// La biblioteca mezcla dos vistas: borradores editables y documentos
+// exportados. Ambos comparten filtro por estantería y métricas de espacio.
 document.addEventListener("DOMContentLoaded", async () => {
   const inputLibrary = document.getElementById("input_library");
   const createButton = document.getElementById("create-shelf");

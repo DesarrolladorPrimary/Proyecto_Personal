@@ -6,6 +6,11 @@ import {
   logoutAndRedirect,
 } from "../../utils/auth-session.js";
 
+/*
+ * Dashboard resumido del admin.
+ * Carga perfil, estadísticas globales y distribución dinámica de planes
+ * desde endpoints del backend.
+ */
 const DEFAULT_PHOTO = "/assets/icons/image.png";
 
 const elements = {
@@ -118,6 +123,7 @@ const normalizeColorHex = (value, fallback = "#7c7373") => {
   return /^#[0-9A-F]{6}$/.test(normalized) ? normalized : fallback;
 };
 
+// Renderiza cualquier plan visible del catálogo, no solo los planes base.
 const renderPlanDistribution = (plans = []) => {
   if (!elements.planDistribution) {
     return;
