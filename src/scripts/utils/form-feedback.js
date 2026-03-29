@@ -1,3 +1,7 @@
+/*
+ * Helpers reutilizables para validación visual de formularios.
+ * Unifican mensajes, clases de error/éxito y foco sobre el primer campo inválido.
+ */
 const ERROR_CLASS = "is-invalid";
 const SUCCESS_CLASS = "is-valid";
 const MESSAGE_CLASS = "field-feedback__message";

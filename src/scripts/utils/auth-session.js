@@ -1,3 +1,7 @@
+/*
+ * Centraliza la sesión del frontend: lectura del JWT, detección del usuario
+ * actual, helpers de rol y redirecciones cuando la sesión ya no es válida.
+ */
 const TOKEN_KEY = "Token";
 const AUTH_NOTICE_KEY = "AuthRedirectNotice";
 const DEFAULT_EXPIRED_MESSAGE = "Tu sesión expiró. Inicia sesión de nuevo.";

@@ -1,3 +1,7 @@
+/*
+ * Resuelve la URL base de la API y recuerda el host válido que respondió
+ * correctamente para que el frontend no tenga que adivinarlo en cada request.
+ */
 export const normalizeBaseUrl = (value) => {
   if (!value || typeof value !== "string") {
     return "";

@@ -13,6 +13,11 @@ import {
   parseTokenSafely,
 } from "./auth-session.js";
 
+/*
+ * Wrapper compartido sobre fetch.
+ * Maneja descubrimiento de base URL, expiración del token y parseo uniforme
+ * de respuestas JSON o errores de texto plano.
+ */
 const parseJsonSafely = async (response) => {
   const text = await response.text();
 

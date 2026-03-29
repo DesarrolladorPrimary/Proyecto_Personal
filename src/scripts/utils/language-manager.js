@@ -1,3 +1,8 @@
+/*
+ * Gestor simple de internacionalización del frontend.
+ * Guarda el idioma elegido en storage y expone traducciones por clave para
+ * páginas estáticas y pantallas principales del producto.
+ */
 (function () {
   const STORAGE_KEY = "selectedLanguage";
 

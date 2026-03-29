@@ -1,5 +1,10 @@
 import { fetchJson } from "./api-client.js";
 
+/*
+ * Construye un snapshot ligero del plan actual del usuario para reutilizarlo
+ * en Poly, Creative y Settings sin duplicar llamadas o reglas de presentación.
+ */
+
 const DEFAULT_FREE_STORAGE_MB = 500;
 const DEFAULT_PREMIUM_STORAGE_MB = 2048;
 

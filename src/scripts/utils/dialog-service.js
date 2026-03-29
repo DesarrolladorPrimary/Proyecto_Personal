@@ -1,3 +1,7 @@
+/*
+ * Capa de abstracción para diálogos. Si SweetAlert2 está disponible se usa la
+ * versión estilizada; si no, cae a alert/confirm/prompt nativos.
+ */
 const hasSwal = () => typeof window !== "undefined" && typeof window.Swal?.fire === "function";
 
 const sharedCustomClass = {
